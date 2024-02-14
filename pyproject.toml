@@ -1,0 +1,40 @@
+[project]
+
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+
+[tool.ruff.lint]
+ignore = ["E702"]
+select = [
+    "A", #flake8-builtins
+    "B", # flake8-bugbear
+    "C4", #flake8-comprehensions
+    "E", # pycodestyle
+    "F", # Pyflakes
+    "I", # isort
+    "N", #pep8-naming
+    "Q", # flake8-quotes
+    "UP", # pyupgrade
+    "SIM", # flake8-simplify
+    "ICN", # flake8-import-conventions
+    "T20", # flake8-print
+    "RSE", # flake8-raise
+    "RET", # flake8-return
+    "SLF", # flake8-self
+    "ARG", # flake8-unused-arguments
+    "PL", #Pylint
+    "NPY", # Numpy
+    "PD", # Pandas
+    "RUF100", # remove unused noqa
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.mypy]
+python_version = "3.11"
+plugins = ["pydantic.mypy"]
+warn_unused_ignores = true
