@@ -1,0 +1,19 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI-controlled-models-analysis", "AI-controlled-models-analysis.csproj", "{CFC51DEC-84A1-4FF2-B415-E09783D96669}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	Debug|Any CPU = Debug|Any CPU
+	ExportDebug|Any CPU = ExportDebug|Any CPU
+	ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CFC51DEC-84A1-4FF2-B415-E09783D96669}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFC51DEC-84A1-4FF2-B415-E09783D96669}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFC51DEC-84A1-4FF2-B415-E09783D96669}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{CFC51DEC-84A1-4FF2-B415-E09783D96669}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{CFC51DEC-84A1-4FF2-B415-E09783D96669}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{CFC51DEC-84A1-4FF2-B415-E09783D96669}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+	EndGlobalSection
+EndGlobal

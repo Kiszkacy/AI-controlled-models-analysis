@@ -1,0 +1,12 @@
+﻿pipe:
+  name: 'godot-python-pipe'
+  bufferSize: 64
+engine:
+  timeScale: 3.0 # multiplier
+  ticksPerSecond: 60
+tests:
+  runTests: true
+  runTestsWhenOpenedViaCommandLine: false
+  runSlowTests: true
+  passUncertainTestsWhenFailed: true
+  printAdditionalLogs: true

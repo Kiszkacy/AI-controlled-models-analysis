@@ -1,0 +1,15 @@
+<Project Sdk="Godot.NET.Sdk/4.2.1">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net7.0</TargetFramework>
+    <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'ios' ">net8.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <RootNamespace>AI-controlled-models-analysis</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="src\config.yaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="YamlDotNet" Version="15.1.2" />
+  </ItemGroup>
+</Project>
