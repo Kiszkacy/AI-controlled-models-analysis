@@ -14,7 +14,7 @@ This document outlines the installation, configuration, and usage of the Core Mo
 3. **Install Dependencies:** Navigate to the `core` directory of the cloned repository. Install the required Python packages using pip:
 
 ```bash
-pip install -r requirements.txt
+pip install -Ur requirements.txt
 ```
 
 4. **Install Pre-commit Hooks:**

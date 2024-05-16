@@ -8,4 +8,4 @@ ruff~=0.4.2
 pre-commit~=3.7.0
 mypy~=1.10.0
 pywin32==306; platform_system == "Windows"
-ray[default, rllib]~=2.10.0
+ray[rllib]~=2.10.0
