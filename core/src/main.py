@@ -5,7 +5,7 @@ import torch
 from loguru import logger
 from ray.rllib.algorithms.ppo.ppo import PPOConfig
 
-from core.src.environments.godot_environment import GymnasiumServerEnvironment
+from core.src.environments.godot_environment import GodotServerEnvironment
 from core.src.settings import get_settings
 from core.src.setup import configure_logging
 
@@ -17,7 +17,7 @@ if __name__ == "__main__":
     DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     logger.info(f"Using {DEVICE=}")
 
-    env = GymnasiumServerEnvironment
+    env = GodotServerEnvironment
 
     training_settings = get_settings().training
 

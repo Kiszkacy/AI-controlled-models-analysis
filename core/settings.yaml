@@ -1,5 +1,7 @@
 environment:
-  observation_space_size: 5
+  observation_space_size: 5 # Dimensionality of the observation space, number of features in each state observation.
+  observation_space_low: -1 # Lower bound for each dimension in the observation space.
+  observation_space_high: 1 # Upper bound for each dimension in the observation space.
   action_space_range: 2  # Number of possible actions the agent can take in the environment
 training:
   number_of_workers: 16  # Number of parallel processes to use for training.

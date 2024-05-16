@@ -5,12 +5,17 @@ from core.src.environments.environment import Environment
 from core.src.settings import get_settings
 from core.src.utils.godot_handler import GodotHandler
 
+environment_settings = get_settings().environment
 
-class GymnasiumServerEnvironment(Environment[np.ndarray, np.integer]):
+
+class GodotServerEnvironment(Environment[np.ndarray, np.integer]):
+
     action_space = Discrete(get_settings().environment.action_space_range)
-    # probably should be something more accurate
     observation_space = Box(
-        low=-(2**60), high=2**60, shape=(get_settings().environment.observation_space_size,), dtype=np.float32
+        low=environment_settings.observation_space_low,
+        high=environment_settings.observation_space_high,
+        shape=(get_settings().environment.observation_space_size,),
+        dtype=np.float32
     )
 
     def __init__(self, config: dict | None = None):  # noqa: ARG002
@@ -53,4 +58,8 @@ class GymnasiumServerEnvironment(Environment[np.ndarray, np.integer]):
 
     @property
     def default_state(self) -> np.ndarray:
-        return np.random.default_rng().random(size=get_settings().environment.observation_space_size)
+        return np.random.default_rng().uniform(
+            low=environment_settings.observation_space_low,
+            high=environment_settings.observation_space_high,
+            size=environment_settings.observation_space_size,
+        )

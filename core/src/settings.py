@@ -1,9 +1,9 @@
 import functools
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, Self
 
 from loguru import logger
-from pydantic import DirectoryPath, Field, FilePath, ValidationError, field_validator
+from pydantic import DirectoryPath, Field, FilePath, ValidationError, field_validator, model_validator
 from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, SettingsConfigDict, YamlConfigSettingsSource
 
 from core.src.setup import configure_logging
@@ -36,7 +36,18 @@ class EnvironmentSettings(BaseSettings):
     model_config = SettingsConfigDict(frozen=True)
 
     observation_space_size: Annotated[int, Field(gt=0, default=5)]
+    observation_space_low: Annotated[float, ...]
+    observation_space_high: Annotated[float, ...]
     action_space_range: Annotated[int, Field(gt=0, default=2)]
+
+    @model_validator(mode='after')
+    def check_passwords_match(self) -> Self:
+        if self.observation_space_low >= self.observation_space_high:
+            raise ValueError(
+                f'Field observation_space_low={self.observation_space_low} has to be strictly less '
+                f'than field observation_space_high={self.observation_space_high}.'
+            )
+        return self
 
 
 class CoreSettings(BaseSettings):
