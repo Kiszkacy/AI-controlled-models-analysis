@@ -40,12 +40,12 @@ class EnvironmentSettings(BaseSettings):
     observation_space_high: Annotated[float, ...]
     action_space_range: Annotated[int, Field(gt=0, default=2)]
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def check_passwords_match(self) -> Self:
         if self.observation_space_low >= self.observation_space_high:
             raise ValueError(
-                f'Field observation_space_low={self.observation_space_low} has to be strictly less '
-                f'than field observation_space_high={self.observation_space_high}.'
+                f"Field observation_space_low={self.observation_space_low} has to be strictly less "
+                f"than field observation_space_high={self.observation_space_high}."
             )
         return self
 
