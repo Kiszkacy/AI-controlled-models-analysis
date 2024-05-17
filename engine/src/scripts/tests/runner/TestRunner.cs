@@ -7,7 +7,7 @@ using System.Reflection;
 
 public class TestRunner : Singleton<TestRunner>
 {
-	private string testsPath = "./tests/tests";
+	private string testsPath = "./src/scripts";
 	
 	private int testNumber = 0; // test number iterator
     private int testsPassed = 0; 
@@ -103,7 +103,7 @@ public class TestRunner : Singleton<TestRunner>
 		    .Sum(testClass => (int)testClass!.GetMethod("GetSuitableTestCount")!.Invoke(Activator.CreateInstance(testClass), Array.Empty<object>())!);
     }
 
-    private string[] GetTestFiles() => Directory.GetFiles(testsPath, "*", SearchOption.AllDirectories);
+    private string[] GetTestFiles() => Directory.GetFiles(testsPath, "*", SearchOption.AllDirectories).Where(fileName => fileName.ToLower().EndsWith(".test.cs")).ToArray();
     
     private List<Type> GetTestClasses() => this.GetTestFiles().Select(file => Type.GetType(Path.GetFileNameWithoutExtension(file))).ToList();
 }
