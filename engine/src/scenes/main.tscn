@@ -1,12 +1,12 @@
 [gd_scene load_steps=3 format=3 uid="uid://d7ustprm3wu2"]
 
-[ext_resource type="Script" path="res://src/scripts/initializer/Initializer.cs" id="1_0g1au"]
-[ext_resource type="Script" path="res://src/scripts/endOfFrameProcessor/EndOfFrameProcessor.cs" id="8_y0kdg"]
+[ext_resource type="Script" path="res://src/scripts/engine/initializer/Initializer.cs" id="1_k36hy"]
+[ext_resource type="Script" path="res://src/scripts/engine/endOfFrameProcessor/EndOfFrameProcessor.cs" id="2_3vvuh"]
 
 [node name="Root" type="Node2D"]
 
 [node name="Initializer" type="Node" parent="."]
-script = ExtResource("1_0g1au")
+script = ExtResource("1_k36hy")
 
 [node name="EndOfFrameProcessor" type="Node" parent="."]
-script = ExtResource("8_y0kdg")
+script = ExtResource("2_3vvuh")
