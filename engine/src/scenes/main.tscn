@@ -6,7 +6,9 @@
 [node name="Root" type="Node2D"]
 
 [node name="Initializer" type="Node" parent="."]
+editor_description = "This node must be the first child of the Root node to work properly."
 script = ExtResource("1_k36hy")
 
 [node name="EndOfFrameProcessor" type="Node" parent="."]
+editor_description = "This node must be the last child of the Root node to work properly."
 script = ExtResource("2_3vvuh")
