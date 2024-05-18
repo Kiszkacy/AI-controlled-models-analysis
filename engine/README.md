@@ -1,5 +1,11 @@
-## Setup
+This readme file contains basic setup information. 
+For further details, please refer to [this link](https://github.com/Kiszkacy/AI-controlled-models-analysis/wiki/Engine).
 
+## Prerequisites
+
+* Godot 4.2.X with C# support (https://godotengine.org/download/)
+
+## Setup _(Developers only)_
 
 #### Configuring Godot with Your IDE
 If you are using Rider as your IDE for Godot, you will need to install two essential plugins:
