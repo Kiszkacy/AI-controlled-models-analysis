@@ -1,26 +1,45 @@
+using System;
 using Godot;
 
 public partial class Initializer : Node
 {
 	public override void _Ready()
 	{
-		GD.Print("Initializer: Loading scene."); // TODO use NeatPrint
-		GD.Print("Initializer: Loading singletons.");
+		NeatPrinter.Start()
+			.ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+			.Print("  | LOADING SCENE")
+			.NewLine()
+			.ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+			.Print("  | LOADING SINGLETONS")
+			.End();
 		this.LoadSingletons();
-		GD.Print("Initializer: Setting up engine settings.");
+		NeatPrinter.Start()
+			.ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+			.Print("  | SETTING UP ENGINE SETTINGS")
+			.End();
 		this.SetupEngineSettings();
-		GD.Print("Initializer: Initial load complete.");
+		NeatPrinter.Start()
+			.ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+			.Print("]  | INITIAL LOAD COMPLETE")
+			.End();
 		if ((!CommandLineReader.OpenedViaCommandLine && Config.Get().Tests.RunTests) || (CommandLineReader.OpenedViaCommandLine && Config.Get().Tests.RunTestsWhenOpenedViaCommandLine))
 		{
-			GD.Print("Initializer: Starting tests.");
+			NeatPrinter.Start()
+				.ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+				.Print("  | STARTING TESTS")
+				.End();
 			this.RunTests();
-			GD.Print("Initializer: Tests completed.");
+			NeatPrinter.Start()
+				.ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+				.Print("  | TESTS COMPLETED").End();
 		}
 	}
 
 	private void LoadSingletons() // this method loads singletons that are required to be loaded in a specific order
 	{
-		GD.Print("Initializer: Loading config.");
+		NeatPrinter.Start()
+			.ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+			.Print("  | LOADING CONFIG").End();
 		this.LoadConfig();
 		EventManager.Get();
 	}

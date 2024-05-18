@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Godot;
 
@@ -25,14 +26,14 @@ public class CommandLineReader
 				
 				if (!argumentName.StartsWith(argumentPrefix))
 				{
-					GD.Print($"Commandline parse error: argument='{argumentName}' name does not start with '{argumentPrefix}'.");
+					NeatPrinter.Start().ColorPrint(ConsoleColor.Red, $"Commandline parse error: argument='{argumentName}' name does not start with '{argumentPrefix}'.").End();
 					continue;
 				}
 				argumentName = argumentName.Remove(0, argumentPrefix.Length);
 				
 				if (!valueArguments.Contains(argumentName))
 				{
-					GD.Print($"Commandline parse error: argument='{argumentName}' name does not require any values but value='{argumentValue}' was provided.");
+					NeatPrinter.Start().ColorPrint(ConsoleColor.Red, $"Commandline parse error: argument='{argumentName}' name does not require any values but value='{argumentValue}' was provided.").End();
 					continue;
 				} 
 			}
@@ -41,7 +42,7 @@ public class CommandLineReader
 				argumentName = userArguments[index];
 				if (!argumentName.StartsWith(argumentPrefix))
 				{
-					GD.Print($"Commandline parse error: argument='{argumentName}' name does not start with '{argumentPrefix}'.");
+					NeatPrinter.Start().ColorPrint(ConsoleColor.Red, $"Commandline parse error: argument='{argumentName}' name does not start with '{argumentPrefix}'.").End();
 					continue;
 				} 
 				argumentName = argumentName.Remove(0, argumentPrefix.Length);
@@ -59,11 +60,11 @@ public class CommandLineReader
 
 	public static void UpdateConfig(string argumentName, string? argumentValue)
 	{
-		GD.Print($"Commandline argument: name: '{argumentName}', value: '{argumentValue}'.");
+		NeatPrinter.Start().Print($"Commandline argument: name: '{argumentName}', value: '{argumentValue}'.").End();
 		switch (argumentName)
 		{
 			case "pipe-name":
-				GD.Print($"Commandline argument: applied '{argumentValue}' to 'Config.Data.Pipe.Name'.");
+				NeatPrinter.Start().Print($"Commandline argument: applied '{argumentValue}' to 'Config.Data.Pipe.Name'.").End();
 				Config.Get().Data.Pipe.Name = argumentValue;
 				break;
 		}

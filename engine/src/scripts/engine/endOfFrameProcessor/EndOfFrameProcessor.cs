@@ -4,7 +4,7 @@ public partial class EndOfFrameProcessor : Node
 {
     public override void _Ready()
     {
-        GD.Print("EndOfFrameProcessor: Scene loading complete.");
+        NeatPrinter.Start().Print("SCENE LOADING COMPLETE").End();
     }
 
     public override void _PhysicsProcess(double delta)
