@@ -100,11 +100,11 @@ public  class TestLayerer
         {
             TestAfterAttribute after = test.GetCustomAttribute<TestAfterAttribute>();
             if (after != null)
-                foreach (string name in after.After) this.mustBeBefore[Type.GetType($"Test{name}")!].Add(test);
+                foreach (string name in after.After) this.mustBeBefore[Type.GetType($"{name}Test")!].Add(test);
 
             TestBeforeAttribute before = test.GetCustomAttribute<TestBeforeAttribute>();
             if (before != null)
-                foreach (string name in before.Before) this.mustBeBefore[test].Add(Type.GetType($"Test{name}")!);
+                foreach (string name in before.Before) this.mustBeBefore[test].Add(Type.GetType($"{name}Test")!);
         }
     }
 }

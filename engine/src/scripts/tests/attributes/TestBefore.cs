@@ -4,8 +4,8 @@
 /// The <c>TestBeforeAttribute</c> specifies that this test must run before another class tests or a group of tests.
 /// </summary>
 /// <remarks>
-/// The argument passed to <c>TestBeforeAttribute</c> constructor should be the name of a test class type without the "Test" prefix.
-/// For example, if the test class is named <c>TestMyClass</c>, then the argument should be <c>MyClass</c>.
+/// The argument passed to <c>TestBeforeAttribute</c> constructor should be the name of a test class type without the "Test" suffix.
+/// For example, if the test class is named <c>MyClassTest</c>, then the argument should be <c>MyClass</c>.
 /// </remarks>
 public class TestBeforeAttribute : Attribute
 {
