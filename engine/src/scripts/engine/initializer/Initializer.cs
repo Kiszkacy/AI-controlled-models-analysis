@@ -20,7 +20,7 @@ public partial class Initializer : Node
 		this.SetupEngineSettings();
 		NeatPrinter.Start()
 			.ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
-			.Print("]  | INITIAL LOAD COMPLETE")
+			.Print("  | INITIAL LOAD COMPLETE")
 			.End();
 		if ((!CommandLineReader.OpenedViaCommandLine && Config.Get().Tests.RunTests) || (CommandLineReader.OpenedViaCommandLine && Config.Get().Tests.RunTestsWhenOpenedViaCommandLine))
 		{
@@ -31,7 +31,8 @@ public partial class Initializer : Node
 			this.RunTests();
 			NeatPrinter.Start()
 				.ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
-				.Print("  | TESTS COMPLETED").End();
+				.Print("  | TESTS COMPLETED")
+				.End();
 		}
 	}
 
@@ -39,7 +40,8 @@ public partial class Initializer : Node
 	{
 		NeatPrinter.Start()
 			.ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
-			.Print("  | LOADING CONFIG").End();
+			.Print("  | LOADING CONFIG")
+			.End();
 		this.LoadConfig();
 		EventManager.Get();
 	}
