@@ -10,6 +10,8 @@
     <Content Include="src\config.yaml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="NUnit" Version="4.1.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
     <PackageReference Include="YamlDotNet" Version="15.1.2" />
   </ItemGroup>
 </Project>

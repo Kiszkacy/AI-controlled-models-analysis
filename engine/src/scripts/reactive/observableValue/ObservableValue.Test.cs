@@ -1,4 +1,5 @@
-﻿
+﻿using NUnit.Framework;
+
 public class ObservableValueTest : TestClass<ObservableValueTest>
 {
     [Test]
@@ -9,7 +10,7 @@ public class ObservableValueTest : TestClass<ObservableValueTest>
         ObservableValue<object> observableValue = new(value);
         
         // then
-        Assert.IsTrue(value == observableValue.Value);
+        Assert.That(value, Is.EqualTo(observableValue.Value));
     }
     
     [Test]
@@ -24,8 +25,8 @@ public class ObservableValueTest : TestClass<ObservableValueTest>
         observableValue.Value = newValue;
         
         // then
-        Assert.IsFalse(initialValue == observableValue.Value);
-        Assert.IsTrue(newValue == observableValue.Value);
+        Assert.That(initialValue, Is.Not.EqualTo(observableValue.Value));
+        Assert.That(newValue, Is.EqualTo(observableValue.Value));
     }
     
     [Test]
@@ -47,7 +48,7 @@ public class ObservableValueTest : TestClass<ObservableValueTest>
         observableValue.Value = newValue;
         
         // then
-        Assert.IsTrue(receivedValue);
+        Assert.That(receivedValue, Is.True);
     }
     
     [Test]
@@ -68,6 +69,6 @@ public class ObservableValueTest : TestClass<ObservableValueTest>
         observableValue.Value = value;
         
         // then
-        Assert.IsFalse(receivedValue);
+        Assert.That(receivedValue, Is.False);
     }
 }
