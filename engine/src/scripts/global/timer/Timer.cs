@@ -34,8 +34,8 @@ public class Timer : Processable
         this.time -= delta;
         if (this.time <= 0.0f)
         {
-            this.timeout();
             this.isActive = false;
+            this.timeout();
         }
     }
     
