@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://d7ustprm3wu2"]
+[gd_scene load_steps=4 format=3 uid="uid://d7ustprm3wu2"]
 
 [ext_resource type="Script" path="res://src/scripts/engine/initializer/Initializer.cs" id="1_k36hy"]
 [ext_resource type="Script" path="res://src/scripts/engine/endOfFrameProcessor/EndOfFrameProcessor.cs" id="2_3vvuh"]
+[ext_resource type="PackedScene" uid="uid://cq8va3jo54tvu" path="res://src/scenes/tree.tscn" id="3_7cci2"]
 
 [node name="Root" type="Node2D"]
 
@@ -12,3 +13,6 @@ script = ExtResource("1_k36hy")
 [node name="EndOfFrameProcessor" type="Node" parent="."]
 editor_description = "This node must be the last child of the Root node to work properly."
 script = ExtResource("2_3vvuh")
+
+[node name="Tree" parent="." instance=ExtResource("3_7cci2")]
+position = Vector2(640, 360)
