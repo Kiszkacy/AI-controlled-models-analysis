@@ -1,4 +1,4 @@
-﻿pipe:
+pipe:
   name: 'godot-python-pipe'
   bufferSize: 64
 engine:
