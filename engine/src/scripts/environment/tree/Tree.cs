@@ -7,7 +7,10 @@ public partial class Tree : Node2D
 	public float FoodPerMinute { get; set; } = 10;
 
 	[Export(PropertyHint.Range, "64,512,or_greater")]
-	public float FoodSpawnRange { get; set; } = 256;
+	public float FoodSpawnOuterRadius { get; set; } = 128;
+	
+	[Export(PropertyHint.Range, "0,64,or_greater")]
+	public float FoodSpawnInnerRadius { get; set; } = 32;
 
 	private Timer spawnFoodTimer;
 	private PackedScene packedFood = ResourceLoader.Load<PackedScene>("res://src/scenes/food.tscn");
@@ -27,8 +30,8 @@ public partial class Tree : Node2D
 		Node2D foodInstance = (Node2D)this.packedFood.Instantiate();
 		this.AddChild(foodInstance);
 		Vector2 spawnOffset = new Vector2(
-			(float)new Random().NextDouble() * this.FoodSpawnRange - this.FoodSpawnRange/2.0f, 
-			(float)new Random().NextDouble() * this.FoodSpawnRange - this.FoodSpawnRange/2.0f
+			(float)((new Random().NextDouble()-0.5f >= 0 ? 1 : -1) * (new Random().NextDouble() * (this.FoodSpawnOuterRadius-this.FoodSpawnInnerRadius) + this.FoodSpawnInnerRadius)),
+			(float)((new Random().NextDouble()-0.5f >= 0 ? 1 : -1) * (new Random().NextDouble() * (this.FoodSpawnOuterRadius-this.FoodSpawnInnerRadius) + this.FoodSpawnInnerRadius))
 		);
 		foodInstance.GlobalPosition = this.GlobalPosition + spawnOffset;
 
