@@ -11,6 +11,9 @@ public partial class Tree : Node2D
 	
 	[Export(PropertyHint.Range, "0,64,or_greater")]
 	public float FoodSpawnInnerRadius { get; set; } = 32;
+	
+	[Export(PropertyHint.Range, "1,32,or_greater")]
+	public int MaxFoodCount { get; set; } = 8;
 
 	private Timer spawnFoodTimer;
 	private PackedScene packedFood = ResourceLoader.Load<PackedScene>("res://src/scenes/food.tscn");
@@ -22,6 +25,11 @@ public partial class Tree : Node2D
 
 	public override void _PhysicsProcess(double delta)
 	{
+		if (!this.spawnFoodTimer.IsActive && !this.IsFull)
+		{
+			this.spawnFoodTimer.Activate(60.0f/this.FoodPerMinute);
+		}
+		
 		this.spawnFoodTimer.Process(delta);
 	}
 
@@ -35,13 +43,18 @@ public partial class Tree : Node2D
 		);
 		foodInstance.GlobalPosition = this.GlobalPosition + spawnOffset;
 
-		this.ResetTimer();
+		if (!this.IsFull)
+		{
+			this.ResetTimer();
+		}
 	}
 
 	private void ResetTimer()
 	{
 		this.spawnFoodTimer.Activate(60.0f/this.FoodPerMinute);
 	}
+
+	private bool IsFull => this.GetChildren().Count-1 >= this.MaxFoodCount; // -1 because of the SpawnArea sprite
 
 	public Tree()
 	{
