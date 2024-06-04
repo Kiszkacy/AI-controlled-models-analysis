@@ -7,6 +7,13 @@
 
 [node name="Root" type="Node2D"]
 
+[node name="HUD" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="Position" type="Label" parent="HUD"]
+offset_right = 40.0
+offset_bottom = 23.0
+
 [node name="Initializer" type="Node" parent="."]
 editor_description = "This node must be the first child of the Root node to work properly."
 script = ExtResource("1_k36hy")
