@@ -75,7 +75,6 @@ public partial class Camera : Camera2D
     {
         this.UpdatePosition(delta);
         this.UpdateZoom(delta);
-        GD.Print(this.Zoom);
     }
 
     private void UpdatePosition(double delta)
