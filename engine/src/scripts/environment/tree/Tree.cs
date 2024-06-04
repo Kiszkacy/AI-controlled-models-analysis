@@ -4,7 +4,7 @@ using Godot;
 public partial class Tree : Node2D
 {
 	[Export(PropertyHint.Range, "0,25,or_greater")] 
-	public float FoodPerMinute { get; set; } = 10;
+	public float FoodPerMinute { get; set; } = 6;
 
 	[Export(PropertyHint.Range, "64,512,or_greater")]
 	public float FoodSpawnOuterRadius { get; set; } = 128;
