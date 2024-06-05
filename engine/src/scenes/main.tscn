@@ -29,10 +29,6 @@ position = Vector2(640, 360)
 script = ExtResource("3_2o0lw")
 MinZoom = 0.2
 
-[node name="EndOfFrameProcessor" type="Node" parent="."]
-editor_description = "This node must be the last child of the Root node to work properly."
-script = ExtResource("2_3vvuh")
-
 [node name="LogicAgent" parent="." instance=ExtResource("6_qu56v")]
 position = Vector2(1032, 585)
 SightAngle = 0.524
@@ -47,3 +43,7 @@ SightRadius = 512.0
 position = Vector2(2520, 903)
 SightAngle = 0.524
 SightRadius = 512.0
+
+[node name="EndOfFrameProcessor" type="Node" parent="."]
+editor_description = "This node must be the last child of the Root node to work properly."
+script = ExtResource("2_3vvuh")
