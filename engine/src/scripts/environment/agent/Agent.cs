@@ -60,6 +60,17 @@ public partial class Agent : CharacterBody2D
 		{
 			this.health += Config.Instance.Data.Environment.HealthRegenPerSecond * (float)delta;
 		}
+
+		this.health = Mathf.Clamp(this.health, 0.0f, this.MaximumHealth);
+		if (this.health <= 0.0f) // TODO proper float comparison
+		{
+			this.Die();
+		}
+	}
+
+	protected void Die()
+	{
+		this.QueueFree();
 	}
 
 	protected void SightProcess()
