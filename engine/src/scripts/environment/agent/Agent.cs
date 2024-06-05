@@ -32,25 +32,25 @@ public partial class Agent : CharacterBody2D
 	[Export]
 	public float SightRadius { get; set; } = 256.0f; // in px
 		
-	private float energy;
-	private float health;
-	private float currentRotation = 0.0f;
-	private float currentAcceleration = 0.0f;
+	protected float energy;
+	protected float health;
+	protected float currentRotation = 0.0f;
+	protected float currentAcceleration = 0.0f;
 
 	public Vector2 Direction { get; set; } = Vector2.Right;
 	public float DirectionAngle => this.Direction.Angle();
 	public float Speed => this.Velocity.Length();
 
-	private Food closestFood = null;
-	public float DistanceToClosestFood => this.closestFood?.GlobalPosition.DistanceTo(this.GlobalPosition) ?? float.NaN;
-	public float AngleToClosestFood => this.closestFood != null ? this.Direction.AngleTo(this.closestFood.GlobalPosition - this.GlobalPosition) : float.NaN;
+	protected Food closestFood = null;
+	public float DistanceToClosestFood => this.closestFood?.GlobalPosition.DistanceTo(this.GlobalPosition) ?? float.NaN; // in radians
+	public float AngleToClosestFood => this.closestFood != null ? this.Direction.AngleTo(this.closestFood.GlobalPosition - this.GlobalPosition) : float.NaN; // in radians
 
-	private void UpdateEnergy(double delta)
+	protected void UpdateEnergy(double delta)
 	{
 		this.energy -= Config.Instance.Data.Environment.EnergyLossPerSecond * (float)delta;
 	}
 	
-	private void UpdateHealth(double delta)
+	protected void UpdateHealth(double delta)
 	{
 		if (this.energy <= 0.0f) // TODO proper float comparison
 		{
@@ -62,7 +62,7 @@ public partial class Agent : CharacterBody2D
 		}
 	}
 
-	private void SightProcess()
+	protected void SightProcess()
 	{
 		this.closestFood = null;
 		
@@ -71,12 +71,12 @@ public partial class Agent : CharacterBody2D
 			float distanceToFood = food.GlobalPosition.DistanceTo(this.GlobalPosition);
 			if (distanceToFood >= this.SightRadius)
 			{
-				return;
+				continue;
 			}
 
 			if (this.closestFood != null && this.closestFood.GlobalPosition.DistanceTo(this.GlobalPosition) <= distanceToFood)
 			{
-				return;
+				continue;
 			}
 
 			Vector2 directionToFood = (food.GlobalPosition - this.GlobalPosition).Normalized();
@@ -88,17 +88,17 @@ public partial class Agent : CharacterBody2D
 		}
 	}
 
-	private void Rotate(float strength) // input of range <-1, 1>
+	protected void Rotate(float strength) // input of range <-1, 1>
 	{
 		this.currentRotation = Mathf.Remap(strength, -1, 1, -this.MaximumTurnSpeed, this.MaximumTurnSpeed);
 	}
 	
-	private void Accelerate(float strength) // input of range <-1, 1>
+	protected void Accelerate(float strength) // input of range <-1, 1>
 	{
 		this.currentAcceleration = Mathf.Remap(strength, -1, 1, -this.MaximumDeceleration, this.MaximumAcceleration);
 	}
 	
-	private void onMouthBodyEntered(Node2D body)
+	protected void onMouthBodyEntered(Node2D body)
 	{
 		if (body is not Food food) return;
 		
@@ -106,26 +106,26 @@ public partial class Agent : CharacterBody2D
 		this.energy = Mathf.Clamp(this.energy + nutrition, 0.0f, this.MaximumEnergy);
 	}
 	
-	private void MovementProcess(double delta)
+	protected void MovementProcess(double delta)
 	{
-		this.Direction = this.Direction.Rotated(this.currentRotation * this.MaximumTurnSpeed * (float)delta);
+		this.Direction = this.Direction.Rotated(this.currentRotation * (float)delta);
 		this.GlobalRotation = this.DirectionAngle;
 		
 		if (this.currentAcceleration >= 0.0f)
 		{
-			this.Velocity = this.Direction * Mathf.Clamp((this.Speed + this.currentAcceleration) * this.MaximumAcceleration * (float)delta, 0.0f, this.MaximumSpeed);
+			this.Velocity = this.Direction * Mathf.Clamp(this.Speed + this.currentAcceleration*(float)delta, 0.0f, this.MaximumSpeed);
 		}
 		else
 		{
-			this.Velocity = this.Direction * Mathf.Clamp((this.Speed + this.currentAcceleration) * this.MaximumDeceleration * (float)delta, 0.0f, this.MaximumSpeed);
+			this.Velocity = this.Direction * Mathf.Clamp(this.Speed + this.currentAcceleration*(float)delta, 0.0f, this.MaximumSpeed);
 		}
 		
 			
-		this.MoveAndCollide(this.Velocity);
+		this.MoveAndCollide(this.Velocity * (float)delta);
 	}
 
 	public override void _Ready()
-	{
+	{ 
 		this.energy = this.InitialEnergy;
 		this.health = this.InitialHealth;
 	}
