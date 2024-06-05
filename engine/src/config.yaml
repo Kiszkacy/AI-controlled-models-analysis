@@ -10,3 +10,7 @@ tests:
   runSlowTests: true
   passUncertainTestsWhenFailed: true
   printAdditionalLogs: true
+environment:
+  energyLossPerSecond: 3.0
+  healthLossPerSecond: 5.0
+  healthRegenPerSecond: 1.0
