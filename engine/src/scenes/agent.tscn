@@ -1,13 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://b5pn4l710tjo6"]
+[gd_scene load_steps=4 format=3 uid="uid://b5pn4l710tjo6"]
 
-[ext_resource type="Texture2D" uid="uid://80e7nr6u8lkl" path="res://assets/sprites/pointed-circle-36x50.png" id="1_1mjwy"]
+[ext_resource type="Texture2D" uid="uid://d1ryghx8jhyw7" path="res://assets/sprites/pointed-circle-36x50.png" id="1_1mjwy"]
 [ext_resource type="Script" path="res://src/scripts/environment/agent/Agent.cs" id="1_er4fd"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eua6s"]
+size = Vector2(36, 50)
+
 [node name="Agent" type="CharacterBody2D"]
+motion_mode = 1
 script = ExtResource("1_er4fd")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 0.0313726, 1)
 texture = ExtResource("1_1mjwy")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_eua6s")
