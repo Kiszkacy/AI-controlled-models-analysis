@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://src/scripts/environment/agent/Agent.cs" id="1_er4fd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eua6s"]
-size = Vector2(36, 50)
+size = Vector2(50, 36)
 
 [node name="Agent" type="CharacterBody2D"]
 motion_mode = 1
@@ -12,7 +12,10 @@ script = ExtResource("1_er4fd")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 0.0313726, 1)
+position = Vector2(7, 0)
+rotation = 1.5708
 texture = ExtResource("1_1mjwy")
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
+position = Vector2(7, 0)
 shape = SubResource("RectangleShape2D_eua6s")
