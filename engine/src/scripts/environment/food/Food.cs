@@ -26,6 +26,7 @@ public partial class Food : Node2D
 
 	private void Die()
 	{
+		EntityManager.Get().RemoveFood(this);
 		this.QueueFree();
 	}
 	

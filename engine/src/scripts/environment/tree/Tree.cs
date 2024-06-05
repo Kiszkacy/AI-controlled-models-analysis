@@ -42,6 +42,8 @@ public partial class Tree : Node2D
 			(float)((new Random().NextDouble()-0.5f >= 0 ? 1 : -1) * (new Random().NextDouble() * (this.FoodSpawnOuterRadius-this.FoodSpawnInnerRadius) + this.FoodSpawnInnerRadius))
 		);
 		foodInstance.GlobalPosition = this.GlobalPosition + spawnOffset;
+		Food food = (Food)foodInstance;
+		EntityManager.Get().RegisterFood(food);
 
 		if (!this.IsFull)
 		{
