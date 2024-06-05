@@ -15,7 +15,7 @@ public partial class Agent : CharacterBody2D
 	public float MaximumEnergy { get; set; } = 200.0f;
 	
 	[Export]
-	public float InitialEnergy { get; set; } = 50.0f;
+	public float InitialEnergy { get; set; } = 100.0f;
 	
 	[Export]
 	public float MaximumHealth { get; set; } = 100.0f;

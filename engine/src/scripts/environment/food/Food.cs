@@ -1,10 +1,10 @@
 using System;
 using Godot;
 
-public partial class Food : Node2D
+public partial class Food : Area2D
 {
 	[Export(PropertyHint.Range, "1,100,or_greater")] 
-	public float EnergyNutrition { get; set; } = 50;
+	public float EnergyNutrition { get; set; } = 30.0f;
 	
 	[Export(PropertyHint.Range, "5,100,or_greater")] 
 	public float Lifetime { get; set; } = 40.0f; // in sec
