@@ -23,7 +23,7 @@ public partial class Agent : CharacterBody2D
 	public float MaximumTurnSpeedRadiansPerSecond { get; set; } = 6.0f;
 	
 	[Export]
-	public float SightAngleRadians { get; set; } = 2.0f;
+	public float SightAngleInRadians { get; set; } = Mathf.Pi / 4.0f;
 	
 	[Export]
 	public float SightRadius { get; set; } = 256.0f; // in px
@@ -31,8 +31,13 @@ public partial class Agent : CharacterBody2D
 	private float energy;
 	private float health;
 	private float rotateRadiansPerSecond = 0.0f;
-	
-	public float GetPointingAngle() => this.Velocity.Angle();
+
+	public Vector2 Direction { get; set; } = Vector2.Right;
+	public float DirectionAngle => this.Direction.Angle();
+
+	private Food closestFood = null;
+	public float DistanceToClosestFood => this.closestFood?.GlobalPosition.DistanceTo(this.GlobalPosition) ?? float.NaN;
+	public float AngleToClosestFood => this.closestFood != null ? this.Direction.AngleTo(this.closestFood.GlobalPosition - this.GlobalPosition) : float.NaN;
 
 	private void UpdateEnergy(double delta)
 	{
@@ -51,14 +56,40 @@ public partial class Agent : CharacterBody2D
 		}
 	}
 
+	private void SightProcess()
+	{
+		this.closestFood = null;
+		
+		foreach (Food food in EntityManager.Get().Food)
+		{
+			float distanceToFood = food.GlobalPosition.DistanceTo(this.GlobalPosition);
+			if (distanceToFood >= this.SightRadius)
+			{
+				return;
+			}
+
+			if (this.closestFood != null && this.closestFood.GlobalPosition.DistanceTo(this.GlobalPosition) <= distanceToFood)
+			{
+				return;
+			}
+
+			Vector2 directionToFood = (food.GlobalPosition - this.GlobalPosition).Normalized();
+			float angleToFoodInRadians = this.Direction.AngleTo(directionToFood);
+			if (Mathf.Abs(angleToFoodInRadians) < this.SightAngleInRadians / 2.0f)
+			{
+				this.closestFood = food;
+			}
+		}
+	}
+
 	private void MovementProcess(double delta)
 	{
-		this.GlobalRotation += (float) delta * rotateRadiansPerSecond;
+		this.GlobalRotation += (float)delta * this.rotateRadiansPerSecond;
 		float angle = Math.GodotToRad(this.GlobalRotation);
-		this.Velocity = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * Velocity.Length();
-		this.MoveAndCollide(Velocity);
+		this.Velocity = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * this.Velocity.Length();
+		this.MoveAndCollide(this.Velocity);
 	}
-	
+
 	public override void _Ready()
 	{
 		this.energy = this.InitialEnergy;
@@ -75,5 +106,6 @@ public partial class Agent : CharacterBody2D
 		this.UpdateEnergy(delta);
 		this.UpdateHealth(delta);
 		this.MovementProcess(delta);
+		this.SightProcess();
 	}
 }
