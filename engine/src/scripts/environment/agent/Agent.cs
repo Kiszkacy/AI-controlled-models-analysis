@@ -10,13 +10,13 @@ public partial class Agent : CharacterBody2D
 	public float MaximumEnergy { get; set; } = 200.0f;
 	
 	[Export]
-	public float StartEnergy { get; set; } = 50.0f;
+	public float InitialEnergy { get; set; } = 50.0f;
 	
 	[Export]
 	public float MaximumHealth { get; set; } = 200.0f;
 	
 	[Export]
-	public float StartHealth { get; set; } = 100.0f;
+	public float InitialHealth { get; set; } = 100.0f;
 	
 	[Export]
 	public float MaximumTurnSpeedRadiansPerSecond { get; set; } = 6.0f;
@@ -33,20 +33,20 @@ public partial class Agent : CharacterBody2D
 		return Velocity.Angle();
 	}
 	
-	private void lowerEnergy(float energyLoss)
+	private void UpdateEnergy(double delta)
 	{
-		this.energy -= energyLoss;
+		this.energy -= Config.Instance.Data.Environment.EnergyLossPerSecond * (float)delta;
 	}
 	
-	private void lowerHealth(float healthLoss)
+	private void UpdateHealth(double delta)
 	{
-		this.health -= healthLoss;
+		this.health -= Config.Instance.Data.Environment.HealthLossPerSecond * (float)delta;
 	}
 	
 	public override void _Ready()
 	{
-		this.energy = this.StartEnergy;
-		this.health = this.StartHealth;
+		this.energy = this.InitialEnergy;
+		this.health = this.InitialHealth;
 	}
 	
 	public override void _Process(double delta)
@@ -56,14 +56,16 @@ public partial class Agent : CharacterBody2D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		if (this.energy != 0){
-			lowerEnergy((float)(Config.Instance.Data.Environment.EnergyLossPerSecond * delta));
+		if (this.energy > 0.0f)
+		{
+			this.UpdateEnergy(delta);
 		}
-		else {
-			lowerHealth((float)(Config.Instance.Data.Environment.HealthLossPerSecond * delta));
+		else 
+		{
+			this.UpdateHealth(delta);
 		}
-		Rotate((float) delta * rotateRadiansPerSecond);
-		Velocity = new Vector2(Mathf.Cos(Rotation), Mathf.Sin(Rotation)) * Velocity.Length();
+		this.GlobalRotation += (float) delta * rotateRadiansPerSecond;
+		this.Velocity = new Vector2(Mathf.Cos(Rotation), Mathf.Sin(Rotation)) * Velocity.Length();
 		MoveAndCollide(Velocity);
 	}
 }
