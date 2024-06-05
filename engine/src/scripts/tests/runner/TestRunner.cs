@@ -49,25 +49,43 @@ public class TestRunner : Singleton<TestRunner>
 	public void LogInfo(string message)
 	{
 		if (Config.Get().Tests.PrintAdditionalLogs)
-			NeatPrinter.Start().Print($"[TESTS]  | {message}").End();
+			NeatPrinter.Start()
+				.ColorPrint(ConsoleColor.Blue, "[TESTS]")
+				.Print($"[TESTS]  | {message}")
+				.End();
 	}
 	
 	public void Run()
 	{
-		NeatPrinter.Start().Print("[TESTS]  | STARTING").End();
+		NeatPrinter.Start()
+			.ColorPrint(ConsoleColor.Blue, "[TESTS]")
+			.Print("  | STARTING")
+			.End();
 		
 		int testCount = this.GetTestCount();
-		NeatPrinter.Start().Print($"[TESTS]  | DETECTED {testCount} TESTS").End();
+		NeatPrinter.Start()
+			.ColorPrint(ConsoleColor.Blue, "[TESTS]")
+			.Print($"  | DETECTED {testCount} TESTS")
+			.End();
 		
 		int suitableTestCount = this.GetSuitableTestCount();
 		if (suitableTestCount != testCount)
-			NeatPrinter.Start().Print($"[TESTS]  | REJECTED {testCount - suitableTestCount} TESTS DUE TO THE TEST RUN SETTINGS").End();
+			NeatPrinter.Start()
+				.ColorPrint(ConsoleColor.Blue, "[TESTS]")
+				.Print($"  | REJECTED {testCount - suitableTestCount} TESTS DUE TO THE TEST RUN SETTINGS")
+				.End();
 
 		List<Type> testClasses = this.GetTestClasses();
 		List<List<Type>> layers = this.testLayerer.GetTestLayers(testClasses);
-		NeatPrinter.Start().Print($"[TESTS]  | CREATED {layers.Count} TEST LAYERS OUT OF {testClasses.Count} TEST CLASSES").End();
+		NeatPrinter.Start()
+			.ColorPrint(ConsoleColor.Blue, "[TESTS]")
+			.Print($"  | CREATED {layers.Count} TEST LAYERS OUT OF {testClasses.Count} TEST CLASSES")
+			.End();
 		
-		NeatPrinter.Start().Print("[TESTS]  | STARTING").End();
+		NeatPrinter.Start()
+			.ColorPrint(ConsoleColor.Blue, "[TESTS]")
+			.Print("  | STARTING")
+			.End();
 		DateTime startTime = DateTime.Now;
 
 		foreach (Type testClass in layers.SelectMany(layer => layer))
@@ -79,7 +97,8 @@ public class TestRunner : Singleton<TestRunner>
 		DateTime endTime = DateTime.Now;
 		TimeSpan timeDifference = endTime - startTime;
 		NeatPrinter.Start()
-			.Print("[TESTS]  | PASSED (")
+			.ColorPrint(ConsoleColor.Blue, "[TESTS]")
+			.Print("  | PASSED (")
 			.ColorPrint(this.testsPassed == this.testNumber ? ConsoleColor.Green : ConsoleColor.Red, $"{this.testsPassed}")
 			.Print("/")
 			.ColorPrint(ConsoleColor.Cyan, $"{this.testNumber}")
