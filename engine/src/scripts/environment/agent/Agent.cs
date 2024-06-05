@@ -128,6 +128,9 @@ public partial class Agent : CharacterBody2D
 	{ 
 		this.energy = this.InitialEnergy;
 		this.health = this.InitialHealth;
+		
+		Area2D mouth = this.GetNode<Area2D>("Mouth");
+		mouth.AreaEntered += this.onMouthBodyEntered;
 	}
 	
 	public override void _Process(double delta)
