@@ -82,6 +82,14 @@ public partial class Agent : CharacterBody2D
 		}
 	}
 
+	private void onMouthBodyEntered(Node2D body)
+	{
+		if (body is not Food food) return;
+		
+		float nutrition = food.Eat();
+		this.energy = Mathf.Clamp(this.energy + nutrition, 0.0f, this.MaximumEnergy);
+	}
+	
 	private void MovementProcess(double delta)
 	{
 		this.GlobalRotation += (float)delta * this.rotateRadiansPerSecond;

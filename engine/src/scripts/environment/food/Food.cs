@@ -29,6 +29,12 @@ public partial class Food : Node2D
 		EntityManager.Get().RemoveFood(this);
 		this.QueueFree();
 	}
+
+	public float Eat()
+	{
+		this.Die();
+		return this.EnergyNutrition;
+	}
 	
 	public Food()
 	{
