@@ -14,12 +14,16 @@ public partial class Tree : Node2D
 	
 	[Export(PropertyHint.Range, "1,32,or_greater")]
 	public int MaxFoodCount { get; set; } = 8;
+	
+	[Export(PropertyHint.Range, "0,32,or_greater")]
+	public int InitialFoodCount { get; set; } = 1;
 
 	private Timer spawnFoodTimer;
 	private PackedScene packedFood = ResourceLoader.Load<PackedScene>("res://src/scenes/food.tscn");
 
 	public override void _Ready()
 	{
+		for (int i = 0; i < this.InitialFoodCount; i++) this.SpawnFood();
 		this.ResetTimer();
 	}
 
