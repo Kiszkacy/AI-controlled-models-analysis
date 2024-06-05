@@ -36,6 +36,8 @@ public partial class Agent : CharacterBody2D
 	protected float health;
 	protected float currentRotation = 0.0f;
 	protected float currentAcceleration = 0.0f;
+	
+	protected Sprite2D sprite;
 
 	public Vector2 Direction { get; set; } = Vector2.Right;
 	public float DirectionAngle => this.Direction.Angle();
@@ -116,6 +118,11 @@ public partial class Agent : CharacterBody2D
 		float nutrition = food.Eat();
 		this.energy = Mathf.Clamp(this.energy + nutrition, 0.0f, this.MaximumEnergy);
 	}
+
+	protected void UpdateColor()
+	{
+		this.sprite.Modulate = new Color(this.energy/this.MaximumEnergy, 1.0f, 1.0f - this.energy/this.MaximumEnergy);
+	}
 	
 	protected void MovementProcess(double delta)
 	{
@@ -136,7 +143,9 @@ public partial class Agent : CharacterBody2D
 	}
 
 	public override void _Ready()
-	{ 
+	{
+		this.sprite = this.GetNode<Sprite2D>("Sprite");
+		
 		this.energy = this.InitialEnergy;
 		this.health = this.InitialHealth;
 		
@@ -155,5 +164,6 @@ public partial class Agent : CharacterBody2D
 		this.UpdateHealth(delta);
 		this.MovementProcess(delta);
 		this.SightProcess();
+		this.UpdateColor();
 	}
 }

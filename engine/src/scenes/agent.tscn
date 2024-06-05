@@ -15,7 +15,6 @@ motion_mode = 1
 script = ExtResource("1_er4fd")
 
 [node name="Sprite" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 0.0313726, 1)
 position = Vector2(7, 0)
 rotation = 1.5708
 texture = ExtResource("1_1mjwy")
