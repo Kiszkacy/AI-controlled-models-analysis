@@ -116,11 +116,13 @@ public partial class Agent : CharacterBody2D
 
 	protected void Rotate(float strength) // input of range <-1, 1>
 	{
+		strength = Mathf.Clamp(strength, -1, 1);
 		this.currentRotation = Mathf.Remap(strength, -1, 1, -this.MaximumTurnSpeed, this.MaximumTurnSpeed);
 	}
 	
 	protected void Accelerate(float strength) // input of range <-1, 1>
 	{
+		strength = Mathf.Clamp(strength, -1, 1);
 		this.currentAcceleration = Mathf.Remap(strength, -1, 1, -this.MaximumDeceleration, this.MaximumAcceleration);
 	}
 	
