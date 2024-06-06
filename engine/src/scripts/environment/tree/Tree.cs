@@ -4,7 +4,7 @@ using Godot;
 public partial class Tree : Node2D
 {
 	[Export(PropertyHint.Range, "0,25,or_greater")] 
-	public float FoodPerMinute { get; set; } = 6;
+	public float FoodPerMinute { get; set; } = 4;
 
 	[Export(PropertyHint.Range, "64,512,or_greater")]
 	public float FoodSpawnOuterRadius { get; set; } = 128;
@@ -14,12 +14,16 @@ public partial class Tree : Node2D
 	
 	[Export(PropertyHint.Range, "1,32,or_greater")]
 	public int MaxFoodCount { get; set; } = 8;
+	
+	[Export(PropertyHint.Range, "0,32,or_greater")]
+	public int InitialFoodCount { get; set; } = 1;
 
 	private Timer spawnFoodTimer;
 	private PackedScene packedFood = ResourceLoader.Load<PackedScene>("res://src/scenes/food.tscn");
 
 	public override void _Ready()
 	{
+		for (int i = 0; i < this.InitialFoodCount; i++) this.SpawnFood();
 		this.ResetTimer();
 	}
 
@@ -42,6 +46,8 @@ public partial class Tree : Node2D
 			(float)((new Random().NextDouble()-0.5f >= 0 ? 1 : -1) * (new Random().NextDouble() * (this.FoodSpawnOuterRadius-this.FoodSpawnInnerRadius) + this.FoodSpawnInnerRadius))
 		);
 		foodInstance.GlobalPosition = this.GlobalPosition + spawnOffset;
+		Food food = (Food)foodInstance;
+		EntityManager.Get().RegisterFood(food);
 
 		if (!this.IsFull)
 		{
