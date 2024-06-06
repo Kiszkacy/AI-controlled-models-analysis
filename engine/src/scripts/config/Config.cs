@@ -12,6 +12,7 @@ public class Config : Singleton<Config>
 	public PipeConfig Pipe => this.Data.Pipe;
 	public EngineConfig Engine => this.Data.Engine;
 	public TestsConfig Tests => this.Data.Tests;
+	public EnvironmentConfig Environment => this.Data.Environment;
 
 	private Config()
 	{

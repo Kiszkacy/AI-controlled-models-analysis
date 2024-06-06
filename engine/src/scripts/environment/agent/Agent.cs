@@ -49,18 +49,18 @@ public partial class Agent : CharacterBody2D
 
 	protected void UpdateEnergy(double delta)
 	{
-		this.energy -= Config.Instance.Data.Environment.EnergyLossPerSecond * (float)delta;
+		this.energy -= Config.Instance.Environment.EnergyLossPerSecond * (float)delta;
 	}
 	
 	protected void UpdateHealth(double delta)
 	{
 		if (this.energy <= 0.0f) // TODO proper float comparison
 		{
-			this.health -= Config.Instance.Data.Environment.HealthLossPerSecond * (float)delta;
+			this.health -= Config.Instance.Environment.HealthLossPerSecond * (float)delta;
 		}
 		else
 		{
-			this.health += Config.Instance.Data.Environment.HealthRegenPerSecond * (float)delta;
+			this.health += Config.Instance.Environment.HealthRegenPerSecond * (float)delta;
 		}
 
 		this.health = Mathf.Clamp(this.health, 0.0f, this.MaximumHealth);
