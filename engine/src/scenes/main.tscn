@@ -1,12 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://d7ustprm3wu2"]
+[gd_scene load_steps=6 format=3 uid="uid://d7ustprm3wu2"]
 
 [ext_resource type="Script" path="res://src/scripts/engine/initializer/Initializer.cs" id="1_k36hy"]
 [ext_resource type="Script" path="res://src/scripts/engine/endOfFrameProcessor/EndOfFrameProcessor.cs" id="2_3vvuh"]
 [ext_resource type="PackedScene" uid="uid://c1bpw4ru4tlep" path="res://src/scenes/environment.tscn" id="2_xi837"]
 [ext_resource type="Script" path="res://src/scripts/environment/camera/Camera.cs" id="3_2o0lw"]
 [ext_resource type="Script" path="res://src/scripts/environment/supervisor/Supervisor.cs" id="3_u0dcj"]
-[ext_resource type="PackedScene" uid="uid://cr47cj50fpisj" path="res://src/scenes/trainAgent.tscn" id="6_bw70u"]
-[ext_resource type="PackedScene" uid="uid://t5yx1hb7lxxi" path="res://src/scenes/logicAgent.tscn" id="6_qu56v"]
 
 [node name="Root" type="Node2D"]
 
@@ -40,25 +38,6 @@ position = Vector2(640, 360)
 script = ExtResource("3_2o0lw")
 MinZoom = 0.2
 
-[node name="LogicAgent" parent="." instance=ExtResource("6_qu56v")]
-visible = false
-position = Vector2(1032, 585)
-SightRadius = 512.0
-
-[node name="LogicAgent2" parent="." instance=ExtResource("6_qu56v")]
-visible = false
-position = Vector2(697, 1479)
-SightRadius = 512.0
-
-[node name="LogicAgent3" parent="." instance=ExtResource("6_qu56v")]
-visible = false
-position = Vector2(2520, 903)
-SightRadius = 512.0
-
 [node name="EndOfFrameProcessor" type="Node" parent="."]
 editor_description = "This node must be the last child of the Root node to work properly."
 script = ExtResource("2_3vvuh")
-
-[node name="TrainAgent" parent="." instance=ExtResource("6_bw70u")]
-visible = false
-position = Vector2(1013, 581)
