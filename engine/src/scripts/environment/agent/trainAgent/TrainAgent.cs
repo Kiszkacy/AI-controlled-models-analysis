@@ -2,10 +2,17 @@
 public partial class TrainAgent : Agent
 {
 	private float thisFrameScore = 0.0f;
-	
-	public float Score => this.thisFrameScore;
 
-	public AgentData Data => new(this.Id, this.Speed, this.energy, this.health, this.DistanceToClosestFood, this.AngleToClosestFood);
+	public float Score {
+		get
+		{
+			float score = this.thisFrameScore;
+			this.thisFrameScore = 0.0f;
+			return score;
+		}
+	}
+
+	public AgentData Data => new(this.Id, this.Score, this.Speed, this.energy, this.health, this.DistanceToClosestFood, this.AngleToClosestFood);
 
 	public AgentData NormalizedData => this.Data.Normalize(this);
 
