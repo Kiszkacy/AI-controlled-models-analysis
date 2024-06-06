@@ -5,10 +5,11 @@ public class EntityManager : Singleton<EntityManager>
 {
     private HashSet<Food> foodSet = new();
     private List<Food> foodList = new();
-    private Dictionary<int, Agent> agents;
+    private Dictionary<int, Agent> agents = new();
     
     public List<Food> Food => this.foodList;
     public Agent Agent(int id) => this.agents[id];
+    public Dictionary<int, Agent> Agents => this.agents;
     
     private int agentIdIterator = 0;
 
