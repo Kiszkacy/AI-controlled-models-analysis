@@ -14,3 +14,5 @@ environment:
   energyLossPerSecond: 4.0
   healthLossPerSecond: 5.0
   healthRegenPerSecond: 1.0
+  score:
+    foodEaten: 100

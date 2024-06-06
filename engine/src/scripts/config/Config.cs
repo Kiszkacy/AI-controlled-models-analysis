@@ -64,4 +64,11 @@ public class EnvironmentConfig
 	public float EnergyLossPerSecond { get; set; }
 	public float HealthLossPerSecond { get; set; }
 	public float HealthRegenPerSecond { get; set; }
+
+	public ScoreConfig Score { get; set; }
+}
+
+public class ScoreConfig
+{
+	public float FoodEaten { get; set; }
 }
