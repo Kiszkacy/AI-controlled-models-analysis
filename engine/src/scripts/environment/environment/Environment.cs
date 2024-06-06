@@ -36,7 +36,7 @@ public partial class Environment : Node2D
 					(float)new Random().NextDouble() * this.Size.X,
 					(float)new Random().NextDouble() * this.Size.Y
 				);
-			} while (this.GetChildren().Any(children => ((Tree)children).GlobalPosition.DistanceTo(spawnPosition) <= tree.FoodSpawnOuterRadius));
+			} while (this.GetChildren().Any(children => ((Tree)children).GlobalPosition.DistanceTo(spawnPosition) <= tree.FoodSpawnOuterRadius*1.5f));
 			tree.GlobalPosition = spawnPosition;
 		}
 	}
