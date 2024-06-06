@@ -31,4 +31,9 @@ public readonly struct AgentData
             angleToClosestFood: Mathf.Remap(this.AngleToClosestFood, -agent.SightAngle/2.0f, agent.SightAngle/2.0f, -1, 1)
         );
     }
+
+    public override string ToString()
+    {
+        return $"<id: {this.Id}, speed: {this.Speed}, energy: {this.Energy}, health: {this.Health}, distanceToClosestFood: {this.DistanceToClosestFood}, angleToClosestFood: {this.AngleToClosestFood}>";
+    }
 }
