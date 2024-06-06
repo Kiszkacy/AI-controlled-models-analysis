@@ -13,6 +13,9 @@ size = Vector2(20, 32)
 collision_mask = 0
 motion_mode = 1
 script = ExtResource("1_dios7")
+MaximumTurnSpeed = 0.785
+SightAngle = 0.524
+SightRadius = 320.0
 
 [node name="Sprite" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 0.0313726, 1)

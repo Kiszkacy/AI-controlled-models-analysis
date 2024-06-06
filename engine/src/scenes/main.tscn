@@ -24,7 +24,7 @@ script = ExtResource("1_k36hy")
 
 [node name="Environment" parent="." instance=ExtResource("2_xi837")]
 Size = Vector2(4096, 4096)
-TreeCount = 30
+TreeCount = 40
 
 [node name="Agents" type="Node2D" parent="."]
 
@@ -43,19 +43,16 @@ MinZoom = 0.2
 [node name="LogicAgent" parent="." instance=ExtResource("6_qu56v")]
 visible = false
 position = Vector2(1032, 585)
-SightAngle = 0.524
 SightRadius = 512.0
 
 [node name="LogicAgent2" parent="." instance=ExtResource("6_qu56v")]
 visible = false
 position = Vector2(697, 1479)
-SightAngle = 0.524
 SightRadius = 512.0
 
 [node name="LogicAgent3" parent="." instance=ExtResource("6_qu56v")]
 visible = false
 position = Vector2(2520, 903)
-SightAngle = 0.524
 SightRadius = 512.0
 
 [node name="EndOfFrameProcessor" type="Node" parent="."]
