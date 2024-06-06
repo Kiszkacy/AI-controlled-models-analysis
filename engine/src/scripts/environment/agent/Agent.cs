@@ -47,6 +47,18 @@ public partial class Agent : CharacterBody2D
 	public float DistanceToClosestFood => this.closestFood?.GlobalPosition.DistanceTo(this.GlobalPosition) ?? float.NaN; // in radians
 	public float AngleToClosestFood => this.closestFood != null ? this.Direction.AngleTo(this.closestFood.GlobalPosition - this.GlobalPosition) : float.NaN; // in radians
 
+	private int id = -1;
+
+	public int Id
+	{
+		set
+		{
+			if (this.id != -1) return;
+			this.id = value;
+		}
+		get => this.id;
+	}
+	
 	protected void UpdateEnergy(double delta)
 	{
 		this.energy -= Config.Instance.Environment.EnergyLossPerSecond * (float)delta;
@@ -72,6 +84,7 @@ public partial class Agent : CharacterBody2D
 
 	protected void Die()
 	{
+		EntityManager.Get().RemoveAgent(this);
 		this.QueueFree();
 	}
 

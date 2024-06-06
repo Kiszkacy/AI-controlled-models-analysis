@@ -5,8 +5,12 @@ public class EntityManager : Singleton<EntityManager>
 {
     private HashSet<Food> foodSet = new();
     private List<Food> foodList = new();
-
+    private Dictionary<int, Agent> agents;
+    
     public List<Food> Food => this.foodList;
+    public Agent Agent(int id) => this.agents[id];
+    
+    private int agentIdIterator = 0;
 
     public void RegisterFood(Food food)
     {
@@ -15,7 +19,7 @@ public class EntityManager : Singleton<EntityManager>
             this.foodList.Add(food);
         }
     }
-    
+
     public void RemoveFood(Food food)
     {
         if (this.foodSet.Remove(food))
@@ -28,5 +32,22 @@ public class EntityManager : Singleton<EntityManager>
                 this.foodList.RemoveAt(lastIndex);
             }
         }
+    }
+    
+    public void RegisterAgent(Agent agent)
+    {
+        this.agents.Add(this.agentIdIterator, agent);
+        agent.Id = this.agentIdIterator;
+        this.agentIdIterator += 1;
+    }
+
+    public void RemoveAgent(int id)
+    {
+        this.agents.Remove(id);
+    }
+    
+    public void RemoveAgent(Agent agent)
+    {
+        this.agents.Remove(agent.Id);
     }
 }
