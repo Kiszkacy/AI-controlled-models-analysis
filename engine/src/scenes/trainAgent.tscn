@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://t5yx1hb7lxxi"]
+[gd_scene load_steps=5 format=3 uid="uid://cr47cj50fpisj"]
 
-[ext_resource type="Script" path="res://src/scripts/environment/agent/logicAgent/LogicAgent.cs" id="1_byvih"]
-[ext_resource type="Texture2D" uid="uid://d1ryghx8jhyw7" path="res://assets/sprites/pointed-circle-36x50.png" id="2_cogb4"]
+[ext_resource type="Script" path="res://src/scripts/environment/agent/trainAgent/TrainAgent.cs" id="1_dios7"]
+[ext_resource type="Texture2D" uid="uid://d1ryghx8jhyw7" path="res://assets/sprites/pointed-circle-36x50.png" id="2_pno7q"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eua6s"]
 size = Vector2(50, 36)
@@ -9,10 +9,10 @@ size = Vector2(50, 36)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1mq8d"]
 size = Vector2(20, 32)
 
-[node name="LogicAgent" type="CharacterBody2D"]
+[node name="TrainAgent" type="CharacterBody2D"]
 collision_mask = 0
 motion_mode = 1
-script = ExtResource("1_byvih")
+script = ExtResource("1_dios7")
 MaximumTurnSpeed = 0.785
 SightAngle = 0.524
 SightRadius = 320.0
@@ -21,7 +21,7 @@ SightRadius = 320.0
 modulate = Color(1, 1, 0.0313726, 1)
 position = Vector2(7, 0)
 rotation = 1.5708
-texture = ExtResource("2_cogb4")
+texture = ExtResource("2_pno7q")
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
 position = Vector2(7, 0)

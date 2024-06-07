@@ -47,20 +47,32 @@ public partial class Agent : CharacterBody2D
 	public float DistanceToClosestFood => this.closestFood?.GlobalPosition.DistanceTo(this.GlobalPosition) ?? float.NaN; // in radians
 	public float AngleToClosestFood => this.closestFood != null ? this.Direction.AngleTo(this.closestFood.GlobalPosition - this.GlobalPosition) : float.NaN; // in radians
 
+	private int id = -1;
+
+	public int Id
+	{
+		set
+		{
+			if (this.id != -1) return;
+			this.id = value;
+		}
+		get => this.id;
+	}
+	
 	protected void UpdateEnergy(double delta)
 	{
-		this.energy -= Config.Instance.Data.Environment.EnergyLossPerSecond * (float)delta;
+		this.energy -= Config.Instance.Environment.EnergyLossPerSecond * (float)delta;
 	}
 	
 	protected void UpdateHealth(double delta)
 	{
 		if (this.energy <= 0.0f) // TODO proper float comparison
 		{
-			this.health -= Config.Instance.Data.Environment.HealthLossPerSecond * (float)delta;
+			this.health -= Config.Instance.Environment.HealthLossPerSecond * (float)delta;
 		}
 		else
 		{
-			this.health += Config.Instance.Data.Environment.HealthRegenPerSecond * (float)delta;
+			this.health += Config.Instance.Environment.HealthRegenPerSecond * (float)delta;
 		}
 
 		this.health = Mathf.Clamp(this.health, 0.0f, this.MaximumHealth);
@@ -72,6 +84,7 @@ public partial class Agent : CharacterBody2D
 
 	protected void Die()
 	{
+		EntityManager.Get().RemoveAgent(this);
 		this.QueueFree();
 	}
 
@@ -103,18 +116,23 @@ public partial class Agent : CharacterBody2D
 
 	protected void Rotate(float strength) // input of range <-1, 1>
 	{
+		strength = Mathf.Clamp(strength, -1, 1);
 		this.currentRotation = Mathf.Remap(strength, -1, 1, -this.MaximumTurnSpeed, this.MaximumTurnSpeed);
 	}
 	
 	protected void Accelerate(float strength) // input of range <-1, 1>
 	{
+		strength = Mathf.Clamp(strength, -1, 1);
 		this.currentAcceleration = Mathf.Remap(strength, -1, 1, -this.MaximumDeceleration, this.MaximumAcceleration);
 	}
 	
-	protected void onMouthBodyEntered(Node2D body)
+	protected virtual void OnMouthBodyEntered(Node2D body)
 	{
 		if (body is not Food food) return;
-		
+		this.Eat(food);
+	}
+	protected virtual void Eat(Food food)
+	{
 		float nutrition = food.Eat();
 		this.energy = Mathf.Clamp(this.energy + nutrition, 0.0f, this.MaximumEnergy);
 	}
@@ -150,7 +168,7 @@ public partial class Agent : CharacterBody2D
 		this.health = this.InitialHealth;
 		
 		Area2D mouth = this.GetNode<Area2D>("Mouth");
-		mouth.AreaEntered += this.onMouthBodyEntered;
+		mouth.AreaEntered += this.OnMouthBodyEntered;
 	}
 	
 	public override void _Process(double delta)

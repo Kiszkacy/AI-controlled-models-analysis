@@ -10,6 +10,7 @@
     <Content Include="src\config.yaml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="YamlDotNet" Version="15.1.2" />
   </ItemGroup>
 </Project>

@@ -12,6 +12,7 @@ public class Config : Singleton<Config>
 	public PipeConfig Pipe => this.Data.Pipe;
 	public EngineConfig Engine => this.Data.Engine;
 	public TestsConfig Tests => this.Data.Tests;
+	public EnvironmentConfig Environment => this.Data.Environment;
 
 	private Config()
 	{
@@ -63,4 +64,11 @@ public class EnvironmentConfig
 	public float EnergyLossPerSecond { get; set; }
 	public float HealthLossPerSecond { get; set; }
 	public float HealthRegenPerSecond { get; set; }
+
+	public ScoreConfig Score { get; set; }
+}
+
+public class ScoreConfig
+{
+	public float FoodEaten { get; set; }
 }
