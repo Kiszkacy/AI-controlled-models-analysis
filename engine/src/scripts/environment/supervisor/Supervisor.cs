@@ -27,6 +27,15 @@ public partial class Supervisor : Node
 		{
 			this.SpawnAgent();
 		}
+
+		if (!this.UseLogicAgents)
+		{
+			NeatPrinter.Start()
+				.ColorPrint(ConsoleColor.Blue, "[SUPERVISOR]")
+				.Print("  | CONNECTING PIPE")
+				.End();
+			PipeHandler.Get().Connect();
+		}
 	}
 
 	public override void _PhysicsProcess(double delta)
