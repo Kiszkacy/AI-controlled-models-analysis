@@ -39,6 +39,7 @@ class EnvironmentSettings(BaseSettings):
     observation_space_low: Annotated[float, ...]
     observation_space_high: Annotated[float, ...]
     action_space_range: Annotated[int, Field(gt=0, default=2)]
+    number_of_agents: Annotated[int, Field(gt=0)]
 
     @model_validator(mode="after")
     def check_passwords_match(self) -> Self:

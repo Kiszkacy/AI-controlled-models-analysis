@@ -3,8 +3,9 @@ environment:
   observation_space_low: -1 # Lower bound for each dimension in the observation space.
   observation_space_high: 1 # Upper bound for each dimension in the observation space.
   action_space_range: 2  # Number of possible actions the agent can take in the environment
+  number_of_agents: 25 # Number af agents in environment starting
 training:
-  number_of_workers: 16  # Number of parallel processes to use for training.
+  number_of_workers: 1  # Number of parallel processes to use for training.
   number_of_env_per_worker: 1  # Number of training environments simulated by each worker process.
   training_iterations: 100  # Total number of training iterations (over a) to perform.
   training_batch_size: 4000 # Total amount of environment steps taken during each training iteration

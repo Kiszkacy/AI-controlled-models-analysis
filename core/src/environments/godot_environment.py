@@ -1,48 +1,50 @@
-import numpy as np
 import json
+
+import numpy as np
 from gymnasium.spaces import Box, Dict
+from ray.rllib.env.multi_agent_env import MultiAgentEnv
 from ray.rllib.utils.typing import MultiAgentDict
 
 from core.src.settings import get_settings
 from core.src.utils.godot_handler import GodotHandler
-from ray.rllib.env.multi_agent_env import MultiAgentEnv
 
 environment_settings = get_settings().environment
 
 
 class GodotServerEnvironment(MultiAgentEnv):
-    action_space = Dict({
-        'accelerate': Box(
-            low=np.array([environment_settings.observation_space_low]),
-            high=np.array([environment_settings.observation_space_high]),
-            shape=(1,),
-            dtype=np.float32
-        ),
-        'rotate': Box(
-            low=np.array([environment_settings.observation_space_low]),
-            high=np.array([environment_settings.observation_space_high]),
-            shape=(1,),
-            dtype=np.float32
-        )
-    })
-
-    observation_space = Box(
-        low=np.array([environment_settings.observation_space_low] * environment_settings.observation_space_size),
-        high=np.array([environment_settings.observation_space_high] * environment_settings.observation_space_size),
-        shape=(environment_settings.observation_space_size,),
-        dtype=np.float32
+    action_space = Dict(
+        {
+            "accelerate": Box(
+                low=environment_settings.observation_space_low,
+                high=environment_settings.observation_space_high,
+                shape=(),
+                dtype=np.float32,
+            ),
+            "rotate": Box(
+                low=environment_settings.observation_space_low,
+                high=environment_settings.observation_space_high,
+                shape=(),
+                dtype=np.float32,
+            ),
+        }
     )
 
-    ids = [i for i in range(25)]
+    observation_space = Box(
+        low=np.array([-(2**60)] * environment_settings.observation_space_size),
+        # needs to be changed to observation_space_low/high when it's fixed in godot
+        high=np.array([2**60] * environment_settings.observation_space_size),
+        shape=(environment_settings.observation_space_size,),
+        dtype=np.float32,
+    )
 
     def __init__(self, config: dict | None = None):  # noqa: ARG002
         super().__init__()
-        print("Initializing GodotServerEnvironment...")
+        self._agent_ids = set(range(environment_settings.number_of_agents))
         self._states: MultiAgentDict | None = None
         self.godot_handler = GodotHandler()
         self.godot_handler.launch_godot()
 
-    def step(self, actions: MultiAgentDict):  # noqa: ARG002
+    def step(self, actions: MultiAgentDict):
         """Returns observations from ready agents.
 
         The returns are dicts mapping from agent_id strings to values. The
@@ -57,30 +59,41 @@ class GodotServerEnvironment(MultiAgentEnv):
             4) Truncated values for each ready agent.
             5) Info values for each agent id (maybe empty dicts).
         """
-        actions_json = json.dumps(actions)
+        actions_serializable = [
+            {"id": key, "accelerate": value["accelerate"], "rotate": value["rotate"]} for key, value in actions.items()
+        ]
+
+        actions_json = json.dumps(actions_serializable)
         self.godot_handler.send(actions_json.encode("utf-8"))
         return self.get_data()
 
     def get_data(self):
-        print("Requesting data...")
-        data_list: list[dict] = self.godot_handler.request_data()
-        states = {
-            data["id"]: np.array([
-                data["speed"], data["energy"], data["health"], data["distanceToClosestFood"],
-                data["angleToClosestFood"]
-            ]) for data in data_list
-        }
-        rewards = {data["id"]: data["score"] for data in data_list}
-        is_done = {data["id"]: False for data in data_list}
-        truncated = {data["id"]: False for data in data_list}
-        infos = {data["id"]: {} for data in data_list}
-        print("Received data:", states)
-        return states, rewards, is_done, truncated, infos
+        try:
+            data_list = self.godot_handler.request_data()
+        except json.JSONDecodeError:
+            raise
 
-    def reset(self, **_kwargs) -> tuple[MultiAgentDict, MultiAgentDict]:
-        print("Resetting environment...")
+        states = {
+            data["Id"]: np.array(
+                [
+                    data["Speed"],
+                    data["Energy"],
+                    data["Health"],
+                    data["DistanceToClosestFood"],
+                    data["AngleToClosestFood"],
+                ]
+            )
+            for data in data_list
+        }
+        rewards = {data["Id"]: data["Score"] for data in data_list}
+        terminateds = {"__all__": False}
+        truncateds = {"__all__": False}
+        infos = {data["Id"]: {} for data in data_list}
+        return states, rewards, terminateds, truncateds, infos
+
+    def reset(self, *, seed=None, options=None) -> tuple[MultiAgentDict, MultiAgentDict]:  # noqa: ARG002
         self._states = self.default_states
-        info = {agent_id: {} for agent_id in self._states}
+        info: MultiAgentDict = {"__all__": {}}
         return self._states, info
 
     @property
@@ -92,9 +105,7 @@ class GodotServerEnvironment(MultiAgentEnv):
 
     @property
     def default_states(self) -> MultiAgentDict:
-        states = {
+        return {
             agent_id: np.random.default_rng().random(size=environment_settings.observation_space_size)
-            for agent_id in self.ids
+            for agent_id in self._agent_ids
         }
-        print("Generated default states:", states)
-        return states
