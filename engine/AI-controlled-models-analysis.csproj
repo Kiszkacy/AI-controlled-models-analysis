@@ -4,6 +4,7 @@
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net7.0</TargetFramework>
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'ios' ">net8.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
+      <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <RootNamespace>AI-controlled-models-analysis</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
