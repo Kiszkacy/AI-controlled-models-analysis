@@ -14,8 +14,8 @@ else:
     import os
 
 
-MAX_BUFFER_SIZE: int = 2048
-READ_BUFFER_SIZE: int = 512
+MAX_BUFFER_SIZE: int = 8192
+READ_BUFFER_SIZE: int = 8192
 
 
 class PipeHandler:
