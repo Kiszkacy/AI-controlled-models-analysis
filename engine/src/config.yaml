@@ -1,6 +1,6 @@
 pipe:
   name: 'godot-python-pipe'
-  bufferSize: 64
+  bufferSize: 8192
 engine:
   timeScale: 1.0 # multiplier
   ticksPerSecond: 60

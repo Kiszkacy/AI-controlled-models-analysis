@@ -1,30 +1,15 @@
-## Configuration/Setup
+## AI-controlled models analysis
+Welcome to the AI-controlled Models Analysis project repository! This project serves as a Bachelor's final project aimed at analyzing behaviors in AI-controlled models within a virtual environment.
 
-- **Python 3.11**: Make sure you have Python 3.11 or newer installed. You can download the latest version from [here](https://www.python.org/downloads/windows/).
-- **Godot 4.2 (Mono with C# support)**: Ensure you have Godot 4.2 or newer with Mono support installed, you can download it from [here](https://godotengine.org/download/windows/). Godot does not require installation; simply extract the downloaded archive, and you'll have the executable ready to use. However, additional dependencies may be needed, such as the [.NET SDK](https://dotnet.microsoft.com/en-us/download).
+## Project overview
+The main goal of this project is to create an application capable of simulating a dynamic environment, allowing observation and analysis of behaviors and interactions among virtual creatures (agents). Each type of agent is controlled by its own neural network. Through the analysis of this simulation, we aim to gain a deeper understanding of the dynamics of artificial intelligence and its impact on agent behaviors under various conditions.
 
-Feel free to use any text editor for the entire project. However, when working on engine-related tasks, it's recommended to use editors like Visual Studio Code or JetBrains Rider. They offer plugins that ensure seamless integration with Godot.
+Users will have the ability to create and configure parameters and features of autonomous agents and the environment. Additionally, they can control the simulation process and analyze data and statistics using visualization tools for numerical and qualitative data. The environment will serve both for training neural networks and for running pre-trained models and visualizing behaviors.
 
-## File Structure
+## Project structure and documentation
+This repository consists of two main parts:
 
-```
-./
-│
-├── engine/                        # directory related to the engine
-│   ├── src/                       # source code for the engine
-│   │   ├── ...
-│   ├── tests/                     # tests for the engine
-│   │   ├── ...
-│   └── README.md                  # documentation for the engine
-│
-├── core/                          # directory related to the Python process
-│   ├── src/                       # source code for the Python process
-│   │   ├── ...
-│   ├── tests/                     # tests for the Python process
-│   │   ├── ...
-│   └── README.md                  # documentation for the Python process
-│
-└── README.md                      # main project documentation
-```
+* Core Module - contains the code responsible for training the agents.
+* Engine - implements the graphical user interface and simulation environment.
 
-It's important to follow consistent naming conventions within the project structure. In the 'core' directory, files and directories should be named using the snake_case convention. In the 'engine' section, files containing code should adhere to the PascalCase convention, while other files and directories should follow the camelCase convention.
+For detailed information on each part and how to set up and use the project, please refer to the corresponding sections in our [GitHub Wiki](https://github.com/Kiszkacy/AI-controlled-models-analysis/wiki).
