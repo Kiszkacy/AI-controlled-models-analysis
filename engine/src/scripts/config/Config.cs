@@ -62,7 +62,7 @@ public class TestsConfig
 public class EnvironmentConfig
 {
     public float EnergyBaseLossPerSecond { get; set; }
-    public float EnergyLossPerSecondMovement { get; set; }
+    public float EnergyLossPerSecondPer100UnitsOfMovement { get; set; }
     public float EnergyLossPerSecondTurn { get; set; }
     public float HealthLossPerSecond { get; set; }
     public float HealthRegenPerSecond { get; set; }

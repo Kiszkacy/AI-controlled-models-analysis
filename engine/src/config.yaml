@@ -12,7 +12,7 @@ tests:
   printAdditionalLogs: true
 environment:
   energyBaseLossPerSecond: 2.0
-  energyLossPerSecondMovement: 0.2
+  energyLossPerSecondPer100UnitsOfMovement: 0.2
   energyLossPerSecondTurn: 0.2
   healthLossPerSecond: 5.0
   healthRegenPerSecond: 1.0
