@@ -43,3 +43,5 @@ jobs:
         with:
           path: mypy_report/*.xml
           minimum_coverage: 75
+          show_missing: true
+          link_missing_lines: true
