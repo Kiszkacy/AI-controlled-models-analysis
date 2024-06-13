@@ -61,7 +61,10 @@ public partial class Agent : CharacterBody2D
     
     protected void UpdateEnergy(double delta)
     {
-        this.energy -= Config.Instance.Environment.EnergyLossPerSecond * (float)delta;
+        float energyLoss = Config.Instance.Environment.EnergyBaseLossPerSecond
+                           + Config.Instance.Environment.EnergyLossPerSecondPer100UnitsOfMovement * (this.Velocity.Length()/100.0f)
+                           + Config.Instance.Environment.EnergyLossPerSecondTurn * Mathf.Abs(this.currentRotation);
+        this.energy -= energyLoss * (float)delta;
     }
     
     protected void UpdateHealth(double delta)

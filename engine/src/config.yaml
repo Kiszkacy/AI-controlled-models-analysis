@@ -11,7 +11,9 @@ tests:
   passUncertainTestsWhenFailed: true
   printAdditionalLogs: true
 environment:
-  energyLossPerSecond: 4.0
+  energyBaseLossPerSecond: 2.0
+  energyLossPerSecondPer100UnitsOfMovement: 0.2
+  energyLossPerSecondTurn: 0.2
   healthLossPerSecond: 5.0
   healthRegenPerSecond: 1.0
   score:
