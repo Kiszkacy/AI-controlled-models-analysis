@@ -1,6 +1,8 @@
 name: linters
 
-on: push
+on:
+  push:
+  pull_request:
 
 env:
   MYPY_REPORT_DIR: mypy_report
@@ -34,5 +36,5 @@ jobs:
       - name: Type Hint Coverage Summary Report
         uses: 5monkeys/cobertura-action@master
         with:
-          path: $MYPY_REPORT_DIR\cobertura.xml
+          path: $MYPY_REPORT_DIR/cobertura.xml
           minimum_coverage: 75
