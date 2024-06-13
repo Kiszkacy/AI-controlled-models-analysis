@@ -10,4 +10,3 @@ pre-commit~=3.7.0
 mypy~=1.10.0
 pywin32==306; platform_system == "Windows"
 ray[rllib]~=2.10.0
-pycobertura~=3.3.2

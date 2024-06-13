@@ -45,4 +45,3 @@ jobs:
           minimum_coverage: 75
           show_missing: true
           link_missing_lines: true
-      - run: pycobertura show --format github-annotation mypy_report/*.xml
