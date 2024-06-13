@@ -1,8 +1,7 @@
 name: linters
 
 on:
-  push:
-  pull_request:
+  push
 
 env:
   MYPY_REPORT_DIR: mypy_report
@@ -23,6 +22,12 @@ jobs:
 
   mypy:
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      packages: read
+      pull-requests: write
+      checks: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
