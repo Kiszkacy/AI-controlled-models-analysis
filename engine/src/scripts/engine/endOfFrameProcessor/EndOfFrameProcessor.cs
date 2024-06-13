@@ -15,6 +15,6 @@ public partial class EndOfFrameProcessor : Node
     
     public EndOfFrameProcessor()
     {
-		
+        
     }
 }

@@ -32,7 +32,7 @@ class GodotHandler:
     def send(self, data: bytes) -> None:
         self.pipe_handler.send(data)
 
-    def request_data(self) -> dict:
+    def request_data(self) -> list[dict]:
         data: bytes = self.pipe_handler.receive()
         decoded_data = data.decode()
         return json.loads(decoded_data)
