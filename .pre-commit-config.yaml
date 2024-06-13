@@ -10,7 +10,7 @@ repos:
       - id: mypy
         name: mypy
         entry: |
-          python -m mypy core
+          python -m mypy core --show-error-codes --pretty --show-column-numbers --show-error-context
         types: [ python ]
         language: system
         require_serial: true
