@@ -13,7 +13,7 @@ jobs:
     - uses: actions/setup-python@v5
       with:
         python-version: ${{ env.PYTHON_VERSION }}
-    - name: cache virtualenv
+    - name: Cache virtualenv
       uses: actions/cache@v3
       id: cache-venv
       with:
@@ -33,14 +33,14 @@ jobs:
     - name: ruff
       run: ruff check core --verbose --output-format=github
 
-   mypy:
+  mypy:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-python@v5
       with:
         python-version: ${{ env.PYTHON_VERSION }}
-     - name: cache virtualenv
+    - name: Cache virtualenv
       uses: actions/cache@v3
       id: cache-venv
       with:
