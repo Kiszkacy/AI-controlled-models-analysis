@@ -16,15 +16,17 @@ jobs:
       id: ruff-cache
       uses: actions/cache@v3
       with:
-        path: ~/.cache/pip
+        path: |
+          ~/.cache/pip
+          ~/.local/lib/python3.11/site-packages
         key: ${{ runner.os }}-pip-${{ hashFiles('core/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
     - name: Install requirements
       if: steps.ruff-cache.outputs.cache-hit != 'true'
       run: pip install -r core/requirements.txt
-    - name: Check cache directory after installation
-      run: ls -la ~/.cache/pip
+    - name: Check installed packages
+      run: pip list
     - name: ruff
       run: ruff check core --verbose --output-format=github
 
@@ -41,14 +43,16 @@ jobs:
       id: mypy-cache
       uses: actions/cache@v3
       with:
-        path: ~/.cache/pip
+        path: |
+          ~/.cache/pip
+          ~/.local/lib/python3.11/site-packages
         key: ${{ runner.os }}-pip-${{ hashFiles('core/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
     - name: Install requirements
       if: steps.mypy-cache.outputs.cache-hit != 'true'
       run: pip install -r core/requirements.txt
-    - name: Check cache directory after installation
-      run: ls -la ~/.cache/pip
+    - name: Check installed packages
+      run: pip list
     - name: mypy
       run: mypy core --show-error-codes --pretty --show-column-numbers --show-error-context
