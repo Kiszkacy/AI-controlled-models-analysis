@@ -41,5 +41,6 @@ jobs:
           ${{ runner.os }}-pip-
     - name: Install requirements
       if: steps.cache.outputs.cache-hit != 'true'
+      run: pip install -r core/requirements.txt
     - name: mypy
       run: mypy core --show-error-codes --pretty --show-column-numbers --show-error-context
