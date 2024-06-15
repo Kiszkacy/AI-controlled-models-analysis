@@ -31,9 +31,13 @@ jobs:
         python -m pip install -r core/requirements.txt
       if: steps.cache-venv.outputs.cache-hit != 'true'
     - name: Check installed packages
-      run: pip list
+      run: |
+        source ./.venv/bin/activate
+        pip list
     - name: ruff
-      run: ruff check core --verbose --output-format=github
+      run: |
+        source ./.venv/bin/activate
+        ruff check core --verbose --output-format=github
 
   mypy:
     runs-on: ubuntu-latest
@@ -60,6 +64,10 @@ jobs:
         python -m pip install -r core/requirements.txt
       if: steps.cache-venv.outputs.cache-hit != 'true'
     - name: Check installed packages
-      run: pip list
+      run: |
+        source ./.venv/bin/activate
+        pip list
     - name: mypy
-      run: mypy core --show-error-codes --pretty --show-column-numbers --show-error-context
+      run: |
+        source ./.venv/bin/activate
+        mypy core --show-error-codes --pretty --show-column-numbers --show-error-context
