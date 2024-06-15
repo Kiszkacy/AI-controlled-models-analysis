@@ -38,7 +38,7 @@ class GodotHandler:
         return json.loads(decoded_data)
 
     @logger.catch(reraise=True)
-    def launch_godot(self):
+    def launch_godot(self) -> None:
         godot_args = [
             "--path",
             self.project_path,
