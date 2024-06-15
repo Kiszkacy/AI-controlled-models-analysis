@@ -14,27 +14,27 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-        
+
     - name: Download artifact
       uses: actions/download-artifact@v3
       with:
         name: python_dependencies
         path: python_dependencies.zip
-          
+
     - name: Unzip artifact
       run: unzip dependencies.zip
-        
+
     - name: Python setup
       id: python-setup
       uses: actions/setup-python@v5
       with:
         python-version: ${{ env.PYTHON_VERSION }}
-        
+
     - name: Check installed packages
       run: |
         source ./.venv/bin/activate
         pip list
-          
+
     - name: ruff
       run: |
         source ./.venv/bin/activate
@@ -46,28 +46,29 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-        
+
     - name: Download artifact
       uses: actions/download-artifact@v3
       with:
         name: python_dependencies
         path: python_dependencies.zip
-          
+
     - name: Unzip artifact
       run: unzip dependencies.zip
-        
+
     - name: Python setup
       id: python-setup
       uses: actions/setup-python@v5
       with:
         python-version: ${{ env.PYTHON_VERSION }}
-        
+
     - name: Check installed packages
       run: |
         source ./.venv/bin/activate
         pip list
-          
+
     - name: mypy
       run: |
         source ./.venv/bin/activate
         mypy core --show-error-codes --pretty --show-column-numbers --show-error-context
+ 
