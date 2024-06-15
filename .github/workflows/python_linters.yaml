@@ -26,7 +26,7 @@ jobs:
   mypy:
     runs-on: ubuntu-latest
     env:
-      MYPY_REPORT_DIR: mypy_report
+      MYPY_REPORT_DIR: 'mypy_report'
     permissions:
       actions: read
       contents: read
@@ -52,7 +52,7 @@ jobs:
 
       - name: Type Hint Coverage Summary Report
         uses: 5monkeys/cobertura-action@master
-        run: echo "$MYPY_REPORT_DIR/*.xml"; echo "$MYPY_REPORT_DIR /*.xml"
+        run: echo "$MYPY_REPORT_DIR/*.xml"
         with:
           path: mypy_report/*.xml
           minimum_coverage: 80
