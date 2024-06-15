@@ -13,6 +13,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Setup python
+      id: python-setup
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
     - name: Check if cache exists
       uses: actions/cache/restore@v3
       id: cache-check
@@ -20,13 +26,6 @@ jobs:
         lookup-only: true
         path: ./.venv/
         key: ${{ runner.os }}-${{ steps.python-setup.outputs.python-version }}-venv-${{ hashFiles('core/requirements.txt') }}
-
-    - name: Setup python if no cache found
-      if: steps.cache-check.outputs.cache-hit != 'true'
-      id: python-setup
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ env.PYTHON_VERSION }}
 
     - name: Install dependencies if no cache found
       if: steps.cache-check.outputs.cache-hit != 'true'

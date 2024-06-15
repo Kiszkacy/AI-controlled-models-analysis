@@ -15,17 +15,17 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Load cached virtual environment
-      uses: actions/cache/restore@v3
-      with:
-        path: ./.venv/
-        key: ${{ runner.os }}-${{ steps.python-setup.outputs.python-version }}-venv-${{ hashFiles('core/requirements.txt') }}
-
     - name: Python setup
       id: python-setup
       uses: actions/setup-python@v5
       with:
         python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Load cached virtual environment
+      uses: actions/cache/restore@v3
+      with:
+        path: ./.venv/
+        key: ${{ runner.os }}-${{ steps.python-setup.outputs.python-version }}-venv-${{ hashFiles('core/requirements.txt') }}
 
     - name: ruff
       run: |
@@ -39,17 +39,17 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Load cached virtual environment
-      uses: actions/cache/restore@v3
-      with:
-        path: ./.venv/
-        key: ${{ runner.os }}-${{ steps.python-setup.outputs.python-version }}-venv-${{ hashFiles('core/requirements.txt') }}
-
     - name: Python setup
       id: python-setup
       uses: actions/setup-python@v5
       with:
         python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Load cached virtual environment
+      uses: actions/cache/restore@v3
+      with:
+        path: ./.venv/
+        key: ${{ runner.os }}-${{ steps.python-setup.outputs.python-version }}-venv-${{ hashFiles('core/requirements.txt') }}
 
     - name: mypy
       run: |
