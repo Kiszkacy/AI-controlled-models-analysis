@@ -10,8 +10,8 @@ jobs:
     - uses: actions/setup-python@v5
       with:
         python-version: '3.11'
-    - name: Check cache directory before caching
-      run: ls -la ~/.cache/pip
+    - name: Create cache directory
+      run: mkdir ~/.cache/pip
     - name: Cache pip dependencies
       id: ruff-cache
       uses: actions/cache@v3
@@ -35,8 +35,8 @@ jobs:
     - uses: actions/setup-python@v5
       with:
         python-version: '3.11'
-    - name: Check cache directory before caching
-      run: ls -la ~/.cache/pip
+    - name: Create cache directory
+      run: mkdir ~/.cache/pip
     - name: Cache pip dependencies
       id: mypy-cache
       uses: actions/cache@v3
