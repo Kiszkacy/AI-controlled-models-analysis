@@ -3,7 +3,7 @@ name: Python linters
 on:
   pull_request:
     paths:
-      - core/**
+      - 'core/**'
 
 jobs:
   ruff:
