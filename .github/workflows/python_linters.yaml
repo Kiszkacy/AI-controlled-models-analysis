@@ -54,7 +54,7 @@ jobs:
         uses: 5monkeys/cobertura-action@master
         with:
           path: mypy_report/*.xml
-          minimum_coverage: 75
+          minimum_coverage: 80
           show_missing: true
           link_missing_lines: true
           report_name: Type hint coverage
