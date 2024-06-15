@@ -53,7 +53,7 @@ jobs:
       - name: Type Hint Coverage Summary Report
         uses: 5monkeys/cobertura-action@master
         with:
-          path: $MYPY_REPORT_DIR/*.xml
+          path: ${{ env.MYPY_REPORT_DIR }}/*.xml
           minimum_coverage: 80
           show_missing: true
           link_missing_lines: true
