@@ -23,7 +23,7 @@ jobs:
     - name: Check cache hit
       run: echo "Cache hit: ${{ steps.ruff-cache.outputs.cache-hit }}"
     - name: Install requirements
-      if: steps.cache.outputs.cache-hit != 'true'
+      if: steps.ruff-cache.outputs.cache-hit != 'true'
       run: pip install -r core/requirements.txt
     - name: Check cache directory after installation
       run: ls -la ~/.cache/pip
@@ -50,7 +50,7 @@ jobs:
     - name: Check cache hit
       run: echo "Cache hit: ${{ steps.mypy-cache.outputs.cache-hit }}"
     - name: Install requirements
-      if: steps.cache.outputs.cache-hit != 'true'
+      if: steps.mypy-cache.outputs.cache-hit != 'true'
       run: pip install -r core/requirements.txt
     - name: Check cache directory after installation
       run: ls -la ~/.cache/pip
