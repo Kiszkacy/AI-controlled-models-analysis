@@ -1,9 +1,10 @@
-name: Python linters
+name: python linters
 
 
 on:
+  workflow_dispatch:
   workflow_run:
-    workflows: [Build]
+    workflows: [build]
     types:
       - completed
 
