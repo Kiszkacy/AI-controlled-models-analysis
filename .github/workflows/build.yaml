@@ -10,39 +10,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-	    uses: actions/checkout@v4
-		
-      - name: Setup python
-        id: python-setup
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-		  
-      - name: Load cached virtual environment
-        uses: actions/cache@v3
-        id: cache-venv
-        with:
-          path: ./.venv/
-          key: ${{ runner.os }}-${{ steps.python-setup.outputs.python-version }}-venv-${{ hashFiles('core/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ steps.python-setup.outputs.python-version }}-venv-
+    - name: Checkout repository
+      uses: actions/checkout@v4
+ 
+    - name: Setup python
+      id: python-setup
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Load cached virtual environment
+      uses: actions/cache@v3
+      id: cache-venv
+      with:
+        path: ./.venv/
+        key: ${{ runner.os }}-${{ steps.python-setup.outputs.python-version }}-venv-${{ hashFiles('core/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-${{ steps.python-setup.outputs.python-version }}-venv-
 			
-      - name: Install dependencies if no cache found
-        shell: bash
-        run: |
-          python -m venv ./.venv
-          source ./.venv/bin/activate
-          python -m pip install -r core/requirements.txt
-        if: steps.cache-venv.outputs.cache-hit != 'true'
+    - name: Install dependencies if no cache found
+      shell: bash
+      run: |
+        python -m venv ./.venv
+        source ./.venv/bin/activate
+        python -m pip install -r core/requirements.txt
+      if: steps.cache-venv.outputs.cache-hit != 'true'
 		
-      - name: List installed packages
-        run: |
-          source ./.venv/bin/activate
-          pip list
+    - name: List installed packages
+      run: |
+        source ./.venv/bin/activate
+        pip list
 		  
-      - name: Upload artifact
-	    uses: actions/upload-artifact@v4
-	    with:
-	      name: python_dependencies
-		  path: python_dependencies.zip
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: python_dependencies
+        path: python_dependencies.zip
