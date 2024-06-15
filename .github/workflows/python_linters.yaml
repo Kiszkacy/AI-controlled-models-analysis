@@ -59,6 +59,6 @@ jobs:
           link_missing_lines: true
           report_name: Type hint coverage
       - name: Print 1
-        run: echo "@MYPY_REPORT_DIR/*.xml"
+        run: echo "$MYPY_REPORT_DIR/*.xml"
       - name: Print 2
-        run: echo "@MYPY_REPORT_DIR /*.xml"
+        run: echo "$MYPY_REPORT_DIR /*.xml"
