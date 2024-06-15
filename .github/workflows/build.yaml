@@ -41,11 +41,8 @@ jobs:
         source ./.venv/bin/activate
         pip list
 
-    - name: Archive virtual environment
-      run: tar -czf venv.tar.gz .venv
-
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: venv
-        path: ./venv.tar.gz
+        path: ./.venv
