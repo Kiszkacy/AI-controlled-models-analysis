@@ -3,7 +3,7 @@ name: Python linters
 
 on:
   workflow_run:
-    workflows: ["Build"]
+    workflows: [Build]
     types:
       - completed
 
