@@ -2,7 +2,6 @@ name: python linters
 
 
 on:
-  workflow_dispatch:
   workflow_run:
     workflows: [build]
     types:
