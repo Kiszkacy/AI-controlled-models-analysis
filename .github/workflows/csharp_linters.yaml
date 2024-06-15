@@ -1,7 +1,11 @@
 name: dotnet format
 
 
-on: push
+on:
+  push:
+    paths:
+      - "engine/**.cs"
+      - "engine/.editorconfig"
 
 
 env:
