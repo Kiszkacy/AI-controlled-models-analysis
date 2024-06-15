@@ -18,11 +18,10 @@ jobs:
     - name: Download artifact
       uses: actions/download-artifact@v3
       with:
-        name: python_dependencies
-        path: python_dependencies.zip
+        name: venv
 
-    - name: Unzip artifact
-      run: unzip dependencies.zip
+    - name: Extract virtual environment
+      run: tar -xzf venv.tar.gz
 
     - name: Python setup
       id: python-setup
