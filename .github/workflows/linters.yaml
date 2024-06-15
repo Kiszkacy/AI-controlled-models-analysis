@@ -15,21 +15,17 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Download artifact
-      uses: actions/download-artifact@v3
+    - name: Load cached virtual environment
+      uses: actions/cache/restore@v3
       with:
-        name: venv
+        path: ./.venv/
+        key: ${{ runner.os }}-${{ steps.python-setup.outputs.python-version }}-venv-${{ hashFiles('core/requirements.txt') }}
 
     - name: Python setup
       id: python-setup
       uses: actions/setup-python@v5
       with:
         python-version: ${{ env.PYTHON_VERSION }}
-
-    - name: Check installed packages
-      run: |
-        source ./.venv/bin/activate
-        pip list
 
     - name: ruff
       run: |
@@ -43,21 +39,17 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Download artifact
-      uses: actions/download-artifact@v3
+    - name: Load cached virtual environment
+      uses: actions/cache/restore@v3
       with:
-        name: venv
+        path: ./.venv/
+        key: ${{ runner.os }}-${{ steps.python-setup.outputs.python-version }}-venv-${{ hashFiles('core/requirements.txt') }}
 
     - name: Python setup
       id: python-setup
       uses: actions/setup-python@v5
       with:
         python-version: ${{ env.PYTHON_VERSION }}
-
-    - name: Check installed packages
-      run: |
-        source ./.venv/bin/activate
-        pip list
 
     - name: mypy
       run: |

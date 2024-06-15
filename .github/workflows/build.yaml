@@ -19,30 +19,29 @@ jobs:
       with:
         python-version: ${{ env.PYTHON_VERSION }}
 
-    - name: Load cached virtual environment
-      uses: actions/cache@v3
-      id: cache-venv
+    - name: Check if cache exists
+      uses: actions/cache/restore@v3
+      id: cache-check
       with:
+        lookup-only: true
         path: ./.venv/
         key: ${{ runner.os }}-${{ steps.python-setup.outputs.python-version }}-venv-${{ hashFiles('core/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-${{ steps.python-setup.outputs.python-version }}-venv-
 
     - name: Install dependencies if no cache found
-      shell: bash
+      if: steps.cache-check.outputs.cache-hit != 'true'
       run: |
         python -m venv ./.venv
         source ./.venv/bin/activate
         python -m pip install -r core/requirements.txt
-      if: steps.cache-venv.outputs.cache-hit != 'true'
 
     - name: List installed packages
       run: |
         source ./.venv/bin/activate
         pip list
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
+    - name: Upload new cache if needed
+      if: steps.cache-check.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v3
       with:
-        name: venv
-        path: ./.venv
+        path: ./.venv/
+        key: ${{ runner.os }}-${{ steps.python-setup.outputs.python-version }}-venv-${{ hashFiles('core/requirements.txt') }}
