@@ -12,9 +12,9 @@ public partial class EndOfFrameProcessor : Node
         EventManager.Get().EmitDelayedEvents();
         this.GetParent().GetNode<Label>("HUD/Position").Text = this.GetParent().GetNode<Node2D>("Camera").GlobalPosition.ToString();
     }
-    
+
     public EndOfFrameProcessor()
     {
-        
+
     }
 }

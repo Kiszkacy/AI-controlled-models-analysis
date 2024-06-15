@@ -7,17 +7,17 @@ using System.Reflection;
 
 public class TestRunner : Singleton<TestRunner>
 {
-    private string testsPath = "./src/scripts";
-    
+    private readonly string testsPath = "./src/scripts";
+
     private int testNumber = 0; // test number iterator
-    private int testsPassed = 0; 
+    private int testsPassed = 0;
     private int testsWarnings = 0;
-    private TestLayerer testLayerer = new();
+    private readonly TestLayerer testLayerer = new();
 
     public void LogResult(TestResult result, string message)
     {
         this.testNumber += 1;
-        
+
         ConsoleColor resultColor;
         switch (result)
         {
@@ -54,20 +54,20 @@ public class TestRunner : Singleton<TestRunner>
                 .Print($"[TESTS]  | {message}")
                 .End();
     }
-    
+
     public void Run()
     {
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[TESTS]")
             .Print("  | STARTING")
             .End();
-        
+
         int testCount = this.GetTestCount();
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[TESTS]")
             .Print($"  | DETECTED {testCount} TESTS")
             .End();
-        
+
         int suitableTestCount = this.GetSuitableTestCount();
         if (suitableTestCount != testCount)
             NeatPrinter.Start()
@@ -81,7 +81,7 @@ public class TestRunner : Singleton<TestRunner>
             .ColorPrint(ConsoleColor.Blue, "[TESTS]")
             .Print($"  | CREATED {layers.Count} TEST LAYERS OUT OF {testClasses.Count} TEST CLASSES")
             .End();
-        
+
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[TESTS]")
             .Print("  | STARTING")
@@ -114,7 +114,7 @@ public class TestRunner : Singleton<TestRunner>
             .Select(file => Type.GetType(this.GetClassNameFromTestFilePath(file)))
             .Sum(testClass => (int)testClass!.GetMethod("GetTestCount")!.Invoke(Activator.CreateInstance(testClass), Array.Empty<object>())!);
     }
-    
+
     private int GetSuitableTestCount()
     {
         return GetTestFiles()
@@ -133,6 +133,6 @@ public class TestRunner : Singleton<TestRunner>
     {
         return Path.GetFileNameWithoutExtension(filePath).Replace(".", "", StringComparison.OrdinalIgnoreCase);
     }
-    
+
     private List<Type> GetTestClasses() => this.GetTestFiles().Select(file => Type.GetType(this.GetClassNameFromTestFilePath(file))).ToList();
 }
