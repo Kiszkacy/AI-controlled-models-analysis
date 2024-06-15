@@ -52,7 +52,6 @@ jobs:
 
       - name: Type Hint Coverage Summary Report
         uses: 5monkeys/cobertura-action@master
-        run: echo "$MYPY_REPORT_DIR/*.xml"
         with:
           path: mypy_report/*.xml
           minimum_coverage: 80
