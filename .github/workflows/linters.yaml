@@ -2,6 +2,9 @@ name: linters
 
 on: push
 
+env:
+  PYTHON_VERSION: '3.11'
+
 jobs:
   ruff:
     runs-on: ubuntu-latest
@@ -9,7 +12,7 @@ jobs:
     - uses: actions/checkout@v4
     - uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
+        python-version: ${{ env.PYTHON_VERSION }}
     - name: Create cache directory
       run: mkdir -p ~/.cache/pip
     - name: Cache pip dependencies
@@ -18,7 +21,7 @@ jobs:
       with:
         path: |
           ~/.cache/pip
-          ~/.local/lib/python3.11/site-packages
+          ~/.local/lib/python${{ env.PYTHON_VERSION }}/site-packages
         key: ${{ runner.os }}-pip-${{ hashFiles('core/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
@@ -36,7 +39,7 @@ jobs:
     - uses: actions/checkout@v4
     - uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
+        python-version: ${{ env.PYTHON_VERSION }}
     - name: Create cache directory
       run: mkdir -p ~/.cache/pip
     - name: Cache pip dependencies
@@ -45,7 +48,7 @@ jobs:
       with:
         path: |
           ~/.cache/pip
-          ~/.local/lib/python3.11/site-packages
+          ~/.local/lib/python${{ env.PYTHON_VERSION }}/site-packages
         key: ${{ runner.os }}-pip-${{ hashFiles('core/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
