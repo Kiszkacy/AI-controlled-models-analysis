@@ -20,8 +20,6 @@ jobs:
         key: ${{ runner.os }}-pip-${{ hashFiles('core/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
-    - name: Check cache hit
-      run: echo "Cache hit: ${{ steps.ruff-cache.outputs.cache-hit }}"
     - name: Install requirements
       if: steps.ruff-cache.outputs.cache-hit != 'true'
       run: pip install -r core/requirements.txt
@@ -47,8 +45,6 @@ jobs:
         key: ${{ runner.os }}-pip-${{ hashFiles('core/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
-    - name: Check cache hit
-      run: echo "Cache hit: ${{ steps.mypy-cache.outputs.cache-hit }}"
     - name: Install requirements
       if: steps.mypy-cache.outputs.cache-hit != 'true'
       run: pip install -r core/requirements.txt
