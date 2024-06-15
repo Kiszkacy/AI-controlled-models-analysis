@@ -10,7 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v5
+    - name: Python setup
+      id: python-setup
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ env.PYTHON_VERSION }}
     - name: Cache virtualenv
@@ -18,15 +20,15 @@ jobs:
       id: cache-venv
       with:
         path: ./.venv/
-        key: ${{ runner.os }}-${{ steps.setup_python.outputs.python-version }}-venv-${{ hashFiles('requirements.txt') }}
+        key: ${{ runner.os }}-${{ steps.python-setup.outputs.python-version }}-venv-${{ hashFiles('core/requirements.txt') }}
         restore-keys: |
-          ${{ runner.os }}-${{ steps.setup_python.outputs.python-version }}-venv-
+          ${{ runner.os }}-${{ steps.python-setup.outputs.python-version }}-venv-
     - name: Install dependencies
       shell: bash
       run: |
         python -m venv ./.venv
         source ./.venv/bin/activate
-        python -m pip install -r requirements.txt
+        python -m pip install -r core/requirements.txt
       if: steps.cache-venv.outputs.cache-hit != 'true'
     - name: Check installed packages
       run: pip list
@@ -37,7 +39,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v5
+    - name: Python setup
+      id: python-setup
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ env.PYTHON_VERSION }}
     - name: Cache virtualenv
@@ -45,15 +49,15 @@ jobs:
       id: cache-venv
       with:
         path: ./.venv/
-        key: ${{ runner.os }}-${{ steps.setup_python.outputs.python-version }}-venv-${{ hashFiles('requirements.txt') }}
+        key: ${{ runner.os }}-${{ steps.python-setup.outputs.python-version }}-venv-${{ hashFiles('core/requirements.txt') }}
         restore-keys: |
-          ${{ runner.os }}-${{ steps.setup_python.outputs.python-version }}-venv-
+          ${{ runner.os }}-${{ steps.python-setup.outputs.python-version }}-venv-
     - name: Install dependencies
       shell: bash
       run: |
         python -m venv ./.venv
         source ./.venv/bin/activate
-        python -m pip install -r requirements.txt
+        python -m pip install -r core/requirements.txt
       if: steps.cache-venv.outputs.cache-hit != 'true'
     - name: Check installed packages
       run: pip list
