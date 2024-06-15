@@ -48,12 +48,12 @@ jobs:
         run: pip install -r core/requirements.txt
 
       - name: Run Mypy
-        run: mypy core --show-error-codes --pretty --show-column-numbers --show-error-context --cobertura-xml-report $MYPY_REPORT_DIR
+        run: mypy core --show-error-codes --pretty --show-column-numbers --show-error-context --cobertura-xml-report ${{ env.MYPY_REPORT_DIR }}
 
       - name: Type Hint Coverage Summary Report
         uses: 5monkeys/cobertura-action@master
         with:
-          path: mypy_report/*.xml
+          path: ${ { env.MYPY_REPORT_DIR } }/*.xml
           minimum_coverage: 80
           show_missing: true
           link_missing_lines: true
