@@ -85,6 +85,38 @@ class CoreSettings(BaseSettings):
         )
 
 
+class CommunicationSettings(BaseSettings):
+    model_config = SettingsConfigDict(frozen=True)
+
+    reset: Annotated[int, ...]
+
+
+class GlobalSettings(BaseSettings):
+    model_config = SettingsConfigDict(
+        yaml_file="../../global/config.yaml",
+        frozen=True,
+    )
+
+    communication: CommunicationSettings = Field(description="Communication settings")
+
+    @classmethod
+    def settings_customise_sources(  # noqa: PLR0913
+            cls,
+            settings_cls: type[BaseSettings],
+            init_settings: PydanticBaseSettingsSource,
+            env_settings: PydanticBaseSettingsSource,
+            dotenv_settings: PydanticBaseSettingsSource,
+            file_secret_settings: PydanticBaseSettingsSource,
+    ) -> tuple[PydanticBaseSettingsSource, ...]:
+        return (
+            init_settings,
+            env_settings,
+            dotenv_settings,
+            YamlConfigSettingsSource(settings_cls),
+            file_secret_settings,
+        )
+
+
 @functools.lru_cache(maxsize=1)
 def get_settings() -> CoreSettings:
     """Loads settings."""
@@ -99,7 +131,27 @@ def get_settings() -> CoreSettings:
         raise
 
 
+@functools.lru_cache(maxsize=1)
+def get_global_settings() -> GlobalSettings:
+    """Loads global settings."""
+    configure_logging()
+
+    try:
+        settings = GlobalSettings()
+        logger.success("Successfully loaded global settings.")
+        return settings
+    except ValidationError as e:
+        logger.error(f"Error loading global settings: {e}")
+        raise
+
+
 def reload_settings() -> CoreSettings:
     """Reloads settings."""
     get_settings.cache_clear()
     return get_settings()
+
+
+def reload_global_settings() -> GlobalSettings:
+    """Reloads settings."""
+    get_global_settings.cache_clear()
+    return get_global_settings()
