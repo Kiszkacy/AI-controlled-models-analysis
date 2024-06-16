@@ -5,7 +5,8 @@ using YamlDotNet.Serialization.NamingConventions;
 
 public class Config : Singleton<Config>
 {
-    private string configPath = "./src/config.yaml";
+    private static string localConfigPath = "./src/config.yaml";
+    private static string globalConfigPath = "../global/config.yaml";
     
     public ConfigData Data { get; }
     
@@ -13,10 +14,11 @@ public class Config : Singleton<Config>
     public EngineConfig Engine => this.Data.Engine;
     public TestsConfig Tests => this.Data.Tests;
     public EnvironmentConfig Environment => this.Data.Environment;
+    public GlobalConfig Global => this.Data.Global;
 
     private Config()
     {
-        this.Data = ConfigData.Load(this.configPath);
+        this.Data = ConfigData.Load(localConfigPath, globalConfigPath);
     }
 }
 
@@ -26,14 +28,33 @@ public class ConfigData
     public EngineConfig Engine { get; set; } = new();
     public TestsConfig Tests { get; set; } = new();
     public EnvironmentConfig Environment { get; set; } = new();
+    public GlobalConfig Global { get; set; } = new();
     
-    public static ConfigData Load(string path)
+    public static ConfigData Load(string localConfigPath, string globalConfigPath)
+    {
+        ConfigData configData = LoadLocalConfig(localConfigPath);
+        GlobalConfig globalConfig = LoadGlobalConfig(globalConfigPath);
+        configData.Global = globalConfig;
+        return configData;
+    }
+
+    private static ConfigData LoadLocalConfig(string path)
     {
         IDeserializer deserializer = new DeserializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .Build();
         string yaml = File.ReadAllText(path);
         ConfigData config = deserializer.Deserialize<ConfigData>(yaml);
+        return config;
+    }
+    
+    private static GlobalConfig LoadGlobalConfig(string path)
+    {
+        IDeserializer deserializer = new DeserializerBuilder()
+            .WithNamingConvention(CamelCaseNamingConvention.Instance)
+            .Build();
+        string yaml = File.ReadAllText(path);
+        GlobalConfig config = deserializer.Deserialize<GlobalConfig>(yaml);
         return config;
     }
 }
@@ -73,6 +94,16 @@ public class EnvironmentConfig
 public class ScoreConfig
 {
     public float FoodEaten { get; set; }
+}
+
+public class GlobalConfig
+{
+    public CommunicationConfig Communication { get; set; }
+}
+
+public class CommunicationConfig
+{
+    public int Reset { get; set; }
 }
 
 
