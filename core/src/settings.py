@@ -51,9 +51,15 @@ class EnvironmentSettings(BaseSettings):
         return self
 
 
-class CoreSettings(BaseSettings):
+class CommunicationSettings(BaseSettings):
+    model_config = SettingsConfigDict(frozen=True)
+
+    reset: Annotated[int, ...]
+
+
+class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        yaml_file="../settings.yaml",
+        yaml_file=["../settings.yaml", "../../global/config.yaml"],
         env_file="../.env",
         env_prefix="CORE_",
         env_nested_delimiter="__",
@@ -66,6 +72,8 @@ class CoreSettings(BaseSettings):
     training: TrainingSettings = Field(description="Training settings")
 
     environment: EnvironmentSettings = Field(description="Training environment settings")
+
+    communication: CommunicationSettings = Field(description="Communication settings")
 
     @classmethod
     def settings_customise_sources(  # noqa: PLR0913
@@ -85,45 +93,13 @@ class CoreSettings(BaseSettings):
         )
 
 
-class CommunicationSettings(BaseSettings):
-    model_config = SettingsConfigDict(frozen=True)
-
-    reset: Annotated[int, ...]
-
-
-class GlobalSettings(BaseSettings):
-    model_config = SettingsConfigDict(
-        yaml_file="../../global/config.yaml",
-        frozen=True,
-    )
-
-    communication: CommunicationSettings = Field(description="Communication settings")
-
-    @classmethod
-    def settings_customise_sources(  # noqa: PLR0913
-            cls,
-            settings_cls: type[BaseSettings],
-            init_settings: PydanticBaseSettingsSource,
-            env_settings: PydanticBaseSettingsSource,
-            dotenv_settings: PydanticBaseSettingsSource,
-            file_secret_settings: PydanticBaseSettingsSource,
-    ) -> tuple[PydanticBaseSettingsSource, ...]:
-        return (
-            init_settings,
-            env_settings,
-            dotenv_settings,
-            YamlConfigSettingsSource(settings_cls),
-            file_secret_settings,
-        )
-
-
 @functools.lru_cache(maxsize=1)
-def get_settings() -> CoreSettings:
+def get_settings() -> Settings:
     """Loads settings."""
     configure_logging()
 
     try:
-        settings = CoreSettings()
+        settings = Settings()
         logger.success("Successfully loaded core settings.")
         return settings
     except ValidationError as e:
@@ -131,27 +107,7 @@ def get_settings() -> CoreSettings:
         raise
 
 
-@functools.lru_cache(maxsize=1)
-def get_global_settings() -> GlobalSettings:
-    """Loads global settings."""
-    configure_logging()
-
-    try:
-        settings = GlobalSettings()
-        logger.success("Successfully loaded global settings.")
-        return settings
-    except ValidationError as e:
-        logger.error(f"Error loading global settings: {e}")
-        raise
-
-
-def reload_settings() -> CoreSettings:
+def reload_settings() -> Settings:
     """Reloads settings."""
     get_settings.cache_clear()
     return get_settings()
-
-
-def reload_global_settings() -> GlobalSettings:
-    """Reloads settings."""
-    get_global_settings.cache_clear()
-    return get_global_settings()
