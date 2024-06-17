@@ -4,39 +4,39 @@ public partial class Agent : CharacterBody2D
 {
     [Export]
     public float MaximumSpeed { get; set; } = 200.0f; // in px per sec
-    
+
     [Export]
     public float MaximumAcceleration { get; set; } = 100.0f; // in px per sec
-    
+
     [Export]
     public float MaximumDeceleration { get; set; } = 100.0f; // in px per sec
-    
+
     [Export]
     public float MaximumEnergy { get; set; } = 200.0f;
-    
+
     [Export]
     public float InitialEnergy { get; set; } = 100.0f;
-    
+
     [Export]
     public float MaximumHealth { get; set; } = 100.0f;
-    
+
     [Export]
     public float InitialHealth { get; set; } = 100.0f;
-    
+
     [Export]
     public float MaximumTurnSpeed { get; set; } = Mathf.Pi / 2.0f; // in radians per sec
-    
+
     [Export]
     public float SightAngle { get; set; } = Mathf.Pi / 4.0f; // in radians
-    
+
     [Export]
     public float SightRadius { get; set; } = 256.0f; // in px
-        
+
     protected float energy;
     protected float health;
     protected float currentRotation = 0.0f;
     protected float currentAcceleration = 0.0f;
-    
+
     protected Sprite2D sprite;
 
     public Vector2 Direction { get; set; } = Vector2.Right;
@@ -58,7 +58,7 @@ public partial class Agent : CharacterBody2D
         }
         get => this.id;
     }
-    
+
     protected void UpdateEnergy(double delta)
     {
         float energyLoss = Config.Instance.Environment.EnergyBaseLossPerSecond
@@ -66,7 +66,7 @@ public partial class Agent : CharacterBody2D
                            + Config.Instance.Environment.EnergyLossPerSecondTurn * Mathf.Abs(this.currentRotation);
         this.energy -= energyLoss * (float)delta;
     }
-    
+
     protected void UpdateHealth(double delta)
     {
         if (this.energy <= 0.0f) // TODO proper float comparison
@@ -94,7 +94,7 @@ public partial class Agent : CharacterBody2D
     protected void SightProcess()
     {
         this.closestFood = null;
-        
+
         foreach (Food food in EntityManager.Get().Food)
         {
             float distanceToFood = food.GlobalPosition.DistanceTo(this.GlobalPosition);
@@ -117,18 +117,18 @@ public partial class Agent : CharacterBody2D
         }
     }
 
-    protected void Rotate(float strength) // input of range <-1, 1>
+    protected new void Rotate(float strength) // input of range <-1, 1>
     {
         strength = Mathf.Clamp(strength, -1, 1);
         this.currentRotation = Mathf.Remap(strength, -1, 1, -this.MaximumTurnSpeed, this.MaximumTurnSpeed);
     }
-    
+
     protected void Accelerate(float strength) // input of range <-1, 1>
     {
         strength = Mathf.Clamp(strength, -1, 1);
         this.currentAcceleration = Mathf.Remap(strength, -1, 1, -this.MaximumDeceleration, this.MaximumAcceleration);
     }
-    
+
     protected virtual void OnMouthBodyEntered(Node2D body)
     {
         if (body is not Food food) return;
@@ -144,39 +144,39 @@ public partial class Agent : CharacterBody2D
     {
         this.sprite.Modulate = new Color(this.energy/this.MaximumEnergy, 1.0f, 1.0f - this.energy/this.MaximumEnergy);
     }
-    
+
     protected void MovementProcess(double delta)
     {
         this.Direction = this.Direction.Rotated(this.currentRotation * (float)delta);
         this.GlobalRotation = this.DirectionAngle;
-        
+
         if (this.currentAcceleration >= 0.0f)
         {
-            this.Velocity = this.Direction * Mathf.Clamp(this.Speed + this.currentAcceleration*(float)delta, 0.0f, this.MaximumSpeed);
+            this.Velocity = this.Direction * Mathf.Clamp(this.Speed + this.currentAcceleration * (float)delta, 0.0f, this.MaximumSpeed);
         }
         else
         {
-            this.Velocity = this.Direction * Mathf.Clamp(this.Speed + this.currentAcceleration*(float)delta, 0.0f, this.MaximumSpeed);
+            this.Velocity = this.Direction * Mathf.Clamp(this.Speed + this.currentAcceleration * (float)delta, 0.0f, this.MaximumSpeed);
         }
-        
-            
+
+
         this.MoveAndCollide(this.Velocity * (float)delta);
     }
 
     public override void _Ready()
     {
         this.sprite = this.GetNode<Sprite2D>("Sprite");
-        
+
         this.energy = this.InitialEnergy;
         this.health = this.InitialHealth;
-        
+
         Area2D mouth = this.GetNode<Area2D>("Mouth");
         mouth.AreaEntered += this.OnMouthBodyEntered;
     }
-    
+
     public override void _Process(double delta)
     {
-        
+
     }
 
     public override void _PhysicsProcess(double delta)

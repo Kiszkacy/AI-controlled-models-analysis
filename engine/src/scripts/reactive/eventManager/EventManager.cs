@@ -4,8 +4,8 @@ public sealed class EventManager : Singleton<EventManager>
 {
     private readonly List<Observable> observers = new();
 
-    private List<Event> delayedEvents = new();
-    
+    private readonly List<Event> delayedEvents = new();
+
     public void RegisterEvent(Event @event, bool emitAtTheEndOfFrame = false)
     {
         if (emitAtTheEndOfFrame)
@@ -38,19 +38,19 @@ public sealed class EventManager : Singleton<EventManager>
     public void Subscribe(Observable observer)
     {
         if (this.observers.Contains(observer)) return;
-        
+
         this.observers.Add(observer);
     }
-    
+
     public void Unsubscribe(Observable observer)
     {
         if (!this.observers.Contains(observer)) return;
-        
+
         this.observers.Remove(observer);
     }
 
     private EventManager()
     {
-        
+
     }
 }

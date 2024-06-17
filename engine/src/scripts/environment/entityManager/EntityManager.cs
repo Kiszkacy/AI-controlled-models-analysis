@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 public class EntityManager : Singleton<EntityManager>
 {
-    private HashSet<Food> foodSet = new();
-    private List<Food> foodList = new();
-    private Dictionary<int, Agent> agents = new();
-    
+    private readonly HashSet<Food> foodSet = new();
+    private readonly List<Food> foodList = new();
+    private readonly Dictionary<int, Agent> agents = new();
+
     public List<Food> Food => this.foodList;
     public Agent Agent(int id) => this.agents[id];
     public Dictionary<int, Agent> Agents => this.agents;
-    
+
     private int agentIdIterator = 0;
 
     public void RegisterFood(Food food)
@@ -28,13 +28,13 @@ public class EntityManager : Singleton<EntityManager>
             int index = this.foodList.IndexOf(food);
             if (index >= 0)
             {
-                int lastIndex =  this.foodList.Count - 1;
-                this.foodList[index] =  this.foodList[lastIndex];
+                int lastIndex = this.foodList.Count - 1;
+                this.foodList[index] = this.foodList[lastIndex];
                 this.foodList.RemoveAt(lastIndex);
             }
         }
     }
-    
+
     public void RegisterAgent(Agent agent)
     {
         this.agents.Add(this.agentIdIterator, agent);
@@ -46,7 +46,7 @@ public class EntityManager : Singleton<EntityManager>
     {
         this.agents.Remove(id);
     }
-    
+
     public void RemoveAgent(Agent agent)
     {
         this.agents.Remove(agent.Id);

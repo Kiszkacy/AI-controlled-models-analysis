@@ -17,7 +17,7 @@ public partial class LogicAgent : Agent
         {
             this.ScanForFood();
         }
-        
+
         base._PhysicsProcess(delta);
     }
 
@@ -26,7 +26,7 @@ public partial class LogicAgent : Agent
         this.Accelerate(-1);
         this.Rotate(this.AngleToClosestFood >= 0 ? 1 : -1);
     }
-    
+
     private void MoveTowardsFood()
     {
         this.Accelerate(1);

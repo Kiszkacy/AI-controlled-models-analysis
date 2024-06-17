@@ -6,7 +6,7 @@ public struct ValueChanged<T>
 {
     public T NewValue { get; }
     public T OldValue { get; }
-    
+
     public ValueChanged(T newValue, T oldValue)
     {
         this.NewValue = newValue;
@@ -17,7 +17,7 @@ public struct ValueChanged<T>
 public class ObservableValue<T>
 {
     private T value;
-    
+
     public T Value
     {
         get => this.value;

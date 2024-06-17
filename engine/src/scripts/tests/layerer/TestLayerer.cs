@@ -1,10 +1,9 @@
 ﻿
-using System.Collections.Generic;
 using System;
-
+using System.Collections.Generic;
 using System.Reflection;
 
-public  class TestLayerer
+public class TestLayerer
 {
     private readonly List<Type> queue = new();
     private readonly List<List<Type>> layers = new() { new List<Type>() }; // one default layer
@@ -31,15 +30,15 @@ public  class TestLayerer
             this.layers.Insert(0, new List<Type>());
             index += 1;
             this.layerZero += 1;
-        } 
+        }
         else if (index == this.layers.Count) // new tail layer
         {
             this.layers.Add(new List<Type>());
         }
-        
+
         this.layers[index].Add(test);
     }
-    
+
     private bool TryAddingToLayers(Type test)
     {
         int? targetLayerIndex = this.GetTargetLayerIndex(test);
@@ -49,7 +48,7 @@ public  class TestLayerer
             this.AddToLayer(test, targetLayerIndex.Value);
             return true;
         }
-        
+
         return false;
     }
 
@@ -76,11 +75,11 @@ public  class TestLayerer
 
         return targetLayer;
     }
-    
+
     private void UpdateQueue()
     {
         List<Type> copy = new List<Type>(this.queue);
-        
+
         foreach (Type test in copy)
         {
             int? targetLayerIndex = this.GetTargetLayerIndex(test);

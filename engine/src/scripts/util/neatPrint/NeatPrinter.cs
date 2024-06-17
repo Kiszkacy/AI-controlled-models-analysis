@@ -9,19 +9,19 @@ public class NeatPrinter
         NeatPrint.PrintRaw(text);
         return this;
     }
-    
+
     public NeatPrinter SetColor(ConsoleColor color)
     {
         NeatPrint.SetColor(color);
         return this;
     }
-    
+
     public NeatPrinter ResetColor()
     {
         NeatPrint.ResetColor();
         return this;
     }
-    
+
     public NeatPrinter ColorPrint(ConsoleColor color, string text)
     {
         NeatPrint.ColorPrintRaw(color, text);
@@ -36,5 +36,5 @@ public class NeatPrinter
         return this;
     }
 
-    private NeatPrinter() {}
+    private NeatPrinter() { }
 }

@@ -1,4 +1,5 @@
 using System;
+
 using Godot;
 
 public partial class Initializer : Node
@@ -51,7 +52,7 @@ public partial class Initializer : Node
         Config.Get();
         CommandLineReader.ParseCustomArguments();
     }
-    
+
     private void SetupEngineSettings()
     {
         Engine.TimeScale = Config.Get().Data.Engine.TimeScale;
@@ -65,6 +66,6 @@ public partial class Initializer : Node
 
     public Initializer()
     {
-        
+
     }
 }
