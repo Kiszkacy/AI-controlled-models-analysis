@@ -78,12 +78,31 @@ public partial class Supervisor : Node
     private void ReceiveData()
     {
         byte[] data = PipeHandler.Get().Receive();
-        string jsonString = Encoding.UTF8.GetString(data);
-        List<AgentAction> agentActions = JsonConvert.DeserializeObject<List<AgentAction>>(jsonString);
-        this.SaveActions(agentActions);
+        string dataString = Encoding.UTF8.GetString(data);
+
+        if (int.TryParse(dataString, out int code))
+        {
+            this.HandleCommunicationCode(code);
+        }
+        else
+        {
+            List<AgentAction> agentActions = JsonConvert.DeserializeObject<List<AgentAction>>(dataString);
+            this.AssignActions(agentActions);
+        }
     }
 
-    private void SaveActions(List<AgentAction> actions)
+    private void HandleCommunicationCode(int code)
+    {
+        CommunicationCode communicationCode = (CommunicationCode)code;
+        switch (communicationCode)
+        {
+            case CommunicationCode.ResetEnvironment:
+                this.Reset();
+                break;
+        }
+    }
+
+    private void AssignActions(List<AgentAction> actions)
     {
         foreach (AgentAction action in actions)
         {

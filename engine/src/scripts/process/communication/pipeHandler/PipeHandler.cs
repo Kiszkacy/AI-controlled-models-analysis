@@ -17,7 +17,7 @@ public class PipeHandler : Singleton<PipeHandler>
 
     private string pipeName = Config.Get().Data.Pipe.Name;
     private NamedPipeClientStream pipe;
-    private readonly int ReadBufferSize = Config.Get().Data.Pipe.BufferSize;
+    private readonly int readBufferSize = Config.Get().Data.Pipe.BufferSize;
     private bool IsConnected { get; set; } = false;
 
     public void Connect()
@@ -39,7 +39,7 @@ public class PipeHandler : Singleton<PipeHandler>
 
     public byte[] Receive()
     {
-        byte[] buffer = new byte[ReadBufferSize];
+        byte[] buffer = new byte[this.readBufferSize];
         int readBytes = this.pipe.Read(buffer, 0, buffer.Length);
         return buffer;
     }
