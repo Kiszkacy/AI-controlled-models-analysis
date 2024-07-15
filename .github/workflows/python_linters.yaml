@@ -1,4 +1,4 @@
-name: Python linters
+name: python linters
 
 
 on:
@@ -6,6 +6,9 @@ on:
     workflows: [build]
     types:
       - completed
+      
+env:
+  PYTHON_VERSION: '3.11'
 
 
 jobs:
