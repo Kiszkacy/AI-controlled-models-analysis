@@ -66,7 +66,7 @@ public abstract class TestClass<T> : Singleton<T> where T : TestClass<T>
     private string MergeExceptionMessage(string message)
     {
         return string.Join(
-            " - ", 
+            " - ",
             message.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
                    .Select(line => line.Trim())
         );
