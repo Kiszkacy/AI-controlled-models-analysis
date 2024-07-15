@@ -10,6 +10,7 @@ tests:
   runSlowTests: true
   passUncertainTestsWhenFailed: true
   printAdditionalLogs: true
+  floatComparisonTolerance: 1.0e-6
 environment:
   energyBaseLossPerSecond: 2.0
   energyLossPerSecondPer100UnitsOfMovement: 0.2

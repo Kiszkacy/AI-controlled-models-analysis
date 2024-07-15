@@ -79,6 +79,7 @@ public class TestsConfig
     public bool RunSlowTests { get; set; }
     public bool PassUncertainTestsWhenFailed { get; set; }
     public bool PrintAdditionalLogs { get; set; }
+    public float FloatComparisonTolerance { get; set; }
 }
 
 public class EnvironmentConfig
