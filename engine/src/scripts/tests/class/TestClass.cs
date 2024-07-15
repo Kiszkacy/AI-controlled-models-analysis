@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -24,9 +25,9 @@ public abstract class TestClass<T> : Singleton<T> where T : TestClass<T>
             {
                 bool isUncertainTest = method.GetCustomAttributes(typeof(TestUncertainAttribute), false).Any();
                 if (Config.Get().Tests.PassUncertainTestsWhenFailed && isUncertainTest)
-                    this.LogWarning($"{typeof(T).FullName} | {method.Name} :: [TestUncertain] {exception.GetBaseException().Message}");
+                    this.LogWarning($"{typeof(T).FullName} | {method.Name} :: [TestUncertain] {this.MergeExceptionMessage(exception.GetBaseException().Message)}");
                 else
-                    this.LogFailed($"{typeof(T).FullName} | {method.Name} :: {exception.GetBaseException().Message}");
+                    this.LogFailed($"{typeof(T).FullName} | {method.Name} :: {this.MergeExceptionMessage(exception.GetBaseException().Message)}");
             }
         }
     }
@@ -60,5 +61,14 @@ public abstract class TestClass<T> : Singleton<T> where T : TestClass<T>
     private void LogFailed(string message)
     {
         TestRunner.Get().LogResult(TestResult.Failed, message);
+    }
+
+    private string MergeExceptionMessage(string message)
+    {
+        return string.Join(
+            " - ", 
+            message.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+                   .Select(line => line.Trim())
+        );
     }
 }
