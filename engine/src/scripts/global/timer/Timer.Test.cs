@@ -3,7 +3,7 @@
 public class TimerTest : TestClass<TimerTest>
 {
     [Test]
-    public void IsInactive_BeforeActivation()
+    public void IsActive_ShouldBeFalseBeforeActivation()
     {
         // given
         Timer timer = new(this.MockAction);
@@ -13,7 +13,7 @@ public class TimerTest : TestClass<TimerTest>
     }
 
     [Test]
-    public void IsActive_AfterActivation()
+    public void IsActive_ShouldBeTrueAfterActivation()
     {
         // given
         Timer timer = new(this.MockAction);
@@ -26,7 +26,7 @@ public class TimerTest : TestClass<TimerTest>
     }
 
     [Test]
-    public void IsInactive_AfterTimeout()
+    public void IsActive_ShouldBeFalseAfterTimeout()
     {
         // given
         Timer timer = new(this.MockAction);
@@ -40,7 +40,7 @@ public class TimerTest : TestClass<TimerTest>
     }
 
     [Test]
-    public void ActionCalled_AfterTimeout()
+    public void Action_ShouldBeCalledAfterTimeout()
     {
         // given
         bool actionCalled = false;
@@ -59,7 +59,7 @@ public class TimerTest : TestClass<TimerTest>
     }
 
     [Test]
-    public void ActionNotCalled_BeforeTimeout()
+    public void Action_ShouldNotBeCalledBeforeTimeout()
     {
         // given
         bool actionCalled = false;
