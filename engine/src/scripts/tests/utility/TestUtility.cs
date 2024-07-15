@@ -12,4 +12,15 @@ public static class TestUtility
             node._Process(tickTime);
         }
     }
+
+    public static void SimulateProcess(Processable processable, double targetTime)
+    {
+        double tickTime = 1.0 / 60.0;
+        double timePassed = 0.0;
+        while (timePassed < targetTime)
+        {
+            timePassed += tickTime;
+            processable.Process(tickTime);
+        }
+    }
 }
