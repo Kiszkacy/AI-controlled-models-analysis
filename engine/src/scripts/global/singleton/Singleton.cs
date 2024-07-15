@@ -8,10 +8,10 @@ public class Singleton<T> where T : Singleton<T>
         var createdInstance = Activator.CreateInstance(typeof(T), true);
         return (T)createdInstance;
     });
-    
+
     public static T Instance => instance.Value;
 
     public static T Get() => Instance;
 
-    protected Singleton() {}
+    protected Singleton() { }
 }

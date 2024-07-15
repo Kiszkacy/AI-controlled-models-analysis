@@ -3,7 +3,8 @@ public partial class TrainAgent : Agent
 {
     private float thisFrameScore = 0.0f;
 
-    public float Score {
+    public float Score
+    {
         get
         {
             float score = this.thisFrameScore;
@@ -17,13 +18,13 @@ public partial class TrainAgent : Agent
     public AgentData NormalizedData => this.Data.Normalize(this);
 
     public AgentAction Action;
-    
+
     protected override void Eat(Food food)
     {
         base.Eat(food);
         this.thisFrameScore += Config.Get().Environment.Score.FoodEaten;
     }
-    
+
     public override void _PhysicsProcess(double delta)
     {
         this.Act();

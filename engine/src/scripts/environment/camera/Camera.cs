@@ -4,20 +4,20 @@ public partial class Camera : Camera2D
 {
     [Export(PropertyHint.Range, "100,1000,10,or_greater")]
     public float MoveSpeed { get; set; } = 300.0f; // in px/sec
-    
+
     [Export(PropertyHint.Range, "0.1,2.0,0.1,or_greater")]
     public float ZoomSpeed { get; set; } = 1.0f; // per sec
-    
+
     [Export(PropertyHint.Range, "1.0,5.0,0.1,or_greater")]
     public float MaxZoom { get; set; } = 3.0f;
-    
+
     [Export(PropertyHint.Range, "0.1,1.0,0.1")]
     public float MinZoom { get; set; } = 0.3f;
-    
+
     private Vector2 moveDirection = Vector2.Zero;
     private bool zoomingIn = false;
     private bool zoomingOut = false;
-    
+
     public override void _Input(InputEvent @event)
     {
         if (@event.IsActionPressed("move.camera.up"))
@@ -44,7 +44,7 @@ public partial class Camera : Camera2D
         {
             this.zoomingOut = true;
         }
-        
+
         if (@event.IsActionReleased("move.camera.up"))
         {
             this.moveDirection -= Vector2.Up;

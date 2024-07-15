@@ -105,5 +105,3 @@ public class CommunicationConfig
 {
     public int Reset { get; set; }
 }
-
-

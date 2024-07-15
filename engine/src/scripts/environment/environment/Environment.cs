@@ -1,17 +1,18 @@
 using System;
 using System.Linq;
+
 using Godot;
 
 public partial class Environment : Node2D
 {
-    [Export] 
+    [Export]
     public Vector2 Size { get; set; } = new(1024, 1024);
 
-    [Export(PropertyHint.Range, "1,15,or_greater")] 
+    [Export(PropertyHint.Range, "1,15,or_greater")]
     public int TreeCount { get; set; } = 3;
 
     private PackedScene packedTree = ResourceLoader.Load<PackedScene>("res://src/scenes/tree.tscn");
-    
+
     public override void _Ready()
     {
         this.Generate();

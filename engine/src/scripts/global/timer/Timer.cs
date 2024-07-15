@@ -38,7 +38,7 @@ public class Timer : Processable
             this.timeout();
         }
     }
-    
+
     public void Activate(double time)
     {
         this.time = time;

@@ -1,26 +1,28 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Newtonsoft.Json;
+
 using Godot;
+
+using Newtonsoft.Json;
 
 public partial class Supervisor : Node
 {
     [Export]
     public Node AgentsRootNode;
-    
+
     [Export]
     public Environment Environment;
 
     [Export]
     public int InitialAgentCount = 10;
 
-    [Export] 
+    [Export]
     public bool UseLogicAgents = false;
-    
+
     private PackedScene packedTrainAgent = ResourceLoader.Load<PackedScene>("res://src/scenes/trainAgent.tscn");
     private PackedScene packedLogicAgent = ResourceLoader.Load<PackedScene>("res://src/scenes/logicAgent.tscn");
-    
+
     public override void _Ready()
     {
         for (int i = 0; i < this.InitialAgentCount; i++)
@@ -68,7 +70,7 @@ public partial class Supervisor : Node
             TrainAgent agent = (TrainAgent)agent_;
             data.Add(agent.NormalizedData);
         }
-        
+
         byte[] rawData = JsonConvert.SerializeObject(data).ToUtf8Buffer();
         PipeHandler.Get().Send(rawData);
     }
@@ -111,6 +113,6 @@ public partial class Supervisor : Node
 
     public void Reset()
     {
-        
+
     }
 }

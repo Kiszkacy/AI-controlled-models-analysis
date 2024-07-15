@@ -14,7 +14,7 @@ public abstract class TestClass<T> : Singleton<T> where T : TestClass<T>
 
             bool isSlowTest = method.GetCustomAttributes(typeof(TestSlowAttribute), false).Any();
             if (!Config.Get().Tests.RunSlowTests && isSlowTest) continue;
-            
+
             try
             {
                 method.Invoke(this, null);
@@ -32,14 +32,14 @@ public abstract class TestClass<T> : Singleton<T> where T : TestClass<T>
     }
 
     public List<MethodInfo> GetTests() => typeof(T).GetMethods().Where(method => method.GetCustomAttributes(typeof(TestAttribute), false).Any()).ToList();
-    
+
     public int GetTestCount() => this.GetTests().Count;
-    
+
     public List<MethodInfo> GetSuitableTests()
     {
         return this.GetTests().Where(method => Config.Get().Tests.RunSlowTests || !method.GetCustomAttributes(typeof(TestSlowAttribute), false).Any()).ToList();
     }
-    
+
     public int GetSuitableTestCount() => this.GetSuitableTests().Count;
 
     protected void LogPrint(string message)
@@ -51,12 +51,12 @@ public abstract class TestClass<T> : Singleton<T> where T : TestClass<T>
     {
         TestRunner.Get().LogResult(TestResult.Passed, message);
     }
-    
+
     private void LogWarning(string message)
     {
         TestRunner.Get().LogResult(TestResult.Warning, message);
     }
-    
+
     private void LogFailed(string message)
     {
         TestRunner.Get().LogResult(TestResult.Failed, message);

@@ -1,6 +1,7 @@
 ﻿using System;
-using Godot;
 using System.IO.Pipes;
+
+using Godot;
 
 public class PipeHandler : Singleton<PipeHandler>
 {
@@ -13,12 +14,12 @@ public class PipeHandler : Singleton<PipeHandler>
             this.pipeName = value;
         }
     }
-    
+
     private string pipeName = Config.Get().Data.Pipe.Name;
     private NamedPipeClientStream pipe;
     private readonly int readBufferSize = Config.Get().Data.Pipe.BufferSize;
     private bool IsConnected { get; set; } = false;
-    
+
     public void Connect()
     {
         this.pipe = new NamedPipeClientStream(".", this.pipeName, PipeDirection.InOut);
@@ -26,14 +27,14 @@ public class PipeHandler : Singleton<PipeHandler>
         this.IsConnected = true;
         NeatPrinter.Start().Print($"[PIPE]  | Connected to '{this.pipeName}' pipe.").End();
     }
-    
+
     public void Disconnect()
     {
         this.pipe.Close();
         this.IsConnected = false;
         NeatPrinter.Start().Print($"[PIPE]  | Disconnected from '{this.pipeName}' pipe.").End();
     }
-    
+
     public void Send(byte[] data) => this.pipe.Write(data, 0, data.Length);
 
     public byte[] Receive()
@@ -45,6 +46,6 @@ public class PipeHandler : Singleton<PipeHandler>
 
     private PipeHandler()
     {
-        
+
     }
 }
