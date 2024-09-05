@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://bj3blexg0r8th"]
+
+[ext_resource type="Texture2D" uid="uid://criuj1ifxotqm" path="res://assets/sprites/pixel-art/broccoli.png" id="1_8o1ff"]
+[ext_resource type="Script" path="res://src/scripts/environment/generation/objects/bush/Bush.cs" id="1_87lm2"]
+[ext_resource type="Script" path="res://src/scripts/environment/food/FoodSpawner.cs" id="2_6vwfa"]
+
+[node name="BerryBush" type="Node2D"]
+script = ExtResource("1_87lm2")
+SpawnSafeDistance = 32
+
+[node name="Sprite" type="Sprite2D" parent="."]
+self_modulate = Color(1, 0.501961, 0.501961, 1)
+scale = Vector2(2, 2)
+texture = ExtResource("1_8o1ff")
+
+[node name="FoodSpawner" type="Node" parent="." node_paths=PackedStringArray("SpawnPositionTarget")]
+script = ExtResource("2_6vwfa")
+FoodPerMinute = 12.0
+FoodSpawnOuterRadius = 96.0
+FoodSpawnInnerRadius = 48.0
+MaxFoodCount = 4
+FoodEnergyNutrition = 15.0
+SpawnPositionTarget = NodePath("..")
