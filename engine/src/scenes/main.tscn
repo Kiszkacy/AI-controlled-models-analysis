@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/scripts/engine/initializer/Initializer.cs" id="1_k36hy"]
 [ext_resource type="Script" path="res://src/scripts/engine/endOfFrameProcessor/EndOfFrameProcessor.cs" id="2_3vvuh"]
-[ext_resource type="PackedScene" uid="uid://c1bpw4ru4tlep" path="res://src/scenes/environment.tscn" id="2_xi837"]
+[ext_resource type="PackedScene" uid="uid://c1bpw4ru4tlep" path="res://src/scenes/environment/environment.tscn" id="2_xi837"]
 [ext_resource type="Script" path="res://src/scripts/environment/camera/Camera.cs" id="3_2o0lw"]
 [ext_resource type="Script" path="res://src/scripts/environment/supervisor/Supervisor.cs" id="3_u0dcj"]
 

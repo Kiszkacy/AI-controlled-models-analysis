@@ -11,7 +11,7 @@ public partial class Environment : Node2D
     [Export(PropertyHint.Range, "1,15,or_greater")]
     public int TreeCount { get; set; } = 3;
 
-    private PackedScene packedTree = ResourceLoader.Load<PackedScene>("res://src/scenes/tree.tscn");
+    private PackedScene packedTree = ResourceLoader.Load<PackedScene>("res://src/scenes/environment/objects/trees/appleTree.tscn");
 
     public override void _Ready()
     {
@@ -28,7 +28,6 @@ public partial class Environment : Node2D
         for (int index = 0; index < this.TreeCount; index++)
         {
             Node2D treeInstance = (Node2D)this.packedTree.Instantiate();
-            this.AddChild(treeInstance);
             Tree tree = (Tree)treeInstance;
             Vector2 spawnPosition;
             do
@@ -37,8 +36,9 @@ public partial class Environment : Node2D
                     (float)new Random().NextDouble() * this.Size.X,
                     (float)new Random().NextDouble() * this.Size.Y
                 );
-            } while (this.GetChildren().Any(children => ((Tree)children).GlobalPosition.DistanceTo(spawnPosition) <= tree.FoodSpawnOuterRadius*1.5f));
+            } while (this.GetChildren().Any(children => ((Tree)children).GlobalPosition.DistanceTo(spawnPosition) <= tree.SpawnSafeDistance*1.5f));
             tree.GlobalPosition = spawnPosition;
+            this.AddChild(treeInstance);
         }
     }
 }

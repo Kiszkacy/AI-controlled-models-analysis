@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://cr47cj50fpisj"]
+
+[ext_resource type="Script" path="res://src/scripts/environment/agent/trainAgent/TrainAgent.cs" id="1_dios7"]
+[ext_resource type="Texture2D" uid="uid://d1ryghx8jhyw7" path="res://assets/sprites/simple/pointed-circle-36x50.png" id="2_pno7q"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eua6s"]
+size = Vector2(50, 36)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1mq8d"]
+size = Vector2(20, 32)
+
+[node name="TrainAgent" type="CharacterBody2D"]
+collision_mask = 4
+motion_mode = 1
+script = ExtResource("1_dios7")
+MaximumTurnSpeed = 0.785
+SightAngle = 0.524
+SightRadius = 320.0
+
+[node name="Sprite" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 0.0313726, 1)
+position = Vector2(7, 0)
+rotation = 1.5708
+texture = ExtResource("2_pno7q")
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+position = Vector2(7, 0)
+shape = SubResource("RectangleShape2D_eua6s")
+
+[node name="Mouth" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="Hitbox" type="CollisionShape2D" parent="Mouth"]
+position = Vector2(24, 0)
+shape = SubResource("RectangleShape2D_1mq8d")
+debug_color = Color(0.92549, 0, 0.682353, 0.419608)

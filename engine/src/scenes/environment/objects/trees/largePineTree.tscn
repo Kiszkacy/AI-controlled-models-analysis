@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://b8v37xyuh6st"]
+
+[ext_resource type="Texture2D" uid="uid://d0uphun7gabra" path="res://assets/sprites/pixel-art/tree.png" id="1_1jy78"]
+[ext_resource type="Script" path="res://src/scripts/environment/generation/objects/tree/Tree.cs" id="1_nmmyr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fo4jj"]
+size = Vector2(96, 96)
+
+[node name="LargePineTree" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_nmmyr")
+SpawnSafeDistance = 96
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_fo4jj")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+self_modulate = Color(0.501961, 0.8, 1, 1)
+scale = Vector2(6, 6)
+texture = ExtResource("1_1jy78")
