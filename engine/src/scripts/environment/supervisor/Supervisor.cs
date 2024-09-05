@@ -20,8 +20,8 @@ public partial class Supervisor : Node
     [Export]
     public bool UseLogicAgents = false;
 
-    private PackedScene packedTrainAgent = ResourceLoader.Load<PackedScene>("res://src/scenes/trainAgent.tscn");
-    private PackedScene packedLogicAgent = ResourceLoader.Load<PackedScene>("res://src/scenes/logicAgent.tscn");
+    private PackedScene packedTrainAgent = ResourceLoader.Load<PackedScene>("res://src/scenes/environment/trainAgent.tscn");
+    private PackedScene packedLogicAgent = ResourceLoader.Load<PackedScene>("res://src/scenes/environment/logicAgent.tscn");
 
     public override void _Ready()
     {

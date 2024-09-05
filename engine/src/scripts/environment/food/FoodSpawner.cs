@@ -1,4 +1,4 @@
-﻿
+
 using System;
 
 using Godot;
@@ -19,6 +19,9 @@ public partial class FoodSpawner : Node, Initializable // TODO remove exports, n
 
     [Export(PropertyHint.Range, "0,32,or_greater")]
     public int InitialFoodCount { get; set; } = 1;
+    
+    [Export(PropertyHint.Range, "1,100,or_greater")]
+    public float FoodEnergyNutrition { get; set; } = 30.0f;
 
     [Export]
     public Node2D SpawnPositionTarget { get; set; }
@@ -27,7 +30,7 @@ public partial class FoodSpawner : Node, Initializable // TODO remove exports, n
     public bool InitializeAutomatically { get; set; } = true;
 
     private readonly Timer spawnFoodTimer;
-    private PackedScene packedFood = ResourceLoader.Load<PackedScene>("res://src/scenes/food.tscn");
+    private PackedScene packedFood = ResourceLoader.Load<PackedScene>("res://src/scenes/environment/food.tscn");
 
     private InitializableWrapper initialized = new();
     public bool IsInitialized => this.initialized.IsInitialized;
