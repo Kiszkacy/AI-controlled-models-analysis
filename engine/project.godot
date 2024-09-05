@@ -63,6 +63,7 @@ zoom.camera.out={
 
 2d_physics/layer_1="Animals"
 2d_physics/layer_2="Food"
+2d_physics/layer_3="Environment Objects"
 
 [rendering]
 
