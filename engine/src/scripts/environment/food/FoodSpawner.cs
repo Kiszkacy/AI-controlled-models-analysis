@@ -19,7 +19,7 @@ public partial class FoodSpawner : Node, Initializable // TODO remove exports, n
 
     [Export(PropertyHint.Range, "0,32,or_greater")]
     public int InitialFoodCount { get; set; } = 1;
-    
+
     [Export(PropertyHint.Range, "1,100,or_greater")]
     public float FoodEnergyNutrition { get; set; } = 30.0f;
 
@@ -32,7 +32,7 @@ public partial class FoodSpawner : Node, Initializable // TODO remove exports, n
     private readonly Timer spawnFoodTimer;
     private PackedScene packedFood = ResourceLoader.Load<PackedScene>("res://src/scenes/environment/food.tscn");
 
-    private InitializableWrapper initialized = new();
+    private readonly InitializableWrapper initialized = new();
     public bool IsInitialized => this.initialized.IsInitialized;
 
     public override void _Ready()
@@ -59,7 +59,7 @@ public partial class FoodSpawner : Node, Initializable // TODO remove exports, n
         this.ResetTimer();
         this.initialized.Initialize();
     }
-    
+
     private void SpawnFood()
     {
         Node2D foodInstance = (Node2D)this.packedFood.Instantiate();

@@ -3,8 +3,8 @@ using System;
 
 public class InitializableWrapper
 {
-    private bool isInitialized = false; 
-    
+    private bool isInitialized = false;
+
     public bool IsInitialized => this.isInitialized;
 
     public void Initialize()

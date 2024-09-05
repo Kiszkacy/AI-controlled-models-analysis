@@ -13,7 +13,7 @@ public partial class Food : Area2D
     private readonly Timer lifetimeTimer;
 
     private Sprite2D sprite;
-    
+
     public override void _Ready()
     {
         this.sprite = this.GetNode<Sprite2D>("Sprite");
@@ -25,7 +25,7 @@ public partial class Food : Area2D
         this.lifetimeTimer.Process(delta);
         this.UpdateColor();
     }
-    
+
     private void UpdateColor()
     {
         float ratio = (float)this.lifetimeTimer.Time / this.Lifetime;
