@@ -42,7 +42,7 @@ class GodotHandler:
         godot_args = [
             "--path",
             self.project_path,
-            "--headless",
+            #  "--headless",
         ]
 
         project_args = [

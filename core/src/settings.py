@@ -30,6 +30,7 @@ class TrainingSettings(BaseSettings):
     number_of_env_per_worker: Annotated[int, Field(gt=0)]
     training_iterations: Annotated[int, Field(gt=0)]
     training_batch_size: Annotated[int, Field(gt=0)]
+    training_checkpoint_frequency: Annotated[int, Field(gt=0)]
 
 
 class EnvironmentSettings(BaseSettings):
