@@ -59,7 +59,10 @@ class AgentPolicy(Policy):
                         mean = logits_for_key.squeeze().numpy()
                         low, high = space.low, space.high
 
-                        action = np.clip(mean, low, high)
+                        normal_dist = torch.distributions.Normal(loc=torch.tensor(mean), scale=torch.tensor(1.0))
+                        sampled_action = normal_dist.sample().numpy()
+
+                        action = np.clip(sampled_action, low, high)
 
                         if len(space.shape) == 0:
                             action = action.item()
