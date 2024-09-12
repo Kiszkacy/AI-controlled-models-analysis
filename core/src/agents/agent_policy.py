@@ -38,7 +38,6 @@ class AgentPolicy(Policy):
         episodes=None,  # noqa: ARG002
         **kwargs,  # noqa: ARG002
     ):
-        # print("computing actions")
         actions = []
         with torch.no_grad():
             for obs in obs_batch:
@@ -57,12 +56,11 @@ class AgentPolicy(Policy):
                             start_idx += 1
 
                         mean = logits_for_key.squeeze().numpy()
-                        low, high = space.low, space.high
 
-                        normal_dist = torch.distributions.Normal(loc=torch.tensor(mean), scale=torch.tensor(1.0))
-                        sampled_action = normal_dist.sample().numpy()
+                        distribution = torch.distributions.Normal(loc=torch.tensor(mean), scale=torch.tensor(1.0))
+                        sampled_action = distribution.sample().numpy()
 
-                        action = np.clip(sampled_action, low, high)
+                        action = np.clip(sampled_action, space.low, space.high)
 
                         if len(space.shape) == 0:
                             action = action.item()

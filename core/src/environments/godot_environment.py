@@ -37,12 +37,14 @@ class GodotServerEnvironment(MultiAgentEnv):
         dtype=np.float32,
     )
 
-    def __init__(self, config: dict | None = None):  # noqa: ARG002
+    def __init__(self, config: dict | None = None):
         super().__init__()
         self._agent_ids = set(range(environment_settings.number_of_agents))
         self._states: MultiAgentDict | None = None
         self.godot_handler = GodotHandler()
         self.godot_handler.launch_godot()
+        self.horizon = config.get("horizon", 100) if config else 100
+        self.current_step = 0
 
     def step(self, actions: MultiAgentDict):
         """Returns observations from ready agents.
@@ -59,6 +61,7 @@ class GodotServerEnvironment(MultiAgentEnv):
             4) Truncated values for each ready agent.
             5) Info values for each agent id (maybe empty dicts).
         """
+        self.current_step += 1
         actions_serializable = [
             {"id": key, "accelerate": value["accelerate"], "rotate": value["rotate"]} for key, value in actions.items()
         ]
@@ -86,13 +89,15 @@ class GodotServerEnvironment(MultiAgentEnv):
             for data in data_list
         }
         rewards = {data["Id"]: data["Score"] for data in data_list}
-        terminateds = {"__all__": False}
+        done = self.current_step >= self.horizon
+        terminateds = {"__all__": done}
         truncateds = {"__all__": False}
         infos = {data["Id"]: {} for data in data_list}
         return states, rewards, terminateds, truncateds, infos
 
     def reset(self, *, seed=None, options=None) -> tuple[MultiAgentDict, MultiAgentDict]:  # noqa: ARG002
         self._states = self.default_states
+        self.current_step = 0
         info: MultiAgentDict = {"__all__": {}}
         return self._states, info
 

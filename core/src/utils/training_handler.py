@@ -58,6 +58,7 @@ class TrainingHandler:
             "checkpoint_freq": training_settings.training_checkpoint_frequency,
             "train_batch_size": training_settings.training_batch_size,
             "learning_rate": self.learning_rate,
+            "rollout_fragment_length": 100,
             "gamma": self.gamma,
         }
         if self.model_path:
