@@ -10,13 +10,13 @@ public static class RandomNumberGenerator
     {
         return RandomGenerator.Next(min, max + 1);
     }
-    
+
     public static float Float(float min, float max)
     {
         double randomValue = RandomGenerator.NextDouble();
         return (float)(min + (randomValue * (max - min)));
     }
-    
+
     public static bool Occurs(float probability)
     {
         if (probability < 0.0f || probability > 1.0f)
