@@ -1,7 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://cr47cj50fpisj"]
 
-[ext_resource type="Script" path="res://src/scripts/environment/agent/trainAgent/TrainAgent.cs" id="1_dios7"]
-[ext_resource type="Texture2D" uid="uid://d1ryghx8jhyw7" path="res://assets/sprites/simple/pointed-circle-36x50.png" id="2_pno7q"]
+[ext_resource type="Script" path="res://src/scripts/simulation/agent/trainAgent/TrainAgent.cs" id="1_dios7"]
+[ext_resource type="Texture2D" uid="uid://cy26nbj6vy5pm" path="res://assets/sprites/simple/pointed-circle-36x50.png" id="2_pno7q"]
+
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eua6s"]
 size = Vector2(50, 36)

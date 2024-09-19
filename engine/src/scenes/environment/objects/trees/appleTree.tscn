@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://cpria873uoi7u"]
 
-[ext_resource type="Texture2D" uid="uid://d0uphun7gabra" path="res://assets/sprites/pixel-art/tree.png" id="1_2igdx"]
-[ext_resource type="Script" path="res://src/scripts/environment/generation/objects/tree/Tree.cs" id="1_k3y27"]
-[ext_resource type="Script" path="res://src/scripts/environment/food/FoodSpawner.cs" id="2_jgjvj"]
+[ext_resource type="Texture2D" uid="uid://dhhq5dpp5c265" path="res://assets/sprites/pixel-art/tree.png" id="1_2igdx"]
+[ext_resource type="Script" path="res://src/scripts/simulation/environment/generation/objects/tree/Tree.cs" id="1_k3y27"]
+[ext_resource type="Script" path="res://src/scripts/simulation/food/FoodSpawner.cs" id="2_jgjvj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ykw2"]
 size = Vector2(64, 64)

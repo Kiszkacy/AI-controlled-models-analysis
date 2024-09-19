@@ -1,6 +1,51 @@
-[gd_scene load_steps=2 format=3 uid="uid://c1bpw4ru4tlep"]
+[gd_scene load_steps=9 format=3 uid="uid://ps0rqdnn0u36"]
 
-[ext_resource type="Script" path="res://src/scripts/environment/environment/Environment.cs" id="1_nwi76"]
+[ext_resource type="Script" path="res://src/scripts/simulation/environment/Environment.cs" id="1_66boa"]
+[ext_resource type="Texture2D" uid="uid://b7cwb35cc86tg" path="res://assets/tilesets/terrain-tileset.png" id="2_4yy1n"]
+[ext_resource type="Texture2D" uid="uid://dioarrnkvg2r3" path="res://assets/tilesets/biome-tileset.png" id="3_651hk"]
+[ext_resource type="Script" path="res://src/scripts/simulation/environment/terrainMap/TerrainMap.cs" id="3_vbutg"]
+[ext_resource type="Script" path="res://src/scripts/simulation/environment/biomeMap/BiomeMap.cs" id="4_yrws2"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yggr1"]
+texture = ExtResource("2_4yy1n")
+texture_region_size = Vector2i(1, 1)
+1:0/0 = 0
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ie7t7"]
+texture = ExtResource("3_651hk")
+texture_region_size = Vector2i(1, 1)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+9:0/0 = 0
+10:0/0 = 0
+11:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_4sgex"]
+tile_size = Vector2i(1, 1)
+sources/0 = SubResource("TileSetAtlasSource_yggr1")
+sources/1 = SubResource("TileSetAtlasSource_ie7t7")
 
 [node name="Environment" type="Node2D"]
-script = ExtResource("1_nwi76")
+script = ExtResource("1_66boa")
+
+[node name="Objects" type="Node" parent="."]
+
+[node name="TerrainMap" type="TileMap" parent="." node_paths=PackedStringArray("Environment")]
+tile_set = SubResource("TileSet_4sgex")
+format = 2
+script = ExtResource("3_vbutg")
+Environment = NodePath("..")
+
+[node name="BiomeMap" type="TileMap" parent="." node_paths=PackedStringArray("Environment")]
+tile_set = SubResource("TileSet_4sgex")
+format = 2
+script = ExtResource("4_yrws2")
+Environment = NodePath("..")

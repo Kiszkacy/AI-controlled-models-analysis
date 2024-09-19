@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bey7li3odmakp"]
 
-[ext_resource type="Script" path="res://src/scripts/environment/generation/objects/rock/Rock.cs" id="1_hgry7"]
-[ext_resource type="Texture2D" uid="uid://bkhqetl1aoyu4" path="res://assets/sprites/pixel-art/wall.png" id="1_kq3ii"]
+[ext_resource type="Script" path="res://src/scripts/simulation/environment/generation/objects/rock/Rock.cs" id="1_hgry7"]
+[ext_resource type="Texture2D" uid="uid://c1sk0i0dckmmf" path="res://assets/sprites/pixel-art/wall.png" id="1_kq3ii"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ji4fb"]
 size = Vector2(96, 96)

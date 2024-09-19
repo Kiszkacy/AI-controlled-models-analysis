@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b2lkn5k8n7j4u"]
 
-[ext_resource type="Script" path="res://src/scripts/environment/generation/objects/tree/Tree.cs" id="1_st8ko"]
-[ext_resource type="Texture2D" uid="uid://d0uphun7gabra" path="res://assets/sprites/pixel-art/tree.png" id="2_y0p0y"]
+[ext_resource type="Script" path="res://src/scripts/simulation/environment/generation/objects/tree/Tree.cs" id="1_st8ko"]
+[ext_resource type="Texture2D" uid="uid://dhhq5dpp5c265" path="res://assets/sprites/pixel-art/tree.png" id="2_y0p0y"]
 
 [node name="SmallTree" type="Node2D"]
 script = ExtResource("1_st8ko")
