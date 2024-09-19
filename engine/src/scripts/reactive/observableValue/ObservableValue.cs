@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-public struct ValueChanged<T>
+public readonly struct ValueChanged<T>
 {
     public T NewValue { get; }
     public T OldValue { get; }
