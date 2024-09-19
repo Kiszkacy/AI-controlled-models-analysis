@@ -34,7 +34,7 @@ public partial class BiomeMap : TileMap
                     biomeType = EnvironmentGenerationUtil.GetBiomeAt(settings.TerrainChunkSize*new Vector2(x+0.5f, y+0.5f), settings.Size, settings.BiomeChunkSize, biomeData);
                 }
             
-                this.SetCell(0, new Vector2I(x, y), 1, new Vector2I((int)biomeType, 0));
+                this.SetCell(0, new Vector2I(x, y), 0, new Vector2I((int)biomeType, 0));
             }
         }
     }
