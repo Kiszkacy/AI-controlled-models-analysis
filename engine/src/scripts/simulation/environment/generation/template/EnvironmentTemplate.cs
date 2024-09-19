@@ -13,7 +13,6 @@ public readonly struct EnvironmentTemplate
         PackedScene packedEnvironment = ResourceLoader.Load<PackedScene>("res://src/scenes/environment/environment.tscn");
         Environment environment = packedEnvironment.Instantiate<Environment>();
         environment.Initialize(this);
-        ((TerrainMap)environment.GetNode("TerrainMap")).Initialize();
         Node objectNode = environment.GetNode("Objects");
         
         foreach (EnvironmentObjectData objectData in this.ObjectData)

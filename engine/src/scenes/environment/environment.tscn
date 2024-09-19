@@ -1,9 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://ps0rqdnn0u36"]
+[gd_scene load_steps=8 format=3 uid="uid://ps0rqdnn0u36"]
 
 [ext_resource type="Script" path="res://src/scripts/simulation/environment/Environment.cs" id="1_66boa"]
 [ext_resource type="Texture2D" uid="uid://b7cwb35cc86tg" path="res://assets/tilesets/terrain-tileset.png" id="2_4yy1n"]
 [ext_resource type="Texture2D" uid="uid://dioarrnkvg2r3" path="res://assets/tilesets/biome-tileset.png" id="3_651hk"]
-[ext_resource type="Script" path="res://src/scripts/simulation/environment/terrainMap/TerrainMap.cs" id="3_vbutg"]
 [ext_resource type="Script" path="res://src/scripts/simulation/environment/biomeMap/BiomeMap.cs" id="4_yrws2"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yggr1"]
@@ -27,6 +26,7 @@ texture_region_size = Vector2i(1, 1)
 9:0/0 = 0
 10:0/0 = 0
 11:0/0 = 0
+12:0/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_4sgex"]
 tile_size = Vector2i(1, 1)
@@ -37,12 +37,6 @@ sources/1 = SubResource("TileSetAtlasSource_ie7t7")
 script = ExtResource("1_66boa")
 
 [node name="Objects" type="Node" parent="."]
-
-[node name="TerrainMap" type="TileMap" parent="." node_paths=PackedStringArray("Environment")]
-tile_set = SubResource("TileSet_4sgex")
-format = 2
-script = ExtResource("3_vbutg")
-Environment = NodePath("..")
 
 [node name="BiomeMap" type="TileMap" parent="." node_paths=PackedStringArray("Environment")]
 tile_set = SubResource("TileSet_4sgex")
