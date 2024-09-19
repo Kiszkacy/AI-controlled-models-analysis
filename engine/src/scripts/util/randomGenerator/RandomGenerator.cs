@@ -79,7 +79,7 @@ public static class RandomGenerator
         }
         throw new InvalidOperationException("Failed to select an index based on weights.");
     }
-    
+
     public static void SetSeed(int seed)
     {
         RandomGen = new Random(seed);
