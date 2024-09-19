@@ -5,7 +5,7 @@ public static class EnvironmentGenerationUtil
 {
     public static BiomeType GetBiomeAt(Vector2 position, Vector2 size, Vector2 biomeChunkSize, BiomeType[] biomeData)
     {
-        int biomeChunksInARow = (int)(size.X / biomeChunkSize.X) + (size.X % biomeChunkSize.X != 0 ? 1 : 0);
+        int biomeChunksInARow = ChunksInARow(size, biomeChunkSize);
         
         int targetBiomeChunkColumnIndex = (int)(position.X / biomeChunkSize.X);
         int targetBiomeChunkRowIndex = (int)(position.Y / biomeChunkSize.Y);
@@ -13,13 +13,8 @@ public static class EnvironmentGenerationUtil
         return biomeData[targetBiomeChunkRowIndex * biomeChunksInARow + targetBiomeChunkColumnIndex];
     }
     
-    public static bool IsTerrainAt(Vector2 position, Vector2 size, Vector2 terrainChunkSize, bool[] terrainData)
+    public static int ChunksInARow(Vector2 size, Vector2 chunkSize)
     {
-        int terrainChunksInARow = (int)(size.X / terrainChunkSize.X) + (size.X % terrainChunkSize.X != 0 ? 1 : 0);
-        
-        int targetTerrainChunkColumnIndex = (int)(position.X / terrainChunkSize.X);
-        int targetTerrainChunkRowIndex = (int)(position.Y / terrainChunkSize.Y);
-
-        return terrainData[targetTerrainChunkRowIndex * terrainChunksInARow + targetTerrainChunkColumnIndex];
+        return (int)(size.X / chunkSize.X) + (size.X % chunkSize.X != 0 ? 1 : 0);
     }
 }
