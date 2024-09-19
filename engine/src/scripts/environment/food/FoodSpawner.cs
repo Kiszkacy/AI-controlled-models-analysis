@@ -65,8 +65,8 @@ public partial class FoodSpawner : Node, Initializable // TODO remove exports, n
         Node2D foodInstance = (Node2D)this.packedFood.Instantiate();
         this.AddChild(foodInstance);
         Vector2 spawnOffset = new(
-            (RandomGenerator.Occurs(0.5f) ? 1 : -1) * (RandomGenerator.Float(0, 1) * (this.FoodSpawnOuterRadius - this.FoodSpawnInnerRadius) + this.FoodSpawnInnerRadius),
-            (RandomGenerator.Occurs(0.5f) ? 1 : -1) * (RandomGenerator.Float(0, 1) * (this.FoodSpawnOuterRadius - this.FoodSpawnInnerRadius) + this.FoodSpawnInnerRadius)
+            (RandomGenerator.Occurs(0.5f) ? 1 : -1) * RandomGenerator.Float(this.FoodSpawnInnerRadius, this.FoodSpawnOuterRadius),
+            (RandomGenerator.Occurs(0.5f) ? 1 : -1) * RandomGenerator.Float(this.FoodSpawnInnerRadius, this.FoodSpawnOuterRadius)
         );
         foodInstance.GlobalPosition = this.SpawnPositionTarget.GlobalPosition + spawnOffset;
         Food food = (Food)foodInstance;
