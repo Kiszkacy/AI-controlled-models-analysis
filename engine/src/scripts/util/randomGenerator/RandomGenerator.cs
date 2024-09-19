@@ -4,7 +4,7 @@ using System.Linq;
 
 public static class RandomGenerator
 {
-    private static readonly Random RandomGen = new Random();
+    private static Random RandomGen = new Random();
 
     public static int Int(int min, int max)
     {
@@ -78,5 +78,10 @@ public static class RandomGenerator
             }
         }
         throw new InvalidOperationException("Failed to select an index based on weights.");
+    }
+    
+    public static void SetSeed(int seed)
+    {
+        RandomGen = new Random(seed);
     }
 }
