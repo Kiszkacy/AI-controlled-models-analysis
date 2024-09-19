@@ -5,7 +5,7 @@ public class BiomeGeneratorBuilder
     private NoiseGenerator noise1;
     private NoiseGenerator noise2;
     private BiomeTableRow[] biomes;
-    
+
     public static BiomeGeneratorBuilder Start => new();
 
     public BiomeGeneratorBuilder SetNoise1(NoiseGenerator noise)
@@ -20,7 +20,8 @@ public class BiomeGeneratorBuilder
         return this;
     }
 
-    public BiomeGeneratorBuilder SetBiomeTable(BiomeTableRow[] biomeTable) {
+    public BiomeGeneratorBuilder SetBiomeTable(BiomeTableRow[] biomeTable)
+    {
         this.biomes = biomeTable;
         return this;
     }
@@ -32,10 +33,10 @@ public class BiomeGeneratorBuilder
 
     public BiomeGeneratorBuilder SetAllToDefault()
     {
-        return this.SetNoise1(NoiseGeneratorBuilder.Start.SetAllToDefault().End())
+        return this.SetNoise1(NoiseGeneratorBuilder.Start.SetAllToDefault().SetFrequency(0.4f).End())
             .SetNoise2(NoiseGeneratorBuilder.Start.SetAllToDefault().End())
             .SetBiomeTable(BiomeTable.Biomes);
     }
-    
-    private BiomeGeneratorBuilder() {}
+
+    private BiomeGeneratorBuilder() { }
 }

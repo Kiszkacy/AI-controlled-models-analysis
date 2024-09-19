@@ -5,7 +5,7 @@ using Godot;
 
 public static class EnvironmentObjectTable
 {
-    private static Dictionary<EnvironmentObjectId, PackedScene> Table = new()
+    private static readonly Dictionary<EnvironmentObjectId, PackedScene> Table = new()
     {
         // TREES
         {

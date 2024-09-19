@@ -6,7 +6,7 @@ using Godot;
 public class NoiseGeneratorBuilder
 {
     private readonly FastNoiseLite noise = new();
-    
+
     public static NoiseGeneratorBuilder Start => new();
 
     public NoiseGeneratorBuilder SetNoiseType(FastNoiseLite.NoiseTypeEnum type)
@@ -21,17 +21,20 @@ public class NoiseGeneratorBuilder
         return this;
     }
 
-    public NoiseGeneratorBuilder SetFrequency(float frequency) {
+    public NoiseGeneratorBuilder SetFrequency(float frequency)
+    {
         this.noise.Frequency = frequency;
         return this;
     }
-    
-    public NoiseGeneratorBuilder SetOctaves(int octaves) {
+
+    public NoiseGeneratorBuilder SetOctaves(int octaves)
+    {
         this.noise.FractalOctaves = octaves;
         return this;
     }
-    
-    public NoiseGeneratorBuilder SetGain(float gain) {
+
+    public NoiseGeneratorBuilder SetGain(float gain)
+    {
         this.noise.FractalGain = gain;
         return this;
     }
@@ -49,6 +52,6 @@ public class NoiseGeneratorBuilder
             .SetOctaves(3)
             .SetGain(0.5f);
     }
-    
-    private NoiseGeneratorBuilder() {}
+
+    private NoiseGeneratorBuilder() { }
 }

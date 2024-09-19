@@ -8,7 +8,7 @@ using Godot;
 public class ObjectGenerator
 {
     private readonly int maxAmountOfSpawnTriesIfFailed;
-    
+
     public EnvironmentObjectData[] Generate(EnvironmentGenerationSettings settings, BiomeType[] biomeData, bool[] terrainData)
     {
         LinkedList<EnvironmentObjectData> data = new();
@@ -56,7 +56,7 @@ public class ObjectGenerator
                 currentChunkPosition.Y += settings.TerrainChunkSize.Y;
             }
         }
-        
+
         return data.ToArray();
     }
 

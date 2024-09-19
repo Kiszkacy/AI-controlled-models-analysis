@@ -10,14 +10,14 @@ public class BiomeGenerator
     private readonly NoiseGenerator noise1;
     private readonly NoiseGenerator noise2;
     private readonly BiomeTableRow[] biomes;
-    
+
     public BiomeType[] Generate(EnvironmentGenerationSettings settings)
     {
         Vector2 mapCenter = settings.Size / 2.0f;
         float maxDistance = Mathf.Min(settings.Size.Y / 2.0f, settings.Size.X / 2.0f);
         Vector2 currentChunkPosition = Vector2.Zero;
         LinkedList<BiomeType> data = new();
-        
+
         while (true)
         {
             Vector2 currentChunkCenter = currentChunkPosition + settings.BiomeChunkSize / 2.0f;
@@ -43,14 +43,14 @@ public class BiomeGenerator
 
         return data.ToArray();
     }
-    
+
     private BiomeType GetBiomeType(float distance, float noise1, float noise2) // TODO: przejrzyj mnie i posprzataj, kod z chatu
     {
         if (distance > 1.0f)
         {
             return BiomeType.Ocean;
         }
-        
+
         BiomeTableRow? row_ = null;
         foreach (BiomeTableRow biomeRow in this.biomes)
         {

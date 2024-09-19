@@ -10,11 +10,11 @@ public class TerrainGenerator
     public int PassCount { get; }
     public int MinimalRequiredOceanNeighborCountToCorrode { get; }
     public float CorrosionChance { get; }
-    
+
     public bool[] Generate(EnvironmentGenerationSettings settings, BiomeType[] biomeData)
     {
         bool[] isIslandAccordingToBiomes = GetIslandChunksAccordingToBiomeData(settings, biomeData);
-        
+
         bool[] isIslandAfterCorrosion = CorrodeIslandChunks(settings, isIslandAccordingToBiomes);
 
         return isIslandAfterCorrosion;
@@ -24,12 +24,12 @@ public class TerrainGenerator
     {
         Vector2 currentChunkPosition = Vector2.Zero;
         LinkedList<bool> isIsland = new();
-        
+
         while (true)
         {
             BiomeType biomeAtCurrentPosition = EnvironmentGenerationUtil.GetBiomeAt(currentChunkPosition, settings.Size, settings.BiomeChunkSize, biomeData);
             isIsland.AddLast(biomeAtCurrentPosition != BiomeType.Ocean);
-            
+
             currentChunkPosition.X += settings.TerrainChunkSize.X;
             if (currentChunkPosition.X >= settings.Size.X)
             {
@@ -58,17 +58,17 @@ public class TerrainGenerator
                 result.AddLast(false);
                 continue;
             }
-            
+
             int oceanNeighborCount = GetOceanNeighborCount(index, chunksInARow, isIsland);
             if (oceanNeighborCount < this.MinimalRequiredOceanNeighborCountToCorrode)
             {
                 result.AddLast(true);
                 continue;
             }
-        
+
             result.AddLast(!(new Random().NextDouble() <= this.CorrosionChance));
         }
-        
+
         return result.ToArray();
     }
 
@@ -108,7 +108,7 @@ public class TerrainGenerator
         {
             count += 1;
         }
-        
+
         return count;
     }
 

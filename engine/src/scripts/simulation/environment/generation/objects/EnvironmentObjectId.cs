@@ -6,11 +6,11 @@ public enum EnvironmentObjectId
     AppleTree,
     PineTree,
     LargePineTree,
-    
+
     BerryBush,
     SmallBush,
     BigBush,
-    
+
     MediumRock,
     LargeRock,
     GiantRock

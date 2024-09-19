@@ -1,8 +1,8 @@
 
-using Godot;
-
 using System;
 using System.Collections.Generic;
+
+using Godot;
 
 public readonly struct BiomeTableRow
 {
@@ -20,7 +20,7 @@ public readonly struct BiomeTableRow
 
 public static class BiomeTable
 {
-    public static BiomeTableRow[] Biomes = 
+    public static BiomeTableRow[] Biomes =
     {
         new(0.9f, 1.0f, new[]
         {
@@ -75,7 +75,7 @@ public static class BiomeTable
             BiomeType.Flatland,
             new BiomeObjectData(5.0f, new[]
             {
-                EnvironmentObjectId.SmallBush, 
+                EnvironmentObjectId.SmallBush,
                 EnvironmentObjectId.SmallBush,
                 EnvironmentObjectId.SmallBush,
                 EnvironmentObjectId.SmallBush,
@@ -86,7 +86,7 @@ public static class BiomeTable
             BiomeType.BushFlatland,
             new BiomeObjectData(8.0f, new[]
             {
-                EnvironmentObjectId.SmallBush, 
+                EnvironmentObjectId.SmallBush,
                 EnvironmentObjectId.SmallBush,
                 EnvironmentObjectId.SmallBush,
                 EnvironmentObjectId.BerryBush

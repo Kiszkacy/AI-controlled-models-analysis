@@ -4,7 +4,7 @@ using Godot;
 public class NoiseGenerator
 {
     private readonly FastNoiseLite noise;
-    
+
     public FastNoiseLite.NoiseTypeEnum NoiseType => this.noise.NoiseType;
     public int Seed => this.noise.Seed;
     public float Frequency => this.noise.Frequency;
@@ -15,7 +15,7 @@ public class NoiseGenerator
     {
         return this.noise.GetNoise2D(position.X, position.Y);
     }
-    
+
     public float At(float positionX, float positionY)
     {
         return this.noise.GetNoise2D(positionX, positionY);

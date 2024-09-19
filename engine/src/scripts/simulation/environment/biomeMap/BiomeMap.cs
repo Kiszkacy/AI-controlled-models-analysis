@@ -17,7 +17,7 @@ public partial class BiomeMap : TileMap
         EnvironmentGenerationSettings settings = this.Environment.TemplateData.GenerationSettings;
 
         this.GlobalScale = new Vector2(1, 1) * settings.TerrainChunkSize;
-                           
+
         BiomeType[] biomeData = this.Environment.TemplateData.BiomeData;
         bool[] terrainData = this.Environment.TemplateData.TerrainData;
         Vector2 terrainSize = settings.TerrainChunkSize;
@@ -33,7 +33,7 @@ public partial class BiomeMap : TileMap
                 {
                     biomeType = EnvironmentGenerationUtil.GetBiomeAt(settings.TerrainChunkSize*new Vector2(x+0.5f, y+0.5f), settings.Size, settings.BiomeChunkSize, biomeData);
                 }
-            
+
                 this.SetCell(0, new Vector2I(x, y), 0, new Vector2I((int)biomeType, 0));
             }
         }

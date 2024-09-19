@@ -13,6 +13,6 @@ public class ObjectGeneratorBuilder
     {
         return this;
     }
-    
-    private ObjectGeneratorBuilder() {}
+
+    private ObjectGeneratorBuilder() { }
 }

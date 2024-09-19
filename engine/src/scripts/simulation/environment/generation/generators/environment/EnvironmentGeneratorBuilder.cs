@@ -9,7 +9,7 @@ public class EnvironmentGeneratorBuilder
     private Vector2 size;
     private Vector2 biomeChunkSize;
     private Vector2 terrainChunkSize;
-    
+
     public static EnvironmentGeneratorBuilder Start => new();
 
     public EnvironmentGeneratorBuilder SetBiomeGenerator(BiomeGenerator biomeGenerator)
@@ -17,19 +17,19 @@ public class EnvironmentGeneratorBuilder
         this.biomeGenerator = biomeGenerator;
         return this;
     }
-    
+
     public EnvironmentGeneratorBuilder SetTerrainGenerator(TerrainGenerator terrainGenerator)
     {
         this.terrainGenerator = terrainGenerator;
         return this;
     }
-    
+
     public EnvironmentGeneratorBuilder SetObjectGenerator(ObjectGenerator objectGenerator)
     {
         this.objectGenerator = objectGenerator;
         return this;
     }
-    
+
     public EnvironmentGeneratorBuilder SetSize(Vector2 sizeInPixels)
     {
         this.size = sizeInPixels;
@@ -42,7 +42,8 @@ public class EnvironmentGeneratorBuilder
         return this;
     }
 
-    public EnvironmentGeneratorBuilder SetTerrainChunkSize(Vector2 sizeInPixels) {
+    public EnvironmentGeneratorBuilder SetTerrainChunkSize(Vector2 sizeInPixels)
+    {
         this.terrainChunkSize = sizeInPixels;
         return this;
     }
@@ -61,6 +62,6 @@ public class EnvironmentGeneratorBuilder
             .SetBiomeChunkSize(new Vector2(100, 100))
             .SetTerrainChunkSize(new Vector2(50, 50));
     }
-    
-    private EnvironmentGeneratorBuilder() {}
+
+    private EnvironmentGeneratorBuilder() { }
 }

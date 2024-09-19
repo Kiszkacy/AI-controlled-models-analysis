@@ -14,7 +14,7 @@ public readonly struct EnvironmentTemplate
         Environment environment = packedEnvironment.Instantiate<Environment>();
         environment.Initialize(this);
         Node objectNode = environment.GetNode("Objects");
-        
+
         foreach (EnvironmentObjectData objectData in this.ObjectData)
         {
             PackedScene packedObject = EnvironmentObjectTable.Get(objectData.Id);
@@ -23,7 +23,7 @@ public readonly struct EnvironmentTemplate
             // TODO object registration, check safe spawn radius here ?
             objectNode.AddChild(instantiatedObject);
         }
-        
+
         return environment;
     }
 
