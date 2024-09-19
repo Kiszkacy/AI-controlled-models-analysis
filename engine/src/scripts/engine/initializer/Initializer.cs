@@ -14,15 +14,18 @@ public partial class Initializer : Node
             .Print("  | LOADING SINGLETONS")
             .End();
         this.LoadSingletons();
+        
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
             .Print("  | SETTING UP ENGINE SETTINGS")
             .End();
         this.SetupEngineSettings();
+        
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
             .Print("  | INITIAL LOAD COMPLETE")
             .End();
+        
         if ((!CommandLineReader.OpenedViaCommandLine && Config.Get().Tests.RunTests) || (CommandLineReader.OpenedViaCommandLine && Config.Get().Tests.RunTestsWhenOpenedViaCommandLine))
         {
             NeatPrinter.Start()
@@ -35,6 +38,12 @@ public partial class Initializer : Node
                 .Print("  | TESTS COMPLETED")
                 .End();
         }
+        
+        NeatPrinter.Start()
+            .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+            .Print("  | GENERATING ENVIRONMENT")
+            .End();
+        this.GenerateEnvironment();
     }
 
     private void LoadSingletons() // this method loads singletons that are required to be loaded in a specific order
@@ -62,6 +71,17 @@ public partial class Initializer : Node
     private void RunTests()
     {
         TestRunner.Get().Run();
+    }
+    
+    private void GenerateEnvironment() // TODO temporary, remove me later
+    {
+        EnvironmentGenerator environmentGenerator = EnvironmentGeneratorBuilder.Start.SetAllToDefault().SetSize(new Vector2(8000, 5000)).End();
+        EnvironmentTemplate environmentTemplate = environmentGenerator.Generate();
+        Environment environment = environmentTemplate.Instantiate();
+        
+        Node parent = this.GetParent<Node>();
+        parent.CallDeferred("add_child", environment);
+        ((Node2D)(parent.GetNode("Camera"))).GlobalPosition = environment.Size / 2.0f;
     }
 
     public Initializer()
