@@ -4,6 +4,12 @@ using Godot;
 public class NoiseGenerator
 {
     private readonly FastNoiseLite noise;
+    
+    public FastNoiseLite.NoiseTypeEnum NoiseType => this.noise.NoiseType;
+    public int Seed => this.noise.Seed;
+    public float Frequency => this.noise.Frequency;
+    public int Octaves => this.noise.FractalOctaves;
+    public float Gain => this.noise.FractalGain;
 
     public float At(Vector2 position)
     {

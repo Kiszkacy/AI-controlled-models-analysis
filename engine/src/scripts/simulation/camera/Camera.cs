@@ -3,16 +3,16 @@
 public partial class Camera : Camera2D
 {
     [Export(PropertyHint.Range, "100,1000,10,or_greater")]
-    public float MoveSpeed { get; set; } = 300.0f; // in px/sec
+    public float MoveSpeed { get; set; } = 400.0f; // in px/sec
 
-    [Export(PropertyHint.Range, "0.1,2.0,0.1,or_greater")]
+    [Export(PropertyHint.Range, "0.1,2.0,0.05,or_greater")]
     public float ZoomSpeed { get; set; } = 1.0f; // per sec
 
-    [Export(PropertyHint.Range, "1.0,5.0,0.1,or_greater")]
-    public float MaxZoom { get; set; } = 3.0f;
+    [Export(PropertyHint.Range, "1.0,5.0,0.05,or_greater")]
+    public float MaxZoom { get; set; } = 2.0f;
 
-    [Export(PropertyHint.Range, "0.1,1.0,0.1")]
-    public float MinZoom { get; set; } = 0.3f;
+    [Export(PropertyHint.Range, "0.1,1.0,0.05")]
+    public float MinZoom { get; set; } = 0.25f;
 
     private Vector2 moveDirection = Vector2.Zero;
     private bool zoomingIn = false;

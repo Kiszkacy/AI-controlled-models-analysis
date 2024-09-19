@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-public struct AgentAction
+public readonly struct AgentAction
 {
     public int Id { get; }
     public float AccelerateStrength { get; }

@@ -29,7 +29,7 @@ public partial class Food : Area2D
     private void UpdateColor()
     {
         float ratio = (float)this.lifetimeTimer.Time / this.Lifetime;
-        this.sprite.Modulate = new Color(1.0f, ratio, ratio);
+        this.sprite.Modulate = new Color(ratio, 0.0f, 1.0f-ratio);
     }
 
     private void Die()

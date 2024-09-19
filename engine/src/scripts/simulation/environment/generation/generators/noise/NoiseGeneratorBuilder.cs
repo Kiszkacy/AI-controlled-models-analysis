@@ -41,14 +41,13 @@ public class NoiseGeneratorBuilder
         return new NoiseGenerator(this.noise);
     }
 
-    public NoiseGenerator SetAllToDefault()
+    public NoiseGeneratorBuilder SetAllToDefault()
     {
         return this.SetNoiseType(FastNoiseLite.NoiseTypeEnum.Perlin)
             .SetSeed(new Random().Next())
-            .SetFrequency(0.01f)
-            .SetOctaves(4)
-            .SetGain(0.5f)
-            .End();
+            .SetFrequency(0.5f)
+            .SetOctaves(3)
+            .SetGain(0.5f);
     }
     
     private NoiseGeneratorBuilder() {}
