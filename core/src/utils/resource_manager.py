@@ -26,7 +26,7 @@ class ResourceManager:
         if not token.active:  # Raise some error?
             return False
 
-        if token.type is ResourceTokenType.NON_BLOCKING:  # The all tokes are blocked by blocking token
+        if token.type is ResourceTokenType.NON_BLOCKING:  # The all tokens are blocked by blocking token
             async with self.lock:
                 pass
 
