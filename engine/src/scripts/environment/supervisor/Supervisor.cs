@@ -54,8 +54,8 @@ public partial class Supervisor : Node
         Node2D agentInstance = (Node2D)(this.UseLogicAgents ? this.packedLogicAgent : this.packedTrainAgent).Instantiate();
         this.AgentsRootNode.AddChild(agentInstance);
         Vector2 spawnOffset = new Vector2(
-            (float)(new Random().NextDouble() * this.Environment.Size.X),
-            (float)(new Random().NextDouble() * this.Environment.Size.Y)
+            RandomGenerator.Float(0, this.Environment.Size.X),
+            RandomGenerator.Float(0, this.Environment.Size.Y)
         );
         agentInstance.GlobalPosition = this.Environment.GlobalPosition + spawnOffset;
         Agent agent = (Agent)agentInstance;

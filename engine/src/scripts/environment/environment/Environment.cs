@@ -33,8 +33,8 @@ public partial class Environment : Node2D
             do
             {
                 spawnPosition = new Vector2(
-                    (float)new Random().NextDouble() * this.Size.X,
-                    (float)new Random().NextDouble() * this.Size.Y
+                    RandomGenerator.Float(0, this.Size.X),
+                    RandomGenerator.Float(0, this.Size.Y)
                 );
             } while (this.GetChildren().Any(children => ((Tree)children).GlobalPosition.DistanceTo(spawnPosition) <= tree.SpawnSafeDistance*1.5f));
             tree.GlobalPosition = spawnPosition;
