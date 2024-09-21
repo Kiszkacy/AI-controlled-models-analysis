@@ -18,3 +18,4 @@ environment:
   healthRegenPerSecond: 1.0
   score:
     foodEaten: 100
+  bucketSize: 256
