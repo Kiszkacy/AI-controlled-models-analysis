@@ -2,7 +2,7 @@ using System;
 
 using Godot;
 
-public partial class Food : Area2D
+public partial class Food : Area2D, Bucketable
 {
     [Export(PropertyHint.Range, "1,100,or_greater")]
     public float EnergyNutrition { get; set; } = 30.0f;
@@ -10,8 +10,9 @@ public partial class Food : Area2D
     [Export(PropertyHint.Range, "5,100,or_greater")]
     public float Lifetime { get; set; } = 40.0f; // in sec
 
+    public Vector2I BucketId { get; set; }
+    
     private readonly Timer lifetimeTimer;
-
     private Sprite2D sprite;
 
     public override void _Ready()
@@ -34,7 +35,7 @@ public partial class Food : Area2D
 
     private void Die()
     {
-        EntityManager.Get().RemoveFood(this);
+        EntityManager.Get().FoodBuckets.RemoveEntity(this);
         this.QueueFree();
     }
 
