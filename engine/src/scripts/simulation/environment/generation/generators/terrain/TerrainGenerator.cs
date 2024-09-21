@@ -48,7 +48,7 @@ public class TerrainGenerator
     private bool[] CorrodeIslandChunks(EnvironmentGenerationSettings settings, bool[] isIsland)
     {
         LinkedList<bool> result = new();
-        int chunksInARow = EnvironmentGenerationUtil.ChunksInARow(settings.Size, settings.TerrainChunkSize);
+        int chunksInARow = EnvironmentGenerationUtil.ChunksInARow(settings.Size.X, settings.TerrainChunkSize.X);
 
         // TODO add pass count
         for (int index = 0; index < isIsland.Length; index++)

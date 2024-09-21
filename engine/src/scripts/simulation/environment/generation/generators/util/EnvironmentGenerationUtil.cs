@@ -5,7 +5,7 @@ public static class EnvironmentGenerationUtil
 {
     public static BiomeType GetBiomeAt(Vector2 position, Vector2 size, Vector2 biomeChunkSize, BiomeType[] biomeData)
     {
-        int biomeChunksInARow = ChunksInARow(size, biomeChunkSize);
+        int biomeChunksInARow = ChunksInARow(size.X, biomeChunkSize.X);
 
         int targetBiomeChunkColumnIndex = (int)(position.X / biomeChunkSize.X);
         int targetBiomeChunkRowIndex = (int)(position.Y / biomeChunkSize.Y);
@@ -13,8 +13,8 @@ public static class EnvironmentGenerationUtil
         return biomeData[targetBiomeChunkRowIndex * biomeChunksInARow + targetBiomeChunkColumnIndex];
     }
 
-    public static int ChunksInARow(Vector2 size, Vector2 chunkSize)
+    public static int ChunksInARow(float environmentWidth, float chunkWidth)
     {
-        return (int)(size.X / chunkSize.X) + (size.X % chunkSize.X != 0 ? 1 : 0);
+        return (int)(environmentWidth / chunkWidth) + (environmentWidth % chunkWidth != 0 ? 1 : 0);
     }
 }
