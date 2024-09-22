@@ -25,12 +25,12 @@ public readonly struct EnvironmentTemplate
             objectNode.AddChild(instantiatedObject);
         }
     }
-    
+
     public Environment Instantiate()
     {
         PackedScene packedEnvironment = ResourceLoader.Load<PackedScene>("res://src/scenes/environment/environment.tscn");
         Environment environment = packedEnvironment.Instantiate<Environment>();
-        
+
         this._Instantiate(environment, true);
         return environment;
     }

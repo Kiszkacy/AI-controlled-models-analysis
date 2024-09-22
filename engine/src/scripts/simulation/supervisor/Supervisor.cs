@@ -52,27 +52,28 @@ public partial class Supervisor : Node
     private void SpawnAgent()
     {
         Node2D agentInstance = (Node2D)(this.UseLogicAgents ? this.packedLogicAgent : this.packedTrainAgent).Instantiate();
-        this.AgentsRootNode.AddChild(agentInstance);
+        this.AgentsRootNode.CallDeferred("add_child", agentInstance);
+        // this.AgentsRootNode.AddChild(agentInstance);
         Vector2 spawnOffset = new Vector2(
             (float)(new Random().NextDouble() * this.Environment.Size.X),
             (float)(new Random().NextDouble() * this.Environment.Size.Y)
         );
         agentInstance.GlobalPosition = this.Environment.GlobalPosition + spawnOffset;
         Agent agent = (Agent)agentInstance;
-        EntityManager.Get().RegisterAgent(agent);
+        // EntityManager.Get().RegisterAgent(agent);
     }
 
     private void SendData()
     {
-        List<AgentData> data = new List<AgentData>();
-        foreach (var (_, agent_) in EntityManager.Get().Agents)
-        {
-            TrainAgent agent = (TrainAgent)agent_;
-            data.Add(agent.NormalizedData);
-        }
-
-        byte[] rawData = JsonConvert.SerializeObject(data).ToUtf8Buffer();
-        PipeHandler.Get().Send(rawData);
+        // List<AgentData> data = new List<AgentData>();
+        // foreach (var (_, agent_) in EntityManager.Get().Agents)
+        // {
+        //     TrainAgent agent = (TrainAgent)agent_;
+        //     data.Add(agent.NormalizedData);
+        // }
+        //
+        // byte[] rawData = JsonConvert.SerializeObject(data).ToUtf8Buffer();
+        // PipeHandler.Get().Send(rawData);
     }
 
     private void ReceiveData()
@@ -104,11 +105,11 @@ public partial class Supervisor : Node
 
     private void AssignActions(List<AgentAction> actions)
     {
-        foreach (AgentAction action in actions)
-        {
-            TrainAgent agent = (TrainAgent)EntityManager.Get().Agent(action.Id);
-            agent.Action = action;
-        }
+        // foreach (AgentAction action in actions)
+        // {
+        //     TrainAgent agent = (TrainAgent)EntityManager.Get().Agent(action.Id);
+        //     agent.Action = action;
+        // }
     }
 
     public void Reset()

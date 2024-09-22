@@ -8,7 +8,7 @@ public class EntityLayer<T> : Initializable where T : Node2D, Bucketable
 {
     private HashSet<T>[][] buckets;
     private Vector2 environmentSize;
-    private int bucketSize = Config.Get().Environment.BucketSize;
+    private readonly int bucketSize = Config.Get().Environment.BucketSize;
 
     private HashSet<T> Bucket(Vector2I bucketId) => this.buckets[bucketId.X][bucketId.Y];
 
@@ -19,18 +19,18 @@ public class EntityLayer<T> : Initializable where T : Node2D, Bucketable
     {
         int bucketCountInARow = EnvironmentGenerationUtil.ChunksInARow(this.environmentSize.X, this.bucketSize);
         int bucketCountInAColumn = EnvironmentGenerationUtil.ChunksInARow(this.environmentSize.Y, this.bucketSize);
-        
+
         this.buckets = new HashSet<T>[bucketCountInAColumn][];
         for (int i = 0; i < bucketCountInAColumn; i++)
         {
             this.buckets[i] = new HashSet<T>[bucketCountInARow];
-            
+
             for (int j = 0; j < bucketCountInARow; j++)
             {
                 this.buckets[i][j] = new HashSet<T>();
             }
         }
-        
+
         this.initialized.Initialize();
     }
 
@@ -41,14 +41,14 @@ public class EntityLayer<T> : Initializable where T : Node2D, Bucketable
 
         return new Vector2I(positionX, positionY);
     }
-    
+
     public void RegisterEntity(T entity)
     {
         Vector2I bucketId = this.VectorToBucketId(entity.GlobalPosition);
         entity.BucketId = bucketId;
         this.Bucket(bucketId).Add(entity);
     }
-    
+
     public void RemoveEntity(T entity)
     {
         this.Bucket(entity.BucketId).Remove(entity);
@@ -58,14 +58,14 @@ public class EntityLayer<T> : Initializable where T : Node2D, Bucketable
     {
         return this.Bucket(bucketId).ToArray();
     }
-    
+
     public T[] GetEntitiesFrom3x3(Vector2I bucketId)
     {
         int rows = this.buckets.Length;
         int columns = this.buckets[0].Length;
 
         HashSet<T> mergedBucket = new(this.Bucket(bucketId));
-        
+
         if (bucketId.X - 1 >= 0 && bucketId.Y - 1 >= 0)
         {
             mergedBucket.UnionWith(this.Bucket(new(bucketId.X - 1, bucketId.Y - 1)));

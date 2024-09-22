@@ -4,7 +4,7 @@ using Godot;
 public class EntityManager : Singleton<EntityManager>, Initializable
 {
     public EntityLayer<Food> FoodBuckets { get; private set; }
-    
+
     private readonly InitializableWrapper initialized = new();
     public bool IsInitialized => this.initialized.IsInitialized;
 

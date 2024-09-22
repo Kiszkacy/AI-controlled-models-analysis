@@ -11,7 +11,7 @@ public partial class Food : Area2D, Bucketable
     public float Lifetime { get; set; } = 40.0f; // in sec
 
     public Vector2I BucketId { get; set; }
-    
+
     private readonly Timer lifetimeTimer;
     private Sprite2D sprite;
 

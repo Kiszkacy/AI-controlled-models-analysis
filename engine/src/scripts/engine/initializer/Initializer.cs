@@ -44,7 +44,7 @@ public partial class Initializer : Node
             .Print("  | GENERATING ENVIRONMENT")
             .End();
         this.GenerateEnvironment();
-        
+
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
             .Print("  | ENVIRONMENT SETUP")
@@ -84,11 +84,11 @@ public partial class Initializer : Node
         EnvironmentGenerator environmentGenerator = EnvironmentGeneratorBuilder.Start.SetAllToDefault().End();
         EnvironmentTemplate environmentTemplate = environmentGenerator.Generate();
         EntityManager.Instance.Initialize(environmentTemplate.GenerationSettings.Size); // IMPORTANT: EntityManager must initialize before environment instantiates
-        
+
         Node parent = this.GetParent<Node>();
         Environment environment = ((Environment)(parent.GetNode("Environment")));
         environment.Initialize(environmentTemplate);
-        
+
         ((Node2D)(parent.GetNode("Camera"))).GlobalPosition = environment.Size / 2.0f;
     }
 

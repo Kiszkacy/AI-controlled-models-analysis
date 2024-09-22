@@ -93,11 +93,11 @@ public partial class Agent : CharacterBody2D
     protected void SightProcess()
     {
         this.closestFoodPosition = null;
-        
+
         RayCast2D rayCast = AgentSightRayCastManager.Get().RayCast;
         rayCast.GlobalPosition = this.GlobalPosition;
         float distanceToClosestFood = float.PositiveInfinity;
-        
+
         foreach (Food food in EntityManager.Get().FoodBuckets.GetEntitiesFrom3x3(EntityManager.Instance.FoodBuckets.VectorToBucketId(this.GlobalPosition)))
         {
             rayCast.TargetPosition = food.GlobalPosition - rayCast.GlobalPosition;

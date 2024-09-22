@@ -5,10 +5,10 @@ using Godot;
 
 public class AgentSightRayCastManager : Singleton<AgentSightRayCastManager>, Initializable
 {
-    private RayCast2D rayCast = new();
-    
+    private readonly RayCast2D rayCast = new();
+
     public RayCast2D RayCast => this.IsInitialized ? this.rayCast : throw new Exception("Not initialized.");
-    
+
     private readonly InitializableWrapper initialized = new();
     public bool IsInitialized => this.initialized.IsInitialized;
 
@@ -24,7 +24,7 @@ public class AgentSightRayCastManager : Singleton<AgentSightRayCastManager>, Ini
         }
 
         this.SetupRayCastMask();
-        
+
         this.initialized.Initialize();
     }
 

@@ -18,7 +18,7 @@ public partial class Environment : Node2D, Initializable
         {
             this.TemplateData.InstantiateInto(this);
         }
-        
+
         this.initialized.Initialize();
     }
 }
