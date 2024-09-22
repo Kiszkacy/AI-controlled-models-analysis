@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://d7ustprm3wu2"]
+[gd_scene load_steps=6 format=3 uid="uid://d7ustprm3wu2"]
 
 [ext_resource type="Script" path="res://src/scripts/engine/initializer/Initializer.cs" id="1_k36hy"]
 [ext_resource type="Script" path="res://src/scripts/engine/endOfFrameProcessor/EndOfFrameProcessor.cs" id="2_3vvuh"]
+[ext_resource type="PackedScene" uid="uid://ps0rqdnn0u36" path="res://src/scenes/environment/environment.tscn" id="2_tgcc1"]
 [ext_resource type="Script" path="res://src/scripts/simulation/camera/Camera.cs" id="3_2o0lw"]
 [ext_resource type="Script" path="res://src/scripts/simulation/supervisor/Supervisor.cs" id="3_u0dcj"]
 
@@ -19,12 +20,15 @@ metadata/_edit_use_anchors_ = true
 editor_description = "This node must be the first child of the Root node to work properly."
 script = ExtResource("1_k36hy")
 
+[node name="Environment" parent="." instance=ExtResource("2_tgcc1")]
+
 [node name="Agents" type="Node2D" parent="."]
 
-[node name="Supervisor" type="Node" parent="." node_paths=PackedStringArray("AgentsRootNode")]
+[node name="Supervisor" type="Node" parent="." node_paths=PackedStringArray("AgentsRootNode", "Environment")]
 script = ExtResource("3_u0dcj")
 AgentsRootNode = NodePath("../Agents")
-InitialAgentCount = 0
+Environment = NodePath("../Environment")
+InitialAgentCount = 50
 UseLogicAgents = true
 
 [node name="Camera" type="Camera2D" parent="."]
