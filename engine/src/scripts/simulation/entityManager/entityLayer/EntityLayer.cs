@@ -1,4 +1,4 @@
-﻿
+
 using System.Collections.Generic;
 using System.Linq;
 
@@ -34,7 +34,7 @@ public class EntityLayer<T> : Initializable where T : Node2D, Bucketable
         this.initialized.Initialize();
     }
 
-    private Vector2I VectorToBucketId(Vector2 position) // TODO move this function to global thingy majingy
+    public Vector2I VectorToBucketId(Vector2 position) // TODO move this function to global thingy majingy ?
     {
         int positionX = (int)(position.X / this.bucketSize);
         int positionY = (int)(position.Y / this.bucketSize);
@@ -45,6 +45,7 @@ public class EntityLayer<T> : Initializable where T : Node2D, Bucketable
     public void RegisterEntity(T entity)
     {
         Vector2I bucketId = this.VectorToBucketId(entity.GlobalPosition);
+        entity.BucketId = bucketId;
         this.Bucket(bucketId).Add(entity);
     }
     

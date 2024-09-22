@@ -5,11 +5,11 @@ public partial class LogicAgent : Agent
 {
     public override void _PhysicsProcess(double delta)
     {
-        if (this.closestFood != null && this.AngleToClosestFood >= Mathf.DegToRad(1.0f))
+        if (this.closestFoodPosition != null && this.AngleToClosestFood >= Mathf.DegToRad(1.0f))
         {
             this.RotateTowardsFood();
         }
-        else if (this.closestFood != null && this.AngleToClosestFood < Mathf.DegToRad(1.0f))
+        else if (this.closestFoodPosition != null && this.AngleToClosestFood < Mathf.DegToRad(1.0f))
         {
             this.MoveTowardsFood();
         }

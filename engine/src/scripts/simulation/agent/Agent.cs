@@ -43,9 +43,9 @@ public partial class Agent : CharacterBody2D
     public float DirectionAngle => this.Direction.Angle();
     public float Speed => this.Velocity.Length();
 
-    protected Food closestFood = null;
-    public float DistanceToClosestFood => this.closestFood?.GlobalPosition.DistanceTo(this.GlobalPosition) ?? float.NaN; // in radians
-    public float AngleToClosestFood => this.closestFood != null ? this.Direction.AngleTo(this.closestFood.GlobalPosition - this.GlobalPosition) : float.NaN; // in radians
+    protected Vector2? closestFoodPosition = null;
+    public float DistanceToClosestFood => this.closestFoodPosition?.DistanceTo(this.GlobalPosition) ?? float.NaN; // in radians
+    public float AngleToClosestFood => this.closestFoodPosition.HasValue ? this.Direction.AngleTo(this.closestFoodPosition.Value - this.GlobalPosition) : float.NaN; // in radians
 
     private int id = -1;
 
@@ -87,32 +87,34 @@ public partial class Agent : CharacterBody2D
 
     protected void Die()
     {
-        EntityManager.Get().RemoveAgent(this);
         this.QueueFree();
     }
 
     protected void SightProcess()
     {
-        this.closestFood = null;
-
-        foreach (Food food in EntityManager.Get().Food)
+        this.closestFoodPosition = null;
+        
+        RayCast2D rayCast = AgentSightRayCastManager.Get().RayCast;
+        rayCast.GlobalPosition = this.GlobalPosition;
+        float distanceToClosestFood = float.PositiveInfinity;
+        
+        foreach (Food food in EntityManager.Get().FoodBuckets.GetEntitiesFrom3x3(EntityManager.Instance.FoodBuckets.VectorToBucketId(this.GlobalPosition)))
         {
-            float distanceToFood = food.GlobalPosition.DistanceTo(this.GlobalPosition);
-            if (distanceToFood >= this.SightRadius)
+            rayCast.TargetPosition = food.GlobalPosition - rayCast.GlobalPosition;
+            rayCast.ForceRaycastUpdate();
+            if (!rayCast.IsColliding()) // not colliding with environment objects (trees, bushes etc)
             {
-                continue;
-            }
-
-            if (this.closestFood != null && this.closestFood.GlobalPosition.DistanceTo(this.GlobalPosition) <= distanceToFood)
-            {
-                continue;
-            }
-
-            Vector2 directionToFood = (food.GlobalPosition - this.GlobalPosition).Normalized();
-            float angleToFoodInRadians = this.Direction.AngleTo(directionToFood);
-            if (Mathf.Abs(angleToFoodInRadians) < this.SightAngle / 2.0f)
-            {
-                this.closestFood = food;
+                float currentDistance = this.GlobalPosition.DistanceSquaredTo(food.GlobalPosition);
+                if (currentDistance < distanceToClosestFood)
+                {
+                    Vector2 directionToFood = (food.GlobalPosition - this.GlobalPosition).Normalized();
+                    float angleToFoodInRadians = this.Direction.AngleTo(directionToFood);
+                    if (Mathf.Abs(angleToFoodInRadians) < this.SightAngle / 2.0f) // TODO do this first, before raycast check
+                    {
+                        distanceToClosestFood = currentDistance;
+                        this.closestFoodPosition = food.GlobalPosition;
+                    }
+                }
             }
         }
     }
@@ -184,7 +186,13 @@ public partial class Agent : CharacterBody2D
         this.UpdateEnergy(delta);
         this.UpdateHealth(delta);
         this.MovementProcess(delta);
-        this.SightProcess();
+        // TODO: move this to config variable
+        // TODO: make offsets so each agent updates at a different frame
+        if (Engine.GetPhysicsFrames() % 15 == 0) // every third frame update sight 
+        {
+            this.SightProcess();
+        }
+
         this.UpdateColor();
     }
 }
