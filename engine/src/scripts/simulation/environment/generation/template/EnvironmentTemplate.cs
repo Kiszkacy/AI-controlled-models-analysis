@@ -8,11 +8,12 @@ public readonly struct EnvironmentTemplate
     public bool[] TerrainData { get; }
     public EnvironmentObjectData[] ObjectData { get; }
 
-    public Environment Instantiate()
+    private void _Instantiate(Environment environment, bool shouldInitialize)
     {
-        PackedScene packedEnvironment = ResourceLoader.Load<PackedScene>("res://src/scenes/environment/environment.tscn");
-        Environment environment = packedEnvironment.Instantiate<Environment>();
-        environment.Initialize(this);
+        if (shouldInitialize)
+        {
+            environment.Initialize(this, true);
+        }
         Node objectNode = environment.GetNode("Objects");
 
         foreach (EnvironmentObjectData objectData in this.ObjectData)
@@ -23,8 +24,20 @@ public readonly struct EnvironmentTemplate
             // TODO object registration, check safe spawn radius here ?
             objectNode.AddChild(instantiatedObject);
         }
-
+    }
+    
+    public Environment Instantiate()
+    {
+        PackedScene packedEnvironment = ResourceLoader.Load<PackedScene>("res://src/scenes/environment/environment.tscn");
+        Environment environment = packedEnvironment.Instantiate<Environment>();
+        
+        this._Instantiate(environment, true);
         return environment;
+    }
+
+    public void InstantiateInto(Environment environment)
+    {
+        this._Instantiate(environment, false);
     }
 
     public EnvironmentTemplate(EnvironmentGenerationSettings generationSettings, BiomeType[] biomeData, bool[] terrainData, EnvironmentObjectData[] objectData)

@@ -11,9 +11,14 @@ public partial class Environment : Node2D, Initializable
     private readonly InitializableWrapper initialized = new();
     public bool IsInitialized => this.initialized.IsInitialized;
 
-    public void Initialize(EnvironmentTemplate template)
+    public void Initialize(EnvironmentTemplate template, bool initializedViaTemplate = false)
     {
         this.TemplateData = template;
+        if (!initializedViaTemplate)
+        {
+            this.TemplateData.InstantiateInto(this);
+        }
+        
         this.initialized.Initialize();
     }
 }

@@ -44,6 +44,12 @@ public partial class Initializer : Node
             .Print("  | GENERATING ENVIRONMENT")
             .End();
         this.GenerateEnvironment();
+        
+        NeatPrinter.Start()
+            .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+            .Print("  | ENVIRONMENT SETUP")
+            .End();
+        this.SetupEnvironment();
     }
 
     private void LoadSingletons() // this method loads singletons that are required to be loaded in a specific order
@@ -77,11 +83,18 @@ public partial class Initializer : Node
     {
         EnvironmentGenerator environmentGenerator = EnvironmentGeneratorBuilder.Start.SetAllToDefault().End();
         EnvironmentTemplate environmentTemplate = environmentGenerator.Generate();
-        Environment environment = environmentTemplate.Instantiate();
-
+        EntityManager.Instance.Initialize(environmentTemplate.GenerationSettings.Size); // IMPORTANT: EntityManager must initialize before environment instantiates
+        
         Node parent = this.GetParent<Node>();
-        parent.CallDeferred("add_child", environment);
+        Environment environment = ((Environment)(parent.GetNode("Environment")));
+        environment.Initialize(environmentTemplate);
+        
         ((Node2D)(parent.GetNode("Camera"))).GlobalPosition = environment.Size / 2.0f;
+    }
+
+    private void SetupEnvironment() // TODO remove me too
+    {
+        AgentSightRayCastManager.Instance.Initialize(this.GetParent(), true);
     }
 
     public Initializer()
