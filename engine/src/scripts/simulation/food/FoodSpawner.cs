@@ -70,7 +70,7 @@ public partial class FoodSpawner : Node, Initializable // TODO remove exports, n
         );
         foodInstance.GlobalPosition = this.SpawnPositionTarget.GlobalPosition + spawnOffset;
         Food food = (Food)foodInstance;
-        EntityManager.Get().RegisterFood(food);
+        EntityManager.Get().FoodBuckets.RegisterEntity(food);
 
         if (!this.IsFull)
         {
