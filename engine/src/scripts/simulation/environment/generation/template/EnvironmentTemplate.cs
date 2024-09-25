@@ -21,8 +21,15 @@ public readonly struct EnvironmentTemplate
             PackedScene packedObject = EnvironmentObjectTable.Get(objectData.Id);
             EnvironmentObject instantiatedObject = packedObject.Instantiate<EnvironmentObject>();
             instantiatedObject.GlobalPosition = objectData.Position;
-            // TODO object registration, check safe spawn radius here ?
+            
+            if (!this.CanObjectBePlaced(instantiatedObject))
+            {
+                continue;
+            }
+            
             objectNode.AddChild(instantiatedObject);
+            
+            EntityManager.Get().ObjectBuckets.RegisterEntity(instantiatedObject);
         }
     }
 
@@ -38,6 +45,23 @@ public readonly struct EnvironmentTemplate
     public void InstantiateInto(Environment environment)
     {
         this._Instantiate(environment, false);
+    }
+
+    private bool CanObjectBePlaced(EnvironmentObject object_) // TODO this could be optimized in a way that object is instantiated after this check not before
+    {
+        Vector2I objectBucketId = EntityManager.Instance.ObjectBuckets.VectorToBucketId(object_.GlobalPosition);
+        EnvironmentObject[] neighbors = EntityManager.Instance.ObjectBuckets.GetEntitiesFrom3x3(objectBucketId);
+
+        foreach (EnvironmentObject neighbor in neighbors)
+        {
+            float requiredDistance = Mathf.Max(neighbor.SpawnSafeDistance, object_.SpawnSafeDistance);
+            if (neighbor.GlobalPosition.DistanceTo(object_.GlobalPosition) < requiredDistance)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public EnvironmentTemplate(EnvironmentGenerationSettings generationSettings, BiomeType[] biomeData, bool[] terrainData, EnvironmentObjectData[] objectData)
