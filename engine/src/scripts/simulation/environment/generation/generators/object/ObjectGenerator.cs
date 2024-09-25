@@ -7,7 +7,8 @@ using Godot;
 
 public class ObjectGenerator
 {
-    private readonly int maxAmountOfSpawnTriesIfFailed;
+    private readonly int maxAmountOfSpawnTries;
+    private readonly int safeSpaceDistance;
 
     public EnvironmentObjectData[] Generate(EnvironmentGenerationSettings settings, BiomeType[] biomeData, bool[] terrainData)
     {
@@ -31,7 +32,8 @@ public class ObjectGenerator
             BiomeType biomeAtCurrentPosition = EnvironmentGenerationUtil.GetBiomeAt(currentChunkCenter, settings.Size, settings.BiomeChunkSize, biomeData);
             float targetAmountOfObjects = BiomeTable.BiomeObjectPool[biomeAtCurrentPosition].AmountOfObjectsPer1000x1000Pixels;
             float chanceAmount = (settings.TerrainChunkSize.X * settings.TerrainChunkSize.Y / (1000 * 1000)) * targetAmountOfObjects;
-
+            LinkedList<EnvironmentObjectData> currentChunkData = new();
+            
             while (chanceAmount > 0.0f)
             {
                 if (chanceAmount <= 1.0f && !RandomGenerator.Occurs(chanceAmount))
@@ -39,15 +41,17 @@ public class ObjectGenerator
                     break;
                 }
 
-                Vector2? possiblePosition = this.GetValidObjectPosition(currentChunkPosition, settings.TerrainChunkSize);
+                Vector2? possiblePosition = this.GetValidObjectPosition(currentChunkPosition, currentChunkData, settings.TerrainChunkSize);
                 if (possiblePosition.HasValue)
                 {
                     Vector2 position = possiblePosition.Value;
                     EnvironmentObjectId objectId = this.PickObjectId(biomeAtCurrentPosition);
-                    data.AddLast(new EnvironmentObjectData(objectId, position));
+                    currentChunkData.AddLast(new EnvironmentObjectData(objectId, position));
                 }
                 chanceAmount -= 1.0f;
             }
+            
+            data.Extend(currentChunkData);
 
             currentChunkPosition.X += settings.TerrainChunkSize.X;
             if (currentChunkPosition.X >= settings.Size.X)
@@ -60,25 +64,52 @@ public class ObjectGenerator
         return data.ToArray();
     }
 
-    private Vector2? GetValidObjectPosition(Vector2 topLeftPosition, Vector2 chunkSize)
+    private Vector2? GetValidObjectPosition(Vector2 topLeftPosition, LinkedList<EnvironmentObjectData> otherObjectsInThisChunk, Vector2 chunkSize)
     {
-        // TODO: here add missing safe space checks and spawnTries using maxAmountOfSpawnTriesIfFailed
-        // int tryCount = 0;
-        // while (tryCount < this.maxAmountOfSpawnTriesIfFailed) 
-        // {
-        //         
-        // }
-        Vector2 position = new(
-            topLeftPosition.X + RandomGenerator.Float(0.0f, chunkSize.X),
-            topLeftPosition.Y + RandomGenerator.Float(0.0f, chunkSize.Y)
-        );
+        int tryCount = 0;
+        bool isValid = false;
+        Vector2 position = Vector2.Zero;
+        
+        while (tryCount < this.maxAmountOfSpawnTries && !isValid) 
+        {
+           position = topLeftPosition + new Vector2(
+                RandomGenerator.Float(0.0f, chunkSize.X),
+                RandomGenerator.Float(0.0f, chunkSize.Y)
+            );
 
-        return position;
+            bool isAnyObjectToClose = false;
+            foreach (EnvironmentObjectData objectData in otherObjectsInThisChunk)
+            {
+                if (objectData.Position.DistanceTo(position) <= this.safeSpaceDistance)
+                {
+                    tryCount += 1;
+                    isAnyObjectToClose = true;
+                    break;
+                }
+            }
+
+            if (!isAnyObjectToClose)
+            {
+                isValid = true;
+            }
+        }
+
+        if (isValid)
+        {
+            return position;
+        }
+        return null;
     }
     
     private EnvironmentObjectId PickObjectId(BiomeType biomeType)
     {
         int pickedObjectIndex = RandomGenerator.Index(BiomeTable.BiomeObjectPool[biomeType].Weights);
         return BiomeTable.BiomeObjectPool[biomeType].Objects[pickedObjectIndex];
+    }
+
+    public ObjectGenerator(int maxAmountOfSpawnTries, int safeSpaceDistance)
+    {
+        this.maxAmountOfSpawnTries = maxAmountOfSpawnTries;
+        this.safeSpaceDistance = safeSpaceDistance;
     }
 }
