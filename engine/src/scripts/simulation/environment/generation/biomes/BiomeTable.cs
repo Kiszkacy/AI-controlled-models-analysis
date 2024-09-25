@@ -68,144 +68,216 @@ public static class BiomeTable
         })
     };
 
-    public static Dictionary<BiomeType, BiomeObjectData> BiomeObjectPool = new() // TODO: this needs a rewrite when custom Random util class is created
+    public static Dictionary<BiomeType, BiomeObjectData> BiomeObjectPool = new()
     {
         // FLATLANDS
         {
             BiomeType.Flatland,
-            new BiomeObjectData(5.0f, new[]
-            {
-                EnvironmentObjectId.SmallBush,
-                EnvironmentObjectId.SmallBush,
-                EnvironmentObjectId.SmallBush,
-                EnvironmentObjectId.SmallBush,
-                EnvironmentObjectId.SmallTree
-            })
+            new BiomeObjectData(
+                5.0f, 
+                objects: new[]
+                {
+                    EnvironmentObjectId.SmallBush,
+                    EnvironmentObjectId.SmallTree
+                }, 
+                weights: new[]
+                {
+                    4, 
+                    1
+                }
+            )
         },
         {
             BiomeType.BushFlatland,
-            new BiomeObjectData(8.0f, new[]
-            {
-                EnvironmentObjectId.SmallBush,
-                EnvironmentObjectId.SmallBush,
-                EnvironmentObjectId.SmallBush,
-                EnvironmentObjectId.BerryBush
-            })
+            new BiomeObjectData(
+                8.0f, 
+                objects: new[]
+                {
+                    EnvironmentObjectId.SmallBush,
+                    EnvironmentObjectId.BerryBush
+                }, 
+                weights: new[]
+                {
+                    3, 
+                    1
+                }
+            )
         },
         {
             BiomeType.DenseBushFlatland,
-            new BiomeObjectData(25.0f, new[]
-            {
-                EnvironmentObjectId.SmallBush,
-                EnvironmentObjectId.BerryBush
-            })
+            new BiomeObjectData(
+                25.0f, 
+                objects: new[]
+                {
+                    EnvironmentObjectId.SmallBush,
+                    EnvironmentObjectId.BerryBush
+                }, 
+                weights: new[]
+                {
+                    1, 
+                    1
+                }
+            )
         },
         {
             BiomeType.RockyFlatland,
-            new BiomeObjectData(8.0f, new[]
-            {
-                EnvironmentObjectId.SmallBush,
-                EnvironmentObjectId.MediumRock,
-                EnvironmentObjectId.MediumRock
-            })
+            new BiomeObjectData(
+                8.0f, 
+                objects: new[]
+                {
+                    EnvironmentObjectId.SmallBush,
+                    EnvironmentObjectId.MediumRock
+                }, 
+                weights: new[]
+                {
+                    1, 
+                    2
+                }
+            )
         },
         
         // FORESTS
         {
             BiomeType.OakForest,
-            new BiomeObjectData(25.0f, new[]
-            {
-                EnvironmentObjectId.OakTree,
-                EnvironmentObjectId.OakTree,
-                EnvironmentObjectId.OakTree,
-                EnvironmentObjectId.OakTree,
-                EnvironmentObjectId.AppleTree,
-                EnvironmentObjectId.AppleTree,
-                EnvironmentObjectId.AppleTree,
-                EnvironmentObjectId.BigBush,
-                EnvironmentObjectId.SmallBush,
-                EnvironmentObjectId.BerryBush
-            })
+            new BiomeObjectData(
+                25.0f, 
+                objects: new[]
+                {
+                    EnvironmentObjectId.OakTree,
+                    EnvironmentObjectId.AppleTree,
+                    EnvironmentObjectId.BigBush,
+                    EnvironmentObjectId.SmallBush,
+                    EnvironmentObjectId.BerryBush
+                }, 
+                weights: new[]
+                {
+                    4, 
+                    3,
+                    1,
+                    1,
+                    1
+                }
+            )
         },
         {
             BiomeType.OakForestOutskirts,
-            new BiomeObjectData(15.0f, new[]
-            {
-                EnvironmentObjectId.OakTree,
-                EnvironmentObjectId.OakTree,
-                EnvironmentObjectId.OakTree,
-                EnvironmentObjectId.AppleTree,
-                EnvironmentObjectId.SmallBush
-            })
+            new BiomeObjectData(
+                15.0f, 
+                objects: new[]
+                {
+                    EnvironmentObjectId.OakTree,
+                    EnvironmentObjectId.AppleTree,
+                    EnvironmentObjectId.SmallBush
+                }, 
+                weights: new[]
+                {
+                    3, 
+                    1,
+                    1
+                }
+            )
         },
         {
             BiomeType.PineForest,
-            new BiomeObjectData(25.0f, new[]
-            {
-                EnvironmentObjectId.PineTree,
-                EnvironmentObjectId.PineTree,
-                EnvironmentObjectId.PineTree,
-                EnvironmentObjectId.PineTree,
-                EnvironmentObjectId.BerryBush,
-                EnvironmentObjectId.SmallBush
-            })
+            new BiomeObjectData(
+                25.0f, 
+                objects: new[]
+                {
+                    EnvironmentObjectId.PineTree,
+                    EnvironmentObjectId.BerryBush,
+                    EnvironmentObjectId.SmallBush
+                }, 
+                weights: new[]
+                {
+                    4, 
+                    1,
+                    1
+                }
+            )
         },
         {
             BiomeType.PineForestOutskirts,
-            new BiomeObjectData(15.0f, new[]
-            {
-                EnvironmentObjectId.PineTree,
-                EnvironmentObjectId.PineTree,
-                EnvironmentObjectId.PineTree,
-                EnvironmentObjectId.SmallBush,
-            })
+            new BiomeObjectData(
+                15.0f, 
+                objects: new[]
+                {
+                    EnvironmentObjectId.PineTree,
+                    EnvironmentObjectId.SmallBush
+                }, 
+                weights: new[]
+                {
+                    3, 
+                    1
+                }
+            )
         },
         {
             BiomeType.DensePineForest,
-            new BiomeObjectData(25.0f, new[]
-            {
-                EnvironmentObjectId.LargePineTree,
-                EnvironmentObjectId.LargePineTree,
-                EnvironmentObjectId.LargePineTree,
-                EnvironmentObjectId.PineTree,
-                EnvironmentObjectId.BigBush
-            })
+            new BiomeObjectData(
+                25.0f, 
+                objects: new[]
+                {
+                    EnvironmentObjectId.LargePineTree,
+                    EnvironmentObjectId.PineTree,
+                    EnvironmentObjectId.BigBush
+                }, 
+                weights: new[]
+                {
+                    3, 
+                    1,
+                    1
+                }
+            )
         },
         
         // ROCKYLANDS
         {
             BiomeType.Rockyland,
-            new BiomeObjectData(25.0f, new[]
-            {
-                EnvironmentObjectId.MediumRock,
-                EnvironmentObjectId.LargeRock,
-                EnvironmentObjectId.LargeRock,
-                EnvironmentObjectId.LargeRock,
-                EnvironmentObjectId.GiantRock
-            })
+            new BiomeObjectData(
+                25.0f, 
+                objects: new[]
+                {
+                    EnvironmentObjectId.MediumRock,
+                    EnvironmentObjectId.LargeRock,
+                    EnvironmentObjectId.GiantRock
+                }, 
+                weights: new[]
+                {
+                    1, 
+                    3,
+                    1
+                }
+            )
         },
         {
             BiomeType.RockylandOutskirts,
-            new BiomeObjectData(8.0f, new[]
-            {
-                EnvironmentObjectId.MediumRock,
-                EnvironmentObjectId.MediumRock,
-                EnvironmentObjectId.MediumRock,
-                EnvironmentObjectId.LargeRock,
-                EnvironmentObjectId.SmallBush
-            })
+            new BiomeObjectData(
+                8.0f, 
+                objects: new[]
+                {
+                    EnvironmentObjectId.MediumRock,
+                    EnvironmentObjectId.LargeRock,
+                    EnvironmentObjectId.SmallBush
+                }, 
+                weights: new[]
+                {
+                    3, 
+                    1,
+                    1
+                }
+            )
         },
         
         // BEACH
         {
             BiomeType.Beach,
-            new BiomeObjectData(0.0f, new EnvironmentObjectId[]{})
+            new BiomeObjectData(0.0f, Array.Empty<EnvironmentObjectId>(), Array.Empty<int>())
         },
         
         // OCEAN
         {
             BiomeType.Ocean,
-            new BiomeObjectData(0.0f, new EnvironmentObjectId[]{})
+            new BiomeObjectData(0.0f, Array.Empty<EnvironmentObjectId>(), Array.Empty<int>())
         }
     };
 }

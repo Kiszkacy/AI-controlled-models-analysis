@@ -43,7 +43,7 @@ public class ObjectGenerator
                 if (possiblePosition.HasValue)
                 {
                     Vector2 position = possiblePosition.Value;
-                    EnvironmentObjectId objectId = this.PickObjectId(biomeAtCurrentPosition); // TODO: replace this method call and method itself with new Random() class method
+                    EnvironmentObjectId objectId = this.PickObjectId(biomeAtCurrentPosition);
                     data.AddLast(new EnvironmentObjectData(objectId, position));
                 }
                 chanceAmount -= 1.0f;
@@ -75,11 +75,10 @@ public class ObjectGenerator
 
         return position;
     }
-
+    
     private EnvironmentObjectId PickObjectId(BiomeType biomeType)
     {
-        EnvironmentObjectId[] objects = BiomeTable.BiomeObjectPool[biomeType].Objects;
-        int index = new Random().Next(objects.Length);
-        return objects[index];
+        int pickedObjectIndex = RandomGenerator.Index(BiomeTable.BiomeObjectPool[biomeType].Weights);
+        return BiomeTable.BiomeObjectPool[biomeType].Objects[pickedObjectIndex];
     }
 }
