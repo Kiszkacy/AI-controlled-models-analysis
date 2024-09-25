@@ -100,16 +100,16 @@ public partial class Agent : CharacterBody2D
 
         foreach (Food food in EntityManager.Get().FoodBuckets.GetEntitiesFrom3x3(EntityManager.Instance.FoodBuckets.VectorToBucketId(this.GlobalPosition)))
         {
-            rayCast.TargetPosition = food.GlobalPosition - rayCast.GlobalPosition;
-            rayCast.ForceRaycastUpdate();
-            if (!rayCast.IsColliding()) // not colliding with environment objects (trees, bushes etc)
+            Vector2 directionToFood = (food.GlobalPosition - this.GlobalPosition).Normalized();
+            float angleToFoodInRadians = this.Direction.AngleTo(directionToFood);
+            if (Mathf.Abs(angleToFoodInRadians) < this.SightAngle / 2.0f)
             {
                 float currentDistance = this.GlobalPosition.DistanceSquaredTo(food.GlobalPosition);
                 if (currentDistance < distanceToClosestFood)
                 {
-                    Vector2 directionToFood = (food.GlobalPosition - this.GlobalPosition).Normalized();
-                    float angleToFoodInRadians = this.Direction.AngleTo(directionToFood);
-                    if (Mathf.Abs(angleToFoodInRadians) < this.SightAngle / 2.0f) // TODO do this first, before raycast check
+                    rayCast.TargetPosition = food.GlobalPosition - rayCast.GlobalPosition;
+                    rayCast.ForceRaycastUpdate();
+                    if (!rayCast.IsColliding()) // not colliding with environment objects (trees, bushes etc)
                     {
                         distanceToClosestFood = currentDistance;
                         this.closestFoodPosition = food.GlobalPosition;
@@ -188,7 +188,7 @@ public partial class Agent : CharacterBody2D
         this.MovementProcess(delta);
         // TODO: move this to config variable
         // TODO: make offsets so each agent updates at a different frame
-        if (Engine.GetPhysicsFrames() % 15 == 0) // every third frame update sight 
+        if (Engine.GetPhysicsFrames() % 3 == 0) // every third frame update sight 
         {
             this.SightProcess();
         }
