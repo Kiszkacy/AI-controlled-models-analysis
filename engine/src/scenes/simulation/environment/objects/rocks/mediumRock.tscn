@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://dwe8ve2tnrnhf"]
+
+[ext_resource type="Texture2D" uid="uid://c1sk0i0dckmmf" path="res://assets/sprites/pixel-art/wall.png" id="1_837ij"]
+[ext_resource type="Script" path="res://src/scripts/simulation/environment/generation/objects/rock/Rock.cs" id="1_jq3j1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5gkfd"]
+radius = 26.0
+
+[node name="MediumRock" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_jq3j1")
+SpawnSafeDistance = 48
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_5gkfd")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(3, 3)
+texture = ExtResource("1_837ij")

@@ -14,15 +14,25 @@ public partial class Initializer : Node
             .Print("  | LOADING SINGLETONS")
             .End();
         this.LoadSingletons();
+
+        int seed = 0;
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
-            .Print("  | SETTING UP ENGINE SETTINGS")
+            .Print($"  | SET SEED TO {seed}")
             .End();
-        this.SetupEngineSettings();
+        RandomGenerator.SetSeed(seed);
+
+        NeatPrinter.Start()
+            .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+            .Print("  | ENGINE SETUP")
+            .End();
+        this.SetupEngine();
+
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
             .Print("  | INITIAL LOAD COMPLETE")
             .End();
+
         if ((!CommandLineReader.OpenedViaCommandLine && Config.Get().Tests.RunTests) || (CommandLineReader.OpenedViaCommandLine && Config.Get().Tests.RunTestsWhenOpenedViaCommandLine))
         {
             NeatPrinter.Start()
@@ -35,6 +45,18 @@ public partial class Initializer : Node
                 .Print("  | TESTS COMPLETED")
                 .End();
         }
+
+        NeatPrinter.Start()
+            .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+            .Print("  | GENERATING ENVIRONMENT")
+            .End();
+        this.GenerateEnvironment();
+
+        NeatPrinter.Start()
+            .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+            .Print("  | ENVIRONMENT SETUP")
+            .End();
+        this.SetupEnvironment();
     }
 
     private void LoadSingletons() // this method loads singletons that are required to be loaded in a specific order
@@ -53,7 +75,7 @@ public partial class Initializer : Node
         CommandLineReader.ParseCustomArguments();
     }
 
-    private void SetupEngineSettings()
+    private void SetupEngine()
     {
         Engine.TimeScale = Config.Get().Data.Engine.TimeScale;
         Engine.PhysicsTicksPerSecond = Config.Get().Data.Engine.TicksPerSecond;
@@ -62,6 +84,24 @@ public partial class Initializer : Node
     private void RunTests()
     {
         TestRunner.Get().Run();
+    }
+
+    private void GenerateEnvironment() // TODO temporary, remove me later
+    {
+        EnvironmentGenerator environmentGenerator = EnvironmentGeneratorBuilder.Start.SetAllToDefault().End();
+        EnvironmentTemplate environmentTemplate = environmentGenerator.Generate();
+        EntityManager.Instance.Initialize(environmentTemplate.GenerationSettings.Size); // IMPORTANT: EntityManager must initialize before environment instantiates
+
+        Node parent = this.GetParent<Node>();
+        Environment environment = ((Environment)(parent.GetNode("Environment")));
+        environment.Initialize(environmentTemplate);
+
+        ((Node2D)(parent.GetNode("Camera"))).GlobalPosition = environment.Size / 2.0f;
+    }
+
+    private void SetupEnvironment() // TODO remove me too
+    {
+        AgentSightRayCastManager.Instance.Initialize(this.GetParent(), true);
     }
 
     public Initializer()

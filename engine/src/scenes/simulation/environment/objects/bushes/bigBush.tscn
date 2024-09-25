@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://hu4mgbmw6yqh"]
+
+[ext_resource type="Texture2D" uid="uid://dlbag3m0qgv62" path="res://assets/sprites/pixel-art/broccoli.png" id="1_au5ps"]
+[ext_resource type="Script" path="res://src/scripts/simulation/environment/generation/objects/bush/Bush.cs" id="1_ex3e3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_n7xbi"]
+radius = 26.0
+
+[node name="BigBush" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_ex3e3")
+SpawnSafeDistance = 48
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_n7xbi")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(3, 3)
+texture = ExtResource("1_au5ps")
