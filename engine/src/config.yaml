@@ -19,3 +19,4 @@ environment:
   score:
     foodEaten: 100
   bucketSize: 256
+  agentSightProcessEveryNthFrame: 3

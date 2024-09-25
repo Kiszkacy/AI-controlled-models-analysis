@@ -186,9 +186,8 @@ public partial class Agent : CharacterBody2D
         this.UpdateEnergy(delta);
         this.UpdateHealth(delta);
         this.MovementProcess(delta);
-        // TODO: move this to config variable
         // TODO: make offsets so each agent updates at a different frame
-        if (Engine.GetPhysicsFrames() % 3 == 0) // every third frame update sight 
+        if (Engine.GetPhysicsFrames() % (ulong)Config.Get().Environment.AgentSightProcessEveryNthFrame == 0) // every third frame update sight 
         {
             this.SightProcess();
         }

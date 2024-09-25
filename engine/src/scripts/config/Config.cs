@@ -90,6 +90,7 @@ public class EnvironmentConfig
     public float HealthRegenPerSecond { get; set; }
     public ScoreConfig Score { get; set; }
     public int BucketSize { get; set; }
+    public int AgentSightProcessEveryNthFrame { get; set; }
 }
 
 public class ScoreConfig
