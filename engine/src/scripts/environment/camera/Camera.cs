@@ -1,4 +1,4 @@
-﻿using Godot;
+using Godot;
 
 public partial class Camera : Camera2D
 {
@@ -14,12 +14,25 @@ public partial class Camera : Camera2D
     [Export(PropertyHint.Range, "0.1,1.0,0.1")]
     public float MinZoom { get; set; } = 0.3f;
 
+    [Export(PropertyHint.Range, "0.1,1.0,0.01")]
+    public float DragSmoothness { get; set; } = 0.15f;
+
     private Vector2 moveDirection = Vector2.Zero;
     private bool zoomingIn = false;
     private bool zoomingOut = false;
+    private bool isDragging = false;
+    private Vector2 dragTarget = Vector2.Zero;
+    private Vector2 mouseDragStart = Vector2.Zero;
 
     public override void _Input(InputEvent @event)
     {
+        HandleKeyboardInput(@event);
+        HandleMouseInput(@event);
+    }
+
+    private void HandleKeyboardInput(InputEvent @event)
+    {
+
         if (@event.IsActionPressed("move.camera.up"))
         {
             this.moveDirection += Vector2.Up;
@@ -71,10 +84,42 @@ public partial class Camera : Camera2D
         }
     }
 
+    private void HandleMouseInput(InputEvent @event)
+    {
+        if (@event is InputEventMouseButton mouseEvent)
+        {
+            if (mouseEvent.IsPressed() && mouseEvent.ButtonIndex == MouseButton.Left)
+            {
+                this.isDragging = true;
+                this.dragTarget = this.GlobalPosition;
+                this.mouseDragStart = GetGlobalMousePosition();
+            }
+
+            else if (!mouseEvent.IsPressed() && mouseEvent.ButtonIndex == MouseButton.Left)
+            {
+                this.isDragging = false;
+            }
+
+            if (mouseEvent.DoubleClick && mouseEvent.ButtonIndex == MouseButton.Left)
+            {
+                this.GlobalPosition = GetGlobalMousePosition();
+                this.isDragging = false;
+            }
+        }
+        else if (@event is InputEventMouseMotion motionEvent && isDragging)
+        {
+            Vector2 currentMouse = GetGlobalMousePosition();
+            Vector2 drag = this.mouseDragStart - currentMouse;
+            this.dragTarget += drag;
+            this.mouseDragStart = currentMouse;
+        }
+    }
+
     public override void _PhysicsProcess(double delta)
     {
         this.UpdatePosition(delta);
         this.UpdateZoom(delta);
+        SmoothDragMovement(delta);
     }
 
     private void UpdatePosition(double delta)
@@ -90,5 +135,12 @@ public partial class Camera : Camera2D
 
         this.Zoom += zoomRatio * (float)delta;
         this.Zoom = this.Zoom.Clamp(new Vector2(this.MinZoom, this.MinZoom), new Vector2(this.MaxZoom, this.MaxZoom));
+    }
+    private void SmoothDragMovement(double delta)
+    {
+        if (isDragging && GlobalPosition.DistanceTo(dragTarget) > 0.1f)
+        {
+            GlobalPosition = GlobalPosition.Lerp(dragTarget, DragSmoothness);
+        }
     }
 }
