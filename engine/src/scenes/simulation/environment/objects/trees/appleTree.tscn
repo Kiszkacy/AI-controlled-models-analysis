@@ -4,8 +4,8 @@
 [ext_resource type="Script" path="res://src/scripts/simulation/environment/generation/objects/tree/Tree.cs" id="1_k3y27"]
 [ext_resource type="Script" path="res://src/scripts/simulation/food/FoodSpawner.cs" id="2_jgjvj"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_5ykw2"]
-size = Vector2(64, 64)
+[sub_resource type="CircleShape2D" id="CircleShape2D_rvrp8"]
+radius = 36.0
 
 [node name="AppleTree" type="StaticBody2D"]
 collision_layer = 4
@@ -13,7 +13,7 @@ collision_mask = 0
 script = ExtResource("1_k3y27")
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_5ykw2")
+shape = SubResource("CircleShape2D_rvrp8")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 self_modulate = Color(1, 0.501961, 0.501961, 1)
