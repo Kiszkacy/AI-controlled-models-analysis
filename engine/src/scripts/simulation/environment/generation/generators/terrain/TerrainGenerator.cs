@@ -65,7 +65,7 @@ public class TerrainGenerator
                 result.AddLast(true);
                 continue;
             }
-            
+
             result.AddLast(!RandomGenerator.Occurs(this.CorrosionChance));
         }
 

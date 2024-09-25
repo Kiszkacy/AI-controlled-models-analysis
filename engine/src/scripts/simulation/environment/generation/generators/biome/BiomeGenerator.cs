@@ -71,7 +71,7 @@ public class BiomeGenerator
 
         BiomeTableRow row = possibleRow.Value;
         int targetBiomeRowIndex = (int)((noise1 * row.Biomes.Length) / 1.0f);
-        
+
         BiomeType[] targetBiomeRow = row.Biomes[targetBiomeRowIndex];
         int targetBiomeIndex = (int)((noise2 * targetBiomeRow.Length) / 1.0f);
 

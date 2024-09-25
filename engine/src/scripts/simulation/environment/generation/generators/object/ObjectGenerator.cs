@@ -33,7 +33,7 @@ public class ObjectGenerator
             float targetAmountOfObjects = BiomeTable.BiomeObjectPool[biomeAtCurrentPosition].AmountOfObjectsPer1000x1000Pixels;
             float chanceAmount = (settings.TerrainChunkSize.X * settings.TerrainChunkSize.Y / (1000 * 1000)) * targetAmountOfObjects;
             LinkedList<EnvironmentObjectData> currentChunkData = new();
-            
+
             while (chanceAmount > 0.0f)
             {
                 if (chanceAmount <= 1.0f && !RandomGenerator.Occurs(chanceAmount))
@@ -50,7 +50,7 @@ public class ObjectGenerator
                 }
                 chanceAmount -= 1.0f;
             }
-            
+
             data.Extend(currentChunkData);
 
             currentChunkPosition.X += settings.TerrainChunkSize.X;
@@ -69,8 +69,8 @@ public class ObjectGenerator
         int tryCount = 0;
         bool isValid = false;
         Vector2 position = Vector2.Zero;
-        
-        while (tryCount < this.maxAmountOfSpawnTries && !isValid) 
+
+        while (tryCount < this.maxAmountOfSpawnTries && !isValid)
         {
             tryCount += 1;
             position = topLeftPosition + new Vector2(
@@ -100,7 +100,7 @@ public class ObjectGenerator
         }
         return null;
     }
-    
+
     private EnvironmentObjectId PickObjectId(BiomeType biomeType)
     {
         int pickedObjectIndex = RandomGenerator.Index(BiomeTable.BiomeObjectPool[biomeType].Weights);

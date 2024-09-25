@@ -8,7 +8,7 @@ public partial class EnvironmentObject : Node2D, Bucketable
 
     [Export(PropertyHint.Range, "16,512,")]
     public int SpawnSafeDistance { get; set; } = 64;
-    
+
     public Vector2I BucketId { get; set; }
 
     public override void _Ready()

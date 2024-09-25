@@ -1,7 +1,7 @@
-using System.Linq;
 
 using Godot;
 
+[System.Obsolete] // TODO TileMap is deprecated starting from godot 4.3
 public partial class BiomeMap : TileMap
 {
     [Export]

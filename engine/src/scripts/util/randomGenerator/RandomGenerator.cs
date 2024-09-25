@@ -10,12 +10,12 @@ public static class RandomGenerator
     {
         return RandomGen.Next(min, max + 1);
     }
-    
+
     public static int Int(int max)
     {
         return RandomGen.Next(max + 1);
     }
-    
+
     public static int Int()
     {
         return RandomGen.Next();
@@ -26,13 +26,13 @@ public static class RandomGenerator
         double randomValue = RandomGen.NextDouble();
         return (float)(min + (randomValue * (max - min)));
     }
-    
+
     public static float Float(float max)
     {
         double randomValue = RandomGen.NextDouble();
         return (float)(randomValue * max);
     }
-    
+
     public static float Float()
     {
         return (float)RandomGen.NextDouble();

@@ -3,6 +3,9 @@ using Godot;
 
 public static class EnvironmentGenerationUtil
 {
+    // TODO refactor this and move to global util function, its used in many places not only during generation
+    // TODO or remove it completely and handle biomeData in different way, with more data for ease of use
+    // TODO biomeData could store its position etc
     public static BiomeType GetBiomeAt(Vector2 position, Vector2 size, Vector2 biomeChunkSize, BiomeType[] biomeData)
     {
         int biomeChunksInARow = ChunksInARow(size.X, biomeChunkSize.X);

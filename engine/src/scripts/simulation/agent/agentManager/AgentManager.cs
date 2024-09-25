@@ -5,10 +5,10 @@ public class AgentManager : Singleton<AgentManager>
 {
     private readonly Dictionary<int, Agent> agents = new();
     private int agentIdIterator = 0;
-    
+
     public Agent Agent(int id) => this.agents[id];
     public Dictionary<int, Agent> Agents => this.agents;
-    
+
     public void RegisterAgent(Agent agent)
     {
         this.agents.Add(this.agentIdIterator, agent);

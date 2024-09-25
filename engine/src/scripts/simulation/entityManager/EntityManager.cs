@@ -13,10 +13,10 @@ public class EntityManager : Singleton<EntityManager>, Initializable
     {
         this.FoodBuckets = new EntityLayer<Food>(environmentSize);
         this.FoodBuckets.Initialize();
-        
+
         this.ObjectBuckets = new EntityLayer<EnvironmentObject>(environmentSize);
         this.ObjectBuckets.Initialize();
-        
+
         this.initialized.Initialize();
     }
 }

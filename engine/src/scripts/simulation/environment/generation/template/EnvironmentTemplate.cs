@@ -21,14 +21,14 @@ public readonly struct EnvironmentTemplate
             PackedScene packedObject = EnvironmentObjectTable.Get(objectData.Id);
             EnvironmentObject instantiatedObject = packedObject.Instantiate<EnvironmentObject>();
             instantiatedObject.GlobalPosition = objectData.Position;
-            
+
             if (!this.CanObjectBePlaced(instantiatedObject))
             {
                 continue;
             }
-            
+
             objectNode.AddChild(instantiatedObject);
-            
+
             EntityManager.Get().ObjectBuckets.RegisterEntity(instantiatedObject);
         }
     }

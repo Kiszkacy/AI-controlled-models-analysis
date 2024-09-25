@@ -26,7 +26,7 @@ public class BiomeGeneratorBuilder
         this.distanceRandomness = distanceRandomness;
         return this;
     }
-    
+
     public BiomeGeneratorBuilder SetBiomeTable(BiomeTableRow[] biomeTable)
     {
         this.biomes = biomeTable;

@@ -74,15 +74,15 @@ public static class BiomeTable
         {
             BiomeType.Flatland,
             new BiomeObjectData(
-                5.0f, 
+                5.0f,
                 objects: new[]
                 {
                     EnvironmentObjectId.SmallBush,
                     EnvironmentObjectId.SmallTree
-                }, 
+                },
                 weights: new[]
                 {
-                    4, 
+                    4,
                     1
                 }
             )
@@ -90,15 +90,15 @@ public static class BiomeTable
         {
             BiomeType.BushFlatland,
             new BiomeObjectData(
-                8.0f, 
+                8.0f,
                 objects: new[]
                 {
                     EnvironmentObjectId.SmallBush,
                     EnvironmentObjectId.BerryBush
-                }, 
+                },
                 weights: new[]
                 {
-                    3, 
+                    3,
                     1
                 }
             )
@@ -106,15 +106,15 @@ public static class BiomeTable
         {
             BiomeType.DenseBushFlatland,
             new BiomeObjectData(
-                25.0f, 
+                25.0f,
                 objects: new[]
                 {
                     EnvironmentObjectId.SmallBush,
                     EnvironmentObjectId.BerryBush
-                }, 
+                },
                 weights: new[]
                 {
-                    1, 
+                    1,
                     1
                 }
             )
@@ -122,15 +122,15 @@ public static class BiomeTable
         {
             BiomeType.RockyFlatland,
             new BiomeObjectData(
-                8.0f, 
+                8.0f,
                 objects: new[]
                 {
                     EnvironmentObjectId.SmallBush,
                     EnvironmentObjectId.MediumRock
-                }, 
+                },
                 weights: new[]
                 {
-                    1, 
+                    1,
                     2
                 }
             )
@@ -140,7 +140,7 @@ public static class BiomeTable
         {
             BiomeType.OakForest,
             new BiomeObjectData(
-                25.0f, 
+                25.0f,
                 objects: new[]
                 {
                     EnvironmentObjectId.OakTree,
@@ -148,10 +148,10 @@ public static class BiomeTable
                     EnvironmentObjectId.BigBush,
                     EnvironmentObjectId.SmallBush,
                     EnvironmentObjectId.BerryBush
-                }, 
+                },
                 weights: new[]
                 {
-                    4, 
+                    4,
                     3,
                     1,
                     1,
@@ -162,16 +162,16 @@ public static class BiomeTable
         {
             BiomeType.OakForestOutskirts,
             new BiomeObjectData(
-                15.0f, 
+                15.0f,
                 objects: new[]
                 {
                     EnvironmentObjectId.OakTree,
                     EnvironmentObjectId.AppleTree,
                     EnvironmentObjectId.SmallBush
-                }, 
+                },
                 weights: new[]
                 {
-                    3, 
+                    3,
                     1,
                     1
                 }
@@ -180,16 +180,16 @@ public static class BiomeTable
         {
             BiomeType.PineForest,
             new BiomeObjectData(
-                25.0f, 
+                25.0f,
                 objects: new[]
                 {
                     EnvironmentObjectId.PineTree,
                     EnvironmentObjectId.BerryBush,
                     EnvironmentObjectId.SmallBush
-                }, 
+                },
                 weights: new[]
                 {
-                    4, 
+                    4,
                     1,
                     1
                 }
@@ -198,15 +198,15 @@ public static class BiomeTable
         {
             BiomeType.PineForestOutskirts,
             new BiomeObjectData(
-                15.0f, 
+                15.0f,
                 objects: new[]
                 {
                     EnvironmentObjectId.PineTree,
                     EnvironmentObjectId.SmallBush
-                }, 
+                },
                 weights: new[]
                 {
-                    3, 
+                    3,
                     1
                 }
             )
@@ -214,16 +214,16 @@ public static class BiomeTable
         {
             BiomeType.DensePineForest,
             new BiomeObjectData(
-                25.0f, 
+                25.0f,
                 objects: new[]
                 {
                     EnvironmentObjectId.LargePineTree,
                     EnvironmentObjectId.PineTree,
                     EnvironmentObjectId.BigBush
-                }, 
+                },
                 weights: new[]
                 {
-                    3, 
+                    3,
                     1,
                     1
                 }
@@ -234,16 +234,16 @@ public static class BiomeTable
         {
             BiomeType.Rockyland,
             new BiomeObjectData(
-                25.0f, 
+                25.0f,
                 objects: new[]
                 {
                     EnvironmentObjectId.MediumRock,
                     EnvironmentObjectId.LargeRock,
                     EnvironmentObjectId.GiantRock
-                }, 
+                },
                 weights: new[]
                 {
-                    1, 
+                    1,
                     3,
                     1
                 }
@@ -252,16 +252,16 @@ public static class BiomeTable
         {
             BiomeType.RockylandOutskirts,
             new BiomeObjectData(
-                8.0f, 
+                8.0f,
                 objects: new[]
                 {
                     EnvironmentObjectId.MediumRock,
                     EnvironmentObjectId.LargeRock,
                     EnvironmentObjectId.SmallBush
-                }, 
+                },
                 weights: new[]
                 {
-                    3, 
+                    3,
                     1,
                     1
                 }

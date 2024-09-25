@@ -54,7 +54,7 @@ public partial class Supervisor : Node
         Node2D agentInstance = (Node2D)(this.UseLogicAgents ? this.packedLogicAgent : this.packedTrainAgent).Instantiate();
         this.AgentsRootNode.CallDeferred("add_child", agentInstance);
         this.AgentsRootNode.AddChild(agentInstance);
-        
+
         Vector2 position = Vector2.Zero;
         bool isValid = false;
         int tryCount = 0;
@@ -91,7 +91,7 @@ public partial class Supervisor : Node
             {
                 continue;
             }
-            
+
             Vector2I bucketId = EntityManager.Instance.ObjectBuckets.VectorToBucketId(position);
             bool failedObjectDistanceCheck = false;
             foreach (EnvironmentObject object_ in EntityManager.Get().ObjectBuckets.GetEntitiesFrom3x3(bucketId))
@@ -126,7 +126,7 @@ public partial class Supervisor : Node
             TrainAgent agent = (TrainAgent)agent_;
             data.Add(agent.NormalizedData);
         }
-        
+
         byte[] rawData = JsonConvert.SerializeObject(data).ToUtf8Buffer();
         PipeHandler.Get().Send(rawData);
     }
