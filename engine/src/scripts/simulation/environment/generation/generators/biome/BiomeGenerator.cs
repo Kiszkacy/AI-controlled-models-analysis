@@ -29,7 +29,7 @@ public class BiomeGenerator
             float noise1 = Mathf.Remap(this.noise1.At(currentChunkCenter/1000.0f), -1, 1, 0, 1);
             float noise2 = Mathf.Remap(this.noise2.At(currentChunkCenter/1000.0f), -1, 1, 0, 1);
 
-            BiomeType biomeType = GetBiomeType(distanceFromCenter, noise1, noise2);
+            BiomeType biomeType = this.GetBiomeType(distanceFromCenter, noise1, noise2);
             data.AddLast(biomeType);
 
             currentChunkPosition.X += settings.BiomeChunkSize.X;
@@ -73,7 +73,7 @@ public class BiomeGenerator
         int targetBiomeRowIndex = (int)((noise1 * row.Biomes.Length) / 1.0f);
         
         BiomeType[] targetBiomeRow = row.Biomes[targetBiomeRowIndex];
-        int targetBiomeIndex = (int)((noise2 * biomes.Length) / 1.0f);
+        int targetBiomeIndex = (int)((noise2 * targetBiomeRow.Length) / 1.0f);
 
         return targetBiomeRow[targetBiomeIndex];
     }
