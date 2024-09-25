@@ -112,6 +112,7 @@ public partial class Supervisor : Node
             this.AgentsRootNode.CallDeferred("add_child", agentInstance);
             agentInstance.GlobalPosition = position;
             Agent agent = (Agent)agentInstance;
+            agent.Direction = Vector2.FromAngle(RandomGenerator.Float(Mathf.Pi*2.0f));
             AgentManager.Get().RegisterAgent(agent);
         }
     }
