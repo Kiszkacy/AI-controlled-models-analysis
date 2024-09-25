@@ -15,11 +15,18 @@ public partial class Initializer : Node
             .End();
         this.LoadSingletons();
 
+        int seed = 0;
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
-            .Print("  | SETTING UP ENGINE SETTINGS")
+            .Print($"  | SET SEED TO {seed}")
             .End();
-        this.SetupEngineSettings();
+        RandomGenerator.SetSeed(seed);
+        
+        NeatPrinter.Start()
+            .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+            .Print("  | ENGINE SETUP")
+            .End();
+        this.SetupEngine();
 
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
@@ -68,7 +75,7 @@ public partial class Initializer : Node
         CommandLineReader.ParseCustomArguments();
     }
 
-    private void SetupEngineSettings()
+    private void SetupEngine()
     {
         Engine.TimeScale = Config.Get().Data.Engine.TimeScale;
         Engine.PhysicsTicksPerSecond = Config.Get().Data.Engine.TicksPerSecond;
