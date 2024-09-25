@@ -47,7 +47,7 @@ public class NoiseGeneratorBuilder
     public NoiseGeneratorBuilder SetAllToDefault()
     {
         return this.SetNoiseType(FastNoiseLite.NoiseTypeEnum.Perlin)
-            .SetSeed(new Random().Next())
+            .SetSeed(RandomGenerator.Int())
             .SetFrequency(0.5f)
             .SetOctaves(3)
             .SetGain(0.5f);

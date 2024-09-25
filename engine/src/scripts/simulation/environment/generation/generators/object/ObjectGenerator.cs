@@ -34,7 +34,7 @@ public class ObjectGenerator
 
             while (chanceAmount > 0.0f)
             {
-                if (chanceAmount <= 1.0f && !(new Random().NextDouble() <= chanceAmount))
+                if (chanceAmount <= 1.0f && !RandomGenerator.Occurs(chanceAmount))
                 {
                     break;
                 }
@@ -69,8 +69,8 @@ public class ObjectGenerator
         //         
         // }
         Vector2 position = new(
-            topLeftPosition.X + (float)(new Random().NextDouble()) * chunkSize.X,
-            topLeftPosition.Y + (float)(new Random().NextDouble()) * chunkSize.Y
+            topLeftPosition.X + RandomGenerator.Float(0.0f, chunkSize.X),
+            topLeftPosition.Y + RandomGenerator.Float(0.0f, chunkSize.Y)
         );
 
         return position;
