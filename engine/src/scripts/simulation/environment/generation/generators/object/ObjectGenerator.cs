@@ -72,7 +72,8 @@ public class ObjectGenerator
         
         while (tryCount < this.maxAmountOfSpawnTries && !isValid) 
         {
-           position = topLeftPosition + new Vector2(
+            tryCount += 1;
+            position = topLeftPosition + new Vector2(
                 RandomGenerator.Float(0.0f, chunkSize.X),
                 RandomGenerator.Float(0.0f, chunkSize.Y)
             );
@@ -82,7 +83,6 @@ public class ObjectGenerator
             {
                 if (objectData.Position.DistanceTo(position) <= this.safeSpaceDistance)
                 {
-                    tryCount += 1;
                     isAnyObjectToClose = true;
                     break;
                 }

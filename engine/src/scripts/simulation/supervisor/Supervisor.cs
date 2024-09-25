@@ -53,27 +53,82 @@ public partial class Supervisor : Node
     {
         Node2D agentInstance = (Node2D)(this.UseLogicAgents ? this.packedLogicAgent : this.packedTrainAgent).Instantiate();
         this.AgentsRootNode.CallDeferred("add_child", agentInstance);
-        // this.AgentsRootNode.AddChild(agentInstance);
-        Vector2 spawnOffset = new Vector2(
-            RandomGenerator.Float(0, this.Environment.Size.X),
-            RandomGenerator.Float(0, this.Environment.Size.Y)
-        );
-        agentInstance.GlobalPosition = this.Environment.GlobalPosition + spawnOffset;
-        Agent agent = (Agent)agentInstance;
-        // EntityManager.Get().RegisterAgent(agent);
+        this.AgentsRootNode.AddChild(agentInstance);
+        
+        Vector2 position = Vector2.Zero;
+        bool isValid = false;
+        int tryCount = 0;
+        while (tryCount < Config.Get().Environment.SupervisorAgentMaxSpawnTryCount || !isValid)
+        {
+            tryCount += 1;
+            position = new(
+                RandomGenerator.Float(this.Environment.Size.X),
+                RandomGenerator.Float(this.Environment.Size.Y)
+            );
+
+            BiomeType biomeType = EnvironmentGenerationUtil.GetBiomeAt(
+                position,
+                this.Environment.TemplateData.GenerationSettings.Size,
+                this.Environment.TemplateData.GenerationSettings.BiomeChunkSize,
+                this.Environment.TemplateData.BiomeData
+            );
+
+            if (biomeType == BiomeType.Ocean)
+            {
+                continue;
+            }
+
+            bool failedAgentDistanceCheck = false;
+            foreach (var (_, agent_) in AgentManager.Get().Agents)
+            {
+                if (agent_.GlobalPosition.DistanceTo(position) <= Config.Get().Environment.SupervisorAgentSpawnSafeDistance)
+                {
+                    failedAgentDistanceCheck = true;
+                    break;
+                }
+            }
+            if (failedAgentDistanceCheck)
+            {
+                continue;
+            }
+            
+            Vector2I bucketId = EntityManager.Instance.ObjectBuckets.VectorToBucketId(position);
+            bool failedObjectDistanceCheck = false;
+            foreach (EnvironmentObject object_ in EntityManager.Get().ObjectBuckets.GetEntitiesFrom3x3(bucketId))
+            {
+                if (object_.GlobalPosition.DistanceTo(position) <= Config.Get().Environment.SupervisorAgentSpawnSafeDistance)
+                {
+                    failedObjectDistanceCheck = true;
+                    break;
+                }
+            }
+            if (failedObjectDistanceCheck)
+            {
+                continue;
+            }
+
+            isValid = true;
+        }
+
+        if (isValid)
+        {
+            agentInstance.GlobalPosition = position;
+            Agent agent = (Agent)agentInstance;
+            AgentManager.Get().RegisterAgent(agent);
+        }
     }
 
     private void SendData()
     {
-        // List<AgentData> data = new List<AgentData>();
-        // foreach (var (_, agent_) in EntityManager.Get().Agents)
-        // {
-        //     TrainAgent agent = (TrainAgent)agent_;
-        //     data.Add(agent.NormalizedData);
-        // }
-        //
-        // byte[] rawData = JsonConvert.SerializeObject(data).ToUtf8Buffer();
-        // PipeHandler.Get().Send(rawData);
+        List<AgentData> data = new();
+        foreach (var (_, agent_) in AgentManager.Get().Agents)
+        {
+            TrainAgent agent = (TrainAgent)agent_;
+            data.Add(agent.NormalizedData);
+        }
+        
+        byte[] rawData = JsonConvert.SerializeObject(data).ToUtf8Buffer();
+        PipeHandler.Get().Send(rawData);
     }
 
     private void ReceiveData()
@@ -105,11 +160,11 @@ public partial class Supervisor : Node
 
     private void AssignActions(List<AgentAction> actions)
     {
-        // foreach (AgentAction action in actions)
-        // {
-        //     TrainAgent agent = (TrainAgent)EntityManager.Get().Agent(action.Id);
-        //     agent.Action = action;
-        // }
+        foreach (AgentAction action in actions)
+        {
+            TrainAgent agent = (TrainAgent)AgentManager.Get().Agent(action.Id);
+            agent.Action = action;
+        }
     }
 
     public void Reset()

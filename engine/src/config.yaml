@@ -20,3 +20,5 @@ environment:
     foodEaten: 100
   bucketSize: 256
   agentSightProcessEveryNthFrame: 3
+  SupervisorAgentSpawnSafeDistance: 16
+  SupervisorAgentMaxSpawnTryCount: 50
