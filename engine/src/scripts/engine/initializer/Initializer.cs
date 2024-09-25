@@ -21,7 +21,7 @@ public partial class Initializer : Node
             .Print($"  | SET SEED TO {seed}")
             .End();
         RandomGenerator.SetSeed(seed);
-        
+
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
             .Print("  | ENGINE SETUP")
