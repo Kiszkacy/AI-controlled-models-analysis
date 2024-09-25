@@ -20,8 +20,8 @@ public partial class Supervisor : Node
     [Export]
     public bool UseLogicAgents = false;
 
-    private PackedScene packedTrainAgent = ResourceLoader.Load<PackedScene>("res://src/scenes/environment/trainAgent.tscn");
-    private PackedScene packedLogicAgent = ResourceLoader.Load<PackedScene>("res://src/scenes/environment/logicAgent.tscn");
+    private PackedScene packedTrainAgent = ResourceLoader.Load<PackedScene>("res://src/scenes/simulation/agent/trainAgent.tscn");
+    private PackedScene packedLogicAgent = ResourceLoader.Load<PackedScene>("res://src/scenes/simulation/agent/logicAgent.tscn");
 
     public override void _Ready()
     {
@@ -51,14 +51,10 @@ public partial class Supervisor : Node
 
     private void SpawnAgent()
     {
-        Node2D agentInstance = (Node2D)(this.UseLogicAgents ? this.packedLogicAgent : this.packedTrainAgent).Instantiate();
-        this.AgentsRootNode.CallDeferred("add_child", agentInstance);
-        this.AgentsRootNode.AddChild(agentInstance);
-
         Vector2 position = Vector2.Zero;
         bool isValid = false;
         int tryCount = 0;
-        while (tryCount < Config.Get().Environment.SupervisorAgentMaxSpawnTryCount || !isValid)
+        while (tryCount < Config.Get().Environment.SupervisorAgentMaxSpawnTryCount && !isValid)
         {
             tryCount += 1;
             position = new(
@@ -112,6 +108,8 @@ public partial class Supervisor : Node
 
         if (isValid)
         {
+            Node2D agentInstance = (Node2D)(this.UseLogicAgents ? this.packedLogicAgent : this.packedTrainAgent).Instantiate();
+            this.AgentsRootNode.CallDeferred("add_child", agentInstance);
             agentInstance.GlobalPosition = position;
             Agent agent = (Agent)agentInstance;
             AgentManager.Get().RegisterAgent(agent);

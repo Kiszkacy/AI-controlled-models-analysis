@@ -35,7 +35,7 @@ public readonly struct EnvironmentTemplate
 
     public Environment Instantiate()
     {
-        PackedScene packedEnvironment = ResourceLoader.Load<PackedScene>("res://src/scenes/environment/environment.tscn");
+        PackedScene packedEnvironment = ResourceLoader.Load<PackedScene>("res://src/scenes/simulation/environment/environment.tscn");
         Environment environment = packedEnvironment.Instantiate<Environment>();
 
         this._Instantiate(environment, true);
