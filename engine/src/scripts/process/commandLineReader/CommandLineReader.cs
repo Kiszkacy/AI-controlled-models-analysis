@@ -65,8 +65,12 @@ public class CommandLineReader
         switch (argumentName)
         {
             case "pipe-name":
-                NeatPrinter.Start().Print($"Commandline argument: applied '{argumentValue}' to 'Config.Data.Pipe.Name'.").End();
+                NeatPrinter.Start().Print($"Commandline argument: applied '{argumentValue}' to 'Config.Pipe.Name'.").End();
                 Config.Get().Data.Pipe.Name = argumentValue;
+                break;
+            case "environment-seed":
+                NeatPrinter.Start().Print($"Commandline argument: applied '{argumentValue}' to 'Config.Environment.Seed'.").End();
+                Config.Get().Environment.Seed = int.Parse(argumentValue!);
                 break;
         }
     }

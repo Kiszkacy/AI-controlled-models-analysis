@@ -25,4 +25,10 @@ public class AgentManager : Singleton<AgentManager>
     {
         this.agents.Remove(agent.Id);
     }
+
+    public void Reset()
+    {
+        this.agentIdIterator = 0;
+        this.agents.Clear();
+    }
 }
