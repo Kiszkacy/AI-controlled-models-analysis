@@ -168,6 +168,15 @@ public partial class Supervisor : Node
 
     public void Reset()
     {
-
+        AgentManager.Instance.Reset();
+        foreach (Node agent in this.AgentsRootNode.GetChildren())
+        {
+            this.AgentsRootNode.RemoveChild(agent);
+        }
+        
+        for (int i = 0; i < this.InitialAgentCount; i++)
+        {
+            this.SpawnAgent();
+        }
     }
 }
