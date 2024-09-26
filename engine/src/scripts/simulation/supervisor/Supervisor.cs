@@ -173,7 +173,7 @@ public partial class Supervisor : Node
         {
             this.AgentsRootNode.RemoveChild(agent);
         }
-        
+
         for (int i = 0; i < this.InitialAgentCount; i++)
         {
             this.SpawnAgent();

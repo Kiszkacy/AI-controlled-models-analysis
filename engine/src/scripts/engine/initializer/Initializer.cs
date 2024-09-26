@@ -14,7 +14,7 @@ public partial class Initializer : Node
             .Print("  | LOADING SINGLETONS")
             .End();
         this.LoadSingletons();
-        
+
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
             .Print($"  | SET SEED TO {Config.Instance.Environment.Seed}")
