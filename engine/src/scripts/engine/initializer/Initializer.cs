@@ -14,13 +14,12 @@ public partial class Initializer : Node
             .Print("  | LOADING SINGLETONS")
             .End();
         this.LoadSingletons();
-
-        int seed = 0;
+        
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
-            .Print($"  | SET SEED TO {seed}")
+            .Print($"  | SET SEED TO {Config.Instance.Environment.Seed}")
             .End();
-        RandomGenerator.SetSeed(seed);
+        RandomGenerator.SetSeed(Config.Instance.Environment.Seed);
 
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
