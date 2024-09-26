@@ -93,6 +93,7 @@ public class EnvironmentConfig
     public int AgentSightProcessEveryNthFrame { get; set; }
     public int SupervisorAgentSpawnSafeDistance { get; set; }
     public int SupervisorAgentMaxSpawnTryCount { get; set; }
+    public int Seed { get; set; }
 }
 
 public class ScoreConfig

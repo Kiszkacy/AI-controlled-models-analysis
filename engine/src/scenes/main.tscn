@@ -28,8 +28,7 @@ script = ExtResource("1_k36hy")
 script = ExtResource("3_u0dcj")
 AgentsRootNode = NodePath("../Agents")
 Environment = NodePath("../Environment")
-InitialAgentCount = 50
-UseLogicAgents = true
+InitialAgentCount = 25
 
 [node name="Camera" type="Camera2D" parent="."]
 position = Vector2(640, 360)
