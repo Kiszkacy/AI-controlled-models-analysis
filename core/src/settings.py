@@ -30,6 +30,7 @@ class TrainingSettings(BaseSettings):
     number_of_env_per_worker: Annotated[int, Field(gt=0)]
     training_iterations: Annotated[int, Field(gt=0)]
     training_batch_size: Annotated[int, Field(gt=0)]
+    training_checkpoint_frequency: Annotated[int, Field(gt=0)]
 
 
 class EnvironmentSettings(BaseSettings):
@@ -51,15 +52,9 @@ class EnvironmentSettings(BaseSettings):
         return self
 
 
-class CommunicationSettings(BaseSettings):
-    model_config = SettingsConfigDict(frozen=True)
-
-    reset: Annotated[int, ...]
-
-
-class Settings(BaseSettings):
+class CoreSettings(BaseSettings):
     model_config = SettingsConfigDict(
-        yaml_file=["../settings.yaml", "../../global/config.yaml"],
+        yaml_file="../settings.yaml",
         env_file="../.env",
         env_prefix="CORE_",
         env_nested_delimiter="__",
@@ -72,8 +67,6 @@ class Settings(BaseSettings):
     training: TrainingSettings = Field(description="Training settings")
 
     environment: EnvironmentSettings = Field(description="Training environment settings")
-
-    communication: CommunicationSettings = Field(description="Communication settings")
 
     @classmethod
     def settings_customise_sources(  # noqa: PLR0913
@@ -94,12 +87,12 @@ class Settings(BaseSettings):
 
 
 @functools.lru_cache(maxsize=1)
-def get_settings() -> Settings:
+def get_settings() -> CoreSettings:
     """Loads settings."""
     configure_logging()
 
     try:
-        settings = Settings()
+        settings = CoreSettings()
         logger.success("Successfully loaded core settings.")
         return settings
     except ValidationError as e:
@@ -107,7 +100,7 @@ def get_settings() -> Settings:
         raise
 
 
-def reload_settings() -> Settings:
+def reload_settings() -> CoreSettings:
     """Reloads settings."""
     get_settings.cache_clear()
     return get_settings()
