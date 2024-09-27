@@ -20,6 +20,8 @@ public partial class Camera : Camera2D
     private Vector2 moveDirection = Vector2.Zero;
     private bool zoomingIn = false;
     private bool zoomingOut = false;
+    private bool zoomingInByMouse = false;
+    private bool zoomingOutByMouse = false;
     private bool isDragging = false;
     private Vector2 dragTarget = Vector2.Zero;
     private Vector2 mouseDragStart = Vector2.Zero;
@@ -105,6 +107,14 @@ public partial class Camera : Camera2D
                 this.GlobalPosition = GetGlobalMousePosition();
                 this.isDragging = false;
             }
+            if (mouseEvent.ButtonIndex == MouseButton.WheelUp)
+            {
+                this.zoomingInByMouse = true;
+            }
+            if (mouseEvent.ButtonIndex == MouseButton.WheelDown)
+            {
+                this.zoomingOutByMouse = true;
+            }
         }
         else if (@event is InputEventMouseMotion motionEvent && isDragging)
         {
@@ -130,11 +140,13 @@ public partial class Camera : Camera2D
     private void UpdateZoom(double delta)
     {
         Vector2 zoomRatio = Vector2.Zero;
-        if (this.zoomingIn) zoomRatio += new Vector2(this.ZoomSpeed, this.ZoomSpeed);
-        if (this.zoomingOut) zoomRatio -= new Vector2(this.ZoomSpeed, this.ZoomSpeed);
-
+        if (this.zoomingIn || this.zoomingInByMouse) zoomRatio += new Vector2(this.ZoomSpeed, this.ZoomSpeed);
+        if (this.zoomingOut || this.zoomingOutByMouse) zoomRatio -= new Vector2(this.ZoomSpeed, this.ZoomSpeed);
         this.Zoom += zoomRatio * (float)delta;
         this.Zoom = this.Zoom.Clamp(new Vector2(this.MinZoom, this.MinZoom), new Vector2(this.MaxZoom, this.MaxZoom));
+
+        this.zoomingInByMouse = false;
+        this.zoomingOutByMouse = false;
     }
     private void SmoothDragMovement(double delta)
     {
