@@ -29,7 +29,7 @@ public partial class Camera : Camera2D
     [Export(PropertyHint.Range, "0.5,5.0,0.1")]
     public float EdgeMoveSpeedQuantifier { get; set; } = 1.5f;
 
-    
+
     private Vector2 moveDirection = Vector2.Zero;
     private Vector2 edgeMoveDirection = Vector2.Zero;
     private bool zoomingIn = false;
@@ -143,7 +143,7 @@ public partial class Camera : Camera2D
         this.dragTarget = this.GlobalPosition;
         this.mouseDragStart = GetGlobalMousePosition();
     }
-    
+
     private void StopDragging()
     {
         this.isDragging = false;
