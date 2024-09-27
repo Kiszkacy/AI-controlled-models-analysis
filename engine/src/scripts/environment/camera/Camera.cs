@@ -17,7 +17,11 @@ public partial class Camera : Camera2D
     [Export(PropertyHint.Range, "0.1,1.0,0.01")]
     public float DragSmoothness { get; set; } = 0.15f;
 
+    [Export(PropertyHint.Range, "10,100,1")]
+    public float EdgeScrollMargin { get; set; } = 50f;
+
     private Vector2 moveDirection = Vector2.Zero;
+    private Vector2 edgeScrollDirection = Vector2.Zero;
     private bool zoomingIn = false;
     private bool zoomingOut = false;
     private bool zoomingInByMouse = false;
@@ -90,51 +94,101 @@ public partial class Camera : Camera2D
     {
         if (@event is InputEventMouseButton mouseEvent)
         {
-            if (mouseEvent.IsPressed() && mouseEvent.ButtonIndex == MouseButton.Left)
+            if (mouseEvent.ButtonIndex == MouseButton.Left)
             {
-                this.isDragging = true;
-                this.dragTarget = this.GlobalPosition;
-                this.mouseDragStart = GetGlobalMousePosition();
-            }
+                if (mouseEvent.IsPressed())
+                {
+                    this.StartDragging();
+                }
+                else
+                {
+                    this.StopDragging();
+                }
 
-            else if (!mouseEvent.IsPressed() && mouseEvent.ButtonIndex == MouseButton.Left)
-            {
-                this.isDragging = false;
+                if (mouseEvent.DoubleClick)
+                {
+                    this.CenterOnMousePosition();
+                }
             }
-
-            if (mouseEvent.DoubleClick && mouseEvent.ButtonIndex == MouseButton.Left)
-            {
-                this.GlobalPosition = GetGlobalMousePosition();
-                this.isDragging = false;
-            }
-            if (mouseEvent.ButtonIndex == MouseButton.WheelUp)
+            else if (mouseEvent.ButtonIndex == MouseButton.WheelUp)
             {
                 this.zoomingInByMouse = true;
             }
-            if (mouseEvent.ButtonIndex == MouseButton.WheelDown)
+            else if (mouseEvent.ButtonIndex == MouseButton.WheelDown)
             {
                 this.zoomingOutByMouse = true;
             }
         }
         else if (@event is InputEventMouseMotion motionEvent && isDragging)
         {
-            Vector2 currentMouse = GetGlobalMousePosition();
-            Vector2 drag = this.mouseDragStart - currentMouse;
-            this.dragTarget += drag;
-            this.mouseDragStart = currentMouse;
+            this.DragMotion();
         }
+    }
+
+    private void StartDragging()
+    {
+        this.isDragging = true;
+        this.dragTarget = this.GlobalPosition;
+        this.mouseDragStart = GetGlobalMousePosition();
+    }
+
+    private void StopDragging()
+    {
+        this.isDragging = false;
+    }
+
+    private void CenterOnMousePosition()
+    {
+        this.GlobalPosition = GetGlobalMousePosition();
+        this.isDragging = false;
+    }
+
+    private void DragMotion()
+    {
+        Vector2 currentMouse = GetGlobalMousePosition();
+        Vector2 drag = this.mouseDragStart - currentMouse;
+        this.dragTarget += drag;
+        this.mouseDragStart = currentMouse;
     }
 
     public override void _PhysicsProcess(double delta)
     {
+        this.UpdateEdgeScrollDirection();
         this.UpdatePosition(delta);
         this.UpdateZoom(delta);
-        SmoothDragMovement(delta);
+        this.SmoothDragMovement(delta);
+    }
+
+    private void UpdateEdgeScrollDirection()
+    {
+        Vector2 mousePos = GetViewport().GetMousePosition();
+        Vector2 viewportSize = GetViewportRect().Size;
+
+        edgeScrollDirection = Vector2.Zero;
+
+        if (mousePos.X <= EdgeScrollMargin)
+        {
+            edgeScrollDirection += Vector2.Left;
+        }
+        else if (mousePos.X >= viewportSize.X - EdgeScrollMargin)
+        {
+            edgeScrollDirection += Vector2.Right;
+        }
+
+        if (mousePos.Y <= EdgeScrollMargin)
+        {
+            edgeScrollDirection += Vector2.Up;
+        }
+        else if (mousePos.Y >= viewportSize.Y - EdgeScrollMargin)
+        {
+            edgeScrollDirection += Vector2.Down;
+        }
     }
 
     private void UpdatePosition(double delta)
     {
-        this.GlobalPosition += this.moveDirection * this.MoveSpeed * (float)delta;
+        Vector2 totalMoveDirection = this.moveDirection + this.edgeScrollDirection;
+        this.GlobalPosition += totalMoveDirection * this.MoveSpeed * (float)delta;
     }
 
     private void UpdateZoom(double delta)
