@@ -26,8 +26,8 @@ public partial class Camera : Camera2D
     [Export(PropertyHint.Range, "10,100,1")]
     public float EdgeMoveMargin { get; set; } = 50f;
 
-    [Export(PropertyHint.Range, "0.5,5.0,0.1")]
-    public float EdgeMoveSpeedQuantifier { get; set; } = 1.5f;
+    [Export(PropertyHint.Range, "0.5,10.0,0.1")]
+    public float EdgeMoveSpeedQuantifier { get; set; } = 3f;
 
 
     private Vector2 moveDirection = Vector2.Zero;
@@ -175,25 +175,16 @@ public partial class Camera : Camera2D
     {
         Vector2 mousePos = GetViewport().GetMousePosition();
         Vector2 viewportSize = GetViewportRect().Size;
+        Vector2 viewportCenter = viewportSize / 2;
 
         this.edgeMoveDirection = Vector2.Zero;
 
-        if (mousePos.X <= this.EdgeMoveMargin && mousePos.X >= 0)
+        if ((mousePos.X <= this.EdgeMoveMargin && mousePos.X >= 0)
+            || (mousePos.X >= viewportSize.X - this.EdgeMoveMargin && mousePos.X <= viewportSize.X)
+            || (mousePos.Y <= this.EdgeMoveMargin && mousePos.Y >= 0)
+            || (mousePos.Y >= viewportSize.Y - this.EdgeMoveMargin && mousePos.Y <= viewportSize.Y))
         {
-            this.edgeMoveDirection += Vector2.Left;
-        }
-        else if (mousePos.X >= viewportSize.X - this.EdgeMoveMargin && mousePos.X <= viewportSize.X)
-        {
-            this.edgeMoveDirection += Vector2.Right;
-        }
-
-        if (mousePos.Y <= this.EdgeMoveMargin && mousePos.Y >= 0)
-        {
-            this.edgeMoveDirection += Vector2.Up;
-        }
-        else if (mousePos.Y >= viewportSize.Y - this.EdgeMoveMargin && mousePos.Y <= viewportSize.Y)
-        {
-            this.edgeMoveDirection += Vector2.Down;
+            this.edgeMoveDirection += (mousePos - viewportCenter).Normalized();
         }
     }
 
