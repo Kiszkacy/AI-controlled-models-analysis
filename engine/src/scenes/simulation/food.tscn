@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://0qxq58i3qn6t"]
+
+[ext_resource type="Script" path="res://src/scripts/simulation/food/Food.cs" id="1_p3vuo"]
+[ext_resource type="Texture2D" uid="uid://drd2k22aq1q4i" path="res://assets/sprites/pixel-art/apple.png" id="2_r06yu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s38ty"]
+size = Vector2(32, 32)
+
+[node name="Food" type="Area2D"]
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+script = ExtResource("1_p3vuo")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("2_r06yu")
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_s38ty")

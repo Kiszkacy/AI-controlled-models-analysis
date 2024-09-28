@@ -18,3 +18,8 @@ environment:
   healthRegenPerSecond: 1.0
   score:
     foodEaten: 100
+  bucketSize: 256
+  agentSightProcessEveryNthFrame: 3
+  supervisorAgentSpawnSafeDistance: 16
+  supervisorAgentMaxSpawnTryCount: 50
+  seed: 0

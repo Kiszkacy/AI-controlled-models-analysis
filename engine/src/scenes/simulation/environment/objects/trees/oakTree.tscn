@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://b8h36qssd6d1q"]
+
+[ext_resource type="Script" path="res://src/scripts/simulation/environment/generation/objects/tree/Tree.cs" id="1_70bqp"]
+[ext_resource type="Texture2D" uid="uid://dhhq5dpp5c265" path="res://assets/sprites/pixel-art/tree.png" id="1_f2ofw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ngio0"]
+radius = 36.0
+
+[node name="OakTree" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_70bqp")
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ngio0")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(4, 4)
+texture = ExtResource("1_f2ofw")

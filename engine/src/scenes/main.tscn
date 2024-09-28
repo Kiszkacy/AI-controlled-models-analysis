@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" path="res://src/scripts/engine/initializer/Initializer.cs" id="1_k36hy"]
 [ext_resource type="Script" path="res://src/scripts/engine/endOfFrameProcessor/EndOfFrameProcessor.cs" id="2_3vvuh"]
-[ext_resource type="PackedScene" uid="uid://c1bpw4ru4tlep" path="res://src/scenes/environment/environment.tscn" id="2_xi837"]
-[ext_resource type="Script" path="res://src/scripts/environment/camera/Camera.cs" id="3_2o0lw"]
-[ext_resource type="Script" path="res://src/scripts/environment/supervisor/Supervisor.cs" id="3_u0dcj"]
+[ext_resource type="PackedScene" uid="uid://ps0rqdnn0u36" path="res://src/scenes/simulation/environment/environment.tscn" id="2_tgcc1"]
+[ext_resource type="Script" path="res://src/scripts/simulation/camera/Camera.cs" id="3_2o0lw"]
+[ext_resource type="Script" path="res://src/scripts/simulation/supervisor/Supervisor.cs" id="3_u0dcj"]
 
 [node name="Root" type="Node2D"]
 
@@ -20,9 +20,7 @@ metadata/_edit_use_anchors_ = true
 editor_description = "This node must be the first child of the Root node to work properly."
 script = ExtResource("1_k36hy")
 
-[node name="Environment" parent="." instance=ExtResource("2_xi837")]
-Size = Vector2(4096, 4096)
-TreeCount = 40
+[node name="Environment" parent="." instance=ExtResource("2_tgcc1")]
 
 [node name="Agents" type="Node2D" parent="."]
 
@@ -35,7 +33,6 @@ InitialAgentCount = 25
 [node name="Camera" type="Camera2D" parent="."]
 position = Vector2(640, 360)
 script = ExtResource("3_2o0lw")
-MinZoom = 0.2
 
 [node name="EndOfFrameProcessor" type="Node" parent="."]
 editor_description = "This node must be the last child of the Root node to work properly."

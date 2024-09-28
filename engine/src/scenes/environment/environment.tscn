@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://c1bpw4ru4tlep"]
-
-[ext_resource type="Script" path="res://src/scripts/environment/environment/Environment.cs" id="1_nwi76"]
-
-[node name="Environment" type="Node2D"]
-script = ExtResource("1_nwi76")

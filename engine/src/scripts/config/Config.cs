@@ -88,8 +88,12 @@ public class EnvironmentConfig
     public float EnergyLossPerSecondTurn { get; set; }
     public float HealthLossPerSecond { get; set; }
     public float HealthRegenPerSecond { get; set; }
-
     public ScoreConfig Score { get; set; }
+    public int BucketSize { get; set; }
+    public int AgentSightProcessEveryNthFrame { get; set; }
+    public int SupervisorAgentSpawnSafeDistance { get; set; }
+    public int SupervisorAgentMaxSpawnTryCount { get; set; }
+    public int Seed { get; set; }
 }
 
 public class ScoreConfig

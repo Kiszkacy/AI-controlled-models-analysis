@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://cpria873uoi7u"]
+
+[ext_resource type="Texture2D" uid="uid://dhhq5dpp5c265" path="res://assets/sprites/pixel-art/tree.png" id="1_2igdx"]
+[ext_resource type="Script" path="res://src/scripts/simulation/environment/generation/objects/tree/Tree.cs" id="1_k3y27"]
+[ext_resource type="Script" path="res://src/scripts/simulation/food/FoodSpawner.cs" id="2_jgjvj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rvrp8"]
+radius = 36.0
+
+[node name="AppleTree" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_k3y27")
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_rvrp8")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+self_modulate = Color(1, 0.501961, 0.501961, 1)
+scale = Vector2(4, 4)
+texture = ExtResource("1_2igdx")
+
+[node name="FoodSpawner" type="Node" parent="." node_paths=PackedStringArray("SpawnPositionTarget")]
+script = ExtResource("2_jgjvj")
+FoodSpawnOuterRadius = 96.0
+FoodSpawnInnerRadius = 32.0
+InitialFoodCount = 2
+SpawnPositionTarget = NodePath("..")

@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://clvyubawbx07y"]
+
+[ext_resource type="Script" path="res://src/scripts/simulation/environment/generation/objects/tree/Tree.cs" id="1_bjut6"]
+[ext_resource type="Texture2D" uid="uid://dhhq5dpp5c265" path="res://assets/sprites/pixel-art/tree.png" id="1_fxbdo"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_d6u36"]
+radius = 36.0
+
+[node name="PineTree" type="StaticBody2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_bjut6")
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_d6u36")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+self_modulate = Color(0.501961, 0.8, 1, 1)
+scale = Vector2(4, 4)
+texture = ExtResource("1_fxbdo")

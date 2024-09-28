@@ -1,5 +1,5 @@
 ﻿
-public struct Event
+public readonly struct Event
 {
     public string Code { get; }
 
