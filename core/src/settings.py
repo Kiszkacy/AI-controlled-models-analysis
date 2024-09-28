@@ -19,13 +19,11 @@ class GodotSettings(BaseSettings):
     def validate_godot_executable(cls, value: Path) -> Path:
         if value.suffix == ".exe":
             return value
-
         raise ValueError(f"Path should point to an .exe file but instead pointed to {value.suffix}")
 
 
 class TrainingSettings(BaseSettings):
     model_config = SettingsConfigDict(frozen=True)
-
     number_of_workers: Annotated[int, Field(gt=0)]
     number_of_env_per_worker: Annotated[int, Field(gt=0)]
     training_iterations: Annotated[int, Field(gt=0)]
@@ -35,7 +33,6 @@ class TrainingSettings(BaseSettings):
 
 class EnvironmentSettings(BaseSettings):
     model_config = SettingsConfigDict(frozen=True)
-
     observation_space_size: Annotated[int, Field(gt=0, default=5)]
     observation_space_low: Annotated[float, ...]
     observation_space_high: Annotated[float, ...]
@@ -52,21 +49,27 @@ class EnvironmentSettings(BaseSettings):
         return self
 
 
-class CoreSettings(BaseSettings):
+class CommunicationSettings(BaseSettings):
+    model_config = SettingsConfigDict(frozen=True)
+
+    reset: Annotated[int, ...]
+
+
+class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        yaml_file="../settings.yaml",
+        yaml_file=["../settings.yaml", "../../global/config.yaml"],
         env_file="../.env",
         env_prefix="CORE_",
         env_nested_delimiter="__",
         env_file_encoding="utf-8",
         frozen=True,
     )
-
     godot: GodotSettings = Field(description="The godot settings")
-
     training: TrainingSettings = Field(description="Training settings")
 
     environment: EnvironmentSettings = Field(description="Training environment settings")
+
+    communication: CommunicationSettings = Field(description="Communication settings")
 
     @classmethod
     def settings_customise_sources(  # noqa: PLR0913
@@ -87,12 +90,12 @@ class CoreSettings(BaseSettings):
 
 
 @functools.lru_cache(maxsize=1)
-def get_settings() -> CoreSettings:
+def get_settings() -> Settings:
     """Loads settings."""
     configure_logging()
 
     try:
-        settings = CoreSettings()
+        settings = Settings()
         logger.success("Successfully loaded core settings.")
         return settings
     except ValidationError as e:
@@ -100,7 +103,7 @@ def get_settings() -> CoreSettings:
         raise
 
 
-def reload_settings() -> CoreSettings:
+def reload_settings() -> Settings:
     """Reloads settings."""
     get_settings.cache_clear()
     return get_settings()
