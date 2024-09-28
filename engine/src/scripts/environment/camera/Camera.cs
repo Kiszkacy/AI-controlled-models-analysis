@@ -178,20 +178,20 @@ public partial class Camera : Camera2D
 
         this.edgeMoveDirection = Vector2.Zero;
 
-        if (mousePos.X <= this.EdgeMoveMargin)
+        if (mousePos.X <= this.EdgeMoveMargin && mousePos.X >= 0)
         {
             this.edgeMoveDirection += Vector2.Left;
         }
-        else if (mousePos.X >= viewportSize.X - this.EdgeMoveMargin)
+        else if (mousePos.X >= viewportSize.X - this.EdgeMoveMargin && mousePos.X <= viewportSize.X)
         {
             this.edgeMoveDirection += Vector2.Right;
         }
 
-        if (mousePos.Y <= this.EdgeMoveMargin)
+        if (mousePos.Y <= this.EdgeMoveMargin && mousePos.Y >= 0)
         {
             this.edgeMoveDirection += Vector2.Up;
         }
-        else if (mousePos.Y >= viewportSize.Y - this.EdgeMoveMargin)
+        else if (mousePos.Y >= viewportSize.Y - this.EdgeMoveMargin && mousePos.Y <= viewportSize.Y)
         {
             this.edgeMoveDirection += Vector2.Down;
         }
