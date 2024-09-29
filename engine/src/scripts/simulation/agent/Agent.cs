@@ -69,7 +69,7 @@ public partial class Agent : CharacterBody2D
 
     protected void UpdateHealth(double delta)
     {
-        if (this.energy <= 0.0f) // TODO proper float comparison
+        if (Math.IsZero(this.energy))
         {
             this.health -= Config.Instance.Environment.HealthLossPerSecond * (float)delta;
         }
@@ -79,7 +79,7 @@ public partial class Agent : CharacterBody2D
         }
 
         this.health = Mathf.Clamp(this.health, 0.0f, this.MaximumHealth);
-        if (this.health <= 0.0f) // TODO proper float comparison
+        if (Math.IsZero(this.health))
         {
             this.Die();
         }
