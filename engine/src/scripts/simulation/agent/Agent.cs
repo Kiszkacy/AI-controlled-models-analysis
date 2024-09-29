@@ -64,7 +64,7 @@ public partial class Agent : CharacterBody2D
         float energyLoss = Config.Instance.Environment.EnergyBaseLossPerSecond
                            + Config.Instance.Environment.EnergyLossPerSecondPer100UnitsOfMovement * (this.Velocity.Length()/100.0f)
                            + Config.Instance.Environment.EnergyLossPerSecondTurn * Mathf.Abs(this.currentRotation);
-        this.energy -= energyLoss * (float)delta;
+        this.energy = Mathf.Min(this.energy - energyLoss * (float)delta, 0.0f);
     }
 
     protected void UpdateHealth(double delta)
@@ -87,6 +87,7 @@ public partial class Agent : CharacterBody2D
 
     protected void Die()
     {
+        AgentManager.Instance.RemoveAgent(this);
         this.QueueFree();
     }
 
