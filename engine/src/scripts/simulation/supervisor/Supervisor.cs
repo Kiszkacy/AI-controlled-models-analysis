@@ -51,7 +51,8 @@ public partial class Supervisor : Node
         }
 
         this.SendData();
-        if (justSentACommunicationCode) {
+        if (justSentACommunicationCode)
+        {
             this.justSentACommunicationCode = false;
         }
         else
@@ -132,7 +133,8 @@ public partial class Supervisor : Node
     {
         bool isAnyAgentAlive = AgentManager.Get().Agents.Count != 0;
 
-        if (isAnyAgentAlive) {
+        if (isAnyAgentAlive)
+        {
             List<AgentData> data = new();
             foreach (var (_, agent_) in AgentManager.Get().Agents)
             {
