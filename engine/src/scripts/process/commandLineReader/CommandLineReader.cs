@@ -7,7 +7,11 @@ public class CommandLineReader
 {
     private static readonly string argumentPrefix = "--";
     private static readonly string valueSeperator = "=";
-    private static readonly string[] valueArguments = { "pipe-name" };
+    private static readonly string[] valueArguments =
+    {
+        "pipe-name",
+        "environment-seed"
+    };
 
     public static bool OpenedViaCommandLine => OS.GetCmdlineArgs().Length > 1;
 
