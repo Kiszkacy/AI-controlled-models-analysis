@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://cmi6acb2oc6qx"]
+
+[ext_resource type="Script" path="res://src/scripts/ui/tooltip/Tooltip.cs" id="1_b8wws"]
+[ext_resource type="FontFile" uid="uid://bil7ixxsqr4ql" path="res://assets/fonts/inter/Inter-Light.ttf" id="2_kw853"]
+[ext_resource type="StyleBox" uid="uid://cl1b36do6fk68" path="res://assets/ui/tooltipLabel.tres" id="3_624it"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_4lcu2"]
+font = ExtResource("2_kw853")
+
+[node name="Tooltip" type="Control"]
+z_index = 10
+layout_mode = 3
+anchors_preset = 0
+offset_right = 320.0
+offset_bottom = 320.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+script = ExtResource("1_b8wws")
+Text = "Tooltip text here."
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 27.0
+theme_override_fonts/font = ExtResource("2_kw853")
+theme_override_styles/normal = ExtResource("3_624it")
+text = "Tooltip text here."
+label_settings = SubResource("LabelSettings_4lcu2")
+autowrap_mode = 3
+
+[node name="Arrow" type="ColorRect" parent="Label"]
+z_index = -1
+layout_mode = 0
+offset_left = 1.0
+offset_top = 2.0
+offset_right = 17.0
+offset_bottom = 18.0
+rotation = 0.785398
+color = Color(0.270588, 0.270588, 0.270588, 1)
