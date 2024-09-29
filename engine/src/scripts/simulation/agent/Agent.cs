@@ -153,15 +153,7 @@ public partial class Agent : CharacterBody2D
         this.Direction = this.Direction.Rotated(this.currentRotation * (float)delta);
         this.GlobalRotation = this.DirectionAngle;
 
-        if (this.currentAcceleration >= 0.0f)
-        {
-            this.Velocity = this.Direction * Mathf.Clamp(this.Speed + this.currentAcceleration * (float)delta, 0.0f, this.MaximumSpeed);
-        }
-        else
-        {
-            this.Velocity = this.Direction * Mathf.Clamp(this.Speed + this.currentAcceleration * (float)delta, 0.0f, this.MaximumSpeed);
-        }
-
+        this.Velocity = this.Direction * Mathf.Clamp(this.Speed + this.currentAcceleration * (float)delta, 0.0f, this.MaximumSpeed);
 
         this.MoveAndCollide(this.Velocity * (float)delta);
     }
