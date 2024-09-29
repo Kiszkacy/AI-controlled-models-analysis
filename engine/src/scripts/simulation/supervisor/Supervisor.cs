@@ -1,4 +1,5 @@
 using System;
+using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Text;
 
@@ -23,6 +24,8 @@ public partial class Supervisor : Node
     private PackedScene packedTrainAgent = ResourceLoader.Load<PackedScene>("res://src/scenes/simulation/agent/trainAgent.tscn");
     private PackedScene packedLogicAgent = ResourceLoader.Load<PackedScene>("res://src/scenes/simulation/agent/logicAgent.tscn");
 
+    private bool justSentACommunicationCode = false;
+
     public override void _Ready()
     {
         for (int i = 0; i < this.InitialAgentCount; i++)
@@ -42,9 +45,18 @@ public partial class Supervisor : Node
 
     public override void _PhysicsProcess(double delta)
     {
-        if (!this.UseLogicAgents)
+        if (this.UseLogicAgents)
         {
-            this.SendData();
+            return;
+        }
+
+        this.SendData();
+        if (justSentACommunicationCode)
+        {
+            this.justSentACommunicationCode = false;
+        }
+        else
+        {
             this.ReceiveData();
         }
     }
@@ -119,15 +131,27 @@ public partial class Supervisor : Node
 
     private void SendData()
     {
-        List<AgentData> data = new();
-        foreach (var (_, agent_) in AgentManager.Get().Agents)
-        {
-            TrainAgent agent = (TrainAgent)agent_;
-            data.Add(agent.NormalizedData);
-        }
+        bool isAnyAgentAlive = AgentManager.Get().Agents.Count != 0;
 
-        byte[] rawData = JsonConvert.SerializeObject(data).ToUtf8Buffer();
-        PipeHandler.Get().Send(rawData);
+        if (isAnyAgentAlive)
+        {
+            List<AgentData> data = new();
+            foreach (var (_, agent_) in AgentManager.Get().Agents)
+            {
+                TrainAgent agent = (TrainAgent)agent_;
+                data.Add(agent.NormalizedData);
+            }
+
+            byte[] rawData = JsonConvert.SerializeObject(data).ToUtf8Buffer();
+            PipeHandler.Get().Send(rawData);
+        }
+        else
+        {
+            this.Reset();
+            byte[] resetCodeInBytes = BitConverter.GetBytes(Config.Get().Global.Communication.Reset);
+            this.justSentACommunicationCode = true;
+            PipeHandler.Get().Send(resetCodeInBytes);
+        }
     }
 
     private void ReceiveData()

@@ -87,6 +87,7 @@ public partial class Agent : CharacterBody2D
 
     protected void Die()
     {
+        AgentManager.Instance.RemoveAgent(this);
         this.QueueFree();
     }
 
