@@ -1,6 +1,3 @@
-# mypy: ignore-errors
-# ruff: disable
-
 import platform
 from typing import IO
 
@@ -8,8 +5,8 @@ from loguru import logger
 
 ON_WINDOWS: bool = platform.system() == "Windows"
 if ON_WINDOWS:
-    import win32file
-    import win32pipe
+    import win32file  # type: ignore
+    import win32pipe  # type: ignore
 else:
     import os
 
@@ -22,7 +19,7 @@ class PipeHandler:
     def __init__(self, pipe_name: str | None = None) -> None:
         if pipe_name is None:
             pipe_name = "godot-python-pipe"
-        self.pipe: int | IO | None = None
+        self.pipe: int | IO[str] | None = None
         self.pipe_path: str = self._default_pipe_prefix.format(pipe_name=pipe_name)
 
     @property
@@ -30,7 +27,7 @@ class PipeHandler:
         return r"\\.\pipe\{pipe_name}" if ON_WINDOWS else "/tmp/{pipe_name}"
 
     def connect(self) -> None:
-        if ON_WINDOWS:
+        if isinstance(self.pipe, int):
             self.pipe = win32pipe.CreateNamedPipe(
                 self.pipe_path,
                 win32pipe.PIPE_ACCESS_DUPLEX,
@@ -43,28 +40,29 @@ class PipeHandler:
             )
             win32pipe.ConnectNamedPipe(self.pipe, None)
         else:
-            os.mkfifo(self.pipe_path)
+            if not os.path.exists(self.pipe_path):
+                os.mkfifo(self.pipe_path)  # type: ignore[attr-defined]
             self.pipe = open(self.pipe_path, "r+")  # noqa: SIM115
         logger.info(f"Connected to the {self.pipe_path} pipe.")
 
     def disconnect(self) -> None:
-        if ON_WINDOWS:
+        if isinstance(self.pipe, int):
             win32file.CloseHandle(self.pipe)
-        else:
+        elif self.pipe:
             self.pipe.close()
         self.pipe = None
 
     def send(self, data_bytes) -> None:
-        if ON_WINDOWS:
+        if isinstance(self.pipe, int):
             win32file.WriteFile(self.pipe, data_bytes)
-        else:
+        elif self.pipe:
             self.pipe.write(data_bytes)
             self.pipe.flush()
 
     def receive(self) -> bytes:
         data: bytes
-        if ON_WINDOWS:
+        if isinstance(self.pipe, int):
             _, data = win32file.ReadFile(self.pipe, READ_BUFFER_SIZE)
-        else:
-            data = self.pipe.read(READ_BUFFER_SIZE)
+        elif self.pipe:
+            data = self.pipe.read(READ_BUFFER_SIZE).encode("utf-8")
         return data
