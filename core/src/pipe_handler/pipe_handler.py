@@ -1,5 +1,4 @@
 # mypy: ignore-errors
-# ruff: disable
 
 import platform
 from typing import IO
@@ -8,8 +7,8 @@ from loguru import logger
 
 ON_WINDOWS: bool = platform.system() == "Windows"
 if ON_WINDOWS:
-    import win32file
-    import win32pipe
+    import win32file  # type: ignore
+    import win32pipe  # type: ignore
 else:
     import os
 
@@ -44,7 +43,8 @@ class PipeHandler:
             win32pipe.ConnectNamedPipe(self.pipe, None)
         else:
             os.mkfifo(self.pipe_path)
-            self.pipe = open(self.pipe_path, "r+")  # noqa: SIM115
+            with open(self.pipe_path, "r+") as pipe:
+                self.pipe = pipe
         logger.info(f"Connected to the {self.pipe_path} pipe.")
 
     def disconnect(self) -> None:
