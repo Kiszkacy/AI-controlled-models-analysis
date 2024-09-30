@@ -1,4 +1,5 @@
 import platform
+import sys
 from typing import IO
 
 from loguru import logger
@@ -40,9 +41,15 @@ class PipeHandler:
             )
             win32pipe.ConnectNamedPipe(self.pipe, None)
         else:
-            if not os.path.exists(self.pipe_path):
-                os.mkfifo(self.pipe_path)  # type: ignore[attr-defined]
-            self.pipe = open(self.pipe_path, "r+")  # noqa: SIM115
+            if sys.platform != "win32":
+                if not os.path.exists(self.pipe_path):
+                    os.mkfifo(self.pipe_path)
+            else:
+                raise OSError("FIFO is not supported on Windows")
+
+            with open(self.pipe_path, "r+") as pipe:
+                self.pipe = pipe
+
         logger.info(f"Connected to the {self.pipe_path} pipe.")
 
     def disconnect(self) -> None:
