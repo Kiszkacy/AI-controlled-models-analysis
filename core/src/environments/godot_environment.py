@@ -9,6 +9,7 @@ from core.src.settings import get_settings
 from core.src.utils.godot_handler import GodotHandler
 
 environment_settings = get_settings().environment
+communication_settings = get_settings().communication
 
 
 class GodotServerEnvironment(MultiAgentEnv):
@@ -72,27 +73,34 @@ class GodotServerEnvironment(MultiAgentEnv):
 
     def get_data(self):
         try:
-            data_list = self.godot_handler.request_data()
+            received_data = self.godot_handler.request_data()
         except json.JSONDecodeError:
             raise
 
-        states = {
-            data["Id"]: np.array(
-                [
-                    data["Speed"],
-                    data["Energy"],
-                    data["Health"],
-                    data["DistanceToClosestFood"],
-                    data["AngleToClosestFood"],
-                ]
-            )
-            for data in data_list
-        }
-        rewards = {data["Id"]: data["Score"] for data in data_list}
-        done = self.current_step >= self.horizon
-        terminateds = {"__all__": done}
-        truncateds = {"__all__": False}
-        infos = {data["Id"]: {} for data in data_list}
+        if isinstance(received_data, list):
+            states = {
+                data["Id"]: np.array(
+                    [
+                        data["Speed"],
+                        data["Energy"],
+                        data["Health"],
+                        data["DistanceToClosestFood"],
+                        data["AngleToClosestFood"],
+                    ]
+                )
+                for data in received_data
+            }
+            rewards = {data["Id"]: data["Score"] for data in received_data}
+            done = self.current_step >= self.horizon
+            terminateds = {"__all__": done}
+            truncateds = {"__all__": False}
+            infos = {data["Id"]: {} for data in received_data}
+        elif received_data == communication_settings.reset:
+            self.reset()
+            states, rewards, terminateds, truncateds, infos = self.get_data()
+            terminateds = {"__all__": True}
+        else:
+            return {}, {}, {"__all__": False}, {"__all__": False}, {}
         return states, rewards, terminateds, truncateds, infos
 
     def reset(self, *, seed=None, options=None) -> tuple[MultiAgentDict, MultiAgentDict]:  # noqa: ARG002
