@@ -24,7 +24,7 @@ class AgentPolicy(Policy):
         current_reward_sum = 0
         for k, reward in enumerate(reversed(rewards)):
             current_reward_sum = current_reward_sum * self.gamma + reward
-            discounted_rewards[-k - 1] = current_reward_sum  # we start at the last reward
+            discounted_rewards[-k - 1] = current_reward_sum
 
         return discounted_rewards
 
