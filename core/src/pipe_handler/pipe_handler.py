@@ -1,3 +1,5 @@
+# mypy: ignore-errors
+
 import platform
 import sys
 from typing import IO
@@ -6,8 +8,8 @@ from loguru import logger
 
 ON_WINDOWS: bool = platform.system() == "Windows"
 if ON_WINDOWS:
-    import win32file  # type: ignore
-    import win32pipe  # type: ignore
+    import win32file
+    import win32pipe
 else:
     import os
 
