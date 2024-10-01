@@ -1,5 +1,3 @@
-# mypy: ignore-errors
-
 import platform
 import sys
 from typing import IO
@@ -85,15 +83,18 @@ class PipeHandler:
             win32file.WriteFile(self.pipe, data_bytes)
 
     def receive(self) -> bytes:
-        data: bytes = b""
-
         if not self.pipe:
-            return data
+            return b""
 
         if isinstance(self.pipe, IO):
-            data = self.pipe.read(READ_BUFFER_SIZE)
+            return self.pipe.read(READ_BUFFER_SIZE)
 
-        elif ON_WINDOWS and (isinstance(self.pipe, int) or self._is_windows_pipe_handle()):
+        if ON_WINDOWS and (isinstance(self.pipe, int) or self._is_windows_pipe_handle()):
             _, data = win32file.ReadFile(self.pipe, READ_BUFFER_SIZE)
+            if isinstance(data, str):
+                return data.encode("utf-8")
+            if isinstance(data, bytes):
+                return data
+            raise RuntimeError(f"Unexpected data type: {type(data)} received from pipe")
 
-        return data
+        return b""
