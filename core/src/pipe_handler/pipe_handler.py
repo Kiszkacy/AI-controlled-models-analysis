@@ -10,6 +10,7 @@ ON_WINDOWS: bool = platform.system() == "Windows"
 if ON_WINDOWS:
     import win32file
     import win32pipe
+    import win32security
 else:
     import os
 
@@ -31,6 +32,9 @@ class PipeHandler:
 
     def connect(self) -> None:
         if ON_WINDOWS:
+            security_attributes = win32security.SECURITY_ATTRIBUTES()
+            security_attributes.bInheritHandle = True
+
             self.pipe = win32pipe.CreateNamedPipe(
                 self.pipe_path,
                 win32pipe.PIPE_ACCESS_DUPLEX,
@@ -39,7 +43,7 @@ class PipeHandler:
                 MAX_BUFFER_SIZE,
                 MAX_BUFFER_SIZE,
                 0,
-                None,
+                security_attributes,
             )
             win32pipe.ConnectNamedPipe(self.pipe, None)
         else:
