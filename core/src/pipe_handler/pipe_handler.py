@@ -30,6 +30,9 @@ class PipeHandler:
     def _default_pipe_prefix(self) -> str:
         return r"\\.\pipe\{pipe_name}" if ON_WINDOWS else "/tmp/{pipe_name}"
 
+    def _is_windows_pipe_handle(self) -> bool:
+        return type(self.pipe).__name__ == "PyHANDLE"
+
     def connect(self) -> None:
         if ON_WINDOWS:
             security_attributes = win32security.SECURITY_ATTRIBUTES()
@@ -45,6 +48,10 @@ class PipeHandler:
                 0,
                 security_attributes,
             )
+
+            if self.pipe == win32file.INVALID_HANDLE_VALUE:
+                raise RuntimeError(f"Failed to create named pipe: {self.pipe_path}")
+
             win32pipe.ConnectNamedPipe(self.pipe, None)
         else:
             if sys.platform != "win32":
@@ -55,23 +62,38 @@ class PipeHandler:
         logger.info(f"Connected to the {self.pipe_path} pipe.")
 
     def disconnect(self) -> None:
-        if ON_WINDOWS:
-            win32file.CloseHandle(self.pipe)
-        elif isinstance(self.pipe, IO):
+        if not self.pipe:
+            return
+
+        if isinstance(self.pipe, IO):
             self.pipe.close()
+
+        elif ON_WINDOWS and (isinstance(self.pipe, int) or self._is_windows_pipe_handle()):
+            win32file.CloseHandle(self.pipe)
+
         self.pipe = None
 
     def send(self, data_bytes) -> None:
-        if ON_WINDOWS:
-            win32file.WriteFile(self.pipe, data_bytes)
-        elif isinstance(self.pipe, IO):
+        if not self.pipe:
+            return
+
+        if isinstance(self.pipe, IO):
             self.pipe.write(data_bytes)
             self.pipe.flush()
 
+        elif ON_WINDOWS and (isinstance(self.pipe, int) or self._is_windows_pipe_handle()):
+            win32file.WriteFile(self.pipe, data_bytes)
+
     def receive(self) -> bytes:
-        data: bytes
-        if ON_WINDOWS:
-            _, data = win32file.ReadFile(self.pipe, READ_BUFFER_SIZE)
-        elif isinstance(self.pipe, IO):
+        data: bytes = b""
+
+        if not self.pipe:
+            return data
+
+        if isinstance(self.pipe, IO):
             data = self.pipe.read(READ_BUFFER_SIZE)
+
+        elif ON_WINDOWS and (isinstance(self.pipe, int) or self._is_windows_pipe_handle()):
+            _, data = win32file.ReadFile(self.pipe, READ_BUFFER_SIZE)
+
         return data
