@@ -1,6 +1,5 @@
-# mypy: ignore-errors
-
 import platform
+import sys
 from typing import IO
 
 from loguru import logger
@@ -42,7 +41,9 @@ class PipeHandler:
             )
             win32pipe.ConnectNamedPipe(self.pipe, None)
         else:
-            os.mkfifo(self.pipe_path)
+            if sys.platform != "win32":
+                if not os.path.exists(self.pipe_path):
+                    os.mkfifo(self.pipe_path)
             with open(self.pipe_path, "r+") as pipe:
                 self.pipe = pipe
         logger.info(f"Connected to the {self.pipe_path} pipe.")
@@ -50,14 +51,14 @@ class PipeHandler:
     def disconnect(self) -> None:
         if ON_WINDOWS:
             win32file.CloseHandle(self.pipe)
-        else:
+        elif isinstance(self.pipe, IO):
             self.pipe.close()
         self.pipe = None
 
     def send(self, data_bytes) -> None:
         if ON_WINDOWS:
             win32file.WriteFile(self.pipe, data_bytes)
-        else:
+        elif isinstance(self.pipe, IO):
             self.pipe.write(data_bytes)
             self.pipe.flush()
 
@@ -65,6 +66,6 @@ class PipeHandler:
         data: bytes
         if ON_WINDOWS:
             _, data = win32file.ReadFile(self.pipe, READ_BUFFER_SIZE)
-        else:
+        elif isinstance(self.pipe, IO):
             data = self.pipe.read(READ_BUFFER_SIZE)
         return data
