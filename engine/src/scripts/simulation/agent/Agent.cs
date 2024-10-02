@@ -46,6 +46,7 @@ public partial class Agent : CharacterBody2D
     protected Vector2? closestFoodPosition = null;
     public float DistanceToClosestFood => this.closestFoodPosition?.DistanceTo(this.GlobalPosition) ?? float.NaN; // in radians
     public float AngleToClosestFood => this.closestFoodPosition.HasValue ? this.Direction.AngleTo(this.closestFoodPosition.Value - this.GlobalPosition) : float.NaN; // in radians
+    protected int visibleFoodCount = 0;
 
     private int id = -1;
 
@@ -94,6 +95,7 @@ public partial class Agent : CharacterBody2D
     protected void SightProcess()
     {
         this.closestFoodPosition = null;
+        this.visibleFoodCount = 0;
 
         RayCast2D rayCast = AgentSightRayCastManager.Get().RayCast;
         rayCast.GlobalPosition = this.GlobalPosition;
@@ -116,6 +118,8 @@ public partial class Agent : CharacterBody2D
                         this.closestFoodPosition = food.GlobalPosition;
                     }
                 }
+
+                this.visibleFoodCount++;
             }
         }
     }

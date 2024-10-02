@@ -10,8 +10,9 @@ public readonly struct AgentData
     public float Health { get; }
     public float DistanceToClosestFood { get; }
     public float AngleToClosestFood { get; }
+    public int VisibleFoodCount { get; }
 
-    public AgentData(int id, float score, float speed, float energy, float health, float distanceToClosestFood, float angleToClosestFood)
+    public AgentData(int id, float score, float speed, float energy, float health, float distanceToClosestFood, float angleToClosestFood, int visibleFoodCount)
     {
         this.Id = id;
         this.Score = score;
@@ -20,6 +21,7 @@ public readonly struct AgentData
         this.Health = health;
         this.DistanceToClosestFood = distanceToClosestFood;
         this.AngleToClosestFood = angleToClosestFood;
+        this.VisibleFoodCount = visibleFoodCount;
     }
 
     public AgentData Normalize(Agent agent)
@@ -31,12 +33,13 @@ public readonly struct AgentData
             energy: Mathf.Remap(this.Energy, 0.0f, agent.MaximumEnergy, -1, 1),
             health: Mathf.Remap(this.Health, 0.0f, agent.MaximumHealth, -1, 1),
             distanceToClosestFood: Mathf.Remap(float.IsNaN(this.DistanceToClosestFood) ? agent.SightRadius : this.DistanceToClosestFood, 0.0f, agent.SightRadius, -1, 1),
-            angleToClosestFood: Mathf.Remap(float.IsNaN(this.AngleToClosestFood) ? 0 : this.AngleToClosestFood, -agent.SightAngle/2.0f, agent.SightAngle/2.0f, -1, 1)
+            angleToClosestFood: Mathf.Remap(float.IsNaN(this.AngleToClosestFood) ? 0 : this.AngleToClosestFood, -agent.SightAngle/2.0f, agent.SightAngle/2.0f, -1, 1),
+            visibleFoodCount: this.VisibleFoodCount
         );
     }
 
     public override string ToString()
     {
-        return $"<id: {this.Id}, score: {this.Score}, speed: {this.Speed}, energy: {this.Energy}, health: {this.Health}, distanceToClosestFood: {this.DistanceToClosestFood}, angleToClosestFood: {this.AngleToClosestFood}>";
+        return $"<id: {this.Id}, score: {this.Score}, speed: {this.Speed}, energy: {this.Energy}, health: {this.Health}, distanceToClosestFood: {this.DistanceToClosestFood}, angleToClosestFood: {this.AngleToClosestFood}, visibleFoodCount: {this.VisibleFoodCount}>";
     }
 }

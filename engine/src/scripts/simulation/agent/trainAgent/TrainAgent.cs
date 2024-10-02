@@ -13,7 +13,7 @@ public partial class TrainAgent : Agent
         }
     }
 
-    public AgentData Data => new(this.Id, this.Score, this.Speed, this.energy, this.health, this.DistanceToClosestFood, this.AngleToClosestFood);
+    public AgentData Data => new(this.Id, this.Score, this.Speed, this.energy, this.health, this.DistanceToClosestFood, this.AngleToClosestFood, this.visibleFoodCount);
 
     public AgentData NormalizedData => this.Data.Normalize(this);
 
