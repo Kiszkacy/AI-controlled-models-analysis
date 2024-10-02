@@ -112,7 +112,7 @@ public partial class Agent : CharacterBody2D
                 if (!rayCast.IsColliding()) // not colliding with environment objects (trees, bushes etc)
                 {
                     this.visibleFoodCount++;
-                    
+
                     float currentDistance = this.GlobalPosition.DistanceSquaredTo(food.GlobalPosition);
                     if (currentDistance < distanceToClosestFood)
                     {
