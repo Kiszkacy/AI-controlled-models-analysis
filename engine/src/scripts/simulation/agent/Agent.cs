@@ -107,19 +107,19 @@ public partial class Agent : CharacterBody2D
             float angleToFoodInRadians = this.Direction.AngleTo(directionToFood);
             if (Mathf.Abs(angleToFoodInRadians) < this.SightAngle / 2.0f)
             {
-                float currentDistance = this.GlobalPosition.DistanceSquaredTo(food.GlobalPosition);
-                if (currentDistance < distanceToClosestFood)
+                rayCast.TargetPosition = food.GlobalPosition - rayCast.GlobalPosition;
+                rayCast.ForceRaycastUpdate();
+                if (!rayCast.IsColliding()) // not colliding with environment objects (trees, bushes etc)
                 {
-                    rayCast.TargetPosition = food.GlobalPosition - rayCast.GlobalPosition;
-                    rayCast.ForceRaycastUpdate();
-                    if (!rayCast.IsColliding()) // not colliding with environment objects (trees, bushes etc)
+                    this.visibleFoodCount++;
+                    
+                    float currentDistance = this.GlobalPosition.DistanceSquaredTo(food.GlobalPosition);
+                    if (currentDistance < distanceToClosestFood)
                     {
                         distanceToClosestFood = currentDistance;
                         this.closestFoodPosition = food.GlobalPosition;
                     }
                 }
-
-                this.visibleFoodCount++;
             }
         }
     }
