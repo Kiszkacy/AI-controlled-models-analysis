@@ -100,17 +100,14 @@ class AgentPolicy(Policy):
         return self.policy_network.state_dict()
 
     def set_weights(self, weights):
-        os.makedirs("model", exist_ok=True)
         self.policy_network.load_state_dict(weights)
         torch.save(self.policy_network.state_dict(), self.model_path)
 
     def load_batch_into_buffer(self, batch, buffer_index: int = 0) -> int:
-        num_devices = self.config["num_workers"]
-        total_samples = buffer_index
-        samples_per_device = total_samples // num_devices
+        total_samples = len(batch)
 
         while len(self.buffer) < buffer_index:
             self.buffer.append(None)
         self.buffer[buffer_index] = batch
 
-        return samples_per_device
+        return total_samples
