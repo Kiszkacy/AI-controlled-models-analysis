@@ -21,4 +21,9 @@ public partial class Environment : Node2D, Initializable
 
         this.initialized.Initialize();
     }
+
+    public void SaveEnvironment()
+    {
+        
+    }
 }
