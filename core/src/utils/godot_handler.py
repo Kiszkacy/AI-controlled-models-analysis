@@ -7,6 +7,7 @@ from loguru import logger
 
 from core.src.pipe_handler.pipe_handler import PipeHandler
 from core.src.settings import get_settings
+from core.src.workers.worker_manager import WorkerManager
 
 
 class GodotHandler:
@@ -20,6 +21,9 @@ class GodotHandler:
         self.godot_thread: threading.Thread | None = None
         self.pipe_name: str = self.get_pipe_name()
         self.pipe_handler: PipeHandler = PipeHandler(pipe_name=self.pipe_name)
+        self.manager = WorkerManager()
+        self.manager.register_worker()
+        self.manager.decide_leader()
 
     @classmethod
     def get_pipe_name(cls) -> str:
@@ -42,8 +46,10 @@ class GodotHandler:
         godot_args = [
             "--path",
             self.project_path,
-            "--headless",
         ]
+
+        if not self.manager.is_leader():
+            godot_args.append("--headless")
 
         project_args = [
             "--pipe-name",

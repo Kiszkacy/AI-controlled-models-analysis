@@ -1,3 +1,4 @@
+attrs~=23.2.0
 torch~=2.2.2
 gymnasium~=0.28.1
 loguru~=0.7.2
@@ -11,3 +12,4 @@ mypy~=1.10.0
 pywin32==306; platform_system == "Windows"
 types-pywin32==306; platform_system == "Windows"
 ray[rllib]~=2.10.0
+pytest~=8.2.2
