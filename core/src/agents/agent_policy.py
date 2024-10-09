@@ -1,8 +1,6 @@
 import os
 
-import numpy as np
 import torch
-from gymnasium.spaces import Box
 from ray.rllib.policy.policy import Policy
 
 
@@ -13,7 +11,9 @@ class AgentPolicy(Policy):
         self.model_path = config["model_path"]
         if self.model_path is not None and os.path.exists(self.model_path):
             self.policy_network.load_state_dict(torch.load(self.model_path))
-        self.optimizer = torch.optim.Adam(self.policy_network.parameters(), lr=config["learning_rate"], maximize=True)
+        self.optimizer: torch.optim.Optimizer = torch.optim.Adam(
+            self.policy_network.parameters(), lr=config["learning_rate"], maximize=True
+        )
         self.gamma = config["gamma"]
         self.buffer = [None]
         self.loss = []
@@ -28,6 +28,16 @@ class AgentPolicy(Policy):
 
         return discounted_rewards
 
+    @staticmethod
+    def sample_actions(mean, stddev, deterministic=False):
+        stddev = torch.clamp(stddev, min=1e-6)
+        if deterministic:
+            actions = mean
+        else:
+            normal_distribution = torch.distributions.Normal(mean, stddev)
+            actions = normal_distribution.sample()
+        return torch.clamp(actions, min=-1.0, max=1.0)
+
     def compute_actions(  # noqa: PLR0913
         self,
         obs_batch,
@@ -38,38 +48,18 @@ class AgentPolicy(Policy):
         episodes=None,  # noqa: ARG002
         **kwargs,  # noqa: ARG002
     ):
-        actions = []
         with torch.no_grad():
-            for obs in obs_batch:
-                obs_tensor = torch.tensor(obs, dtype=torch.float32)
-                policy_logits = self.policy_network(obs_tensor.unsqueeze(0))
+            obs_tensor = torch.tensor(obs_batch, dtype=torch.float32)
+            mean, stddev = self.policy_network(obs_tensor.unsqueeze(0))
 
-                action_dict = {}
-                start_idx = 0
-                for key, space in self.action_space.spaces.items():
-                    if isinstance(space, Box):
-                        if len(space.shape) > 0:
-                            logits_for_key = policy_logits[:, start_idx : start_idx + np.prod(space.shape)]
-                            start_idx = start_idx + np.prod(space.shape)
-                        else:
-                            logits_for_key = policy_logits[:, start_idx : start_idx + 1]
-                            start_idx += 1
+            actions_temp = self.sample_actions(mean, stddev)
+            action_names = ["accelerate", "rotate"]
 
-                        mean = logits_for_key.squeeze().numpy()
+            actions = [
+                {action_names[0]: action_values[0], action_names[1]: action_values[1]}
+                for action_values in actions_temp[0]
+            ]
 
-                        distribution = torch.distributions.Normal(loc=torch.tensor(mean), scale=torch.tensor(1.0))
-                        sampled_action = distribution.sample().numpy()
-
-                        action = np.clip(sampled_action, space.low, space.high)
-
-                        if len(space.shape) == 0:
-                            action = action.item()
-                    else:
-                        raise NotImplementedError(f"Action space type {type(space)} not implemented.")
-
-                    action_dict[key] = action
-
-                actions.append(action_dict)
         return actions, [], {}
 
     def learn_on_loaded_batch(self, offset: int = 0, buffer_index: int = 0):  # noqa: ARG002
@@ -78,12 +68,9 @@ class AgentPolicy(Policy):
         states = data.get("obs", None)
         actions = data.get("actions", None)
 
-        policy_logits = self.policy_network(torch.tensor(states, dtype=torch.float32))
+        mean, stddev = self.policy_network(torch.tensor(states, dtype=torch.float32))
 
-        mean, log_std = torch.chunk(policy_logits, 2, dim=-1)
-        std = torch.exp(log_std)
-        distribution = torch.distributions.Normal(mean, std)
-
+        distribution = torch.distributions.Normal(mean, stddev)
         actions_tensor = torch.tensor(actions, dtype=torch.float32)
         log_probs_tensor = distribution.log_prob(actions_tensor).sum(dim=-1)
         advantages = self.discount_rewards(torch.tensor(rewards, dtype=torch.float))
