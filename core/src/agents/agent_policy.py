@@ -30,7 +30,6 @@ class AgentPolicy(Policy):
 
     @staticmethod
     def sample_actions(mean, stddev, deterministic=False):
-        stddev = torch.clamp(stddev, min=1e-6)
         if deterministic:
             actions = mean
         else:

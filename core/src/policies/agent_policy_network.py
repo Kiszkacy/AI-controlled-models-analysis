@@ -1,5 +1,5 @@
 from gymnasium.spaces import Dict
-from torch import exp, nn, tanh
+from torch import clamp, exp, nn, tanh
 
 from core.src.policies.policy_network import PolicyNetwork
 
@@ -26,6 +26,7 @@ class AgentPolicyNetwork(PolicyNetwork):
 
         mean = tanh(self.mean_layer(x))
         log_std = self.log_std_layer(x)
-        stddev = abs(tanh(exp(log_std)) // 2)
+        stddev = abs(tanh(exp(log_std)) / 2)
+        stddev = clamp(stddev, min=1e-6)
 
         return mean, stddev
