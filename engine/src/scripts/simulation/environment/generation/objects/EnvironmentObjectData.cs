@@ -1,5 +1,6 @@
 ﻿
 using Godot;
+using Godot.Collections;
 
 public readonly struct EnvironmentObjectData
 {
@@ -10,5 +11,16 @@ public readonly struct EnvironmentObjectData
     {
         this.Id = id;
         this.Position = position;
+    }
+    
+    public Dictionary ToDictionary()
+    {
+        var dict = new Dictionary
+        {
+            { "Id", (int)this.Id },  
+            { "Position", this.Position }  
+        };
+
+        return dict;
     }
 }

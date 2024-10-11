@@ -1,5 +1,8 @@
 ﻿
+using System.Linq;
+
 using Godot;
+using Godot.Collections;
 
 public readonly struct EnvironmentTemplate
 {
@@ -70,5 +73,18 @@ public readonly struct EnvironmentTemplate
         this.BiomeData = biomeData;
         this.TerrainData = terrainData;
         this.ObjectData = objectData;
+    }
+    
+    public Dictionary ToDictionary()
+    {
+        var environmentData = new Dictionary
+        {
+            { "generationSettings", this.GenerationSettings.ToDictionary() },
+            { "biomeData", new Array(this.BiomeData.Select(b => (Variant)(int)b).ToArray()) },
+            { "terrainData", new Array(this.TerrainData.Select(t => (Variant)t).ToArray()) },
+            { "objectData", new Array(this.ObjectData.Select(o => (Variant)o.ToDictionary()).ToArray()) }
+        };
+
+        return environmentData;
     }
 }

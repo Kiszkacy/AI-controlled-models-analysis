@@ -1,13 +1,14 @@
 ﻿
-using System.Collections.Generic;
+using Godot;
+using Godot.Collections;
 
 public class AgentManager : Singleton<AgentManager>
 {
-    private readonly Dictionary<int, Agent> agents = new();
+    private readonly System.Collections.Generic.Dictionary<int, Agent> agents = new();
     private int agentIdIterator = 0;
 
     public Agent Agent(int id) => this.agents[id];
-    public Dictionary<int, Agent> Agents => this.agents;
+    public System.Collections.Generic.Dictionary<int, Agent> Agents => this.agents;
 
     public void RegisterAgent(Agent agent)
     {
@@ -30,5 +31,28 @@ public class AgentManager : Singleton<AgentManager>
     {
         this.agentIdIterator = 0;
         this.agents.Clear();
+    }
+    
+    public Dictionary SaveAgents()
+    {
+        var agentsList = new Array();
+        
+        foreach (Agent agent in agents.Values)
+        {
+            var agentData = new Dictionary();
+            agent.Save(agentData);
+            var agentDict = new Dictionary()
+            {
+                { "id", agent.Id },
+                { "data", agentData }
+            };
+            agentsList.Add(agentDict);
+        }
+        var agentsData = new Dictionary()
+        {
+            { "agents", agentsList }
+        };
+
+        return agentsData;
     }
 }

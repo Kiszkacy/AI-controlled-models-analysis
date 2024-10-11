@@ -1,5 +1,6 @@
 ﻿
 using Godot;
+using Godot.Collections;
 
 public readonly struct EnvironmentGenerationSettings
 {
@@ -12,5 +13,17 @@ public readonly struct EnvironmentGenerationSettings
         this.Size = size;
         this.BiomeChunkSize = biomeChunkSize;
         this.TerrainChunkSize = terrainChunkSize;
+    }
+    
+    public Dictionary ToDictionary()
+    {
+        var dict = new Dictionary
+        {
+            { "Size", this.Size },
+            { "BiomeChunkSize", this.BiomeChunkSize },
+            { "TerrainChunkSize", this.TerrainChunkSize }
+        };
+
+        return dict;
     }
 }

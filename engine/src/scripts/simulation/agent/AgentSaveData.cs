@@ -1,33 +1,49 @@
-﻿using System;
+﻿using Godot;
+using Godot.Collections;
 
-[Serializable]
-public struct AgentSaveData
+public class AgentSaveData
 {
-    public float Energy { get; }
-    public float Health { get; }
-    public float CurrentRotation { get; }
-    public float CurrentAcceleration { get; }
-    public string SpriteTexturePath { get; }
-    public float DirectionX { get; }
-    public float DirectionY { get; }
-    public float DirectionAngle { get; }
-    public float Speed { get; }
-    public int Id { get; }
-    public float? ThisFrameScore { get; }
-    
-    public AgentSaveData(float energy, float health, float currentRotation, float currentAcceleration, string spriteTexturePath, 
-        float directionX, float directionY, float directionAngle, float speed, int id, float? thisFrameScore = null)
+    public Vector2 Position { get; set; }
+    public float MaximumSpeed { get; set; }
+    public float MaximumAcceleration { get; set; }
+    public float MaximumDeceleration { get; set; }
+    public float MaximumEnergy { get; set; }
+    public float InitialEnergy { get; set; }
+    public float MaximumHealth { get; set; }
+    public float InitialHealth { get; set; }
+    public float MaximumTurnSpeed { get; set; }
+    public float SightAngle { get; set; }
+    public float SightRadius { get; set; }
+    public float Energy { get; set; }
+    public float Health { get; set; }
+    public float CurrentRotation { get; set; }
+    public float CurrentAcceleration { get; set; }
+    public Vector2 Direction { get; set; }
+    public Vector2 Velocity { get; set; }
+    public int Id { get; set; }
+
+    public Dictionary ToDictionary()
     {
-        this.Energy = energy;
-        this.Health = health;
-        this.CurrentRotation = currentRotation;
-        this.CurrentAcceleration = currentAcceleration;
-        this.SpriteTexturePath = spriteTexturePath;
-        this.DirectionX = directionX;
-        this.DirectionY = directionY;
-        this.DirectionAngle = directionAngle;
-        this.Speed = speed;
-        this.Id = id;
-        this.ThisFrameScore = thisFrameScore;
+        return new Dictionary
+        {
+            { "Position", this.Position },
+            { "MaximumSpeed", this.MaximumSpeed },
+            { "MaximumAcceleration", this.MaximumAcceleration },
+            { "MaximumDeceleration", this.MaximumDeceleration },
+            { "MaximumEnergy", this.MaximumEnergy },
+            { "InitialEnergy", this.InitialEnergy },
+            { "MaximumHealth", this.MaximumHealth },
+            { "InitialHealth", this.InitialHealth },
+            { "MaximumTurnSpeed", this.MaximumTurnSpeed },
+            { "SightAngle", this.SightAngle },
+            { "SightRadius", this.SightRadius },
+            { "Energy", this.Energy },
+            { "Health", this.Health },
+            { "CurrentRotation", this.CurrentRotation },
+            { "CurrentAcceleration", this.CurrentAcceleration },
+            { "Direction", this.Direction },
+            { "Velocity", this.Velocity },
+            { "Id", this.Id },
+        };
     }
 }

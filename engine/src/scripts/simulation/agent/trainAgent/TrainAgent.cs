@@ -1,4 +1,7 @@
 
+
+using Godot.Collections;
+
 public partial class TrainAgent : Agent
 {
     private float thisFrameScore = 0.0f;
@@ -35,5 +38,17 @@ public partial class TrainAgent : Agent
     {
         this.Accelerate(this.Action.AccelerateStrength);
         this.Rotate(this.Action.RotateStrength);
+    }
+
+    public override void Save(Dictionary data)
+    {
+        base.Save(data);
+        data["thisFrameScore"] = this.thisFrameScore;
+    }
+
+    public override void Load(Dictionary data)
+    {
+        base.Load(data);
+        this.thisFrameScore = (float)data["thisFrameScore"];
     }
 }

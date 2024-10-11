@@ -19,4 +19,6 @@ public class EntityManager : Singleton<EntityManager>, Initializable
 
         this.initialized.Initialize();
     }
+    
+    
 }

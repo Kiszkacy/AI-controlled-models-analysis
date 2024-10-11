@@ -89,8 +89,8 @@ public partial class Initializer : Node
     {
         EnvironmentGenerator environmentGenerator = EnvironmentGeneratorBuilder.Start.SetAllToDefault().End();
         EnvironmentTemplate environmentTemplate = environmentGenerator.Generate();
-        EntityManager.Instance.Initialize(environmentTemplate.GenerationSettings.Size); // IMPORTANT: EntityManager must initialize before environment instantiates
-
+        EntityManager.Instance.Initialize(environmentTemplate.GenerationSettings
+                .Size); // IMPORTANT: EntityManager must initialize before environment instantiate
         Node parent = this.GetParent<Node>();
         Environment environment = ((Environment)(parent.GetNode("Environment")));
         environment.Initialize(environmentTemplate);
@@ -101,6 +101,19 @@ public partial class Initializer : Node
     private void SetupEnvironment() // TODO remove me too
     {
         AgentSightRayCastManager.Instance.Initialize(this.GetParent(), true);
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+        if (@event.IsActionPressed("reload.scene"))
+        {
+            NeatPrinter.Start()
+                .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+                .Print("  | RELOADING SCENE")
+                .End();
+            Reloader.Get().Reload(this.GetParent<Node>());
+            GetTree().ReloadCurrentScene();
+        }
     }
 
     public Initializer()
