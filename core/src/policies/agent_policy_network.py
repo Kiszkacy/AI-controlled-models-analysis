@@ -26,6 +26,6 @@ class AgentPolicyNetwork(PolicyNetwork):
 
         mean = tanh(self.mean_layer(x))
         log_std = self.log_std_layer(x)
-        stddev = exp(log_std)
+        stddev = abs(tanh(exp(log_std)) // 2)
 
         return mean, stddev
