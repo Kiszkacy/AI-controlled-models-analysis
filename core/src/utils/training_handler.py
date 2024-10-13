@@ -5,7 +5,6 @@ from ray.rllib.algorithms import Algorithm
 from ray.tune import Tuner
 
 from core.src.agents.agent_policy import AgentPolicy
-from core.src.environments.godot_environment import GodotServerEnvironment
 from core.src.policies.agent_policy_network import AgentPolicyNetwork
 from core.src.policies.policy_network import PolicyNetwork
 from core.src.settings import get_settings
@@ -35,7 +34,7 @@ class TrainingHandler:
     def __init__(  # noqa: PLR0913
         self,
         model_path: str | None = None,
-        environment_cls: type[MultiAgentEnv] = GodotServerEnvironment,
+        environment_cls: type[MultiAgentEnv] | str = "Pendulum",
         policy_cls: type[PolicyNetwork] = AgentPolicyNetwork,
         learning_rate: float = 1e-3,
         gamma: float = 0.99,
@@ -66,4 +65,4 @@ class TrainingHandler:
             Tuner(MyAlgo, param_space=config).fit()
         else:
             config["model_path"] = get_path()
-            Tuner(MyAlgo, param_space=config).fit()  # Tuner params are saved by default at path ~/ray_results)
+            Tuner(MyAlgo, param_space=config).fit()  # Tuner params are saved by default at path ~/ray_results

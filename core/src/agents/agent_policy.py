@@ -52,14 +52,15 @@ class AgentPolicy(Policy):
             mean, stddev = self.policy_network(obs_tensor.unsqueeze(0))
 
             actions_temp = self.sample_actions(mean, stddev)
+            """
             action_names = ["accelerate", "rotate"]
 
             actions = [
                 {action_names[0]: action_values[0], action_names[1]: action_values[1]}
                 for action_values in actions_temp[0]
             ]
-
-        return actions, [], {}
+            """
+        return actions_temp, [], {}
 
     def learn_on_loaded_batch(self, offset: int = 0, buffer_index: int = 0):  # noqa: ARG002
         data = self.buffer[buffer_index]
