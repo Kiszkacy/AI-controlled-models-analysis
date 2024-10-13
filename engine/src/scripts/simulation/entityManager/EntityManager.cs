@@ -19,6 +19,13 @@ public class EntityManager : Singleton<EntityManager>, Initializable
 
         this.initialized.Initialize();
     }
-    
-    
+
+    public void Reset()
+    {
+        this.FoodBuckets.Reset();
+        this.FoodBuckets = null;
+        this.ObjectBuckets.Reset();
+        this.ObjectBuckets = null;
+        this.initialized.Reset();
+    }
 }

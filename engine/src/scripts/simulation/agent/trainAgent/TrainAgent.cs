@@ -40,15 +40,19 @@ public partial class TrainAgent : Agent
         this.Rotate(this.Action.RotateStrength);
     }
 
-    public override void Save(Dictionary data)
+    public override AgentSaveData Save()
     {
-        base.Save(data);
-        data["thisFrameScore"] = this.thisFrameScore;
+        var data = base.Save();
+        data.ThisFrameScore = this.thisFrameScore;
+        return data;
     }
 
-    public override void Load(Dictionary data)
+    public override void Load(AgentSaveData data)
     {
         base.Load(data);
-        this.thisFrameScore = (float)data["thisFrameScore"];
+        if (data.ThisFrameScore.HasValue)
+        {
+            this.thisFrameScore = data.ThisFrameScore.Value;
+        }
     }
 }

@@ -1,7 +1,7 @@
 using Godot;
 using Godot.Collections;
 
-public partial class Agent : CharacterBody2D, Saveable
+public partial class Agent : CharacterBody2D
 {
     [Export]
     public float MaximumSpeed { get; set; } = 200.0f; // in px per sec
@@ -189,47 +189,33 @@ public partial class Agent : CharacterBody2D, Saveable
         this.UpdateColor();
     }
 
-    public virtual void Save(Dictionary data)
+    public virtual AgentSaveData Save()
     {
-        data["position"] = this.GlobalPosition;
-        data["maximumSpeed"] = this.MaximumSpeed;
-        data["maximumAcceleration"] = this.MaximumAcceleration;
-        data["maximumDeceleration"] = this.MaximumDeceleration;
-        data["maximumEnergy"] = this.MaximumEnergy;
-        data["initialEnergy"] = this.InitialEnergy;
-        data["maximumHealth"] = this.MaximumHealth;
-        data["initialHealth"] = this.InitialHealth;
-        data["maximumTurnSpeed"] = this.MaximumTurnSpeed;
-        data["sightAngle"] = this.SightAngle;
-        data["sightRadius"] = this.SightRadius;
-        data["energy"] = this.energy;
-        data["health"] = this.health;
-        data["currentRotation"] = this.currentRotation;
-        data["currentAcceleration"] = this.currentAcceleration;
-        data["direction"] = this.Direction;
-        data["velocity"] = this.Velocity;
-        data["id"] = this.id;
+        return new AgentSaveData(this.GlobalPosition, this.MaximumSpeed, this.MaximumAcceleration, this.MaximumDeceleration,
+            this.MaximumEnergy, this.InitialEnergy, this.MaximumHealth, this.InitialHealth, this.MaximumTurnSpeed,
+            this.SightAngle, this.SightRadius, this.energy, this.health, this.currentRotation, this.currentAcceleration,
+            this.Direction, this.Velocity, this.id);
     }
 
-    public virtual void Load(Dictionary data)
+    public virtual void Load(AgentSaveData data)
     {
-        this.GlobalPosition = (Vector2)data["position"];
-        this.MaximumSpeed = (float)data["maximumSpeed"];
-        this.MaximumAcceleration = (float)data["maximumAcceleration"];
-        this.MaximumDeceleration = (float)data["maximumDeceleration"];
-        this.MaximumEnergy = (float)data["maximumEnergy"];
-        this.InitialEnergy = (float)data["initialEnergy"];
-        this.MaximumHealth = (float)data["maximumHealth"];
-        this.InitialHealth = (float)data["initialHealth"];
-        this.MaximumTurnSpeed = (float)data["maximumTurnSpeed"];
-        this.SightAngle = (float)data["sightAngle"];
-        this.SightRadius = (float)data["sightRadius"];
-        this.energy = (float)data["energy"];
-        this.health = (float)data["health"];
-        this.currentRotation = (float)data["currentRotation"];
-        this.currentAcceleration = (float)data["currentAcceleration"];
-        this.Direction = (Vector2)data["direction"];
-        this.Velocity = (Vector2)data["velocity"];
-        this.id = (int)data["id"];
+        this.GlobalPosition = data.Position;
+        this.MaximumSpeed = data.MaximumSpeed;
+        this.MaximumAcceleration = data.MaximumAcceleration;
+        this.MaximumDeceleration = data.MaximumDeceleration;
+        this.MaximumEnergy = data.MaximumEnergy;
+        this.InitialEnergy = data.InitialEnergy;
+        this.MaximumHealth = data.MaximumHealth;
+        this.InitialHealth = data.InitialHealth;
+        this.MaximumTurnSpeed = data.MaximumTurnSpeed;
+        this.SightAngle = data.SightAngle;
+        this.SightRadius = data.SightRadius;
+        this.energy = data.Energy;
+        this.health = data.Health;
+        this.currentRotation = data.CurrentRotation;
+        this.currentAcceleration = data.CurrentAcceleration;
+        this.Direction = data.Direction;
+        this.Velocity = data.Velocity;
+        this.id = data.Id;
     }
 }

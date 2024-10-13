@@ -106,4 +106,10 @@ public class EntityLayer<T> : Initializable where T : Node2D, Bucketable
     {
         this.environmentSize = environmentSize;
     }
+
+    public void Reset()
+    {
+        this.buckets = null;
+        this.initialized.Reset();
+    }
 }

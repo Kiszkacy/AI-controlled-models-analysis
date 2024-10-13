@@ -1,20 +1,12 @@
 ﻿
-
-
-using System;
-using System.Linq;
-
 using Godot;
-using Godot.Collections;
-
-using Array = Godot.Collections.Array;
 
 public struct EnvironmentTemplate
 {
     public EnvironmentGenerationSettings GenerationSettings { get; set; }
-    public BiomeType[] BiomeData { get; set;  }
-    public bool[] TerrainData { get; set;  }
-    public EnvironmentObjectData[] ObjectData { get; set;  }
+    public BiomeType[] BiomeData { get; set; }
+    public bool[] TerrainData { get; set; }
+    public EnvironmentObjectData[] ObjectData { get; set; }
 
     private void _Instantiate(Environment environment, bool shouldInitialize)
     {

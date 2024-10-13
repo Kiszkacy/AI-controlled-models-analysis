@@ -6,14 +6,6 @@ public partial class Initializer : Node
 {
     public override void _Ready()
     {
-        if (Reloader.Get().IsReloading)
-        {
-            NeatPrinter.Start()
-                .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
-                .Print("  | LOADING SCENE")
-                .End();
-            Reloader.Get().LoadAllData(this.GetParent<Node>());
-        }
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
             .Print("  | LOADING SCENE")
@@ -61,7 +53,7 @@ public partial class Initializer : Node
                 .End();
             this.GenerateEnvironment();
         }
-        
+
         else
         {
             NeatPrinter.Start()
@@ -75,7 +67,7 @@ public partial class Initializer : Node
                 .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
                 .Print("  | ENVIRONMENT SETUP")
                 .End();
-            this.SetupEnvironment();
+        this.SetupEnvironment();
     }
 
     private void LoadSingletons() // this method loads singletons that are required to be loaded in a specific order

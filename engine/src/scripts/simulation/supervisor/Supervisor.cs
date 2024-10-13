@@ -31,7 +31,7 @@ public partial class Supervisor : Node
 
     public override void _Ready()
     {
-        if (!Reloader.Instance.IsReloading)
+        if (!Reloader.Get().IsReloading)
         {
             for (int i = 0; i < this.InitialAgentCount; i++)
             {
@@ -135,15 +135,14 @@ public partial class Supervisor : Node
         }
     }
 
-    public void LoadAgents(Array agentsData)
+    public void LoadAgents(AgentSaveData[] agentsData)
     {
-        foreach (Dictionary agentData in agentsData)
+        foreach (AgentSaveData agentData in agentsData)
         {
-            int id = (int)agentData["id"];
-            Dictionary data = (Dictionary)agentData["data"];
+            int id = agentData.Id;
             Node2D agentInstance = (Node2D)(this.UseLogicAgents ? this.packedLogicAgent : this.packedTrainAgent).Instantiate();
             Agent agent = (Agent)agentInstance;
-            agent.Load(data);
+            agent.Load(agentData);
             this.AgentsRootNode.CallDeferred("add_child", agentInstance);
             AgentManager.Get().RegisterAgent(id, agent);
         }
