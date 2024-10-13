@@ -1,15 +1,20 @@
 ﻿
+
+
+using System;
 using System.Linq;
 
 using Godot;
 using Godot.Collections;
 
-public readonly struct EnvironmentTemplate
+using Array = Godot.Collections.Array;
+
+public struct EnvironmentTemplate
 {
-    public EnvironmentGenerationSettings GenerationSettings { get; }
-    public BiomeType[] BiomeData { get; }
-    public bool[] TerrainData { get; }
-    public EnvironmentObjectData[] ObjectData { get; }
+    public EnvironmentGenerationSettings GenerationSettings { get; set; }
+    public BiomeType[] BiomeData { get; set;  }
+    public bool[] TerrainData { get; set;  }
+    public EnvironmentObjectData[] ObjectData { get; set;  }
 
     private void _Instantiate(Environment environment, bool shouldInitialize)
     {
@@ -73,18 +78,5 @@ public readonly struct EnvironmentTemplate
         this.BiomeData = biomeData;
         this.TerrainData = terrainData;
         this.ObjectData = objectData;
-    }
-    
-    public Dictionary ToDictionary()
-    {
-        var environmentData = new Dictionary
-        {
-            { "generationSettings", this.GenerationSettings.ToDictionary() },
-            { "biomeData", new Array(this.BiomeData.Select(b => (Variant)(int)b).ToArray()) },
-            { "terrainData", new Array(this.TerrainData.Select(t => (Variant)t).ToArray()) },
-            { "objectData", new Array(this.ObjectData.Select(o => (Variant)o.ToDictionary()).ToArray()) }
-        };
-
-        return environmentData;
     }
 }

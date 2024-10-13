@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using System.Text;
 
 using Godot;
+using Godot.Collections;
 
 using Newtonsoft.Json;
+
+using Array = Godot.Collections.Array;
 
 public partial class Supervisor : Node
 {
@@ -28,18 +31,21 @@ public partial class Supervisor : Node
 
     public override void _Ready()
     {
-        for (int i = 0; i < this.InitialAgentCount; i++)
+        if (!Reloader.Instance.IsReloading)
         {
-            this.SpawnAgent();
-        }
+            for (int i = 0; i < this.InitialAgentCount; i++)
+            {
+                this.SpawnAgent();
+            }
 
-        if (!this.UseLogicAgents)
-        {
-            NeatPrinter.Start()
-                .ColorPrint(ConsoleColor.Blue, "[SUPERVISOR]")
-                .Print("  | CONNECTING PIPE")
-                .End();
-            PipeHandler.Get().Connect();
+            if (!this.UseLogicAgents)
+            {
+                NeatPrinter.Start()
+                    .ColorPrint(ConsoleColor.Blue, "[SUPERVISOR]")
+                    .Print("  | CONNECTING PIPE")
+                    .End();
+                PipeHandler.Get().Connect();
+            }
         }
     }
 
@@ -126,6 +132,20 @@ public partial class Supervisor : Node
             Agent agent = (Agent)agentInstance;
             agent.Direction = Vector2.FromAngle(RandomGenerator.Float(Mathf.Pi*2.0f));
             AgentManager.Get().RegisterAgent(agent);
+        }
+    }
+
+    public void LoadAgents(Array agentsData)
+    {
+        foreach (Dictionary agentData in agentsData)
+        {
+            int id = (int)agentData["id"];
+            Dictionary data = (Dictionary)agentData["data"];
+            Node2D agentInstance = (Node2D)(this.UseLogicAgents ? this.packedLogicAgent : this.packedTrainAgent).Instantiate();
+            Agent agent = (Agent)agentInstance;
+            agent.Load(data);
+            this.AgentsRootNode.CallDeferred("add_child", agentInstance);
+            AgentManager.Get().RegisterAgent(id, agent);
         }
     }
 

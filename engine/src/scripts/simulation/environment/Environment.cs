@@ -20,8 +20,9 @@ public partial class Environment : Node2D, Initializable
         this.initialized.Initialize();
     }
 
-    public Dictionary SaveEnvironment()
+    public EnvironmentTemplate SaveEnvironment()
     {
-        return TemplateData.ToDictionary();
+        this.initialized.Reset();
+        return TemplateData;
     }
 }

@@ -2,10 +2,10 @@
 using Godot;
 using Godot.Collections;
 
-public readonly struct EnvironmentObjectData
+public struct EnvironmentObjectData
 {
-    public readonly EnvironmentObjectId Id;
-    public readonly Vector2 Position;
+    public EnvironmentObjectId Id { get; set; }
+    public Vector2 Position { get; set; }
 
     public EnvironmentObjectData(EnvironmentObjectId id, Vector2 position)
     {
@@ -22,5 +22,13 @@ public readonly struct EnvironmentObjectData
         };
 
         return dict;
+    }
+    
+    public static EnvironmentObjectData FromDictionary(Dictionary data)
+    {
+        EnvironmentObjectId id = (EnvironmentObjectId)(int)data["Id"];
+        Vector2 position = (Vector2)data["Position"];
+        
+        return new EnvironmentObjectData(id, position);
     }
 }

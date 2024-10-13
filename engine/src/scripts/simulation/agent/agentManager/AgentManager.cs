@@ -16,6 +16,12 @@ public class AgentManager : Singleton<AgentManager>
         agent.Id = this.agentIdIterator;
         this.agentIdIterator += 1;
     }
+    
+    public void RegisterAgent(int id, Agent agent)
+    {
+        this.agents.Add(id, agent);
+        agent.Id = id;
+    }
 
     public void RemoveAgent(int id)
     {
@@ -32,27 +38,19 @@ public class AgentManager : Singleton<AgentManager>
         this.agentIdIterator = 0;
         this.agents.Clear();
     }
-    
-    public Dictionary SaveAgents()
+
+    public Array SaveAgents()
     {
         var agentsList = new Array();
-        
+
         foreach (Agent agent in agents.Values)
         {
             var agentData = new Dictionary();
             agent.Save(agentData);
-            var agentDict = new Dictionary()
-            {
-                { "id", agent.Id },
-                { "data", agentData }
-            };
+            var agentDict = new Dictionary() { { "id", agent.Id }, { "data", agentData } };
             agentsList.Add(agentDict);
         }
-        var agentsData = new Dictionary()
-        {
-            { "agents", agentsList }
-        };
-
-        return agentsData;
+        
+        return agentsList;
     }
 }
