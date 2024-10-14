@@ -55,6 +55,10 @@ public class Reloader : Singleton<Reloader>
 
     public void LoadAllData(Node root)
     {
+        NeatPrinter.Start()
+            .ColorPrint(ConsoleColor.Blue, "[RELOADER]")
+            .Print("  | LOADING ENVIRONMENT")
+            .End();
         if (!FileAccess.FileExists(saveFilePath))
         {
             throw new FileNotFoundException($"File '{saveFilePath}' does not exist.");
@@ -64,38 +68,20 @@ public class Reloader : Singleton<Reloader>
         string yaml = file.GetAsText();
         file.Close();
 
-        NeatPrinter.Start()
-            .ColorPrint(ConsoleColor.Blue, "[RELOADER]")
-            .Print("  | LOADED SAVE FILE")
-            .End();
-
-
         var deserializer = new DeserializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .Build();
         EnvironmentSaveData environmentSaveData = deserializer.Deserialize<EnvironmentSaveData>(yaml);
 
-        NeatPrinter.Start()
-            .ColorPrint(ConsoleColor.Blue, "[RELOADER]")
-            .Print("  | LOADING ENVIRONMENT")
-            .End();
         EnvironmentTemplate environmentTemplate = environmentSaveData.EnvironmentTemplate;
         LoadEnvironment(environmentTemplate, root);
 
         ((Camera2D)root.GetNode("Camera")).GlobalPosition = environmentSaveData.CameraPosition;
         ((Camera2D)root.GetNode("Camera")).Zoom = environmentSaveData.CameraZoom;
 
-        NeatPrinter.Start()
-            .ColorPrint(ConsoleColor.Blue, "[RELOADER]")
-            .Print("  | LOADING AGENTS")
-            .End();
         AgentSaveData[] agentsData = environmentSaveData.AllAgentsData;
         LoadAgents(agentsData, root);
 
-        NeatPrinter.Start()
-            .ColorPrint(ConsoleColor.Blue, "[RELOADER]")
-            .Print("  | LOADING FOOD SPAWNERS")
-            .End();
         EntityManager.Instance.LoadFoodSpawnersData(environmentSaveData.FoodSpawnersData, environmentSaveData.FoodData);
     }
 
