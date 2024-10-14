@@ -31,21 +31,23 @@ public partial class Supervisor : Node
 
     public override void _Ready()
     {
-        if (!Reloader.Get().IsReloading)
+        if (Reloader.Get().IsReloading)
         {
-            for (int i = 0; i < this.InitialAgentCount; i++)
-            {
-                this.SpawnAgent();
-            }
+            return;
+        }
 
-            if (!this.UseLogicAgents)
-            {
-                NeatPrinter.Start()
-                    .ColorPrint(ConsoleColor.Blue, "[SUPERVISOR]")
-                    .Print("  | CONNECTING PIPE")
-                    .End();
-                PipeHandler.Get().Connect();
-            }
+        for (int i = 0; i < this.InitialAgentCount; i++)
+        {
+            this.SpawnAgent();
+        }
+
+        if (!this.UseLogicAgents)
+        {
+            NeatPrinter.Start()
+                .ColorPrint(ConsoleColor.Blue, "[SUPERVISOR]")
+                .Print("  | CONNECTING PIPE")
+                .End();
+            PipeHandler.Get().Connect();
         }
     }
 

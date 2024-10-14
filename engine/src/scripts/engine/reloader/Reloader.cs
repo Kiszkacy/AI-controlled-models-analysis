@@ -22,10 +22,10 @@ public class Reloader : Singleton<Reloader>
             .ColorPrint(ConsoleColor.Blue, "[RELOADER]")
             .Print("  | SAVE COMPLETE")
             .End();
+        root.GetTree().ReloadCurrentScene();
         AgentManager.Get().Reset();
         EntityManager.Get().Reset();
-        // AgentSightRayCastManager.Get().Reset();
-        root.GetTree().CallDeferred("reload_current_scene");
+        AgentSightRayCastManager.Get().Reset();
     }
 
     private void SaveAllData(Node root)
