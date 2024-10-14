@@ -1,4 +1,5 @@
 import json
+import random
 import subprocess
 import threading
 from pathlib import Path
@@ -36,10 +37,13 @@ class GodotHandler:
     def send(self, data: bytes) -> None:
         self.pipe_handler.send(data)
 
-    def request_data(self) -> list[dict]:
+    def request_data(self) -> list[dict] | int:
         data: bytes = self.pipe_handler.receive()
-        decoded_data = data.decode()
-        return json.loads(decoded_data)
+        try:
+            decoded_data = data.decode()
+            return json.loads(decoded_data)
+        except json.JSONDecodeError:
+            return int.from_bytes(data, byteorder="little")
 
     @logger.catch(reraise=True)
     def launch_godot(self) -> None:
@@ -51,9 +55,13 @@ class GodotHandler:
         if not self.manager.is_leader():
             godot_args.append("--headless")
 
+        random_number = random.randint(0, 10000)
+
         project_args = [
             "--pipe-name",
             self.pipe_name,
+            "--environment-seed",
+            str(random_number),
         ]
 
         separator = ["++"]
