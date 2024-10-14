@@ -1,4 +1,5 @@
-using System;
+
+using System.IO;
 
 using Godot;
 
@@ -18,7 +19,10 @@ public partial class Food : Area2D, Bucketable
     public override void _Ready()
     {
         this.sprite = this.GetNode<Sprite2D>("Sprite");
-        this.lifetimeTimer.Activate(this.Lifetime);
+        if (!Reloader.Instance.IsReloading)
+        {
+            this.lifetimeTimer.Activate(this.Lifetime);
+        }
     }
 
     public override void _PhysicsProcess(double delta)
@@ -45,10 +49,16 @@ public partial class Food : Area2D, Bucketable
         return this.EnergyNutrition;
     }
 
+    public void SetTimeLeft(double time)
+    {
+        this.lifetimeTimer.Activate(time);
+    }
+
     public FoodSaveData Save()
     {
         FoodSpawner parent = (FoodSpawner)this.GetParent();
-        return new FoodSaveData(this.GlobalPosition, parent.SpawnPositionTarget.GlobalPosition);
+        return new FoodSaveData(this.GlobalPosition, parent.SpawnPositionTarget.GlobalPosition,
+            this.lifetimeTimer.Time);
     }
 
     public Food()

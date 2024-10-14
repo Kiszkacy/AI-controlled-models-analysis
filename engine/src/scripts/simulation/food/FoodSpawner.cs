@@ -82,12 +82,13 @@ public partial class FoodSpawner : Node, Initializable // TODO remove exports, n
         }
     }
 
-    public void AddFood(Vector2 position)
+    public void AddFood(Vector2 position, double timeLeft)
     {
         Node2D foodInstance = (Node2D)this.packedFood.Instantiate();
         this.AddChild(foodInstance);
         foodInstance.GlobalPosition = position;
         Food food = (Food)foodInstance;
+        food.SetTimeLeft(timeLeft);
         EntityManager.Get().FoodBuckets.RegisterEntity(food);
     }
 

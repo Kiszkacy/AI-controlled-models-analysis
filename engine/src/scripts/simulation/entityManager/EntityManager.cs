@@ -69,7 +69,7 @@ public class EntityManager : Singleton<EntityManager>, Initializable
                     {
                         if (foodData.SpawnerPosition == entity.GlobalPosition)
                         {
-                            foodSpawner.AddFood(foodData.Position);
+                            foodSpawner.AddFood(foodData.Position, foodData.TimeLeft);
                         }
                     }
                 }

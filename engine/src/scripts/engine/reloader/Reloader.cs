@@ -11,7 +11,7 @@ using FileAccess = Godot.FileAccess;
 
 public class Reloader : Singleton<Reloader>
 {
-    public bool IsReloading { get; private set; } = false;
+    public bool IsReloading { get; set; } = false;
     private readonly String saveFilePath = "user://savegame.yaml";
 
     public void Reload(Node root)
