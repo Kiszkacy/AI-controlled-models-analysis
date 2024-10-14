@@ -45,6 +45,12 @@ public partial class Food : Area2D, Bucketable
         return this.EnergyNutrition;
     }
 
+    public FoodSaveData Save()
+    {
+        FoodSpawner parent = (FoodSpawner)this.GetParent();
+        return new FoodSaveData(this.GlobalPosition, parent.SpawnPositionTarget.GlobalPosition);
+    }
+
     public Food()
     {
         this.lifetimeTimer = new(this.Die);

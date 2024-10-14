@@ -55,8 +55,12 @@ public partial class FoodSpawner : Node, Initializable // TODO remove exports, n
 
     public void Initialize()
     {
-        for (int i = 0; i < this.InitialFoodCount; i++) this.SpawnFood();
-        this.ResetTimer();
+        if (!Reloader.Instance.IsReloading)
+        {
+            for (int i = 0; i < this.InitialFoodCount; i++) this.SpawnFood();
+            this.ResetTimer();
+        }
+
         this.initialized.Initialize();
     }
 
@@ -78,13 +82,32 @@ public partial class FoodSpawner : Node, Initializable // TODO remove exports, n
         }
     }
 
+    public void AddFood(Vector2 position)
+    {
+        Node2D foodInstance = (Node2D)this.packedFood.Instantiate();
+        this.AddChild(foodInstance);
+        foodInstance.GlobalPosition = position;
+        Food food = (Food)foodInstance;
+        EntityManager.Get().FoodBuckets.RegisterEntity(food);
+    }
+
     private void ResetTimer()
     {
         this.spawnFoodTimer.Activate(60.0f/this.FoodPerMinute);
     }
 
-    private bool IsFull => this.GetChildren().Count-1 >= this.MaxFoodCount; // -1 because of the SpawnArea sprite
+    private bool IsFull => this.GetChildren().Count >= this.MaxFoodCount;
 
+    public FoodSpawnerSaveData Save()
+    {
+        return new FoodSpawnerSaveData(this.spawnFoodTimer.Time, spawnFoodTimer.IsActive, this.SpawnPositionTarget.GlobalPosition);
+    }
+
+    public void Load(FoodSpawnerSaveData saveData)
+    {
+        this.spawnFoodTimer.Time = saveData.TimerTime;
+        this.spawnFoodTimer.IsActive = saveData.TimerIsActive;
+    }
     public FoodSpawner()
     {
         this.spawnFoodTimer = new(this.SpawnFood);

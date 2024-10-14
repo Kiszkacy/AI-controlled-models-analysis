@@ -6,47 +6,46 @@ public partial class Initializer : Node
 {
     public override void _Ready()
     {
-        NeatPrinter.Start()
-            .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
-            .Print("  | LOADING SCENE")
-            .NewLine()
-            .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
-            .Print("  | LOADING SINGLETONS")
-            .End();
-        this.LoadSingletons();
-
-        NeatPrinter.Start()
-            .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
-            .Print($"  | SET SEED TO {Config.Instance.Environment.Seed}")
-            .End();
-        RandomGenerator.SetSeed(Config.Instance.Environment.Seed);
-
-        NeatPrinter.Start()
-            .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
-            .Print("  | ENGINE SETUP")
-            .End();
-        this.SetupEngine();
-
-        NeatPrinter.Start()
-            .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
-            .Print("  | INITIAL LOAD COMPLETE")
-            .End();
-
-        if ((!CommandLineReader.OpenedViaCommandLine && Config.Get().Tests.RunTests) || (CommandLineReader.OpenedViaCommandLine && Config.Get().Tests.RunTestsWhenOpenedViaCommandLine))
-        {
-            NeatPrinter.Start()
-                .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
-                .Print("  | STARTING TESTS")
-                .End();
-            this.RunTests();
-            NeatPrinter.Start()
-                .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
-                .Print("  | TESTS COMPLETED")
-                .End();
-        }
-
         if (!Reloader.Get().IsReloading)
         {
+            NeatPrinter.Start()
+                .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+                .Print("  | LOADING SCENE")
+                .NewLine()
+                .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+                .Print("  | LOADING SINGLETONS")
+                .End();
+            this.LoadSingletons();
+
+            NeatPrinter.Start()
+                .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+                .Print($"  | SET SEED TO {Config.Instance.Environment.Seed}")
+                .End();
+            RandomGenerator.SetSeed(Config.Instance.Environment.Seed);
+
+            NeatPrinter.Start()
+                .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+                .Print("  | ENGINE SETUP")
+                .End();
+            this.SetupEngine();
+
+            NeatPrinter.Start()
+                .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+                .Print("  | INITIAL LOAD COMPLETE")
+                .End();
+
+            if ((!CommandLineReader.OpenedViaCommandLine && Config.Get().Tests.RunTests) || (CommandLineReader.OpenedViaCommandLine && Config.Get().Tests.RunTestsWhenOpenedViaCommandLine))
+            {
+                NeatPrinter.Start()
+                    .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+                    .Print("  | STARTING TESTS")
+                    .End();
+                this.RunTests();
+                NeatPrinter.Start()
+                    .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+                    .Print("  | TESTS COMPLETED")
+                    .End();
+            }
             NeatPrinter.Start()
                 .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
                 .Print("  | GENERATING ENVIRONMENT")

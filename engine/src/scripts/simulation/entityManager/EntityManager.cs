@@ -1,5 +1,9 @@
 ﻿
+using System;
+using System.Collections.Generic;
+
 using Godot;
+using Godot.Collections;
 
 public class EntityManager : Singleton<EntityManager>, Initializable
 {
@@ -27,5 +31,59 @@ public class EntityManager : Singleton<EntityManager>, Initializable
         this.ObjectBuckets.Reset();
         this.ObjectBuckets = null;
         this.initialized.Reset();
+    }
+
+    public FoodSpawnerSaveData[] SaveFoodSpawners()
+    {
+        var foodSpawnersData = new List<FoodSpawnerSaveData>();
+        this.ObjectBuckets.ForEachEntity(entity =>
+        {
+            if (entity is Tree or Bush)
+            {
+                if (entity.FindChild("FoodSpawner") is FoodSpawner foodSpawner)
+                {
+                    foodSpawnersData.Add(foodSpawner.Save());
+                }
+            }
+        });
+        return foodSpawnersData.ToArray();
+    }
+
+    public void LoadFoodSpawnersData(FoodSpawnerSaveData[] foodSpawnerSaveData, FoodSaveData[] foodSaveData)
+    {
+        this.ObjectBuckets.ForEachEntity(entity =>
+        {
+            if (entity is Tree or Bush)
+            {
+                if (entity.FindChild("FoodSpawner") is FoodSpawner foodSpawner)
+                {
+                    foreach (FoodSpawnerSaveData saveData in foodSpawnerSaveData)
+                    {
+                        if (saveData.Position == entity.GlobalPosition)
+                        {
+                            foodSpawner.Load(saveData);
+                        }
+                    }
+
+                    foreach (FoodSaveData foodData in foodSaveData)
+                    {
+                        if (foodData.SpawnerPosition == entity.GlobalPosition)
+                        {
+                            foodSpawner.AddFood(foodData.Position);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    public FoodSaveData[] SaveFood()
+    {
+        var foodData = new List<FoodSaveData>();
+        this.FoodBuckets.ForEachEntity(entity =>
+        {
+            foodData.Add(entity.Save());
+        });
+        return foodData.ToArray();
     }
 }

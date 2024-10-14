@@ -32,10 +32,17 @@ public class Reloader : Singleton<Reloader>
     {
         Environment environment = (Environment)root.GetNode("Environment");
         EnvironmentTemplate environmentTemplate = environment.SaveEnvironment();
+
         AgentSaveData[] agentsData = AgentManager.Instance.SaveAgents();
+
         Vector2 cameraPosition = ((Node2D)root.GetNode("Camera")).GlobalPosition;
         Vector2 cameraZoom = ((Camera2D)root.GetNode("Camera")).Zoom;
-        var saveData = new EnvironmentSaveData(environmentTemplate, agentsData, cameraPosition, cameraZoom);
+
+        FoodSpawnerSaveData[] foodSpawnersData = EntityManager.Instance.SaveFoodSpawners();
+        FoodSaveData[] foodData = EntityManager.Instance.SaveFood();
+
+        var saveData = new EnvironmentSaveData(environmentTemplate, agentsData, cameraPosition, cameraZoom,
+            foodSpawnersData, foodData);
 
         var serializer = new SerializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
@@ -84,6 +91,12 @@ public class Reloader : Singleton<Reloader>
             .End();
         AgentSaveData[] agentsData = environmentSaveData.AllAgentsData;
         LoadAgents(agentsData, root);
+
+        NeatPrinter.Start()
+            .ColorPrint(ConsoleColor.Blue, "[RELOADER]")
+            .Print("  | LOADING FOOD SPAWNERS")
+            .End();
+        EntityManager.Instance.LoadFoodSpawnersData(environmentSaveData.FoodSpawnersData, environmentSaveData.FoodData);
     }
 
     private void LoadEnvironment(EnvironmentTemplate environmentTemplate, Node root)
