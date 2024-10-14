@@ -19,4 +19,14 @@ public static class Math
         float angle = radians % (2*Mathf.Pi);
         return angle < 0.0f ? 2*Mathf.Pi + angle : angle;
     }
+
+    public static bool IsZero(float value)
+    {
+        return Mathf.Abs(value) < Mathf.Epsilon;
+    }
+
+    public static bool Equals(float a, float b)
+    {
+        return IsZero(a - b);
+    }
 }

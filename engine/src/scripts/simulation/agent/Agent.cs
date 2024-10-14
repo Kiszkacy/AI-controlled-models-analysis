@@ -64,12 +64,12 @@ public partial class Agent : CharacterBody2D
         float energyLoss = Config.Instance.Environment.EnergyBaseLossPerSecond
                            + Config.Instance.Environment.EnergyLossPerSecondPer100UnitsOfMovement * (this.Velocity.Length()/100.0f)
                            + Config.Instance.Environment.EnergyLossPerSecondTurn * Mathf.Abs(this.currentRotation);
-        this.energy = Mathf.Min(this.energy - energyLoss * (float)delta, 0.0f);
+        this.energy = Mathf.Max(this.energy - energyLoss * (float)delta, 0.0f);
     }
 
     protected void UpdateHealth(double delta)
     {
-        if (this.energy <= 0.0f) // TODO proper float comparison
+        if (Math.IsZero(this.energy))
         {
             this.health -= Config.Instance.Environment.HealthLossPerSecond * (float)delta;
         }
@@ -79,7 +79,7 @@ public partial class Agent : CharacterBody2D
         }
 
         this.health = Mathf.Clamp(this.health, 0.0f, this.MaximumHealth);
-        if (this.health <= 0.0f) // TODO proper float comparison
+        if (Math.IsZero(this.health))
         {
             this.Die();
         }
@@ -153,15 +153,7 @@ public partial class Agent : CharacterBody2D
         this.Direction = this.Direction.Rotated(this.currentRotation * (float)delta);
         this.GlobalRotation = this.DirectionAngle;
 
-        if (this.currentAcceleration >= 0.0f)
-        {
-            this.Velocity = this.Direction * Mathf.Clamp(this.Speed + this.currentAcceleration * (float)delta, 0.0f, this.MaximumSpeed);
-        }
-        else
-        {
-            this.Velocity = this.Direction * Mathf.Clamp(this.Speed + this.currentAcceleration * (float)delta, 0.0f, this.MaximumSpeed);
-        }
-
+        this.Velocity = this.Direction * Mathf.Clamp(this.Speed + this.currentAcceleration * (float)delta, 0.0f, this.MaximumSpeed);
 
         this.MoveAndCollide(this.Velocity * (float)delta);
     }
