@@ -1,7 +1,5 @@
-using System;
-using System.Linq;
-
 using Godot;
+using Godot.Collections;
 
 public partial class Environment : Node2D, Initializable
 {
@@ -20,5 +18,11 @@ public partial class Environment : Node2D, Initializable
         }
 
         this.initialized.Initialize();
+    }
+
+    public EnvironmentTemplate SaveEnvironment()
+    {
+        this.initialized.Reset();
+        return TemplateData;
     }
 }

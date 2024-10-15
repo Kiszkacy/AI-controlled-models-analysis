@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using System.Text;
 
 using Godot;
+using Godot.Collections;
 
 using Newtonsoft.Json;
+
+using Array = Godot.Collections.Array;
 
 public partial class Supervisor : Node
 {
@@ -28,6 +31,11 @@ public partial class Supervisor : Node
 
     public override void _Ready()
     {
+        if (Reloader.Get().IsReloading)
+        {
+            return;
+        }
+
         for (int i = 0; i < this.InitialAgentCount; i++)
         {
             this.SpawnAgent();
@@ -126,6 +134,19 @@ public partial class Supervisor : Node
             Agent agent = (Agent)agentInstance;
             agent.Direction = Vector2.FromAngle(RandomGenerator.Float(Mathf.Pi*2.0f));
             AgentManager.Get().RegisterAgent(agent);
+        }
+    }
+
+    public void LoadAgents(AgentSaveData[] agentsData)
+    {
+        foreach (AgentSaveData agentData in agentsData)
+        {
+            int id = agentData.Id;
+            Node2D agentInstance = (Node2D)(this.UseLogicAgents ? this.packedLogicAgent : this.packedTrainAgent).Instantiate();
+            Agent agent = (Agent)agentInstance;
+            agent.Load(agentData);
+            this.AgentsRootNode.AddChild(agentInstance);
+            AgentManager.Get().RegisterAgent(id, agent);
         }
     }
 

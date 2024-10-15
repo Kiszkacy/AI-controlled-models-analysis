@@ -5,7 +5,7 @@ using Godot;
 
 public class AgentSightRayCastManager : Singleton<AgentSightRayCastManager>, Initializable
 {
-    private readonly RayCast2D rayCast = new();
+    private RayCast2D rayCast;
 
     public RayCast2D RayCast => this.IsInitialized ? this.rayCast : throw new Exception("Not initialized.");
 
@@ -14,6 +14,7 @@ public class AgentSightRayCastManager : Singleton<AgentSightRayCastManager>, Ini
 
     public void Initialize(Node parent, bool initializesAtTheSameTickAsEnvironment)
     {
+        this.rayCast = new RayCast2D();
         if (initializesAtTheSameTickAsEnvironment)
         {
             parent.CallDeferred("add_child", this.rayCast);
@@ -31,5 +32,11 @@ public class AgentSightRayCastManager : Singleton<AgentSightRayCastManager>, Ini
     private void SetupRayCastMask()
     {
         this.rayCast.CollisionMask = 4;
+    }
+
+    public void Reset()
+    {
+        this.rayCast.QueueFree();
+        this.initialized.Reset();
     }
 }

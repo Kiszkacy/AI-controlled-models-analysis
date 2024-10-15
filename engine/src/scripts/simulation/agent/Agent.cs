@@ -1,4 +1,5 @@
 using Godot;
+using Godot.Collections;
 
 public partial class Agent : CharacterBody2D
 {
@@ -162,8 +163,11 @@ public partial class Agent : CharacterBody2D
     {
         this.sprite = this.GetNode<Sprite2D>("Sprite");
 
-        this.energy = this.InitialEnergy;
-        this.health = this.InitialHealth;
+        if (!Reloader.Get().IsReloading)
+        {
+            this.energy = this.InitialEnergy;
+            this.health = this.InitialHealth;
+        }
 
         Area2D mouth = this.GetNode<Area2D>("Mouth");
         mouth.AreaEntered += this.OnMouthBodyEntered;
@@ -186,5 +190,35 @@ public partial class Agent : CharacterBody2D
         }
 
         this.UpdateColor();
+    }
+
+    public virtual AgentSaveData Save()
+    {
+        return new AgentSaveData(this.GlobalPosition, this.MaximumSpeed, this.MaximumAcceleration, this.MaximumDeceleration,
+            this.MaximumEnergy, this.InitialEnergy, this.MaximumHealth, this.InitialHealth, this.MaximumTurnSpeed,
+            this.SightAngle, this.SightRadius, this.energy, this.health, this.currentRotation, this.currentAcceleration,
+            this.Direction, this.Velocity, this.id);
+    }
+
+    public virtual void Load(AgentSaveData data)
+    {
+        this.GlobalPosition = data.Position;
+        this.MaximumSpeed = data.MaximumSpeed;
+        this.MaximumAcceleration = data.MaximumAcceleration;
+        this.MaximumDeceleration = data.MaximumDeceleration;
+        this.MaximumEnergy = data.MaximumEnergy;
+        this.InitialEnergy = data.InitialEnergy;
+        this.MaximumHealth = data.MaximumHealth;
+        this.InitialHealth = data.InitialHealth;
+        this.MaximumTurnSpeed = data.MaximumTurnSpeed;
+        this.SightAngle = data.SightAngle;
+        this.SightRadius = data.SightRadius;
+        this.energy = data.Energy;
+        this.health = data.Health;
+        this.currentRotation = data.CurrentRotation;
+        this.currentAcceleration = data.CurrentAcceleration;
+        this.Direction = data.Direction;
+        this.Velocity = data.Velocity;
+        this.id = data.Id;
     }
 }
