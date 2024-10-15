@@ -100,6 +100,10 @@ public class Reloader : Singleton<Reloader>
 
     public void SetSaveFilePath(String saveFileName)
     {
-        this.saveFilePath = "user://" + saveFileName + ".yaml";
+        String filePath = "user://" + saveFileName + ".yaml";
+        if (FileAccess.FileExists(saveFilePath))
+        {
+            this.saveFilePath = filePath;
+        }
     }
 }
