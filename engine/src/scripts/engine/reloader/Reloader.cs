@@ -1,4 +1,4 @@
-﻿
+
 using System;
 using System.IO;
 
@@ -12,7 +12,7 @@ using FileAccess = Godot.FileAccess;
 public class Reloader : Singleton<Reloader>
 {
     public bool IsReloading { get; set; } = false;
-    private readonly String saveFilePath = "user://savegame.yaml";
+    private String saveFilePath = "user://savegame.yaml";
 
     public void Reload(Node root)
     {
@@ -96,5 +96,10 @@ public class Reloader : Singleton<Reloader>
     {
         Supervisor supervisor = (Supervisor)root.GetNode("Supervisor");
         supervisor.LoadAgents(agentsData);
+    }
+
+    public void SetSaveFilePath(String saveFileName)
+    {
+        this.saveFilePath = "user://" + saveFileName + ".yaml";
     }
 }

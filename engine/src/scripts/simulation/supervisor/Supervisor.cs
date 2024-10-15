@@ -145,7 +145,7 @@ public partial class Supervisor : Node
             Node2D agentInstance = (Node2D)(this.UseLogicAgents ? this.packedLogicAgent : this.packedTrainAgent).Instantiate();
             Agent agent = (Agent)agentInstance;
             agent.Load(agentData);
-            this.AgentsRootNode.CallDeferred("add_child", agentInstance);
+            this.AgentsRootNode.AddChild(agentInstance);
             AgentManager.Get().RegisterAgent(id, agent);
         }
     }
