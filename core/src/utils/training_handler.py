@@ -1,12 +1,10 @@
 import os
 
 from ray.rllib import MultiAgentEnv
-from ray.rllib.algorithms import Algorithm
+from ray.rllib.algorithms import Algorithm, PPOConfig
 from ray.tune import Tuner
 
 from core.src.agents.agent_policy import AgentPolicy
-from core.src.policies.agent_policy_network import AgentPolicyNetwork
-from core.src.policies.policy_network import PolicyNetwork
 from core.src.settings import get_settings
 
 
@@ -23,10 +21,10 @@ def get_path() -> str | None:
             break
     if project_root:
         model_dir = os.path.join(project_root, "model")
-        import_path = os.path.join(model_dir, "model.pth")
+        #   import_path = os.path.join(model_dir, "model.pth")
         if not os.path.exists(model_dir):
             os.makedirs(model_dir)
-        return import_path
+        return model_dir  # import_path
     return None
 
 
@@ -35,7 +33,7 @@ class TrainingHandler:
         self,
         model_path: str | None = None,
         environment_cls: type[MultiAgentEnv] | str = "Pendulum",
-        policy_cls: type[PolicyNetwork] = AgentPolicyNetwork,
+        policy_cls=PPOConfig,
         learning_rate: float = 1e-3,
         gamma: float = 0.99,
     ):
@@ -51,9 +49,9 @@ class TrainingHandler:
             "env": self.environment_cls,
             "framework": "torch",
             "num_workers": training_settings.number_of_workers,
-            "model": {
+            """   "model": {
                 "custom_model": self.policy_cls,
-            },
+            },"""
             "checkpoint_freq": training_settings.training_checkpoint_frequency,
             "train_batch_size": training_settings.training_batch_size,
             "learning_rate": self.learning_rate,
