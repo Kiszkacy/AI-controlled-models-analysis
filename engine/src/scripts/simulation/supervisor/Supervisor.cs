@@ -158,7 +158,7 @@ public partial class Supervisor : Node
             this.justSentACommunicationCode = true;
             PipeHandler.Get().Send(resetCodeInBytes);
         }
-        
+
         AgentManager.Instance.ResetDeadAgents();
     }
 

@@ -49,12 +49,12 @@ public readonly struct AgentData
     {
         return new Object[]
         {
-            this.Id, 
-            this.Score, 
+            this.Id,
+            this.Score,
             this.JustDied,
-            this.Speed, 
-            this.Energy, 
-            this.Health, 
+            this.Speed,
+            this.Energy,
+            this.Health,
             this.DistanceToClosestFood,
             this.AngleToClosestFood,
         };
