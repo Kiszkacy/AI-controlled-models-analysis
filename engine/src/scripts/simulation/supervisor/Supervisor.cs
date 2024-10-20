@@ -132,14 +132,20 @@ public partial class Supervisor : Node
     private void SendData()
     {
         bool isAnyAgentAlive = AgentManager.Get().Agents.Count != 0;
+        bool didAnyAgentDieThisFrame = AgentManager.Get().AgentsThatDiedThisFrame.Count != 0;
 
-        if (isAnyAgentAlive)
+        if (isAnyAgentAlive || didAnyAgentDieThisFrame)
         {
-            List<AgentData> data = new();
+            List<Object[]> data = new();
             foreach (var (_, agent_) in AgentManager.Get().Agents)
             {
                 TrainAgent agent = (TrainAgent)agent_;
-                data.Add(agent.NormalizedData);
+                data.Add(agent.NormalizedData.RawData());
+            }
+            foreach (var agent_ in AgentManager.Get().AgentsThatDiedThisFrame)
+            {
+                TrainAgent agent = (TrainAgent)agent_;
+                data.Add(agent.NormalizedData.RawData());
             }
 
             byte[] rawData = JsonConvert.SerializeObject(data).ToUtf8Buffer();
@@ -152,6 +158,8 @@ public partial class Supervisor : Node
             this.justSentACommunicationCode = true;
             PipeHandler.Get().Send(resetCodeInBytes);
         }
+        
+        AgentManager.Instance.ResetDeadAgents();
     }
 
     private void ReceiveData()
