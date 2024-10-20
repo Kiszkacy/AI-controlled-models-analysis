@@ -1,5 +1,4 @@
 using System;
-using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Text;
 
@@ -25,13 +24,11 @@ public partial class Supervisor : Node
     private PackedScene packedLogicAgent = ResourceLoader.Load<PackedScene>("res://src/scenes/simulation/agent/logicAgent.tscn");
 
     private bool justSentACommunicationCode = false;
+    private bool areAgentsReady = false;
 
     public override void _Ready()
     {
-        for (int i = 0; i < this.InitialAgentCount; i++)
-        {
-            this.SpawnAgent();
-        }
+        this.SpawnInitialAgents();
 
         if (!this.UseLogicAgents)
         {
@@ -45,7 +42,7 @@ public partial class Supervisor : Node
 
     public override void _PhysicsProcess(double delta)
     {
-        if (this.UseLogicAgents)
+        if (!this.areAgentsReady || this.UseLogicAgents)
         {
             return;
         }
@@ -61,7 +58,18 @@ public partial class Supervisor : Node
         }
     }
 
-    private void SpawnAgent()
+    private void SpawnInitialAgents()
+    {
+        Agent lastSpawnedAgent = null;
+        for (int i = 0; i < this.InitialAgentCount; i++)
+        {
+            lastSpawnedAgent = this.SpawnAgent() ?? lastSpawnedAgent;
+        }
+
+        lastSpawnedAgent.Ready += this.AllAgentsSpawned;
+    }
+
+    private Agent SpawnAgent()
     {
         Vector2 position = Vector2.Zero;
         bool isValid = false;
@@ -118,15 +126,23 @@ public partial class Supervisor : Node
             isValid = true;
         }
 
+        Agent agent = null;
         if (isValid)
         {
             Node2D agentInstance = (Node2D)(this.UseLogicAgents ? this.packedLogicAgent : this.packedTrainAgent).Instantiate();
             this.AgentsRootNode.CallDeferred("add_child", agentInstance);
             agentInstance.GlobalPosition = position;
-            Agent agent = (Agent)agentInstance;
+            agent = (Agent)agentInstance;
             agent.Direction = Vector2.FromAngle(RandomGenerator.Float(Mathf.Pi*2.0f));
             AgentManager.Get().RegisterAgent(agent);
         }
+
+        return agent;
+    }
+
+    private void AllAgentsSpawned()
+    {
+        this.areAgentsReady = true;
     }
 
     private void SendData()
@@ -200,15 +216,13 @@ public partial class Supervisor : Node
 
     public void Reset()
     {
+        this.areAgentsReady = false;
         AgentManager.Instance.Reset();
         foreach (Node agent in this.AgentsRootNode.GetChildren())
         {
             this.AgentsRootNode.RemoveChild(agent);
         }
 
-        for (int i = 0; i < this.InitialAgentCount; i++)
-        {
-            this.SpawnAgent();
-        }
+        this.SpawnInitialAgents();
     }
 }
