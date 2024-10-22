@@ -72,9 +72,14 @@ class GodotServerEnvironment(MultiAgentEnv):
 
     def get_data(self):
         try:
-            data_list = self.godot_handler.request_data()
+            received_data = self.godot_handler.request_data()
         except json.JSONDecodeError:
             raise
+
+        if not isinstance(received_data, list):
+            observations, rewards, _, truncateds, infos = self.get_data()
+            terminateds = {"__all__": True}
+            return observations, rewards, terminateds, truncateds, infos
 
         # GODOT Schema: [id, reward, terminated, observations...]
         id_idx, reward_idx, terminated_idx, observations_idx = range(4)
@@ -85,7 +90,7 @@ class GodotServerEnvironment(MultiAgentEnv):
         truncateds = {"__all__": False}
         infos = {}
 
-        for data in data_list:
+        for data in received_data:
             agent_id = data[id_idx]
             rewards[agent_id] = data[reward_idx]
             terminateds[agent_id] = data[terminated_idx]
