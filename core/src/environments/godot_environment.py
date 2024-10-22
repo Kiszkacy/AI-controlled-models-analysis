@@ -8,6 +8,8 @@ from ray.rllib.utils.typing import MultiAgentDict
 from core.src.settings import get_settings
 from core.src.utils.godot_handler import GodotHandler
 
+__all__ = ["GodotServerEnvironment"]
+
 environment_settings = get_settings().environment
 communication_settings = get_settings().communication
 
@@ -38,14 +40,12 @@ class GodotServerEnvironment(MultiAgentEnv):
         dtype=np.float32,
     )
 
-    def __init__(self, config: dict | None = None):
+    def __init__(self, config: dict | None = None):  # noqa: ARG002
         super().__init__()
         self._agent_ids = set(range(environment_settings.number_of_agents))
         self._states: MultiAgentDict | None = None
         self.godot_handler = GodotHandler()
         self.godot_handler.launch_godot()
-        self.horizon = config.get("horizon", 100) if config else 100
-        self.current_step = 0
 
     def step(self, actions: MultiAgentDict):
         """Returns observations from ready agents.
@@ -62,12 +62,11 @@ class GodotServerEnvironment(MultiAgentEnv):
             4) Truncated values for each ready agent.
             5) Info values for each agent id (maybe empty dicts).
         """
-        self.current_step += 1
         actions_serializable = [
             {"id": key, "accelerate": value["accelerate"], "rotate": value["rotate"]} for key, value in actions.items()
         ]
-        actions_json = json.dumps(actions_serializable)
 
+        actions_json = json.dumps(actions_serializable)
         self.godot_handler.send(actions_json.encode("utf-8"))
         return self.get_data()
 
@@ -77,48 +76,44 @@ class GodotServerEnvironment(MultiAgentEnv):
         except json.JSONDecodeError:
             raise
 
-        if isinstance(received_data, list):
-            states = {
-                data["Id"]: np.array(
-                    [
-                        data["Speed"],
-                        data["Energy"],
-                        data["Health"],
-                        data["DistanceToClosestFood"],
-                        data["AngleToClosestFood"],
-                    ]
-                )
-                for data in received_data
-            }
-            rewards = {data["Id"]: data["Score"] for data in received_data}
-            done = self.current_step >= self.horizon
-            terminateds = {"__all__": done}
-            truncateds = {"__all__": False}
-            infos = {data["Id"]: {} for data in received_data}
-        elif received_data == communication_settings.reset:
-            self.reset()
-            states, rewards, terminateds, truncateds, infos = self.get_data()
+        if not isinstance(received_data, list):
+            observations, rewards, _, truncateds, infos = self.get_data()
             terminateds = {"__all__": True}
-        else:
-            return {}, {}, {"__all__": False}, {"__all__": False}, {}
-        return states, rewards, terminateds, truncateds, infos
+            return observations, rewards, terminateds, truncateds, infos
+
+        # GODOT Schema: [id, reward, terminated, observations...]
+        id_idx, reward_idx, terminated_idx, observations_idx = range(4)
+
+        observations = {}
+        rewards = {}
+        terminateds = {"__all__": False}
+        truncateds = {"__all__": False}
+        infos = {}
+
+        for data in received_data:
+            agent_id = data[id_idx]
+            rewards[agent_id] = data[reward_idx]
+            terminateds[agent_id] = data[terminated_idx]
+
+            if not data[terminated_idx]:
+                observations[agent_id] = np.array(data[observations_idx:])
+                infos[agent_id] = {}
+
+        return observations, rewards, terminateds, truncateds, infos
 
     def reset(self, *, seed=None, options=None) -> tuple[MultiAgentDict, MultiAgentDict]:  # noqa: ARG002
-        self._states = self.default_states
-        self.current_step = 0
-        info: MultiAgentDict = {"__all__": {}}
-        return self._states, info
+        reset_signal = communication_settings.reset
+        byte_message = str(reset_signal).encode()
+        self.godot_handler.send(byte_message)
+
+        self._states = None
+        observations = self.states[0]
+        infos = self.states[-1]
+        return observations, infos
 
     @property
     def states(self) -> MultiAgentDict:
         """Returns current state of the environment."""
         if self._states is None:
-            self._states = self.get_data()[0]
+            self._states = self.get_data()
         return self._states
-
-    @property
-    def default_states(self) -> MultiAgentDict:
-        return {
-            agent_id: np.random.default_rng().random(size=environment_settings.observation_space_size)
-            for agent_id in self._agent_ids
-        }
