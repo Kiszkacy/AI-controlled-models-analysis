@@ -9,6 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="src\config.yaml" />
+    <Content Include="src\scenes\settings\settings.tscn" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
