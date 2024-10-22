@@ -1,11 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cmi6acb2oc6qx"]
+[gd_scene load_steps=4 format=3 uid="uid://cmi6acb2oc6qx"]
 
+[ext_resource type="Theme" uid="uid://c81i2ymfrd5c3" path="res://assets/ui/themes/whiteTheme.tres" id="1_1t7ss"]
 [ext_resource type="Script" path="res://src/scripts/ui/tooltip/Tooltip.cs" id="1_b8wws"]
-[ext_resource type="FontFile" uid="uid://bil7ixxsqr4ql" path="res://assets/fonts/inter/Inter-Light.ttf" id="2_kw853"]
-[ext_resource type="StyleBox" uid="uid://cl1b36do6fk68" path="res://assets/ui/tooltipLabel.tres" id="3_624it"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_4lcu2"]
-font = ExtResource("2_kw853")
+[ext_resource type="LabelSettings" uid="uid://coaciyxrpywny" path="res://assets/ui/settings/label/label.tres" id="4_33xaj"]
 
 [node name="Tooltip" type="Control"]
 z_index = 10
@@ -22,10 +19,9 @@ Text = "Tooltip text here."
 layout_mode = 0
 offset_right = 320.0
 offset_bottom = 27.0
-theme_override_fonts/font = ExtResource("2_kw853")
-theme_override_styles/normal = ExtResource("3_624it")
+theme = ExtResource("1_1t7ss")
 text = "Tooltip text here."
-label_settings = SubResource("LabelSettings_4lcu2")
+label_settings = ExtResource("4_33xaj")
 autowrap_mode = 3
 
 [node name="Arrow" type="ColorRect" parent="Label"]
@@ -36,4 +32,4 @@ offset_top = 2.0
 offset_right = 17.0
 offset_bottom = 18.0
 rotation = 0.785398
-color = Color(0.270588, 0.270588, 0.270588, 1)
+color = Color(0.878431, 0.882353, 0.866667, 1)
