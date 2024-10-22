@@ -30,7 +30,7 @@ public partial class FoodSpawner : Node, Initializable // TODO remove exports, n
     public bool InitializeAutomatically { get; set; } = true;
 
     private readonly Timer spawnFoodTimer;
-    private PackedScene packedFood = ResourceLoader.Load<PackedScene>("res://src/scenes/simulation/food.tscn");
+    private PackedScene packedFood = ResourceLoader.Load<PackedScene>("res://src/scenes/simulation/food/food.tscn");
 
     private readonly InitializableWrapper initialized = new();
     public bool IsInitialized => this.initialized.IsInitialized;
