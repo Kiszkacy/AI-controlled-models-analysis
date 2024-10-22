@@ -34,6 +34,7 @@ public class AgentManager : Singleton<AgentManager>
     {
         this.agentIdIterator = 0;
         this.agents.Clear();
+        this.AgentsThatDiedThisFrame.Clear();
     }
 
     public void ResetDeadAgents()
