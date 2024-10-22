@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=3 uid="uid://cnr6wyt7k1gtv"]
+
+[ext_resource type="PackedScene" uid="uid://cmi6acb2oc6qx" path="res://src/scenes/ui/tooltip/tooltip.tscn" id="1_jxim0"]
+
+[node name="Test" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 200.0
+offset_top = 200.0
+offset_right = 240.0
+offset_bottom = 240.0
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 0
+offset_right = 198.0
+offset_bottom = 153.0
+color = Color(0.41092, 0.193999, 0.330599, 1)
+
+[node name="Label" type="Label" parent="Control"]
+layout_mode = 0
+offset_right = 198.0
+offset_bottom = 153.0
+mouse_filter = 0
+text = "__
+__
+asda
+fajny tekst co nie ?
+na pewno tooltip zadziala
+surely"
+
+[node name="Tooltip7" parent="." instance=ExtResource("1_jxim0")]
+visible = false
+layout_mode = 1
+Text = "SHORT TOPAAA SHORT TOPAAA SHORT TOPAAA SHORT TOPAAA SHORT TOPAAA SHORT TOPAAA SHORT TOPAAA "
+TargetNodePath = NodePath("../Control/Label")
+Layout = 2
