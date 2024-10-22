@@ -25,6 +25,7 @@ public partial class Supervisor : Node
 
     private bool justSentACommunicationCode = false;
     private bool areAgentsReady = false;
+    private bool firstMessage = true;
 
     public override void _Ready()
     {
@@ -46,8 +47,15 @@ public partial class Supervisor : Node
         {
             return;
         }
+        if (this.firstMessage)
+        {
+            this.firstMessage = false;
+        }
+        else
+        {
+            this.SendData();
+        }
 
-        this.SendData();
         if (justSentACommunicationCode)
         {
             this.justSentACommunicationCode = false;

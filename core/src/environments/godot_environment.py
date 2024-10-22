@@ -11,6 +11,7 @@ from core.src.utils.godot_handler import GodotHandler
 __all__ = ["GodotServerEnvironment"]
 
 environment_settings = get_settings().environment
+communication_settings = get_settings().communication
 
 
 class GodotServerEnvironment(MultiAgentEnv):
@@ -96,6 +97,11 @@ class GodotServerEnvironment(MultiAgentEnv):
         return observations, rewards, terminateds, truncateds, infos
 
     def reset(self, *, seed=None, options=None) -> tuple[MultiAgentDict, MultiAgentDict]:  # noqa: ARG002
+        reset_signal = communication_settings.reset
+        byte_message = str(reset_signal).encode()
+        self.godot_handler.send(byte_message)
+
+        self._states = None
         observations = self.states[0]
         infos = self.states[-1]
         return observations, infos
