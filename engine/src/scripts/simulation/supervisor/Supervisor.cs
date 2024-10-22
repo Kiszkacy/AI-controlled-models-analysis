@@ -160,7 +160,7 @@ public partial class Supervisor : Node
     {
         this.areAgentsReady = true;
     }
-    
+
     public void LoadAgents(AgentSaveData[] agentsData)
     {
         foreach (AgentSaveData agentData in agentsData)

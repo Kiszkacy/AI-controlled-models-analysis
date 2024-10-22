@@ -17,7 +17,7 @@ public class AgentManager : Singleton<AgentManager>
         agent.Id = this.agentIdIterator;
         this.agentIdIterator += 1;
     }
-    
+
     public void RegisterAgent(int id, Agent agent)
     {
         this.agents.Add(id, agent);
@@ -48,7 +48,7 @@ public class AgentManager : Singleton<AgentManager>
     {
         this.AgentsThatDiedThisFrame.Clear();
     }
-    
+
     public AgentSaveData[] SaveAgents()
     {
         var agentsList = this.agents.Values.Select(agent => agent.Save()).ToArray();
