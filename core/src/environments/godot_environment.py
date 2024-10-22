@@ -8,7 +8,10 @@ from ray.rllib.utils.typing import MultiAgentDict
 from core.src.settings import get_settings
 from core.src.utils.godot_handler import GodotHandler
 
+__all__ = ["GodotServerEnvironment"]
+
 environment_settings = get_settings().environment
+communication_settings = get_settings().communication
 
 
 class GodotServerEnvironment(MultiAgentEnv):
@@ -69,43 +72,48 @@ class GodotServerEnvironment(MultiAgentEnv):
 
     def get_data(self):
         try:
-            data_list = self.godot_handler.request_data()
+            received_data = self.godot_handler.request_data()
         except json.JSONDecodeError:
             raise
 
-        states = {
-            data["Id"]: np.array(
-                [
-                    data["Speed"],
-                    data["Energy"],
-                    data["Health"],
-                    data["DistanceToClosestFood"],
-                    data["AngleToClosestFood"],
-                ]
-            )
-            for data in data_list
-        }
-        rewards = {data["Id"]: data["Score"] for data in data_list}
+        if not isinstance(received_data, list):
+            observations, rewards, _, truncateds, infos = self.get_data()
+            terminateds = {"__all__": True}
+            return observations, rewards, terminateds, truncateds, infos
+
+        # GODOT Schema: [id, reward, terminated, observations...]
+        id_idx, reward_idx, terminated_idx, observations_idx = range(4)
+
+        observations = {}
+        rewards = {}
         terminateds = {"__all__": False}
         truncateds = {"__all__": False}
-        infos = {data["Id"]: {} for data in data_list}
-        return states, rewards, terminateds, truncateds, infos
+        infos = {}
+
+        for data in received_data:
+            agent_id = data[id_idx]
+            rewards[agent_id] = data[reward_idx]
+            terminateds[agent_id] = data[terminated_idx]
+
+            if not data[terminated_idx]:
+                observations[agent_id] = np.array(data[observations_idx:])
+                infos[agent_id] = {}
+
+        return observations, rewards, terminateds, truncateds, infos
 
     def reset(self, *, seed=None, options=None) -> tuple[MultiAgentDict, MultiAgentDict]:  # noqa: ARG002
-        self._states = self.default_states
-        info: MultiAgentDict = {"__all__": {}}
-        return self._states, info
+        reset_signal = communication_settings.reset
+        byte_message = str(reset_signal).encode()
+        self.godot_handler.send(byte_message)
+
+        self._states = None
+        observations = self.states[0]
+        infos = self.states[-1]
+        return observations, infos
 
     @property
     def states(self) -> MultiAgentDict:
         """Returns current state of the environment."""
         if self._states is None:
-            self._states = self.get_data()[0]
+            self._states = self.get_data()
         return self._states
-
-    @property
-    def default_states(self) -> MultiAgentDict:
-        return {
-            agent_id: np.random.default_rng().random(size=environment_settings.observation_space_size)
-            for agent_id in self._agent_ids
-        }
