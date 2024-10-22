@@ -4,11 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 
 using Godot;
-using Godot.Collections;
 
 using Newtonsoft.Json;
-
-using Array = Godot.Collections.Array;
 
 public partial class Supervisor : Node
 {
@@ -28,6 +25,8 @@ public partial class Supervisor : Node
     private PackedScene packedLogicAgent = ResourceLoader.Load<PackedScene>("res://src/scenes/simulation/agent/logicAgent.tscn");
 
     private bool justSentACommunicationCode = false;
+    private bool areAgentsReady = false;
+    private bool firstMessage = true;
 
     public override void _Ready()
     {
@@ -38,7 +37,7 @@ public partial class Supervisor : Node
 
         for (int i = 0; i < this.InitialAgentCount; i++)
         {
-            this.SpawnAgent();
+            this.SpawnInitialAgents();
         }
 
         if (!this.UseLogicAgents)
@@ -53,12 +52,19 @@ public partial class Supervisor : Node
 
     public override void _PhysicsProcess(double delta)
     {
-        if (this.UseLogicAgents)
+        if (!this.areAgentsReady || this.UseLogicAgents)
         {
             return;
         }
+        if (this.firstMessage)
+        {
+            this.firstMessage = false;
+        }
+        else
+        {
+            this.SendData();
+        }
 
-        this.SendData();
         if (justSentACommunicationCode)
         {
             this.justSentACommunicationCode = false;
@@ -69,7 +75,18 @@ public partial class Supervisor : Node
         }
     }
 
-    private void SpawnAgent()
+    private void SpawnInitialAgents()
+    {
+        Agent lastSpawnedAgent = null;
+        for (int i = 0; i < this.InitialAgentCount; i++)
+        {
+            lastSpawnedAgent = this.SpawnAgent() ?? lastSpawnedAgent;
+        }
+
+        lastSpawnedAgent.Ready += this.AllAgentsSpawned;
+    }
+
+    private Agent SpawnAgent()
     {
         Vector2 position = Vector2.Zero;
         bool isValid = false;
@@ -126,17 +143,25 @@ public partial class Supervisor : Node
             isValid = true;
         }
 
+        Agent agent = null;
         if (isValid)
         {
             Node2D agentInstance = (Node2D)(this.UseLogicAgents ? this.packedLogicAgent : this.packedTrainAgent).Instantiate();
             this.AgentsRootNode.CallDeferred("add_child", agentInstance);
             agentInstance.GlobalPosition = position;
-            Agent agent = (Agent)agentInstance;
+            agent = (Agent)agentInstance;
             agent.Direction = Vector2.FromAngle(RandomGenerator.Float(Mathf.Pi*2.0f));
             AgentManager.Get().RegisterAgent(agent);
         }
+
+        return agent;
     }
 
+    private void AllAgentsSpawned()
+    {
+        this.areAgentsReady = true;
+    }
+    
     public void LoadAgents(AgentSaveData[] agentsData)
     {
         foreach (AgentSaveData agentData in agentsData)
@@ -153,14 +178,20 @@ public partial class Supervisor : Node
     private void SendData()
     {
         bool isAnyAgentAlive = AgentManager.Get().Agents.Count != 0;
+        bool didAnyAgentDieThisFrame = AgentManager.Get().AgentsThatDiedThisFrame.Count != 0;
 
-        if (isAnyAgentAlive)
+        if (isAnyAgentAlive || didAnyAgentDieThisFrame)
         {
-            List<AgentData> data = new();
+            List<Object[]> data = new();
             foreach (var (_, agent_) in AgentManager.Get().Agents)
             {
                 TrainAgent agent = (TrainAgent)agent_;
-                data.Add(agent.NormalizedData);
+                data.Add(agent.NormalizedData.RawData());
+            }
+            foreach (var agent_ in AgentManager.Get().AgentsThatDiedThisFrame)
+            {
+                TrainAgent agent = (TrainAgent)agent_;
+                data.Add(agent.NormalizedData.RawData());
             }
 
             byte[] rawData = JsonConvert.SerializeObject(data).ToUtf8Buffer();
@@ -173,6 +204,8 @@ public partial class Supervisor : Node
             this.justSentACommunicationCode = true;
             PipeHandler.Get().Send(resetCodeInBytes);
         }
+
+        AgentManager.Instance.ResetDeadAgents();
     }
 
     private void ReceiveData()
@@ -213,15 +246,13 @@ public partial class Supervisor : Node
 
     public void Reset()
     {
+        this.areAgentsReady = false;
         AgentManager.Instance.Reset();
         foreach (Node agent in this.AgentsRootNode.GetChildren())
         {
             this.AgentsRootNode.RemoveChild(agent);
         }
 
-        for (int i = 0; i < this.InitialAgentCount; i++)
-        {
-            this.SpawnAgent();
-        }
+        this.SpawnInitialAgents();
     }
 }
