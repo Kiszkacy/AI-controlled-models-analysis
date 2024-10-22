@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://byp6g5lwnjkly"]
+
+[ext_resource type="Theme" uid="uid://c81i2ymfrd5c3" path="res://assets/ui/themes/whiteTheme.tres" id="1_7ob5m"]
+[ext_resource type="Texture2D" uid="uid://nrf8pwhyb017" path="res://assets/icons/solid/gear.svg" id="6_fpxe7"]
+[ext_resource type="Script" path="res://src/scripts/ui/button/ButtonHandler.cs" id="7_gconx"]
+
+[node name="IconButtonSmall" type="Button"]
+custom_minimum_size = Vector2(48, 48)
+offset_right = 48.0
+offset_bottom = 48.0
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_7ob5m")
+theme_override_constants/icon_max_width = 24
+keep_pressed_outside = true
+icon = ExtResource("6_fpxe7")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("7_gconx")

@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://oab67af044gx"]
+
+[ext_resource type="Theme" uid="uid://kd3qb7k1fkt8" path="res://assets/ui/themes/lightTheme.tres" id="1_c2t81"]
+[ext_resource type="Script" path="res://src/scripts/ui/button/ButtonHandler.cs" id="2_ub6qi"]
+
+[node name="ButtonLightBig" type="Button"]
+custom_minimum_size = Vector2(256, 64)
+offset_right = 128.0
+offset_bottom = 32.0
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_c2t81")
+theme_override_font_sizes/font_size = 24
+keep_pressed_outside = true
+text = "Button text"
+script = ExtResource("2_ub6qi")
