@@ -1,19 +1,11 @@
 import os
 
+from ray import air
 from ray.rllib import MultiAgentEnv
-from ray.rllib.algorithms import Algorithm
+from ray.rllib.algorithms import PPO, PPOConfig
 from ray.tune import Tuner
 
-from core.src.agents.agent_policy import AgentPolicy
-from core.src.environments.godot_environment import GodotServerEnvironment
-from core.src.policies.agent_policy_network import AgentPolicyNetwork
-from core.src.policies.policy_network import PolicyNetwork
 from core.src.settings import get_settings
-
-
-class MyAlgo(Algorithm):
-    def get_default_policy_class(self, config):  # noqa: ARG002
-        return AgentPolicy
 
 
 def get_path() -> str | None:
@@ -32,38 +24,50 @@ def get_path() -> str | None:
 
 
 class TrainingHandler:
-    def __init__(  # noqa: PLR0913
+    def __init__(
         self,
         model_path: str | None = None,
-        environment_cls: type[MultiAgentEnv] = GodotServerEnvironment,
-        policy_cls: type[PolicyNetwork] = AgentPolicyNetwork,
+        environment_cls: type[MultiAgentEnv] | str = "Pendulum",
         learning_rate: float = 1e-3,
         gamma: float = 0.99,
     ):
         self.model_path = model_path
         self.environment_cls = environment_cls
-        self.policy_cls = policy_cls
         self.learning_rate = learning_rate
         self.gamma = gamma
 
     def train(self):
         training_settings = get_settings().training
-        config = {
-            "env": self.environment_cls,
-            "framework": "torch",
-            "num_workers": training_settings.number_of_workers,
-            "model": {
-                "custom_model": self.policy_cls,
-            },
-            "checkpoint_freq": training_settings.training_checkpoint_frequency,
-            "train_batch_size": training_settings.training_batch_size,
-            "learning_rate": self.learning_rate,
-            "rollout_fragment_length": 100,
-            "gamma": self.gamma,
-        }
+
+        ppo_config = PPOConfig().environment(self.environment_cls).framework("torch")
+
+        ppo_config = ppo_config.training(
+            gamma=self.gamma,
+            lr=self.learning_rate,
+            train_batch_size=training_settings.training_batch_size,
+        ).rollouts(num_rollout_workers=training_settings.number_of_workers, rollout_fragment_length=100)
+
+        config = ppo_config.to_dict()
+
+        config["checkpoint_freq"] = training_settings.training_checkpoint_frequency
+
         if self.model_path:
-            config["model_path"] = self.model_path
-            Tuner(MyAlgo, param_space=config).fit()
+            """ Algorithm can be used in loop, not using it now """
+            # print(f"Loading pretrained model from {self.model_path}")
+            algorithm = PPO(config=config)
+            algorithm.restore(self.model_path)
         else:
             config["model_path"] = get_path()
-            Tuner(MyAlgo, param_space=config).fit()  # Tuner params are saved by default at path ~/ray_results)
+            algorithm = PPO(config=config)
+
+        tuner = Tuner(
+            "PPO",
+            param_space=config,
+            run_config=air.RunConfig(
+                # stop={"timesteps_total": 10000},
+                local_dir="~/ray_results",
+                checkpoint_config=air.CheckpointConfig(checkpoint_at_end=True, num_to_keep=5),
+            ),
+        )
+
+        tuner.fit()
