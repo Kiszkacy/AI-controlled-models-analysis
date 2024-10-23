@@ -71,7 +71,8 @@ public class EnvironmentGeneratorBuilder
 
     public EnvironmentGenerator End()
     {
-        return new EnvironmentGenerator(this.biomeGenerator, this.terrainGenerator, this.objectGenerator, this.size, this.biomeChunkSize, this.terrainChunkSize);
+        return new EnvironmentGenerator(this.biomeGenerator, this.terrainGenerator, this.objectGenerator, this.size, 
+            this.biomeChunkSize, this.terrainChunkSize, this.terrainPoints, this.oceanPoints, this.terrainOceanRatio);
     }
 
     public EnvironmentGeneratorBuilder SetAllToDefault()

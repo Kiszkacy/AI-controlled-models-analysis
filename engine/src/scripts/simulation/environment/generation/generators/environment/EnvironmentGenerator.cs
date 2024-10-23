@@ -23,7 +23,8 @@ public class EnvironmentGenerator
     }
 
     public EnvironmentGenerator(
-        BiomeGenerator biomeGenerator, TerrainGenerator terrainGenerator, ObjectGenerator objectGenerator, Vector2 size, Vector2 biomeChunkSize, Vector2 terrainChunkSize)
+        BiomeGenerator biomeGenerator, TerrainGenerator terrainGenerator, ObjectGenerator objectGenerator, Vector2 size, Vector2 biomeChunkSize, Vector2 terrainChunkSize,
+        Vector2[] terrainPoints, Vector2[] oceanPoints, float terrainOceanRatio)
     {
         this.BiomeGenerator = biomeGenerator;
         this.TerrainGenerator = terrainGenerator;
@@ -31,5 +32,8 @@ public class EnvironmentGenerator
         this.Size = size;
         this.BiomeChunkSize = biomeChunkSize;
         this.TerrainChunkSize = terrainChunkSize;
+        this.TerrainPoints = terrainPoints;
+        this.OceanPoints = oceanPoints;
+        this.TerrainOceanRatio = terrainOceanRatio;
     }
 }
