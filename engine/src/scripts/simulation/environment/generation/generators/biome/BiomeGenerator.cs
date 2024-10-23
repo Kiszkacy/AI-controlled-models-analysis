@@ -14,7 +14,7 @@ public class BiomeGenerator
 
     public BiomeType[] Generate(EnvironmentGenerationSettings settings)
     {
-        float maxDistance = Vector2.Zero.DistanceTo(settings.Size);
+        float maxDistance = Mathf.Min(settings.Size.X / 2.0f, settings.Size.Y / 2.0f);
         Vector2 currentChunkPosition = Vector2.Zero;
         LinkedList<BiomeType> data = new();
 
@@ -22,17 +22,18 @@ public class BiomeGenerator
         {
             Vector2 currentChunkCenter = currentChunkPosition + settings.BiomeChunkSize / 2.0f;
             float distanceToClosestTerrainPoint = settings.TerrainPoints.Length == 0 
-                ? Mathf.Max(settings.Size.Y, settings.Size.X) 
-                : settings.TerrainPoints.Max(point => currentChunkCenter.DistanceTo(point * settings.Size));
+                ? maxDistance 
+                : settings.TerrainPoints.Min(point => currentChunkCenter.DistanceTo(point * settings.Size));
             float distanceToClosestOceanPoint = settings.OceanPoints.Length == 0 
-                ? Mathf.Max(settings.Size.Y, settings.Size.X) 
-                : settings.OceanPoints.Max(point => currentChunkCenter.DistanceTo(point * settings.Size));
+                ? maxDistance
+                : settings.OceanPoints.Min(point => currentChunkCenter.DistanceTo(point * settings.Size));
             
-            float normalizedDistanceToClosestTerrainPoint = distanceToClosestTerrainPoint / maxDistance;
-            float normalizedDistanceToClosestOceanPoint = distanceToClosestOceanPoint / maxDistance;
+            float normalizedDistanceToClosestTerrainPoint = (distanceToClosestTerrainPoint * (1.5f-settings.TerrainOceanRatio)) / maxDistance;
+            float normalizedDistanceToClosestOceanPoint = (distanceToClosestOceanPoint * (0.5f+settings.TerrainOceanRatio)) / maxDistance;
+            
 
             float distanceValue = Mathf.Clamp(
-                settings.TerrainOceanRatio * normalizedDistanceToClosestTerrainPoint - (1.0f-settings.TerrainOceanRatio) * normalizedDistanceToClosestOceanPoint + RandomGenerator.Float(-this.distanceRandomness, this.distanceRandomness), 
+                normalizedDistanceToClosestTerrainPoint + (1.0f-normalizedDistanceToClosestOceanPoint) + RandomGenerator.Float(-this.distanceRandomness, this.distanceRandomness), 
                 0.0f, 
                 1.0f
             );
