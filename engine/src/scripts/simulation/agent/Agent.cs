@@ -1,4 +1,5 @@
 using Godot;
+using Godot.Collections;
 
 public partial class Agent : CharacterBody2D
 {
@@ -64,12 +65,12 @@ public partial class Agent : CharacterBody2D
         float energyLoss = Config.Instance.Environment.EnergyBaseLossPerSecond
                            + Config.Instance.Environment.EnergyLossPerSecondPer100UnitsOfMovement * (this.Velocity.Length()/100.0f)
                            + Config.Instance.Environment.EnergyLossPerSecondTurn * Mathf.Abs(this.currentRotation);
-        this.energy -= energyLoss * (float)delta;
+        this.energy = Mathf.Max(this.energy - energyLoss * (float)delta, 0.0f);
     }
 
     protected void UpdateHealth(double delta)
     {
-        if (this.energy <= 0.0f) // TODO proper float comparison
+        if (Math.IsZero(this.energy))
         {
             this.health -= Config.Instance.Environment.HealthLossPerSecond * (float)delta;
         }
@@ -79,7 +80,7 @@ public partial class Agent : CharacterBody2D
         }
 
         this.health = Mathf.Clamp(this.health, 0.0f, this.MaximumHealth);
-        if (this.health <= 0.0f) // TODO proper float comparison
+        if (Math.IsZero(this.health))
         {
             this.Die();
         }
@@ -87,6 +88,7 @@ public partial class Agent : CharacterBody2D
 
     protected void Die()
     {
+        AgentManager.Instance.RemoveAgent(this);
         this.QueueFree();
     }
 
@@ -152,15 +154,7 @@ public partial class Agent : CharacterBody2D
         this.Direction = this.Direction.Rotated(this.currentRotation * (float)delta);
         this.GlobalRotation = this.DirectionAngle;
 
-        if (this.currentAcceleration >= 0.0f)
-        {
-            this.Velocity = this.Direction * Mathf.Clamp(this.Speed + this.currentAcceleration * (float)delta, 0.0f, this.MaximumSpeed);
-        }
-        else
-        {
-            this.Velocity = this.Direction * Mathf.Clamp(this.Speed + this.currentAcceleration * (float)delta, 0.0f, this.MaximumSpeed);
-        }
-
+        this.Velocity = this.Direction * Mathf.Clamp(this.Speed + this.currentAcceleration * (float)delta, 0.0f, this.MaximumSpeed);
 
         this.MoveAndCollide(this.Velocity * (float)delta);
     }
@@ -169,8 +163,11 @@ public partial class Agent : CharacterBody2D
     {
         this.sprite = this.GetNode<Sprite2D>("Sprite");
 
-        this.energy = this.InitialEnergy;
-        this.health = this.InitialHealth;
+        if (!Reloader.Get().IsReloading)
+        {
+            this.energy = this.InitialEnergy;
+            this.health = this.InitialHealth;
+        }
 
         Area2D mouth = this.GetNode<Area2D>("Mouth");
         mouth.AreaEntered += this.OnMouthBodyEntered;
@@ -193,5 +190,35 @@ public partial class Agent : CharacterBody2D
         }
 
         this.UpdateColor();
+    }
+
+    public virtual AgentSaveData Save()
+    {
+        return new AgentSaveData(this.GlobalPosition, this.MaximumSpeed, this.MaximumAcceleration, this.MaximumDeceleration,
+            this.MaximumEnergy, this.InitialEnergy, this.MaximumHealth, this.InitialHealth, this.MaximumTurnSpeed,
+            this.SightAngle, this.SightRadius, this.energy, this.health, this.currentRotation, this.currentAcceleration,
+            this.Direction, this.Velocity, this.id);
+    }
+
+    public virtual void Load(AgentSaveData data)
+    {
+        this.GlobalPosition = data.Position;
+        this.MaximumSpeed = data.MaximumSpeed;
+        this.MaximumAcceleration = data.MaximumAcceleration;
+        this.MaximumDeceleration = data.MaximumDeceleration;
+        this.MaximumEnergy = data.MaximumEnergy;
+        this.InitialEnergy = data.InitialEnergy;
+        this.MaximumHealth = data.MaximumHealth;
+        this.InitialHealth = data.InitialHealth;
+        this.MaximumTurnSpeed = data.MaximumTurnSpeed;
+        this.SightAngle = data.SightAngle;
+        this.SightRadius = data.SightRadius;
+        this.energy = data.Energy;
+        this.health = data.Health;
+        this.currentRotation = data.CurrentRotation;
+        this.currentAcceleration = data.CurrentAcceleration;
+        this.Direction = data.Direction;
+        this.Velocity = data.Velocity;
+        this.id = data.Id;
     }
 }

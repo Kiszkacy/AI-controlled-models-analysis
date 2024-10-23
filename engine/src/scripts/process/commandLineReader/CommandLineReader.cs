@@ -7,7 +7,11 @@ public class CommandLineReader
 {
     private static readonly string argumentPrefix = "--";
     private static readonly string valueSeperator = "=";
-    private static readonly string[] valueArguments = { "pipe-name" };
+    private static readonly string[] valueArguments =
+    {
+        "pipe-name",
+        "environment-seed"
+    };
 
     public static bool OpenedViaCommandLine => OS.GetCmdlineArgs().Length > 1;
 
@@ -65,8 +69,12 @@ public class CommandLineReader
         switch (argumentName)
         {
             case "pipe-name":
-                NeatPrinter.Start().Print($"Commandline argument: applied '{argumentValue}' to 'Config.Data.Pipe.Name'.").End();
+                NeatPrinter.Start().Print($"Commandline argument: applied '{argumentValue}' to 'Config.Pipe.Name'.").End();
                 Config.Get().Data.Pipe.Name = argumentValue;
+                break;
+            case "environment-seed":
+                NeatPrinter.Start().Print($"Commandline argument: applied '{argumentValue}' to 'Config.Environment.Seed'.").End();
+                Config.Get().Environment.Seed = int.Parse(argumentValue!);
                 break;
         }
     }

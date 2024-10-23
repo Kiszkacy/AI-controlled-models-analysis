@@ -1,7 +1,5 @@
-# mypy: ignore-errors
-# ruff: disable
-
 import platform
+import sys
 from typing import IO
 
 from loguru import logger
@@ -10,6 +8,7 @@ ON_WINDOWS: bool = platform.system() == "Windows"
 if ON_WINDOWS:
     import win32file
     import win32pipe
+    import win32security
 else:
     import os
 
@@ -29,8 +28,14 @@ class PipeHandler:
     def _default_pipe_prefix(self) -> str:
         return r"\\.\pipe\{pipe_name}" if ON_WINDOWS else "/tmp/{pipe_name}"
 
+    def _is_windows_pipe_handle(self) -> bool:
+        return type(self.pipe).__name__ == "PyHANDLE"
+
     def connect(self) -> None:
         if ON_WINDOWS:
+            security_attributes = win32security.SECURITY_ATTRIBUTES()
+            security_attributes.bInheritHandle = True
+
             self.pipe = win32pipe.CreateNamedPipe(
                 self.pipe_path,
                 win32pipe.PIPE_ACCESS_DUPLEX,
@@ -39,32 +44,57 @@ class PipeHandler:
                 MAX_BUFFER_SIZE,
                 MAX_BUFFER_SIZE,
                 0,
-                None,
+                security_attributes,
             )
+
+            if self.pipe == win32file.INVALID_HANDLE_VALUE:
+                raise RuntimeError(f"Failed to create named pipe: {self.pipe_path}")
+
             win32pipe.ConnectNamedPipe(self.pipe, None)
         else:
-            os.mkfifo(self.pipe_path)
-            self.pipe = open(self.pipe_path, "r+")  # noqa: SIM115
+            if sys.platform != "win32":
+                if not os.path.exists(self.pipe_path):
+                    os.mkfifo(self.pipe_path)
+            with open(self.pipe_path, "r+") as pipe:
+                self.pipe = pipe
         logger.info(f"Connected to the {self.pipe_path} pipe.")
 
     def disconnect(self) -> None:
-        if ON_WINDOWS:
-            win32file.CloseHandle(self.pipe)
-        else:
+        if not self.pipe:
+            return
+
+        if isinstance(self.pipe, IO):
             self.pipe.close()
+
+        elif ON_WINDOWS and (isinstance(self.pipe, int) or self._is_windows_pipe_handle()):
+            win32file.CloseHandle(self.pipe)
+
         self.pipe = None
 
     def send(self, data_bytes) -> None:
-        if ON_WINDOWS:
-            win32file.WriteFile(self.pipe, data_bytes)
-        else:
+        if not self.pipe:
+            return
+
+        if isinstance(self.pipe, IO):
             self.pipe.write(data_bytes)
             self.pipe.flush()
 
+        elif ON_WINDOWS and (isinstance(self.pipe, int) or self._is_windows_pipe_handle()):
+            win32file.WriteFile(self.pipe, data_bytes)
+
     def receive(self) -> bytes:
-        data: bytes
-        if ON_WINDOWS:
+        if not self.pipe:
+            return b""
+
+        if isinstance(self.pipe, IO):
+            return self.pipe.read(READ_BUFFER_SIZE)
+
+        if ON_WINDOWS and (isinstance(self.pipe, int) or self._is_windows_pipe_handle()):
             _, data = win32file.ReadFile(self.pipe, READ_BUFFER_SIZE)
-        else:
-            data = self.pipe.read(READ_BUFFER_SIZE)
-        return data
+            if isinstance(data, str):
+                return data.encode("utf-8")
+            if isinstance(data, bytes):
+                return data
+            raise RuntimeError(f"Unexpected data type: {type(data)} received from pipe")
+
+        return b""

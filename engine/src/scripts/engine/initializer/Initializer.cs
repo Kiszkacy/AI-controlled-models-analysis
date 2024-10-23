@@ -6,6 +6,7 @@ public partial class Initializer : Node
 {
     public override void _Ready()
     {
+
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
             .Print("  | LOADING SCENE")
@@ -15,12 +16,11 @@ public partial class Initializer : Node
             .End();
         this.LoadSingletons();
 
-        int seed = 0;
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
-            .Print($"  | SET SEED TO {seed}")
+            .Print($"  | SET SEED TO {Config.Instance.Environment.Seed}")
             .End();
-        RandomGenerator.SetSeed(seed);
+        RandomGenerator.SetSeed(Config.Instance.Environment.Seed);
 
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
@@ -46,16 +46,28 @@ public partial class Initializer : Node
                 .End();
         }
 
-        NeatPrinter.Start()
-            .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
-            .Print("  | GENERATING ENVIRONMENT")
-            .End();
-        this.GenerateEnvironment();
+        if (!Reloader.Get().IsReloading)
+        {
+            NeatPrinter.Start()
+                .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+                .Print("  | GENERATING ENVIRONMENT")
+                .End();
+            this.GenerateEnvironment();
+        }
+
+        else
+        {
+            NeatPrinter.Start()
+                .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+                .Print("  | RELOADING ENVIRONMENT")
+                .End();
+            this.ReloadEnvironment();
+        }
 
         NeatPrinter.Start()
-            .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
-            .Print("  | ENVIRONMENT SETUP")
-            .End();
+                .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+                .Print("  | ENVIRONMENT SETUP")
+                .End();
         this.SetupEnvironment();
     }
 
@@ -90,8 +102,8 @@ public partial class Initializer : Node
     {
         EnvironmentGenerator environmentGenerator = EnvironmentGeneratorBuilder.Start.SetAllToDefault().End();
         EnvironmentTemplate environmentTemplate = environmentGenerator.Generate();
-        EntityManager.Instance.Initialize(environmentTemplate.GenerationSettings.Size); // IMPORTANT: EntityManager must initialize before environment instantiates
-
+        EntityManager.Instance.Initialize(environmentTemplate.GenerationSettings
+                .Size); // IMPORTANT: EntityManager must initialize before environment instantiate
         Node parent = this.GetParent<Node>();
         Environment environment = ((Environment)(parent.GetNode("Environment")));
         environment.Initialize(environmentTemplate);
@@ -102,6 +114,23 @@ public partial class Initializer : Node
     private void SetupEnvironment() // TODO remove me too
     {
         AgentSightRayCastManager.Instance.Initialize(this.GetParent(), true);
+    }
+
+    private void ReloadEnvironment()
+    {
+        Reloader.Get().LoadAllData(this.GetParent<Node>());
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+        if (@event.IsActionPressed("reload.scene"))
+        {
+            NeatPrinter.Start()
+                .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
+                .Print("  | RELOADING SCENE")
+                .End();
+            Reloader.Get().Reload(this.GetParent<Node>());
+        }
     }
 
     public Initializer()

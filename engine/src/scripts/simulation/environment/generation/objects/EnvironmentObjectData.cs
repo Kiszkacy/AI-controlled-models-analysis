@@ -1,10 +1,11 @@
 ﻿
 using Godot;
+using Godot.Collections;
 
-public readonly struct EnvironmentObjectData
+public struct EnvironmentObjectData
 {
-    public readonly EnvironmentObjectId Id;
-    public readonly Vector2 Position;
+    public EnvironmentObjectId Id { get; set; }
+    public Vector2 Position { get; set; }
 
     public EnvironmentObjectData(EnvironmentObjectId id, Vector2 position)
     {
