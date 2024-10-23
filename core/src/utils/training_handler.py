@@ -45,6 +45,7 @@ class TrainingHandler:
             gamma=self.gamma,
             lr=self.learning_rate,
             train_batch_size=training_settings.training_batch_size,
+            model={"fcnet_hiddens": [64, 64]},
         ).rollouts(num_rollout_workers=training_settings.number_of_workers, rollout_fragment_length=100)
 
         config = ppo_config.to_dict()
