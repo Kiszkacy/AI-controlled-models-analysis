@@ -12,6 +12,7 @@ offset_right = 320.0
 offset_bottom = 320.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
+theme = ExtResource("1_1t7ss")
 script = ExtResource("1_b8wws")
 Text = "Tooltip text here."
 
@@ -32,4 +33,5 @@ offset_top = 2.0
 offset_right = 17.0
 offset_bottom = 18.0
 rotation = 0.785398
+theme = ExtResource("1_1t7ss")
 color = Color(0.878431, 0.882353, 0.866667, 1)
