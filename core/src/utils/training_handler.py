@@ -39,15 +39,17 @@ class TrainingHandler:
     def train(self):
         training_settings = get_settings().training
 
-        ppo_config = PPOConfig().environment(self.environment_cls).framework("torch")
-
-        ppo_config = ppo_config.training(
-            gamma=self.gamma,
-            lr=self.learning_rate,
-            train_batch_size=training_settings.training_batch_size,
-            model={"fcnet_hiddens": [64, 64]},
-        ).rollouts(num_rollout_workers=training_settings.number_of_workers, rollout_fragment_length=100)
-
+        ppo_config = (
+            PPOConfig()
+            .environment(self.environment_cls)
+            .rollouts(
+                num_rollout_workers=training_settings.number_of_workers,
+                create_env_on_local_worker=False,
+                num_envs_per_worker=training_settings.number_of_env_per_worker,
+            )
+            .framework("torch")
+            .training(model={"fcnet_hiddens": [64, 64]}, train_batch_size=training_settings.training_batch_size)
+        )
         config = ppo_config.to_dict()
 
         config["checkpoint_freq"] = training_settings.training_checkpoint_frequency
@@ -55,11 +57,11 @@ class TrainingHandler:
         if self.model_path:
             """ Algorithm can be used in loop, not using it now """
             # print(f"Loading pretrained model from {self.model_path}")
-            algorithm = PPO(config=config)
+            algorithm = PPO(config=ppo_config)
             algorithm.restore(self.model_path)
         else:
             config["model_path"] = get_path()
-            algorithm = PPO(config=config)
+            algorithm = PPO(config=ppo_config)
 
         tuner = Tuner(
             "PPO",
