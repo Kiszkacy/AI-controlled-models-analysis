@@ -53,6 +53,8 @@ public partial class Tooltip : Control
     private string text = string.Empty;
     private bool isReady = false;
 
+    private readonly int padding = 4;
+
     public override void _Ready()
     {
         this.label = this.GetNode<Label>("Label");
@@ -90,14 +92,15 @@ public partial class Tooltip : Control
         Vector2 textSize = this.label.GetThemeDefaultFont().GetMultilineStringSize(
             text,
             this.TextAlignment,
-            this.MaxWidth,
-            brkFlags: TextServer.LineBreakFlag.WordBound | TextServer.LineBreakFlag.Adaptive | TextServer.LineBreakFlag.Mandatory
+            this.MaxWidth-padding*2, // 8 from padding-left: 4px, padding-right: 4px
+            brkFlags: TextServer.LineBreakFlag.WordBound | TextServer.LineBreakFlag.Adaptive | TextServer.LineBreakFlag.Mandatory,
+            justificationFlags: TextServer.JustificationFlag.Kashida | TextServer.JustificationFlag.WordBound | TextServer.JustificationFlag.SkipLastLine | TextServer.JustificationFlag.DoNotSkipSingleLine
         );
 
         this.label.Text = string.Empty;
 
-        this.label.Size = textSize;
-        this.Size = textSize;
+        this.label.Size = new Vector2(textSize.X+padding*2, textSize.Y+padding*2);
+        this.Size = new Vector2(textSize.X+padding*2, textSize.Y+padding*2);
 
         this.label.Text = text;
 
@@ -162,18 +165,18 @@ public partial class Tooltip : Control
         float labelSizeY = this.label.Size.Y;
 
         int lineHeight = (int)this.label.GetThemeDefaultFont().GetStringSize("text").Y;
-        int lineCount = (int)(this.label.Size.Y / lineHeight);
+        int lineCount = (int)(labelSizeY / lineHeight);
 
         switch (this.Layout)
         {
             case TooltipLayout.Top:
-                this.arrow.Position = new Vector2(labelSizeX / 2, labelSizeY + 3*(lineCount-1)-8);
+                this.arrow.Position = new Vector2(labelSizeX / 2, lineCount*23-7);
                 break;
             case TooltipLayout.TopRight:
-                this.arrow.Position = new Vector2(24, labelSizeY + 3*(lineCount-1)-8);
+                this.arrow.Position = new Vector2(24, lineCount*23-7);
                 break;
             case TooltipLayout.Right:
-                this.arrow.Position = new Vector2(1, (labelSizeY + 3*(lineCount-1)-18)/2);
+                this.arrow.Position = new Vector2(1, (int)(lineCount*11.5-8.5));
                 break;
             case TooltipLayout.BottomRight:
                 this.arrow.Position = new Vector2(24, -11);
@@ -185,10 +188,10 @@ public partial class Tooltip : Control
                 this.arrow.Position = new Vector2(labelSizeX-24, -11);
                 break;
             case TooltipLayout.Left:
-                this.arrow.Position = new Vector2(labelSizeX-1, (labelSizeY + 3*(lineCount-1)-18)/2);
+                this.arrow.Position = new Vector2(labelSizeX-1, (int)(lineCount*11.5-8.5));
                 break;
             case TooltipLayout.TopLeft:
-                this.arrow.Position = new Vector2(labelSizeX-24, labelSizeY + 3*(lineCount-1)-8);
+                this.arrow.Position = new Vector2(labelSizeX-24, lineCount*23-7);
                 break;
         }
     }
