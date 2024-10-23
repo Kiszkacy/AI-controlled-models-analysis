@@ -9,10 +9,13 @@ public class EnvironmentGenerator
     public Vector2 Size { get; }
     public Vector2 BiomeChunkSize { get; }
     public Vector2 TerrainChunkSize { get; }
+    public Vector2[] TerrainPoints { get; }
+    public Vector2[] OceanPoints { get; }
+    public float TerrainOceanRatio { get; }
 
     public EnvironmentTemplate Generate()
     {
-        EnvironmentGenerationSettings settings = new(this.Size, this.BiomeChunkSize, this.TerrainChunkSize);
+        EnvironmentGenerationSettings settings = new(this.Size, this.BiomeChunkSize, this.TerrainChunkSize, this.TerrainPoints, this.OceanPoints, this.TerrainOceanRatio);
         BiomeType[] biomeData = this.BiomeGenerator.Generate(settings);
         bool[] terrainData = this.TerrainGenerator.Generate(settings, biomeData);
         EnvironmentObjectData[] objectData = this.ObjectGenerator.Generate(settings, biomeData, terrainData);
