@@ -102,8 +102,28 @@ public class EntityLayer<T> : Initializable where T : Node2D, Bucketable
         return mergedBucket.ToArray();
     }
 
+    public void ForEachEntity(System.Action<T> action)
+    {
+        for (int i = 0; i < this.buckets.Length; i++)
+        {
+            for (int j = 0; j < this.buckets[i].Length; j++)
+            {
+                foreach (T entity in this.buckets[i][j])
+                {
+                    action(entity);
+                }
+            }
+        }
+    }
+
     public EntityLayer(Vector2 environmentSize)
     {
         this.environmentSize = environmentSize;
+    }
+
+    public void Reset()
+    {
+        this.buckets = null;
+        this.initialized.Reset();
     }
 }
