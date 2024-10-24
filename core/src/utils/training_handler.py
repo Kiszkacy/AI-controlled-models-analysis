@@ -59,7 +59,8 @@ class TrainingHandler:
                 "PPO",
                 param_space=config,
                 run_config=air.RunConfig(
-                    # stop={"timesteps_total": 10000},
+                    """ Commented option to turn it off after a certain number of iterations """,
+                    # stop={"timesteps_total": training_settings.training_iterations},
                     checkpoint_config=air.CheckpointConfig(checkpoint_at_end=True, num_to_keep=5),
                     storage_path=get_path(),
                 ),
