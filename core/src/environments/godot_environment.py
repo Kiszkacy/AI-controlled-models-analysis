@@ -33,8 +33,8 @@ class GodotServerEnvironment(MultiAgentEnv):
     )
 
     observation_space = Box(
-        low=environment_settings.observation_space_low,
-        high=environment_settings.observation_space_high,
+        low=2 * environment_settings.observation_space_low,
+        high=2 * environment_settings.observation_space_high,
         shape=(environment_settings.observation_space_size,),
         dtype=np.float32,
     )
