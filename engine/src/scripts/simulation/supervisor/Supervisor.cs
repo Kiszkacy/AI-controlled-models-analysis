@@ -34,10 +34,7 @@ public partial class Supervisor : Node
             return;
         }
 
-        for (int i = 0; i < this.InitialAgentCount; i++)
-        {
-            this.SpawnAgent();
-        }
+        this.SpawnInitialAgents();
 
         if (!this.UseLogicAgents)
         {
