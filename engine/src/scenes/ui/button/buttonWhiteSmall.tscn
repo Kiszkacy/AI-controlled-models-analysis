@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cth570o6vdv8g"]
+
+[ext_resource type="Theme" uid="uid://c81i2ymfrd5c3" path="res://assets/ui/themes/whiteTheme.tres" id="1_c4m0f"]
+[ext_resource type="Script" path="res://src/scripts/ui/button/ButtonHandler.cs" id="2_foyn7"]
+
+[node name="ButtonWhiteSmall" type="Button"]
+custom_minimum_size = Vector2(128, 32)
+offset_right = 128.0
+offset_bottom = 32.0
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_c4m0f")
+keep_pressed_outside = true
+text = "Button text"
+script = ExtResource("2_foyn7")

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dx6mu0kmrl85u"]
+
+[ext_resource type="Theme" uid="uid://csrhio660ie0s" path="res://assets/ui/themes/darkTheme.tres" id="1_igfij"]
+[ext_resource type="Script" path="res://src/scripts/ui/button/ButtonHandler.cs" id="2_sh4ey"]
+
+[node name="ButtonDarkSmall" type="Button"]
+custom_minimum_size = Vector2(128, 32)
+offset_right = 128.0
+offset_bottom = 32.0
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_igfij")
+keep_pressed_outside = true
+text = "Button text"
+script = ExtResource("2_sh4ey")
