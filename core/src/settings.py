@@ -19,22 +19,20 @@ class GodotSettings(BaseSettings):
     def validate_godot_executable(cls, value: Path) -> Path:
         if value.suffix == ".exe":
             return value
-
         raise ValueError(f"Path should point to an .exe file but instead pointed to {value.suffix}")
 
 
 class TrainingSettings(BaseSettings):
     model_config = SettingsConfigDict(frozen=True)
-
     number_of_workers: Annotated[int, Field(gt=0)]
     number_of_env_per_worker: Annotated[int, Field(gt=0)]
     training_iterations: Annotated[int, Field(gt=0)]
     training_batch_size: Annotated[int, Field(gt=0)]
+    training_checkpoint_frequency: Annotated[int, Field(gt=0)]
 
 
 class EnvironmentSettings(BaseSettings):
     model_config = SettingsConfigDict(frozen=True)
-
     observation_space_size: Annotated[int, Field(gt=0, default=5)]
     observation_space_low: Annotated[float, ...]
     observation_space_high: Annotated[float, ...]
@@ -66,9 +64,7 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         frozen=True,
     )
-
     godot: GodotSettings = Field(description="The godot settings")
-
     training: TrainingSettings = Field(description="Training settings")
 
     environment: EnvironmentSettings = Field(description="Training environment settings")
