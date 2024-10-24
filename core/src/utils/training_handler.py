@@ -2,7 +2,7 @@ import os
 
 from ray import air
 from ray.rllib import MultiAgentEnv
-from ray.rllib.algorithms import PPO, PPOConfig
+from ray.rllib.algorithms import PPOConfig
 from ray.tune import Tuner
 
 from core.src.settings import get_settings
@@ -15,23 +15,19 @@ def get_path() -> str | None:
         if not project_root:
             break
     if project_root:
-        model_dir = os.path.join(project_root, "model")
-        import_path = os.path.join(model_dir, "model.pth")
-        if not os.path.exists(model_dir):
-            os.makedirs(model_dir)
-        return import_path
+        return os.path.join(project_root, "model")
     return None
 
 
 class TrainingHandler:
     def __init__(
         self,
-        model_path: str | None = None,
+        model_name: str | None = None,
         environment_cls: type[MultiAgentEnv] | str = "Pendulum",
         learning_rate: float = 1e-3,
         gamma: float = 0.99,
     ):
-        self.model_path = model_path
+        self.model_name = model_name
         self.environment_cls = environment_cls
         self.learning_rate = learning_rate
         self.gamma = gamma
@@ -54,23 +50,19 @@ class TrainingHandler:
 
         config["checkpoint_freq"] = training_settings.training_checkpoint_frequency
 
-        if self.model_path:
-            """ Algorithm can be used in loop, not using it now """
-            # print(f"Loading pretrained model from {self.model_path}")
-            algorithm = PPO(config=ppo_config)
-            algorithm.restore(self.model_path)
-        else:
-            config["model_path"] = get_path()
-            algorithm = PPO(config=ppo_config)
+        if self.model_name:
+            """ Restoring trained model stored in model dir by passed model_name """
+            tuner = Tuner.restore(get_path() + "/" + self.model_name, trainable="PPO")
 
-        tuner = Tuner(
-            "PPO",
-            param_space=config,
-            run_config=air.RunConfig(
-                # stop={"timesteps_total": 10000},
-                local_dir="~/ray_results",
-                checkpoint_config=air.CheckpointConfig(checkpoint_at_end=True, num_to_keep=5),
-            ),
-        )
+        else:
+            tuner = Tuner(
+                "PPO",
+                param_space=config,
+                run_config=air.RunConfig(
+                    # stop={"timesteps_total": 10000},
+                    checkpoint_config=air.CheckpointConfig(checkpoint_at_end=True, num_to_keep=5),
+                    storage_path=get_path(),
+                ),
+            )
 
         tuner.fit()
