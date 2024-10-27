@@ -4,7 +4,7 @@ from typing import IO
 from loguru import logger
 
 ON_WINDOWS: bool = sys.platform == "win32"
-if ON_WINDOWS:
+if sys.platform == "win32":
     import win32file
     import win32pipe
     import win32security
