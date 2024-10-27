@@ -146,7 +146,9 @@ jobs:
           key: ${{ runner.os }}-${{ steps.python-setup.outputs.python-version }}-venv-${{ hashFiles('core/requirements.txt') }}
 
       - name: Activate python env
-        run: source ./.venv/bin/activate | pip list
+        run: |
+          source ./.venv/bin/activate  
+          pip list
 
       - name: Check env
         run: pip list
