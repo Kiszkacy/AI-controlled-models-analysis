@@ -221,4 +221,18 @@ public partial class Agent : CharacterBody2D
         this.Velocity = data.Velocity;
         this.id = data.Id;
     }
+
+    public string GetStats()
+    {
+        return $"Agent ID: {Id}\n" +
+               $"Speed: {Speed:F2} px/sec (Max: {MaximumSpeed} px/sec)\n" +
+               $"Acceleration: {currentAcceleration:F2} px/sec² (Max: {MaximumAcceleration} px/sec²)\n" +
+               $"Turn Speed: {currentRotation:F2} rad/sec (Max: {MaximumTurnSpeed:F2} rad/sec)\n" +
+               $"Energy: {energy:F2}/{MaximumEnergy}\n" +
+               $"Health: {health:F2}/{MaximumHealth}\n" +
+               $"Sight Radius: {SightRadius} px\n" +
+               $"Sight Angle: {Mathf.RadToDeg(SightAngle):F2}°\n" +
+               $"Distance to Closest Food: {(float.IsNaN(DistanceToClosestFood) ? "N/A" : $"{DistanceToClosestFood:F2} px")}\n" +
+               $"Angle to Closest Food: {(float.IsNaN(AngleToClosestFood) ? "N/A" : $"{Mathf.RadToDeg(AngleToClosestFood):F2}°")}";
+    }
 }

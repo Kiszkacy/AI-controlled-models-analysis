@@ -16,6 +16,19 @@ public partial class EnvironmentObject : Node2D, Bucketable
         this.Scale = new Vector2(this.InitialScale, this.InitialScale);
     }
 
+    public string GetStats()
+    {
+        string typeName = this is Tree ? "Tree" : this is Bush ? "Bush" : "Rock";
+        string stats = $"{typeName}\n";
+
+        if (this.HasNode("FoodSpawner") && this.GetNode("FoodSpawner") is FoodSpawner spawner)
+        {
+            stats += spawner.GetStats();
+        }
+
+        return stats;
+    }
+
     public EnvironmentObject(float initialScale)
     {
         this.InitialScale = Mathf.Clamp(initialScale, 0.5f, 1.5f);

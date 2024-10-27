@@ -109,6 +109,15 @@ public partial class FoodSpawner : Node, Initializable // TODO remove exports, n
         this.spawnFoodTimer.Time = saveData.TimerTime;
         this.spawnFoodTimer.IsActive = saveData.TimerIsActive;
     }
+
+    public string GetStats()
+    {
+        return $"Food Spawner:\n" +
+               $"- Timer Active: {this.spawnFoodTimer.IsActive}\n" +
+               $"- Time Left: {this.spawnFoodTimer.Time:F2} seconds\n" +
+               $"- Food Energy Nutrition: {this.FoodEnergyNutrition}\n" +
+               $"- Food Per Minute: {this.FoodPerMinute}\n";
+    }
     public FoodSpawner()
     {
         this.spawnFoodTimer = new(this.SpawnFood);
