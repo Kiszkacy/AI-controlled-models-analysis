@@ -124,6 +124,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    needs: build-python
 
     steps:
       - name: Checkout repository
@@ -145,6 +146,6 @@ jobs:
       - name: Run tests
         uses: dariocurr/pytest-summary@main
         with:
-          paths: tests/*
+          paths: tests/**.py
           options: --quiet
           show: all
