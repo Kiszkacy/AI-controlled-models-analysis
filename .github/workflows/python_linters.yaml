@@ -143,7 +143,9 @@ jobs:
         with:
           path: ./.venv/
           key: ${{ runner.os }}-${{ steps.python-setup.outputs.python-version }}-venv-${{ hashFiles('core/requirements.txt') }}
+
       - name: Run tests
+        run: source ./.venv/bin/activate
         uses: dariocurr/pytest-summary@main
         with:
           paths: core/tests/**.py
