@@ -3,8 +3,8 @@ name: build
 
 on:
   pull_request:
-    paths:
-      - 'core/**'
+#    paths:
+#      - 'core/**'
 
 
 env:
