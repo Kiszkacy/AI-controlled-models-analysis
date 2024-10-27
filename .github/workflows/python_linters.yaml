@@ -3,7 +3,8 @@ name: python linters
 
 on:
   workflow_run:
-    workflows: [build]
+    workflows:
+      - build
     types:
       - completed
       
@@ -17,6 +18,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.workflow_run.head_branch }}
 
     - name: Python setup
       id: python-setup
