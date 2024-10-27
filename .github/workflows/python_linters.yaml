@@ -145,6 +145,6 @@ jobs:
       - name: Run tests
         uses: dariocurr/pytest-summary@main
         with:
-          paths: tests/test_fake.py
+          paths: tests/*
           options: --quiet
           show: all
