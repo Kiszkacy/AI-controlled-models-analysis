@@ -1,10 +1,9 @@
-import platform
 import sys
 from typing import IO
 
 from loguru import logger
 
-ON_WINDOWS: bool = platform.system() == "Windows"
+ON_WINDOWS: bool = sys.platform == "win32"
 if ON_WINDOWS:
     import win32file
     import win32pipe
