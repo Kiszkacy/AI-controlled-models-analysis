@@ -41,11 +41,27 @@ public partial class Camera : Camera2D
     private Vector2 mouseDragStart = Vector2.Zero;
     private bool isDoubleClicked = false;
     private Vector2 doubleClickTarget = Vector2.Zero;
+    private bool isFollowing = false;
+    private Node2D followTarget = null;
 
     public override void _Input(InputEvent @event)
     {
         HandleKeyboardInput(@event);
         HandleMouseInput(@event);
+
+        if (isFollowing && IsUserMovement(@event))
+        {
+            StopFollowing();
+        }
+    }
+
+    private bool IsUserMovement(InputEvent @event)
+    {
+        return @event.IsActionPressed("move.camera.up") ||
+               @event.IsActionPressed("move.camera.down") ||
+               @event.IsActionPressed("move.camera.left") ||
+               @event.IsActionPressed("move.camera.right") ||
+               this.isDragging || this.isDoubleClicked;
     }
 
     private void HandleKeyboardInput(InputEvent @event)
@@ -166,8 +182,15 @@ public partial class Camera : Camera2D
 
     public override void _PhysicsProcess(double delta)
     {
-        this.UpdateEdgeMoveDirection();
-        this.UpdatePosition(delta);
+        if (isFollowing && followTarget != null)
+        {
+            GlobalPosition = followTarget.GlobalPosition;
+        }
+        else
+        {
+            this.UpdateEdgeMoveDirection();
+            this.UpdatePosition(delta);
+        }
         this.UpdateZoom(delta);
     }
 
@@ -230,5 +253,17 @@ public partial class Camera : Camera2D
         {
             this.isDoubleClicked = false;
         }
+    }
+
+    public void Follow(Node2D objectToFollow)
+    {
+        isFollowing = true;
+        followTarget = objectToFollow;
+    }
+
+    public void StopFollowing()
+    {
+        isFollowing = false;
+        followTarget = null;
     }
 }

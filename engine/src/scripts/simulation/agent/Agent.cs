@@ -224,15 +224,15 @@ public partial class Agent : CharacterBody2D
 
     public string GetStats()
     {
-        return $"Agent ID: {Id}\n" +
-               $"Speed: {Speed:F2} px/sec (Max: {MaximumSpeed} px/sec)\n" +
-               $"Acceleration: {currentAcceleration:F2} px/sec² (Max: {MaximumAcceleration} px/sec²)\n" +
-               $"Turn Speed: {currentRotation:F2} rad/sec (Max: {MaximumTurnSpeed:F2} rad/sec)\n" +
-               $"Energy: {energy:F2}/{MaximumEnergy}\n" +
-               $"Health: {health:F2}/{MaximumHealth}\n" +
-               $"Sight Radius: {SightRadius} px\n" +
-               $"Sight Angle: {Mathf.RadToDeg(SightAngle):F2}°\n" +
-               $"Distance to Closest Food: {(float.IsNaN(DistanceToClosestFood) ? "N/A" : $"{DistanceToClosestFood:F2} px")}\n" +
-               $"Angle to Closest Food: {(float.IsNaN(AngleToClosestFood) ? "N/A" : $"{Mathf.RadToDeg(AngleToClosestFood):F2}°")}";
+        return $"Agent ID: {this.Id}\n" +
+               $"Speed: {this.Speed:F2} px/sec (Max: {this.MaximumSpeed} px/sec)\n" +
+               $"Acceleration: {this.currentAcceleration:F2} px/sec2 (Max: {this.MaximumAcceleration} px/sec2)\n" +
+               $"Turn Speed: {this.currentRotation:F2} rad/sec (Max: {this.MaximumTurnSpeed:F2} rad/sec)\n" +
+               $"Energy: {this.energy:F2}/{this.MaximumEnergy}\n" +
+               $"Health: {this.health}/{this.MaximumHealth}\n" +
+               $"Sight Radius: {this.SightRadius} px\n" +
+               $"Sight Angle: {Mathf.RadToDeg(this.SightAngle):F2} deg\n" +
+               $"Distance to Closest Food: {(float.IsNaN(this.DistanceToClosestFood) ? "N/A" : $"{this.DistanceToClosestFood:F2} px")}\n" +
+               $"Angle to Closest Food: {(float.IsNaN(this.AngleToClosestFood) ? "N/A" : $"{Mathf.RadToDeg(this.AngleToClosestFood):F2} deg")}";
     }
 }
