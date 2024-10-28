@@ -42,7 +42,7 @@ class TrainingHandler:
                 num_rollout_workers=training_settings.number_of_workers,
                 create_env_on_local_worker=False,
                 num_envs_per_worker=training_settings.number_of_env_per_worker,
-                rollout_fragment_length=100,
+                rollout_fragment_length="auto",
             )
             .resources(
                 num_learner_workers=1,
@@ -53,10 +53,11 @@ class TrainingHandler:
                 model={"fcnet_hiddens": [64, 64]},
                 train_batch_size=training_settings.training_batch_size,
                 lr=0.001,
-                entropy_coeff=0.01,
+                entropy_coeff=0.001,
                 num_sgd_iter=30,
                 sgd_minibatch_size=128,
                 vf_clip_param=1,
+                grad_clip=40.0,
             )
         )
         config = ppo_config.to_dict()
