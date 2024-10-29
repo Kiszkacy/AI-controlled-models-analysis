@@ -1,7 +1,6 @@
 using Godot;
-using Godot.Collections;
 
-public partial class Agent : CharacterBody2D
+public partial class Agent : CharacterBody2D, Clickable
 {
     [Export]
     public float MaximumSpeed { get; set; } = 200.0f; // in px per sec
@@ -49,6 +48,8 @@ public partial class Agent : CharacterBody2D
     public float AngleToClosestFood => this.closestFoodPosition.HasValue ? this.Direction.AngleTo(this.closestFoodPosition.Value - this.GlobalPosition) : float.NaN; // in radians
 
     private int id = -1;
+
+    // private ObjectTracker objectTracker;
 
     public int Id
     {
@@ -171,6 +172,8 @@ public partial class Agent : CharacterBody2D
 
         Area2D mouth = this.GetNode<Area2D>("Mouth");
         mouth.AreaEntered += this.OnMouthBodyEntered;
+
+        // this.objectTracker = GetNode<ObjectTracker>("/root/Root/ObjectTracker");
     }
 
     public override void _Process(double delta)
@@ -221,6 +224,11 @@ public partial class Agent : CharacterBody2D
         this.Velocity = data.Velocity;
         this.id = data.Id;
     }
+
+    // public void OnClicked()
+    // {
+    //     objectTracker.SetTracking(this);
+    // }
 
     public string GetStats()
     {
