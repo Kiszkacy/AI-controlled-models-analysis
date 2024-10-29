@@ -1,11 +1,9 @@
-import platform
 import sys
 from typing import IO
 
 from loguru import logger
 
-ON_WINDOWS: bool = platform.system() == "Windows"
-if ON_WINDOWS:
+if sys.platform == "win32":
     import win32file
     import win32pipe
     import win32security
@@ -26,13 +24,13 @@ class PipeHandler:
 
     @property
     def _default_pipe_prefix(self) -> str:
-        return r"\\.\pipe\{pipe_name}" if ON_WINDOWS else "/tmp/{pipe_name}"
+        return r"\\.\pipe\{pipe_name}" if sys.platform == "win32" else "/tmp/{pipe_name}"
 
     def _is_windows_pipe_handle(self) -> bool:
         return type(self.pipe).__name__ == "PyHANDLE"
 
     def connect(self) -> None:
-        if ON_WINDOWS:
+        if sys.platform == "win32":
             security_attributes = win32security.SECURITY_ATTRIBUTES()
             security_attributes.bInheritHandle = True
 
@@ -66,7 +64,7 @@ class PipeHandler:
         if isinstance(self.pipe, IO):
             self.pipe.close()
 
-        elif ON_WINDOWS and (isinstance(self.pipe, int) or self._is_windows_pipe_handle()):
+        elif sys.platform == "win32" and (isinstance(self.pipe, int) or self._is_windows_pipe_handle()):
             win32file.CloseHandle(self.pipe)
 
         self.pipe = None
@@ -79,7 +77,7 @@ class PipeHandler:
             self.pipe.write(data_bytes)
             self.pipe.flush()
 
-        elif ON_WINDOWS and (isinstance(self.pipe, int) or self._is_windows_pipe_handle()):
+        elif sys.platform == "win32" and (isinstance(self.pipe, int) or self._is_windows_pipe_handle()):
             win32file.WriteFile(self.pipe, data_bytes)
 
     def receive(self) -> bytes:
@@ -89,7 +87,7 @@ class PipeHandler:
         if isinstance(self.pipe, IO):
             return self.pipe.read(READ_BUFFER_SIZE)
 
-        if ON_WINDOWS and (isinstance(self.pipe, int) or self._is_windows_pipe_handle()):
+        if sys.platform == "win32" and (isinstance(self.pipe, int) or self._is_windows_pipe_handle()):
             _, data = win32file.ReadFile(self.pipe, READ_BUFFER_SIZE)
             if isinstance(data, str):
                 return data.encode("utf-8")

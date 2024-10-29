@@ -13,7 +13,7 @@ if __name__ == "__main__":
     os.environ["RAY_COLOR_PREFIX"] = "1"
 
     ray.shutdown()
-    ray.init(runtime_env={"worker_process_setup_hook": configure_logging}, configure_logging=False, num_gpus=1)
+    ray.init(runtime_env={"worker_process_setup_hook": configure_logging}, configure_logging=False)
 
     DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     logger.info(f"Using {DEVICE=}")
