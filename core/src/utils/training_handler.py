@@ -50,14 +50,15 @@ class TrainingHandler:
             )
             .framework("torch")
             .training(
-                model={"fcnet_hiddens": [64, 64]},
+                model={"fcnet_hiddens": [128, 128, 128]},
                 train_batch_size=training_settings.training_batch_size,
-                lr=0.001,
-                entropy_coeff=0.001,
-                num_sgd_iter=30,
-                sgd_minibatch_size=128,
+                lr=1e-4,
+                entropy_coeff=0.01,
+                num_sgd_iter=50,
+                sgd_minibatch_size=256,
                 vf_clip_param=1,
                 grad_clip=40.0,
+                use_gae=True,
             )
         )
         config = ppo_config.to_dict()
