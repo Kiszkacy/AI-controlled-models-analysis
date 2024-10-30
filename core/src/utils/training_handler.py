@@ -1,9 +1,8 @@
 import os
 
-from ray import air
+from loguru import logger
 from ray.rllib import MultiAgentEnv
 from ray.rllib.algorithms import PPOConfig
-from ray.tune import Tuner
 
 from core.src.settings import get_settings
 
@@ -34,6 +33,8 @@ class TrainingHandler:
 
     def train(self):
         training_settings = get_settings().training
+        save_interval = training_settings.training_checkpoint_frequency
+        model_dir = get_path()
 
         ppo_config = (
             PPOConfig()
@@ -61,23 +62,21 @@ class TrainingHandler:
                 use_gae=True,
             )
         )
-        config = ppo_config.to_dict()
 
-        config["checkpoint_freq"] = training_settings.training_checkpoint_frequency
+        algorithm = ppo_config.build()
 
-        if self.model_name:
-            """ Restoring trained model stored in model dir by passed model_name """
-            tuner = Tuner.restore(get_path() + "/" + self.model_name, trainable="PPO")
-
-        else:
-            tuner = Tuner(
-                "PPO",
-                param_space=config,
-                run_config=air.RunConfig(
-                    # stop={"timesteps_total": training_settings.training_iterations},
-                    checkpoint_config=air.CheckpointConfig(checkpoint_at_end=True, num_to_keep=5),
-                    storage_path=get_path(),
-                ),
+        for iteration in range(training_settings.training_iterations):
+            all_info = algorithm.train()
+            sampler_info = all_info["sampler_results"]
+            logger.info(
+                "episode_reward_mean: {}, episode_reward_max: {}, episode_reward_min: {}, episodes_this_iter: {}".format(  # noqa: E501
+                    sampler_info["episode_reward_mean"],
+                    sampler_info["episode_reward_max"],
+                    sampler_info["episode_reward_min"],
+                    sampler_info["episodes_this_iter"],
+                )
             )
 
-        tuner.fit()
+            if (iteration + 1) % save_interval == 0:
+                checkpoint_path = algorithm.save(model_dir)
+                logger.info(f"Model saved at iteration {iteration + 1} to {checkpoint_path}")
