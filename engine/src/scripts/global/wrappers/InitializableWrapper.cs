@@ -15,4 +15,13 @@ public class InitializableWrapper
         }
         this.isInitialized = true;
     }
+
+    public void Reset()
+    {
+        if (!this.isInitialized)
+        {
+            throw new InvalidOperationException("This object is not initialized!");
+        }
+        this.isInitialized = false;
+    }
 }

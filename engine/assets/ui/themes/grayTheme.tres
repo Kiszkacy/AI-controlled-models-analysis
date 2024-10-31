@@ -1,0 +1,52 @@
+[gd_resource type="Theme" load_steps=12 format=3 uid="uid://de0xa04ygj6gw"]
+
+[ext_resource type="FontFile" uid="uid://lqf2jhb67xdy" path="res://assets/fonts/inter/Inter_18pt-Black.ttf" id="1_4f1wp"]
+[ext_resource type="StyleBox" uid="uid://dlbaa32luhlcp" path="res://assets/ui/themes/button/buttonDarkDisabled.tres" id="2_ab5ai"]
+[ext_resource type="StyleBox" uid="uid://cxhuvqxdolhpj" path="res://assets/ui/themes/button/buttonDarkHover.tres" id="3_ggebr"]
+[ext_resource type="StyleBox" uid="uid://c6dv2cnjqvmwo" path="res://assets/ui/themes/button/buttonDarkNormal.tres" id="4_bfcdh"]
+[ext_resource type="StyleBox" uid="uid://depeknfn6m1rk" path="res://assets/ui/themes/button/buttonDarkPressed.tres" id="5_aqjrs"]
+[ext_resource type="StyleBox" uid="uid://exp7gp7r36e8" path="res://assets/ui/themes/tab/tabPanel.tres" id="6_6cui0"]
+[ext_resource type="StyleBox" uid="uid://rjqmoo5dyhu" path="res://assets/ui/themes/tab/tabSelected.tres" id="6_bajgw"]
+[ext_resource type="StyleBox" uid="uid://dbeq7wnb3gso0" path="res://assets/ui/themes/tab/tabUnselected.tres" id="7_8tj10"]
+[ext_resource type="StyleBox" uid="uid://u0x1uvtrrpn4" path="res://assets/ui/themes/tab/tabDisabled.tres" id="7_s1w40"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t6245"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vgsvp"]
+
+[resource]
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 1)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 32
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 16
+Button/fonts/font = ExtResource("1_4f1wp")
+Button/styles/disabled = ExtResource("2_ab5ai")
+Button/styles/focus = SubResource("StyleBoxEmpty_t6245")
+Button/styles/hover = ExtResource("3_ggebr")
+Button/styles/normal = ExtResource("4_bfcdh")
+Button/styles/pressed = ExtResource("5_aqjrs")
+TabContainer/colors/font_hovered_color = Color(0.372549, 0.458824, 0.568627, 1)
+TabContainer/colors/font_selected_color = Color(1, 1, 1, 1)
+TabContainer/colors/font_unselected_color = Color(0.466667, 0.552941, 0.662745, 1)
+TabContainer/constants/side_margin = 16
+TabContainer/fonts/font = ExtResource("1_4f1wp")
+TabContainer/styles/panel = ExtResource("6_6cui0")
+TabContainer/styles/tab_disabled = ExtResource("7_s1w40")
+TabContainer/styles/tab_focus = SubResource("StyleBoxEmpty_vgsvp")
+TabContainer/styles/tab_hovered = ExtResource("7_8tj10")
+TabContainer/styles/tab_selected = ExtResource("6_bajgw")
+TabContainer/styles/tab_unselected = ExtResource("7_8tj10")

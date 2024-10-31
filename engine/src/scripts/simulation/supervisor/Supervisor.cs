@@ -29,6 +29,11 @@ public partial class Supervisor : Node
 
     public override void _Ready()
     {
+        if (Reloader.Get().IsReloading)
+        {
+            return;
+        }
+
         this.SpawnInitialAgents();
 
         if (!this.UseLogicAgents)
@@ -151,6 +156,19 @@ public partial class Supervisor : Node
     private void AllAgentsSpawned()
     {
         this.areAgentsReady = true;
+    }
+
+    public void LoadAgents(AgentSaveData[] agentsData)
+    {
+        foreach (AgentSaveData agentData in agentsData)
+        {
+            int id = agentData.Id;
+            Node2D agentInstance = (Node2D)(this.UseLogicAgents ? this.packedLogicAgent : this.packedTrainAgent).Instantiate();
+            Agent agent = (Agent)agentInstance;
+            agent.Load(agentData);
+            this.AgentsRootNode.AddChild(agentInstance);
+            AgentManager.Get().RegisterAgent(id, agent);
+        }
     }
 
     private void SendData()

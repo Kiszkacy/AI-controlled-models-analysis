@@ -1,12 +1,12 @@
 ﻿
 using Godot;
 
-public readonly struct EnvironmentTemplate
+public struct EnvironmentTemplate
 {
-    public EnvironmentGenerationSettings GenerationSettings { get; }
-    public BiomeType[] BiomeData { get; }
-    public bool[] TerrainData { get; }
-    public EnvironmentObjectData[] ObjectData { get; }
+    public EnvironmentGenerationSettings GenerationSettings { get; set; }
+    public BiomeType[] BiomeData { get; set; }
+    public bool[] TerrainData { get; set; }
+    public EnvironmentObjectData[] ObjectData { get; set; }
 
     private void _Instantiate(Environment environment, bool shouldInitialize)
     {
