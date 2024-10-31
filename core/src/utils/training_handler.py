@@ -22,7 +22,7 @@ class TrainingHandler:
     def __init__(
         self,
         model_name: str | None = None,
-        environment_cls: type[MultiAgentEnv] | str = "Pendulum",
+        environment_cls: type[MultiAgentEnv] | str = "Pendulum-v1",
         learning_rate: float = 1e-3,
         gamma: float = 0.99,
     ):
@@ -43,30 +43,20 @@ class TrainingHandler:
                 num_rollout_workers=training_settings.number_of_workers,
                 create_env_on_local_worker=False,
                 num_envs_per_worker=training_settings.number_of_env_per_worker,
-                rollout_fragment_length="auto",
-            )
-            .resources(
-                num_learner_workers=1,
-                num_gpus=0,
             )
             .framework("torch")
-            .training(
-                model={"fcnet_hiddens": [128, 128, 128]},
-                train_batch_size=training_settings.training_batch_size,
-                lr=1e-4,
-                entropy_coeff=0.01,
-                num_sgd_iter=50,
-                sgd_minibatch_size=256,
-                vf_clip_param=1,
-                grad_clip=40.0,
-                use_gae=True,
-            )
+            .training(model={"fcnet_hiddens": [64, 64]}, train_batch_size=training_settings.training_batch_size)
         )
 
-        algorithm = ppo_config.build()
+        trainer = ppo_config.build()
+
+        if self.model_name:
+            model_dir = get_path() + "\\" + self.model_name
+            trainer.restore(model_dir)
 
         for iteration in range(training_settings.training_iterations):
-            all_info = algorithm.train()
+            all_info = trainer.train()
+
             sampler_info = all_info["sampler_results"]
             logger.info(
                 "episode_reward_mean: {}, episode_reward_max: {}, episode_reward_min: {}, episodes_this_iter: {}".format(  # noqa: E501
@@ -78,5 +68,5 @@ class TrainingHandler:
             )
 
             if (iteration + 1) % save_interval == 0:
-                checkpoint_path = algorithm.save(model_dir)
+                checkpoint_path = trainer.save(model_dir)
                 logger.info(f"Model saved at iteration {iteration + 1} to {checkpoint_path}")

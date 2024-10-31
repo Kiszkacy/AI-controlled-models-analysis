@@ -16,5 +16,5 @@ if __name__ == "__main__":
     DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     logger.info(f"Using {DEVICE=}")
 
-    training_handler = TrainingHandler()
+    training_handler = TrainingHandler("PPO")
     training_handler.train()
