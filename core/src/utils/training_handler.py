@@ -52,7 +52,8 @@ class TrainingHandler:
 
         if self.model_name:
             model_dir = get_path() + "\\" + self.model_name
-            trainer.restore(model_dir)
+            if os.path.exists(model_dir):
+                trainer.restore(model_dir)
 
         for iteration in range(training_settings.training_iterations):
             all_info = trainer.train()
