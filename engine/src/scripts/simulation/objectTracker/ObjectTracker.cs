@@ -20,18 +20,13 @@ public partial class ObjectTracker : Node2D
             var spaceState = GetWorld2D().DirectSpaceState;
             var query = new PhysicsPointQueryParameters2D();
             query.SetPosition(mousePos);
-            query.SetCollisionMask(1);
             query.SetCollideWithBodies(true);
-            query.SetCollideWithAreas(false);
+            query.SetCollideWithAreas(true);
             var result = spaceState.IntersectPoint(query);
-
-            GD.Print($"Click at position: {mousePos}");
-            GD.Print($"Found {result.Count} colliding objects");
 
             if (result.Count > 0)
             {
                 var collider = result[0]["collider"].As<Node2D>();
-                GD.Print($"Clicked on: {collider.Name}");
                 SetTracking(collider);
             }
         }

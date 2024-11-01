@@ -184,7 +184,8 @@ public partial class Camera : Camera2D
     {
         if (isFollowing && followTarget != null)
         {
-            GlobalPosition = followTarget.GlobalPosition;
+            this.dragTarget = followTarget.GlobalPosition;
+            this.SmoothMoveToTarget();
         }
         else
         {
@@ -216,7 +217,7 @@ public partial class Camera : Camera2D
         if (this.isDoubleClicked) this.MoveToDoubleClickPosition(delta);
         else
         {
-            if (this.isDragging) this.SmoothDragMovement(delta);
+            if (this.isDragging) this.SmoothMoveToTarget();
             Vector2 totalMoveDirection = this.moveDirection + this.edgeMoveDirection * this.EdgeMoveSpeedQuantifier;
             this.GlobalPosition += totalMoveDirection * this.MoveSpeed * (float)delta;
         }
@@ -235,7 +236,7 @@ public partial class Camera : Camera2D
         this.zoomingInByMouse = false;
         this.zoomingOutByMouse = false;
     }
-    private void SmoothDragMovement(double delta)
+    private void SmoothMoveToTarget()
     {
         if (this.GlobalPosition.DistanceTo(this.dragTarget) > 0.1f)
         {
