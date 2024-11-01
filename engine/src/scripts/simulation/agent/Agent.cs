@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class Agent : CharacterBody2D, Clickable
+public partial class Agent : CharacterBody2D
 {
     [Export]
     public float MaximumSpeed { get; set; } = 200.0f; // in px per sec
