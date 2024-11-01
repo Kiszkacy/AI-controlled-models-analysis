@@ -49,8 +49,6 @@ public partial class Agent : CharacterBody2D
 
     private int id = -1;
 
-    // private ObjectTracker objectTracker;
-
     public int Id
     {
         set
@@ -172,8 +170,6 @@ public partial class Agent : CharacterBody2D
 
         Area2D mouth = this.GetNode<Area2D>("Mouth");
         mouth.AreaEntered += this.OnMouthBodyEntered;
-
-        // this.objectTracker = GetNode<ObjectTracker>("/root/Root/ObjectTracker");
     }
 
     public override void _Process(double delta)
@@ -224,11 +220,6 @@ public partial class Agent : CharacterBody2D
         this.Velocity = data.Velocity;
         this.id = data.Id;
     }
-
-    // public void OnClicked()
-    // {
-    //     objectTracker.SetTracking(this);
-    // }
 
     public string GetStats()
     {
