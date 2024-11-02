@@ -80,14 +80,18 @@ public partial class ObjectTracker : Node2D
     private void SetTracking(Node2D obj)
     {
         activeObject = obj;
+        string stats = "";
         if (activeObject is Agent agent)
         {
-            DisplayStats(agent.GetStats());
+            stats = agent.GetStats();
         }
         else if (activeObject is EnvironmentObject envObject)
         {
-            DisplayStats(envObject.GetStats());
+            stats = envObject.GetStats();
         }
+
+        lastStats = stats;
+        DisplayStats(stats);
     }
 
     private void DisplayStats(string stats)
