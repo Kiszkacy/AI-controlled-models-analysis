@@ -7,6 +7,7 @@ public partial class ObjectTracker : Node2D
     private Node2D activeObject;
     private Camera camera;
     private BiomeMap biomeMap;
+    private string lastStats;
 
     public override void _Ready()
     {
@@ -54,6 +55,26 @@ public partial class ObjectTracker : Node2D
         Vector2 mousePos = GetGlobalMousePosition();
         BiomeType currentBiome = biomeMap.GetBiomeAtGlobalPosition(mousePos);
         DisplayBiomeType(currentBiome);
+
+        if (activeObject != null)
+        {
+            string currentStats = "";
+            if (activeObject is Agent agent)
+            {
+                currentStats = agent.GetStats();
+            }
+            else if (activeObject is EnvironmentObject envObject)
+            {
+                currentStats = envObject.GetStats();
+            }
+
+            if (currentStats != lastStats)
+            {
+                HideStats();
+                DisplayStats(currentStats);
+                lastStats = currentStats;
+            }
+        }
     }
 
     private void SetTracking(Node2D obj)
@@ -78,7 +99,6 @@ public partial class ObjectTracker : Node2D
 
     private void HideStats()
     {
-
     }
 
     private void DisplayBiomeType(BiomeType biome)
