@@ -116,7 +116,7 @@ public partial class FoodSpawner : Node, Initializable // TODO remove exports, n
                $"- Timer Active: {this.spawnFoodTimer.IsActive}\n" +
                $"- Time Left: {this.spawnFoodTimer.Time:F2} seconds\n" +
                $"- Food Energy Nutrition: {this.FoodEnergyNutrition}\n" +
-               $"- Food Per Minute: {this.FoodPerMinute}\n";
+               $"- Food Per Minute: {this.FoodPerMinute}";
     }
     public FoodSpawner()
     {

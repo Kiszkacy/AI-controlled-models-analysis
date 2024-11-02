@@ -6,10 +6,12 @@ public partial class ObjectTracker : Node2D
 {
     private Node2D activeObject;
     private Camera camera;
+    private BiomeMap biomeMap;
 
     public override void _Ready()
     {
         camera = GetNode<Camera>("/root/Root/Camera");
+        biomeMap = GetNode<BiomeMap>("/root/Root/Environment/BiomeMap");
     }
 
     public override void _Input(InputEvent @event)
@@ -27,7 +29,15 @@ public partial class ObjectTracker : Node2D
             if (result.Count > 0)
             {
                 var collider = result[0]["collider"].As<Node2D>();
-                SetTracking(collider);
+                if (collider is Agent || collider is EnvironmentObject)
+                {
+                    SetTracking(collider);
+                }
+                else
+                {
+                    var parent = (Node2D)collider.GetParent();
+                    SetTracking(parent);
+                }
             }
         }
         else if (@event.IsActionPressed("ui_home"))
@@ -38,6 +48,14 @@ public partial class ObjectTracker : Node2D
             }
         }
     }
+
+    public override void _Process(double delta)
+    {
+        Vector2 mousePos = GetGlobalMousePosition();
+        BiomeType currentBiome = biomeMap.GetBiomeAtGlobalPosition(mousePos);
+        DisplayBiomeType(currentBiome);
+    }
+
     private void SetTracking(Node2D obj)
     {
         activeObject = obj;
@@ -59,6 +77,11 @@ public partial class ObjectTracker : Node2D
     }
 
     private void HideStats()
+    {
+
+    }
+
+    private void DisplayBiomeType(BiomeType biome)
     {
 
     }

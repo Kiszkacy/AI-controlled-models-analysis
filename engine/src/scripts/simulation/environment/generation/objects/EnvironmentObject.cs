@@ -19,10 +19,11 @@ public partial class EnvironmentObject : Node2D, Bucketable
     public string GetStats()
     {
         string typeName = this is Tree ? "Tree" : this is Bush ? "Bush" : "Rock";
-        string stats = $"{typeName}\n";
+        string stats = $"{typeName}";
 
         if (this.HasNode("FoodSpawner") && this.GetNode("FoodSpawner") is FoodSpawner spawner)
         {
+            stats += "\n";
             stats += spawner.GetStats();
         }
 
