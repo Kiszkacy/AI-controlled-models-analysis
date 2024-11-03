@@ -14,7 +14,7 @@ public class BiomeGenerator
 
     public BiomeType[] Generate(EnvironmentGenerationSettings settings)
     {
-        float maxDistance = Mathf.Min(settings.Size.X / 2.0f, settings.Size.Y / 2.0f);
+        float maxDistance = Mathf.Min(settings.Size.X / 2.0f, settings.Size.Y / 2.0f) * settings.OceanSizeMultiplier;
         Vector2 currentChunkPosition = Vector2.Zero;
         LinkedList<BiomeType> data = new();
 
@@ -28,8 +28,8 @@ public class BiomeGenerator
                 ? maxDistance
                 : settings.OceanPoints.Min(point => currentChunkCenter.DistanceTo(point * settings.Size));
             
-            float normalizedDistanceToClosestTerrainPoint = (distanceToClosestTerrainPoint * (1.5f-settings.TerrainOceanRatio)) / maxDistance;
-            float normalizedDistanceToClosestOceanPoint = (distanceToClosestOceanPoint * (0.5f+settings.TerrainOceanRatio)) / maxDistance;
+            float normalizedDistanceToClosestTerrainPoint = distanceToClosestTerrainPoint / maxDistance;
+            float normalizedDistanceToClosestOceanPoint = distanceToClosestOceanPoint / maxDistance;
             
 
             float distanceValue = Mathf.Clamp(

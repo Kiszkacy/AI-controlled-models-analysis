@@ -9,9 +9,9 @@ public struct EnvironmentGenerationSettings
     public Vector2 TerrainChunkSize { get; set; }
     public Vector2[] TerrainPoints { get; set; }
     public Vector2[] OceanPoints { get; set; }
-    public float TerrainOceanRatio { get; set; }
+    public float OceanSizeMultiplier { get; set; }
 
-    public EnvironmentGenerationSettings(Vector2 size, Vector2 biomeChunkSize, Vector2 terrainChunkSize, Vector2[] terrainPoints, Vector2[] oceanPoints, float terrainOceanRatio)
+    public EnvironmentGenerationSettings(Vector2 size, Vector2 biomeChunkSize, Vector2 terrainChunkSize, Vector2[] terrainPoints, Vector2[] oceanPoints, float oceanSizeMultiplier)
     {
         this.Size = size;
         this.BiomeChunkSize = biomeChunkSize;
@@ -19,6 +19,6 @@ public struct EnvironmentGenerationSettings
         this.TerrainChunkSize = terrainChunkSize;
         this.TerrainPoints = terrainPoints;
         this.OceanPoints = oceanPoints;
-        this.TerrainOceanRatio = terrainOceanRatio;
+        this.OceanSizeMultiplier = oceanSizeMultiplier;
     }
 }

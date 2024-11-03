@@ -11,7 +11,7 @@ public class EnvironmentGeneratorBuilder
     private Vector2 terrainChunkSize;
     private Vector2[] terrainPoints;
     private Vector2[] oceanPoints;
-    private float terrainOceanRatio;
+    private float oceanSizeMultiplier;
 
     public static EnvironmentGeneratorBuilder Start => new();
 
@@ -63,16 +63,16 @@ public class EnvironmentGeneratorBuilder
         return this;
     }
     
-    public EnvironmentGeneratorBuilder SetTerrainOceanRatio(float terrainOceanRatio)
+    public EnvironmentGeneratorBuilder SetOceanSizeMultiplier(float oceanSizeMultiplier)
     {
-        this.terrainOceanRatio = terrainOceanRatio;
+        this.oceanSizeMultiplier = oceanSizeMultiplier;
         return this;
     }
 
     public EnvironmentGenerator End()
     {
         return new EnvironmentGenerator(this.biomeGenerator, this.terrainGenerator, this.objectGenerator, this.size, 
-            this.biomeChunkSize, this.terrainChunkSize, this.terrainPoints, this.oceanPoints, this.terrainOceanRatio);
+            this.biomeChunkSize, this.terrainChunkSize, this.terrainPoints, this.oceanPoints, this.oceanSizeMultiplier);
     }
 
     public EnvironmentGeneratorBuilder SetAllToDefault()
@@ -88,7 +88,7 @@ public class EnvironmentGeneratorBuilder
                 new(0.5f, 0.5f)
             })
             .SetOceanPoints(new Vector2[]{})
-            .SetTerrainOceanRatio(0.5f);
+            .SetOceanSizeMultiplier(1.0f);
     }
 
     private EnvironmentGeneratorBuilder() { }

@@ -11,11 +11,11 @@ public class EnvironmentGenerator
     public Vector2 TerrainChunkSize { get; }
     public Vector2[] TerrainPoints { get; }
     public Vector2[] OceanPoints { get; }
-    public float TerrainOceanRatio { get; }
+    public float OceanSizeMultiplier { get; }
 
     public EnvironmentTemplate Generate()
     {
-        EnvironmentGenerationSettings settings = new(this.Size, this.BiomeChunkSize, this.TerrainChunkSize, this.TerrainPoints, this.OceanPoints, this.TerrainOceanRatio);
+        EnvironmentGenerationSettings settings = new(this.Size, this.BiomeChunkSize, this.TerrainChunkSize, this.TerrainPoints, this.OceanPoints, this.OceanSizeMultiplier);
         BiomeType[] biomeData = this.BiomeGenerator.Generate(settings);
         bool[] terrainData = this.TerrainGenerator.Generate(settings, biomeData);
         EnvironmentObjectData[] objectData = this.ObjectGenerator.Generate(settings, biomeData, terrainData);
@@ -24,7 +24,7 @@ public class EnvironmentGenerator
 
     public EnvironmentGenerator(
         BiomeGenerator biomeGenerator, TerrainGenerator terrainGenerator, ObjectGenerator objectGenerator, Vector2 size, Vector2 biomeChunkSize, Vector2 terrainChunkSize,
-        Vector2[] terrainPoints, Vector2[] oceanPoints, float terrainOceanRatio)
+        Vector2[] terrainPoints, Vector2[] oceanPoints, float oceanSizeMultiplier)
     {
         this.BiomeGenerator = biomeGenerator;
         this.TerrainGenerator = terrainGenerator;
@@ -34,6 +34,6 @@ public class EnvironmentGenerator
         this.TerrainChunkSize = terrainChunkSize;
         this.TerrainPoints = terrainPoints;
         this.OceanPoints = oceanPoints;
-        this.TerrainOceanRatio = terrainOceanRatio;
+        this.OceanSizeMultiplier = oceanSizeMultiplier;
     }
 }
