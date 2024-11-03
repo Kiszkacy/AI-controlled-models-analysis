@@ -102,17 +102,17 @@ public partial class Initializer : Node
     {
         EnvironmentGenerator environmentGenerator = EnvironmentGeneratorBuilder.Start
             .SetAllToDefault()
-            .SetTerrainPoints(new []
+            .SetTerrainPoints(new[]
             {
                 new Vector2(0.4f, 0.4f),
                 new Vector2(0.6f, 0.4f),
                 new Vector2(0.4f, 0.6f),
                 new Vector2(0.6f, 0.6f),
             })
-            .SetOceanPoints(new []
+            .SetOceanPoints(new[]
             {
                 new Vector2(0.5f, 0.5f),
-                
+
                 new Vector2(0.0f, 0.5f),
                 new Vector2(1.0f, 0.5f),
                 new Vector2(0.5f, 0.0f),
