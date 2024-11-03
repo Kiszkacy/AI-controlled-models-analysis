@@ -18,14 +18,14 @@ class GodotServerEnvironment(MultiAgentEnv):
     action_space = Dict(
         {
             "accelerate": Box(
-                low=environment_settings.observation_space_low,
-                high=environment_settings.observation_space_high,
+                low=environment_settings.action_space_low,
+                high=environment_settings.action_space_high,
                 shape=(),
                 dtype=np.float32,
             ),
             "rotate": Box(
-                low=environment_settings.observation_space_low,
-                high=environment_settings.observation_space_high,
+                low=environment_settings.action_space_low,
+                high=environment_settings.action_space_high,
                 shape=(),
                 dtype=np.float32,
             ),
@@ -33,8 +33,8 @@ class GodotServerEnvironment(MultiAgentEnv):
     )
 
     observation_space = Box(
-        low=2 * environment_settings.observation_space_low,
-        high=2 * environment_settings.observation_space_high,
+        low=environment_settings.observation_space_low,
+        high=environment_settings.observation_space_high,
         shape=(environment_settings.observation_space_size,),
         dtype=np.float32,
     )

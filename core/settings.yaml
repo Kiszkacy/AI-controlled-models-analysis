@@ -1,12 +1,14 @@
 environment:
   observation_space_size: 5 # Dimensionality of the observation space, number of features in each state observation.
-  observation_space_low: -1 # Lower bound for each dimension in the observation space.
-  observation_space_high: 1 # Upper bound for each dimension in the observation space.
+  observation_space_low: -100 # Lower bound for each dimension in the observation space.
+  observation_space_high: 100 # Upper bound for each dimension in the observation space.
   action_space_range: 2  # Number of possible actions the agent can take in the environment
+  action_space_low: -1 # Lower bound for each dimension in the action space.
+  action_space_high: 1 # Upper bound for each dimension in the action space.
   number_of_agents: 25 # Number af agents in environment starting
 training:
-  number_of_workers: 6  # Number of parallel processes to use for training.
+  number_of_workers: 1  # Number of parallel processes to use for training.
   number_of_env_per_worker: 1  # Number of training environments simulated by each worker process.
   training_iterations: 2000  # Total number of training iterations (over a) to perform.
-  training_batch_size: 4000 # Total amount of environment steps taken during each training iteration
+  training_batch_size: 200 # Total amount of environment steps taken during each training iteration
   training_checkpoint_frequency: 100 #Number of training steps how often Tuner is saved
