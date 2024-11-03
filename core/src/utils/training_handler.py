@@ -3,7 +3,9 @@ import os
 from loguru import logger
 from ray.rllib import MultiAgentEnv
 from ray.rllib.algorithms import PPOConfig
+from ray.rllib.models import ModelCatalog
 
+from core.src.policies.custom_model import CustomModel
 from core.src.settings import get_settings
 
 
@@ -36,6 +38,8 @@ class TrainingHandler:
         save_interval = training_settings.training_checkpoint_frequency
         model_dir = get_path()
 
+        ModelCatalog.register_custom_model("custom_ppo_model", CustomModel)
+
         ppo_config = (
             PPOConfig()
             .environment(self.environment_cls)
@@ -45,19 +49,20 @@ class TrainingHandler:
                 num_envs_per_worker=training_settings.number_of_env_per_worker,
             )
             .resources(
-                num_learner_workers=1,
                 num_gpus=0,
             )
             .framework("torch")
             .training(
-                model={"fcnet_hiddens": [128, 128, 128]},
+                model={
+                    "custom_model": "custom_ppo_model",
+                },
                 train_batch_size=training_settings.training_batch_size,
                 lr=1e-4,
                 entropy_coeff=0.01,
-                num_sgd_iter=50,
+                num_sgd_iter=20,
                 sgd_minibatch_size=128,
-                vf_clip_param=1,
-                grad_clip=40.0,
+                vf_clip_param=10,
+                # grad_clip=10.0,
                 use_gae=True,
             )
         )
