@@ -25,13 +25,9 @@ class TrainingHandler:
         self,
         model_name: str | None = None,
         environment_cls: type[MultiAgentEnv] | str = "Pendulum-v1",
-        learning_rate: float = 1e-3,
-        gamma: float = 0.99,
     ):
         self.model_name = model_name
         self.environment_cls = environment_cls
-        self.learning_rate = learning_rate
-        self.gamma = gamma
 
     def train(self):
         training_settings = get_settings().training
