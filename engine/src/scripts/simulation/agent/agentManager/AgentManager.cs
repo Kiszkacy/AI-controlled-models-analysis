@@ -55,4 +55,14 @@ public class AgentManager : Singleton<AgentManager>
 
         return agentsList;
     }
+    
+    public int GetAgentsCount()
+    {
+        return this.agents.Count;
+    }
+    
+    public float GetAgentsEnergySum()
+    {
+        return this.agents.Values.Sum(agent => agent.energy);
+    }
 }
