@@ -33,7 +33,7 @@ public partial class Agent : CharacterBody2D
     [Export]
     public float SightRadius { get; set; } = 256.0f; // in px
 
-    public float energy { get; private set; }
+    public float energy { get; protected set; }
     protected float health;
     protected float currentRotation = 0.0f;
     protected float currentAcceleration = 0.0f;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Godot;
 
-public partial class EnvironmentTracker: Node
+public partial class EnvironmentTracker : Node
 {
     [Export] public float CacheIntervalSeconds = 5f;
     [Export] public int MaxDataPoints = 60;
@@ -35,9 +35,9 @@ public partial class EnvironmentTracker: Node
         EnvironmentTotalEnergyData.Add(EnvironmentTotalEnergy());
         FoodToAgentsRatioData.Add(FoodToAgentsRatio());
         TimeData.Add(Time.GetTicksMsec());
-        TrimData();    
+        TrimData();
     }
-    
+
     private void TrimData()
     {
         if (AgentsCountData.Count > MaxDataPoints)
@@ -50,7 +50,7 @@ public partial class EnvironmentTracker: Node
             TimeData.RemoveRange(0, TimeData.Count - MaxDataPoints);
         }
     }
-    
+
     private static int AgentsCount()
     {
         return AgentManager.Instance.GetAgentsCount();
