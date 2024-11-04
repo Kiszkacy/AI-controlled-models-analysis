@@ -1,13 +1,14 @@
-[gd_scene load_steps=9 format=3 uid="uid://d7ustprm3wu2"]
+[gd_scene load_steps=10 format=3 uid="uid://d7ustprm3wu2"]
 
 [ext_resource type="Script" path="res://src/scripts/simulation/hud/HudManager.cs" id="1_4en5l"]
 [ext_resource type="PackedScene" uid="uid://byp6g5lwnjkly" path="res://src/scenes/ui/button/iconButtonSmall.tscn" id="1_4ndtu"]
 [ext_resource type="Script" path="res://src/scripts/engine/initializer/Initializer.cs" id="2_dt6w2"]
 [ext_resource type="PackedScene" uid="uid://ps0rqdnn0u36" path="res://src/scenes/simulation/environment/environment.tscn" id="3_at1wt"]
-[ext_resource type="Texture2D" uid="uid://bnh58qujo7guv" path="res://assets/icons/solid/xmark.svg" id="3_nt6u3"]
+[ext_resource type="Texture2D" uid="uid://bljwfn653rado" path="res://assets/icons/solid/xmark.svg" id="3_nt6u3"]
 [ext_resource type="Script" path="res://src/scripts/simulation/supervisor/Supervisor.cs" id="4_wrt4n"]
 [ext_resource type="Script" path="res://src/scripts/simulation/camera/Camera.cs" id="5_kqo4m"]
 [ext_resource type="Script" path="res://src/scripts/engine/endOfFrameProcessor/EndOfFrameProcessor.cs" id="6_xiy2k"]
+[ext_resource type="Script" path="res://src/scripts/simulation/objectTracker/ObjectTracker.cs" id="9_nlh8y"]
 
 [node name="Root" type="Node2D"]
 
@@ -52,3 +53,6 @@ script = ExtResource("5_kqo4m")
 [node name="EndOfFrameProcessor" type="Node" parent="."]
 editor_description = "This node must be the last child of the Root node to work properly."
 script = ExtResource("6_xiy2k")
+
+[node name="ObjectTracker" type="Node2D" parent="."]
+script = ExtResource("9_nlh8y")
