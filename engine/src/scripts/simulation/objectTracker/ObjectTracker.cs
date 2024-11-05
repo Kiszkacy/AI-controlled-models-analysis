@@ -41,7 +41,7 @@ public partial class ObjectTracker : Node2D
                 }
             }
         }
-        else if (@event.IsActionPressed("ui_home"))
+        else if (@event.IsActionPressed("focus.on.active.object"))
         {
             if (activeObject != null)
             {
