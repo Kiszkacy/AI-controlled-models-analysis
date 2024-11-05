@@ -1,0 +1,33 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://csrhio660ie0s"]
+
+[ext_resource type="FontFile" uid="uid://lqf2jhb67xdy" path="res://assets/fonts/inter/Inter_18pt-Black.ttf" id="1_oc60c"]
+[ext_resource type="StyleBox" uid="uid://dlbaa32luhlcp" path="res://assets/ui/themes/button/buttonDarkDisabled.tres" id="2_q1i0w"]
+[ext_resource type="StyleBox" uid="uid://cxhuvqxdolhpj" path="res://assets/ui/themes/button/buttonDarkHover.tres" id="3_rmmwa"]
+[ext_resource type="StyleBox" uid="uid://c6dv2cnjqvmwo" path="res://assets/ui/themes/button/buttonDarkNormal.tres" id="4_pse3l"]
+[ext_resource type="StyleBox" uid="uid://depeknfn6m1rk" path="res://assets/ui/themes/button/buttonDarkPressed.tres" id="5_2vm2t"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t6245"]
+
+[resource]
+default_font = ExtResource("1_oc60c")
+default_font_size = 16
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_focus_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 1)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 32
+Button/font_sizes/font_size = 16
+Button/fonts/font = ExtResource("1_oc60c")
+Button/styles/disabled = ExtResource("2_q1i0w")
+Button/styles/focus = SubResource("StyleBoxEmpty_t6245")
+Button/styles/hover = ExtResource("3_rmmwa")
+Button/styles/normal = ExtResource("4_pse3l")
+Button/styles/pressed = ExtResource("5_2vm2t")

@@ -45,6 +45,11 @@ public class Timer : Processable
         this.isActive = true;
     }
 
+    public void Stop()
+    {
+        this.isActive = false;
+    }
+
     public Timer(Action timeout)
     {
         this.timeout = timeout;

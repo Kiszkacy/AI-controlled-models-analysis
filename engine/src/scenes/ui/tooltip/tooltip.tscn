@@ -1,0 +1,62 @@
+[gd_scene load_steps=5 format=3 uid="uid://cmi6acb2oc6qx"]
+
+[ext_resource type="Theme" uid="uid://c81i2ymfrd5c3" path="res://assets/ui/themes/whiteTheme.tres" id="1_1t7ss"]
+[ext_resource type="Script" path="res://src/scripts/ui/tooltip/Tooltip.cs" id="1_b8wws"]
+[ext_resource type="LabelSettings" uid="uid://coaciyxrpywny" path="res://assets/ui/settings/label/label.tres" id="4_33xaj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y1bqp"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.878431, 0.882353, 0.866667, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_color = Color(0, 0, 0, 0.12549)
+shadow_size = 6
+anti_aliasing = false
+
+[node name="Tooltip" type="Control"]
+z_index = 10
+layout_mode = 3
+anchors_preset = 0
+offset_right = 320.0
+offset_bottom = 320.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme = ExtResource("1_1t7ss")
+script = ExtResource("1_b8wws")
+Text = "Tooltip text here."
+
+[node name="Background" type="Label" parent="."]
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 28.0
+theme = ExtResource("1_1t7ss")
+theme_override_colors/font_color = Color(0.878431, 0.882353, 0.866667, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_y1bqp")
+text = "Tooltip text here."
+autowrap_mode = 3
+
+[node name="Arrow" type="ColorRect" parent="."]
+z_index = 1
+layout_mode = 0
+offset_left = 1.0
+offset_top = 3.0
+offset_right = 17.0
+offset_bottom = 19.0
+rotation = 0.785398
+theme = ExtResource("1_1t7ss")
+color = Color(0.878431, 0.882353, 0.866667, 1)
+
+[node name="Label" type="Label" parent="."]
+z_index = 1
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 28.0
+theme = ExtResource("1_1t7ss")
+text = "Tooltip text here."
+label_settings = ExtResource("4_33xaj")
+autowrap_mode = 3

@@ -13,3 +13,4 @@ pywin32==306; platform_system == "Windows"
 types-pywin32==306; platform_system == "Windows"
 ray[rllib]~=2.10.0
 pytest~=8.2.2
+coverage~=7.6.4

@@ -1,1 +1,3 @@
-* text eol=crlf
+*.cs text eol=crlf
+*.png binary
+*.svg binary

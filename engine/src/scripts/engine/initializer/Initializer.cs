@@ -6,6 +6,7 @@ public partial class Initializer : Node
 {
     public override void _Ready()
     {
+        Input.SetMouseMode(Input.MouseModeEnum.Confined);
 
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
@@ -54,7 +55,6 @@ public partial class Initializer : Node
                 .End();
             this.GenerateEnvironment();
         }
-
         else
         {
             NeatPrinter.Start()
@@ -98,7 +98,7 @@ public partial class Initializer : Node
         TestRunner.Get().Run();
     }
 
-    private void GenerateEnvironment() // TODO temporary, remove me later
+    private void GenerateEnvironment()
     {
         EnvironmentGenerator environmentGenerator = EnvironmentGeneratorBuilder.Start
             .SetAllToDefault()
@@ -123,13 +123,14 @@ public partial class Initializer : Node
         EnvironmentTemplate environmentTemplate = environmentGenerator.Generate();
         EntityManager.Instance.Initialize(environmentTemplate.GenerationSettings.Size); // IMPORTANT: EntityManager must initialize before environment instantiate
         Node parent = this.GetParent<Node>();
-        Environment environment = (Environment)(parent.GetNode("Environment"));
+        Environment environment = ((Environment)(parent.GetNode("Environment")));
+        EnvironmentManager.Instance.Initialize(environment);
         environment.Initialize(environmentTemplate);
 
         ((Node2D)(parent.GetNode("Camera"))).GlobalPosition = environment.Size / 2.0f;
     }
 
-    private void SetupEnvironment() // TODO remove me too
+    private void SetupEnvironment()
     {
         AgentSightRayCastManager.Instance.Initialize(this.GetParent(), true);
     }
