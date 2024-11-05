@@ -6,9 +6,11 @@ public partial class ObjectTracker : Node2D
 {
     private Node2D activeObject;
     private Camera camera;
+    [System.Obsolete]
     private BiomeMap biomeMap;
     private string lastStats;
 
+    [System.Obsolete]
     public override void _Ready()
     {
         camera = GetNode<Camera>("/root/Root/Camera");
@@ -50,6 +52,7 @@ public partial class ObjectTracker : Node2D
         }
     }
 
+    [System.Obsolete]
     public override void _Process(double delta)
     {
         Vector2 mousePos = GetGlobalMousePosition();
@@ -97,12 +100,13 @@ public partial class ObjectTracker : Node2D
     private void DisplayStats(string stats)
     {
         NeatPrinter.Start()
-        .Print(stats)
-        .End();
+            .Print(stats)
+            .End();
     }
 
     private void HideStats()
     {
+
     }
 
     private void DisplayBiomeType(BiomeType biome)

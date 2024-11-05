@@ -214,8 +214,8 @@ public partial class Camera : Camera2D
 
     public override void _PhysicsProcess(double delta)
     {
-		this.dragMotionTimer.Process(delta);
-		
+        this.dragMotionTimer.Process(delta);
+
         if (this.isFollowing && this.followTarget != null)
         {
             this.dragTarget = this.followTarget.GlobalPosition;
@@ -289,19 +289,15 @@ public partial class Camera : Camera2D
 
     private void SmoothDragMovement()
     {
-		Vector2 target = this.dragTarget;
-		if (this.isFollowing) {
-			target = this.followTarget;
-		}
-		
-        if (this.GlobalPosition.DistanceTo(this.target) > 0.1f)
+        Vector2 target = this.dragTarget;
+        if (this.isFollowing)
         {
-            this.GlobalPosition = this.GlobalPosition.Lerp(this.target, this.DragSmoothness);
+            target = this.followTarget.GlobalPosition;
         }
-        else
-        {
-            this.GlobalPosition = this.target;
-        }
+
+        this.GlobalPosition = this.GlobalPosition.DistanceTo(target) > 0.1f
+            ? this.GlobalPosition.Lerp(target, this.DragSmoothness)
+            : target;
     }
 
     private void MoveToDoubleClickPosition()
@@ -327,8 +323,8 @@ public partial class Camera : Camera2D
     {
         this.isFollowing = false;
         this.followTarget = null;
-	}
-	
+    }
+
     private void UpdateCursorShape()
     {
         if ((this.isDragging && this.mouseDragStart.DistanceTo(this.GetViewport().GetMousePosition()) >= minimalDragDistanceToChangeCursorShape) || this.overrideDragCursorShape)

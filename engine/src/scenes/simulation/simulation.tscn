@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://dkr0oii6smq6l"]
+[gd_scene load_steps=44 format=3 uid="uid://d7ustprm3wu2"]
 
 [ext_resource type="PackedScene" uid="uid://byp6g5lwnjkly" path="res://src/scenes/ui/button/iconButtonSmall.tscn" id="1_4ndtu"]
 [ext_resource type="Script" path="res://src/scripts/simulation/ui/SimulationUI.cs" id="1_p1yyt"]
@@ -29,6 +29,7 @@
 [ext_resource type="Script" path="res://src/scripts/simulation/ui/minimap/cameraBorder/CameraBorder.cs" id="23_juvhq"]
 [ext_resource type="PackedScene" uid="uid://dx6mu0kmrl85u" path="res://src/scenes/ui/button/buttonDarkSmall.tscn" id="27_c32ca"]
 [ext_resource type="PackedScene" uid="uid://cth570o6vdv8g" path="res://src/scenes/ui/button/buttonWhiteSmall.tscn" id="28_e5cgq"]
+[ext_resource type="Script" path="res://src/scripts/simulation/objectTracker/ObjectTracker.cs" id="29_qq7m8"]
 
 [sub_resource type="Gradient" id="Gradient_xy6gx"]
 offsets = PackedFloat32Array(0.0833333, 0.460784, 0.926471)
@@ -668,6 +669,9 @@ offset_right = 182.0
 offset_bottom = 42.0
 icon = ExtResource("3_nt6u3")
 flat = true
+
+[node name="ObjectTracker" type="Node2D" parent="."]
+script = ExtResource("29_qq7m8")
 
 [node name="EndOfFrameProcessor" type="Node" parent="."]
 editor_description = "This node must be the last child of the Root node to work properly."
