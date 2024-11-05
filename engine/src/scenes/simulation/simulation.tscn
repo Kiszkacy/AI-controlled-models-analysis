@@ -1,34 +1,172 @@
-[gd_scene load_steps=9 format=3 uid="uid://d7ustprm3wu2"]
+[gd_scene load_steps=43 format=3 uid="uid://dkr0oii6smq6l"]
 
-[ext_resource type="Script" path="res://src/scripts/simulation/hud/HudManager.cs" id="1_4en5l"]
 [ext_resource type="PackedScene" uid="uid://byp6g5lwnjkly" path="res://src/scenes/ui/button/iconButtonSmall.tscn" id="1_4ndtu"]
+[ext_resource type="Script" path="res://src/scripts/simulation/ui/SimulationUI.cs" id="1_p1yyt"]
 [ext_resource type="Script" path="res://src/scripts/engine/initializer/Initializer.cs" id="2_dt6w2"]
 [ext_resource type="PackedScene" uid="uid://ps0rqdnn0u36" path="res://src/scenes/simulation/environment/environment.tscn" id="3_at1wt"]
 [ext_resource type="Texture2D" uid="uid://bnh58qujo7guv" path="res://assets/icons/solid/xmark.svg" id="3_nt6u3"]
+[ext_resource type="Theme" uid="uid://de0xa04ygj6gw" path="res://assets/ui/themes/grayTheme.tres" id="4_e5ekc"]
 [ext_resource type="Script" path="res://src/scripts/simulation/supervisor/Supervisor.cs" id="4_wrt4n"]
 [ext_resource type="Script" path="res://src/scripts/simulation/camera/Camera.cs" id="5_kqo4m"]
+[ext_resource type="StyleBox" uid="uid://3x5qu6tt7fqi" path="res://assets/ui/themes/screens/simulation/topBar.tres" id="5_pug4t"]
+[ext_resource type="PackedScene" uid="uid://bgl1wbpqole17" path="res://src/scenes/ui/button/iconButton.tscn" id="6_fhbk4"]
 [ext_resource type="Script" path="res://src/scripts/engine/endOfFrameProcessor/EndOfFrameProcessor.cs" id="6_xiy2k"]
+[ext_resource type="Texture2D" uid="uid://bwo48t7ks4ohn" path="res://assets/icons/solid/tree.svg" id="7_ayw54"]
+[ext_resource type="Texture2D" uid="uid://ddg820jsav6fx" path="res://assets/icons/solid/chart-line.svg" id="8_3k0nf"]
+[ext_resource type="Texture2D" uid="uid://chcgypqbd7bir" path="res://assets/icons/solid/sliders.svg" id="9_4k7yu"]
+[ext_resource type="Theme" uid="uid://c81i2ymfrd5c3" path="res://assets/ui/themes/whiteTheme.tres" id="10_7d1gs"]
+[ext_resource type="StyleBox" uid="uid://ob211safjl1e" path="res://assets/ui/themes/screens/simulation/speedBar.tres" id="11_2joy1"]
+[ext_resource type="Texture2D" uid="uid://cthyil2sejga6" path="res://assets/icons/solid/pause.svg" id="12_o5bu2"]
+[ext_resource type="Script" path="res://src/scripts/simulation/ui/pauseButton/PauseButton.cs" id="13_pnh3n"]
+[ext_resource type="Theme" uid="uid://beyrnsi3if0fv" path="res://assets/ui/themes/screens/simulation/speedButtonsTheme.tres" id="14_70hj4"]
+[ext_resource type="StyleBox" uid="uid://b3mh4uhrea16q" path="res://assets/ui/themes/screens/simulation/timeBar.tres" id="14_jxxc8"]
+[ext_resource type="Script" path="res://src/scripts/ui/button/ButtonHandler.cs" id="14_ltlte"]
+[ext_resource type="Texture2D" uid="uid://70pi3v3drfr3" path="res://assets/icons/solid/house.svg" id="15_oooo7"]
+[ext_resource type="PackedScene" uid="uid://cmi6acb2oc6qx" path="res://src/scenes/ui/tooltip/tooltip.tscn" id="15_tiow5"]
+[ext_resource type="PackedScene" uid="uid://7q7fbm6qh3mi" path="res://src/scenes/ui/button/buttonLightSmall.tscn" id="19_2t6mq"]
+[ext_resource type="Texture2D" uid="uid://dioarrnkvg2r3" path="res://assets/tilesets/biome-tileset.png" id="20_1ggju"]
+[ext_resource type="Script" path="res://src/scripts/simulation/ui/minimap/Minimap.cs" id="21_ye1pt"]
+[ext_resource type="Script" path="res://src/scripts/simulation/ui/minimap/cameraBorder/CameraBorder.cs" id="23_juvhq"]
+[ext_resource type="PackedScene" uid="uid://dx6mu0kmrl85u" path="res://src/scenes/ui/button/buttonDarkSmall.tscn" id="27_c32ca"]
+[ext_resource type="PackedScene" uid="uid://cth570o6vdv8g" path="res://src/scenes/ui/button/buttonWhiteSmall.tscn" id="28_e5cgq"]
+
+[sub_resource type="Gradient" id="Gradient_xy6gx"]
+offsets = PackedFloat32Array(0.0833333, 0.460784, 0.926471)
+colors = PackedColorArray(0.6, 0.6, 0.6, 0, 0.878431, 0.882353, 0.866667, 1, 0.6, 0.6, 0.6, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_jwypc"]
+gradient = SubResource("Gradient_xy6gx")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fg711"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.8756, 0.88, 0.8624, 0)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o1mur"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.878431, 0.882353, 0.866667, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_left = 8.0
+expand_margin_top = 8.0
+expand_margin_right = 8.0
+expand_margin_bottom = 8.0
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jmd3o"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.262745, 0.262745, 0.262745, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_color = Color(0, 0, 0, 0.12549)
+shadow_size = 6
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vpr1g"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.878431, 0.882353, 0.866667, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+anti_aliasing = false
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3rf7x"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gmr34"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.262745, 0.262745, 0.262745, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l412s"]
+texture = ExtResource("20_1ggju")
+texture_region_size = Vector2i(1, 1)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+9:0/0 = 0
+10:0/0 = 0
+11:0/0 = 0
+12:0/0 = 0
+12:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5)
+
+[sub_resource type="TileSet" id="TileSet_0nltd"]
+tile_size = Vector2i(1, 1)
+physics_layer_0/collision_layer = 0
+physics_layer_0/collision_mask = 0
+sources/0 = SubResource("TileSetAtlasSource_l412s")
+
+[sub_resource type="Shader" id="Shader_yjnl1"]
+code = "shader_type canvas_item;
+
+uniform vec4 tint_color = vec4(1.0,1.0,1.0,0.5);
+uniform float blur_amount = 2.0;
+uniform sampler2D SCREEN_TEXTURE: hint_screen_texture, filter_linear_mipmap;
+
+void fragment() {
+	vec4 orig_tex = texture(TEXTURE,UV);
+	vec4 blurred_texture = textureLod(SCREEN_TEXTURE, SCREEN_UV, blur_amount);
+	COLOR = mix(blurred_texture, tint_color, tint_color.a);
+	COLOR.a = orig_tex.a;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dpfwb"]
+shader = SubResource("Shader_yjnl1")
+shader_parameter/tint_color = Vector4(0.2, 0.2, 0.2, 0.3)
+shader_parameter/blur_amount = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jey6k"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.878431, 0.882353, 0.866667, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.12549)
+shadow_size = 6
+anti_aliasing = false
 
 [node name="Root" type="Node2D"]
-
-[node name="HUD" type="CanvasLayer" parent="." node_paths=PackedStringArray("ExitButton")]
-layer = 2
-script = ExtResource("1_4en5l")
-ExitButton = NodePath("ButtonExit")
-
-[node name="Position" type="Label" parent="HUD"]
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 56.0
-offset_bottom = 39.0
-metadata/_edit_use_anchors_ = true
-
-[node name="ButtonExit" parent="HUD" instance=ExtResource("1_4ndtu")]
-offset_left = 1856.0
-offset_top = 16.0
-offset_right = 1904.0
-offset_bottom = 64.0
-icon = ExtResource("3_nt6u3")
 
 [node name="Initializer" type="Node" parent="."]
 editor_description = "This node must be the first child of the Root node to work properly."
@@ -46,8 +184,490 @@ InitialAgentCount = 50
 UseLogicAgents = true
 
 [node name="Camera" type="Camera2D" parent="."]
+process_mode = 3
 position = Vector2(960, 540)
 script = ExtResource("5_kqo4m")
+MoveSpeed = 500.0
+DragSmoothness = 0.25
+DoubleClickSmoothness = 0.25
+EdgeMoveMargin = 16.0
+
+[node name="UI" type="CanvasLayer" parent="." node_paths=PackedStringArray("ExitButton", "SettingsButton", "PauseButton", "PauseNode", "SimulationSpeedLevelOneButton", "SimulationSpeedLevelTwoButton", "SimulationSpeedLevelThreeButton", "SimulationSpeedLevelFourButton", "SimulationTimeLabel", "SystemTimeLabel", "CenterCameraButton", "Camera", "SubmenuNode", "SimulationViewButton", "AnalysisViewButton", "ConfigurationViewButton")]
+process_mode = 3
+layer = 2
+script = ExtResource("1_p1yyt")
+ExitButton = NodePath("ButtonExit")
+SettingsButton = NodePath("ButtonSettings")
+PauseButton = NodePath("SpeedBar/ButtonPause")
+PauseNode = NodePath("Pause")
+SimulationSpeedLevelOneButton = NodePath("SpeedBar/SimulationSpeedButtons/ButtonLevelOne")
+SimulationSpeedLevelTwoButton = NodePath("SpeedBar/SimulationSpeedButtons/ButtonLevelTwo")
+SimulationSpeedLevelThreeButton = NodePath("SpeedBar/SimulationSpeedButtons/ButtonLevelThree")
+SimulationSpeedLevelFourButton = NodePath("SpeedBar/SimulationSpeedButtons/ButtonLevelFour")
+SimulationTimeLabel = NodePath("SpeedBar/SimulationTime/Label")
+SystemTimeLabel = NodePath("TimeBar/SystemTime/Label")
+CenterCameraButton = NodePath("TimeBar/ButtonCenterCamera")
+Camera = NodePath("../Camera")
+SubmenuNode = NodePath("Submenu")
+SimulationViewButton = NodePath("TopBar/ButtonSimulationView")
+AnalysisViewButton = NodePath("TopBar/ButtonAnalysisView")
+ConfigurationViewButton = NodePath("TopBar/ButtonConfigView")
+
+[node name="TopBar" type="Label" parent="UI"]
+offset_left = 832.0
+offset_right = 1088.0
+offset_bottom = 64.0
+theme = ExtResource("4_e5ekc")
+theme_override_styles/normal = ExtResource("5_pug4t")
+
+[node name="ButtonSimulationView" parent="UI/TopBar" instance=ExtResource("6_fhbk4")]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 80.0
+offset_bottom = 80.0
+icon = ExtResource("7_ayw54")
+
+[node name="ButtonAnalysisView" parent="UI/TopBar" instance=ExtResource("6_fhbk4")]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 16.0
+offset_right = 160.0
+offset_bottom = 80.0
+icon = ExtResource("8_3k0nf")
+
+[node name="ButtonConfigView" parent="UI/TopBar" instance=ExtResource("6_fhbk4")]
+layout_mode = 0
+offset_left = 176.0
+offset_top = 16.0
+offset_right = 240.0
+offset_bottom = 80.0
+icon = ExtResource("9_4k7yu")
+
+[node name="Pause" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="BackgroundGradient" type="TextureRect" parent="UI/Pause"]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 160.0
+offset_right = 1600.0
+offset_bottom = 192.0
+texture = SubResource("GradientTexture1D_jwypc")
+
+[node name="Label" type="Label" parent="UI/Pause"]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 160.0
+offset_right = 1600.0
+offset_bottom = 192.0
+theme = ExtResource("10_7d1gs")
+theme_override_styles/normal = SubResource("StyleBoxFlat_fg711")
+text = "Paused"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SpeedBar" type="Label" parent="UI"]
+offset_left = 16.0
+offset_top = 1016.0
+offset_right = 416.0
+offset_bottom = 1080.0
+theme = ExtResource("4_e5ekc")
+theme_override_styles/normal = ExtResource("11_2joy1")
+
+[node name="ButtonPause" parent="UI/SpeedBar" instance=ExtResource("6_fhbk4")]
+layout_mode = 0
+offset_left = 16.0
+offset_top = -16.0
+offset_right = 80.0
+offset_bottom = 48.0
+icon = ExtResource("12_o5bu2")
+script = ExtResource("13_pnh3n")
+
+[node name="SimulationTime" type="Control" parent="UI/SpeedBar"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 240.0
+offset_top = -8.0
+offset_right = 368.0
+offset_bottom = 40.0
+
+[node name="Border" type="Label" parent="UI/SpeedBar/SimulationTime"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 120.0
+offset_bottom = 41.0
+theme = ExtResource("10_7d1gs")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_o1mur")
+text = "
+"
+
+[node name="Label" type="Label" parent="UI/SpeedBar/SimulationTime"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 120.0
+offset_bottom = 41.0
+theme = ExtResource("10_7d1gs")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_jmd3o")
+text = "00:00:00
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SimulationSpeedButtons" type="Control" parent="UI/SpeedBar"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 96.0
+offset_top = -8.0
+offset_right = 148.0
+offset_bottom = 11.0
+
+[node name="Border" type="Label" parent="UI/SpeedBar/SimulationSpeedButtons"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 120.0
+offset_bottom = 41.0
+theme = ExtResource("10_7d1gs")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_o1mur")
+text = "
+"
+
+[node name="ButtonLevelOne" type="Button" parent="UI/SpeedBar/SimulationSpeedButtons"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 35.0
+offset_bottom = 41.0
+mouse_default_cursor_shape = 2
+theme = ExtResource("14_70hj4")
+toggle_mode = true
+text = "x1
+"
+script = ExtResource("14_ltlte")
+
+[node name="ButtonLevelTwo" type="Button" parent="UI/SpeedBar/SimulationSpeedButtons"]
+layout_mode = 0
+offset_left = 37.0
+offset_top = 8.0
+offset_right = 65.0
+offset_bottom = 41.0
+mouse_default_cursor_shape = 2
+theme = ExtResource("14_70hj4")
+toggle_mode = true
+text = "x2
+"
+script = ExtResource("14_ltlte")
+
+[node name="ButtonLevelThree" type="Button" parent="UI/SpeedBar/SimulationSpeedButtons"]
+layout_mode = 0
+offset_left = 67.0
+offset_top = 8.0
+offset_right = 94.0
+offset_bottom = 41.0
+mouse_default_cursor_shape = 2
+theme = ExtResource("14_70hj4")
+toggle_mode = true
+text = "x3
+"
+script = ExtResource("14_ltlte")
+
+[node name="ButtonLevelFour" type="Button" parent="UI/SpeedBar/SimulationSpeedButtons"]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 8.0
+offset_right = 122.0
+offset_bottom = 41.0
+mouse_default_cursor_shape = 2
+theme = ExtResource("14_70hj4")
+toggle_mode = true
+keep_pressed_outside = true
+text = "x4
+"
+script = ExtResource("14_ltlte")
+
+[node name="TimeBar" type="Label" parent="UI"]
+offset_left = 1384.0
+offset_top = 1016.0
+offset_right = 1600.0
+offset_bottom = 1080.0
+theme = ExtResource("4_e5ekc")
+theme_override_styles/normal = ExtResource("14_jxxc8")
+
+[node name="SystemTime" type="Control" parent="UI/TimeBar"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 71.0
+offset_top = 8.0
+offset_right = 199.0
+offset_bottom = 56.0
+
+[node name="Border" type="Label" parent="UI/TimeBar/SystemTime"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 120.0
+offset_bottom = 41.0
+theme = ExtResource("10_7d1gs")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_o1mur")
+text = "
+"
+
+[node name="Label" type="Label" parent="UI/TimeBar/SystemTime"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 120.0
+offset_bottom = 41.0
+theme = ExtResource("10_7d1gs")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_jmd3o")
+text = "00:00:00
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonCenterCamera" parent="UI/TimeBar" instance=ExtResource("1_4ndtu")]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 8.0
+offset_right = 60.0
+offset_bottom = 56.0
+theme_override_colors/icon_normal_color = Color(0.878431, 0.882353, 0.866667, 1)
+theme_override_colors/icon_focus_color = Color(0.878431, 0.882353, 0.866667, 1)
+theme_override_colors/icon_pressed_color = Color(0.756863, 0.768627, 0.733333, 1)
+theme_override_colors/icon_hover_color = Color(0.815686, 0.819608, 0.8, 1)
+icon = ExtResource("15_oooo7")
+flat = true
+
+[node name="ButtonSettings" parent="UI" instance=ExtResource("1_4ndtu")]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="ButtonExit" parent="UI" instance=ExtResource("1_4ndtu")]
+offset_left = 1856.0
+offset_top = 16.0
+offset_right = 1904.0
+offset_bottom = 64.0
+icon = ExtResource("3_nt6u3")
+
+[node name="Tooltips" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="ButtonPause" parent="UI/Tooltips" instance=ExtResource("15_tiow5")]
+visible = false
+Text = "Pause or resume simulation."
+TargetNodePath = NodePath("../../SpeedBar/ButtonPause")
+Layout = 1
+
+[node name="ButtonSimulationView" parent="UI/Tooltips" instance=ExtResource("15_tiow5")]
+visible = false
+Text = "Switch to simulation view."
+TargetNodePath = NodePath("../../TopBar/ButtonSimulationView")
+Layout = 4
+
+[node name="ButtonAnalysisView" parent="UI/Tooltips" instance=ExtResource("15_tiow5")]
+visible = false
+Text = "Switch to analysis view."
+TargetNodePath = NodePath("../../TopBar/ButtonAnalysisView")
+Layout = 4
+
+[node name="ButtonConfigView" parent="UI/Tooltips" instance=ExtResource("15_tiow5")]
+visible = false
+Text = "Switch to configuration view."
+TargetNodePath = NodePath("../../TopBar/ButtonConfigView")
+Layout = 4
+
+[node name="SimulationTime" parent="UI/Tooltips" instance=ExtResource("15_tiow5")]
+visible = false
+Text = "Displays the length of simulation in real time."
+TargetNodePath = NodePath("../../SpeedBar/SimulationTime")
+
+[node name="ButtonExit" parent="UI/Tooltips" instance=ExtResource("15_tiow5")]
+visible = false
+Text = "Close and exit the application."
+TargetNodePath = NodePath("../../ButtonExit")
+Layout = 5
+
+[node name="BottomRightTabs" type="TabContainer" parent="UI"]
+offset_left = 1600.0
+offset_top = 760.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+theme = ExtResource("4_e5ekc")
+current_tab = 0
+drag_to_rearrange_enabled = true
+
+[node name="Minimap" type="Control" parent="UI/BottomRightTabs"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Border" type="Label" parent="UI/BottomRightTabs/Minimap"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 10.0
+offset_right = 296.0
+offset_bottom = 282.0
+theme = ExtResource("10_7d1gs")
+theme_override_styles/normal = SubResource("StyleBoxFlat_vpr1g")
+
+[node name="MinimapSize" type="Label" parent="UI/BottomRightTabs/Minimap/Border"]
+clip_contents = true
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 264.0
+offset_bottom = 264.0
+theme = ExtResource("10_7d1gs")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_3rf7x")
+
+[node name="CameraBorder" type="RichTextLabel" parent="UI/BottomRightTabs/Minimap/Border/MinimapSize" node_paths=PackedStringArray("Camera")]
+z_index = 1
+layout_mode = 0
+offset_right = 160.0
+offset_bottom = 90.0
+theme = ExtResource("10_7d1gs")
+theme_override_styles/normal = SubResource("StyleBoxFlat_gmr34")
+script = ExtResource("23_juvhq")
+Camera = NodePath("../../../../../../Camera")
+
+[node name="MinimapTileSet" type="TileMap" parent="UI/BottomRightTabs/Minimap/Border"]
+position = Vector2(8, 8)
+scale = Vector2(8, 8)
+tile_set = SubResource("TileSet_0nltd")
+format = 2
+script = ExtResource("21_ye1pt")
+
+[node name="Training" type="Control" parent="UI/BottomRightTabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Options" type="VBoxContainer" parent="UI/BottomRightTabs/Training"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 304.0
+offset_bottom = 228.0
+
+[node name="Label1" type="Label" parent="UI/BottomRightTabs/Training/Options"]
+layout_mode = 2
+text = "Options..."
+
+[node name="Label2" type="Label" parent="UI/BottomRightTabs/Training/Options"]
+layout_mode = 2
+text = "Options..."
+
+[node name="Label3" type="Label" parent="UI/BottomRightTabs/Training/Options"]
+layout_mode = 2
+text = "Options..."
+
+[node name="ButtonLightSmall" parent="UI/BottomRightTabs/Training" instance=ExtResource("19_2t6mq")]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 244.0
+offset_right = 224.0
+offset_bottom = 276.0
+text = "Start training"
+
+[node name="Submenu" type="Control" parent="UI"]
+visible = false
+z_index = 10
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="FadeoutBackground" type="ColorRect" parent="UI/Submenu"]
+material = SubResource("ShaderMaterial_dpfwb")
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 0.25098)
+
+[node name="WhiteBackground" type="Label" parent="UI/Submenu"]
+layout_mode = 0
+offset_left = 872.0
+offset_top = 377.0
+offset_right = 1048.0
+offset_bottom = 683.0
+theme = ExtResource("10_7d1gs")
+theme_override_styles/normal = SubResource("StyleBoxFlat_jey6k")
+
+[node name="ButtonExit" parent="UI/Submenu/WhiteBackground" instance=ExtResource("27_c32ca")]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 258.0
+offset_right = 152.0
+offset_bottom = 290.0
+text = "Exit"
+
+[node name="ButtonMenu" parent="UI/Submenu/WhiteBackground" instance=ExtResource("28_e5cgq")]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 214.0
+offset_right = 152.0
+offset_bottom = 246.0
+text = "Menu"
+
+[node name="ButtonSettings" parent="UI/Submenu/WhiteBackground" instance=ExtResource("28_e5cgq")]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 170.0
+offset_right = 152.0
+offset_bottom = 202.0
+text = "Settings"
+
+[node name="ButtonLoad" parent="UI/Submenu/WhiteBackground" instance=ExtResource("28_e5cgq")]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 126.0
+offset_right = 152.0
+offset_bottom = 158.0
+text = "Load"
+
+[node name="ButtonSave" parent="UI/Submenu/WhiteBackground" instance=ExtResource("28_e5cgq")]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 82.0
+offset_right = 152.0
+offset_bottom = 114.0
+text = "Save"
+
+[node name="ButtonContinue" parent="UI/Submenu/WhiteBackground" instance=ExtResource("19_2t6mq")]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 38.0
+offset_right = 152.0
+offset_bottom = 70.0
+text = "Continue"
+
+[node name="ButtonClose" parent="UI/Submenu/WhiteBackground" instance=ExtResource("1_4ndtu")]
+layout_mode = 0
+offset_left = 134.0
+offset_top = -6.0
+offset_right = 182.0
+offset_bottom = 42.0
+icon = ExtResource("3_nt6u3")
+flat = true
 
 [node name="EndOfFrameProcessor" type="Node" parent="."]
 editor_description = "This node must be the last child of the Root node to work properly."
