@@ -24,7 +24,7 @@ public class SimulationManager : Singleton<SimulationManager>, Processable
         {
             return;
         }
-        
+
         this.TimePassed += delta;
     }
 

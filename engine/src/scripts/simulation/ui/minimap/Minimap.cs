@@ -1,5 +1,6 @@
 using Godot;
 
+[System.Obsolete]
 public partial class Minimap : TileMap
 {
     // sizeOfTileInPixels = 8 (change inside godot editor)

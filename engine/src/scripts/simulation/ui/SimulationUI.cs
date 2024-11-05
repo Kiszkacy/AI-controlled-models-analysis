@@ -14,40 +14,40 @@ public partial class SimulationUI : CanvasLayer
 {
     [Export]
     public Button ExitButton;
-    [Export] 
+    [Export]
     public Button SettingsButton;
-    [Export] 
+    [Export]
     public PauseButton PauseButton;
-    [Export] 
+    [Export]
     public Control PauseNode;
-    [Export] 
+    [Export]
     public Button SimulationSpeedLevelOneButton;
-    [Export] 
+    [Export]
     public Button SimulationSpeedLevelTwoButton;
-    [Export] 
+    [Export]
     public Button SimulationSpeedLevelThreeButton;
-    [Export] 
+    [Export]
     public Button SimulationSpeedLevelFourButton;
-    [Export] 
+    [Export]
     public Label SimulationTimeLabel;
-    [Export] 
+    [Export]
     public Label SystemTimeLabel;
-    [Export] 
+    [Export]
     public Button CenterCameraButton;
-    [Export] 
+    [Export]
     public Camera Camera;
-    [Export] 
+    [Export]
     public Control SubmenuNode;
-    
-    [Export] 
+
+    [Export]
     public ButtonHandler SimulationViewButton;
-    [Export] 
+    [Export]
     public ButtonHandler AnalysisViewButton;
-    [Export] 
+    [Export]
     public ButtonHandler ConfigurationViewButton;
 
     private ViewMode ViewMode = ViewMode.Simulation;
-    
+
     private bool isSubmenuVisible => this.SubmenuNode.Visible;
 
     private const float levelOneSimulationSpeed = 1.0f;
@@ -94,28 +94,28 @@ public partial class SimulationUI : CanvasLayer
     {
         this.GetTree().Quit();
     }
-    
+
     private void OnSettingsClick()
     {
         this.SubmenuNode.Visible = true;
         SimulationManager.Instance.Pause(this);
     }
-    
+
     private void OnPauseClick()
     {
         if (SimulationManager.Instance.IsSimulationPaused)
         {
             SimulationManager.Instance.Resume(this);
-        } 
+        }
         else
         {
             SimulationManager.Instance.Pause(this);
         }
-        
+
         this.UpdatePauseLabelVisibility();
         this.PauseButton.Invert();
     }
-    
+
     private void OnSimulationSpeedLevelOneClick()
     {
         Engine.TimeScale = levelOneSimulationSpeed;
@@ -124,7 +124,7 @@ public partial class SimulationUI : CanvasLayer
         this.SimulationSpeedLevelThreeButton.SetPressed(false);
         this.SimulationSpeedLevelFourButton.SetPressed(false);
     }
-    
+
     private void OnSimulationSpeedLevelTwoClick()
     {
         Engine.TimeScale = levelTwoSimulationSpeed;
@@ -142,7 +142,7 @@ public partial class SimulationUI : CanvasLayer
         this.SimulationSpeedLevelThreeButton.SetPressed(true);
         this.SimulationSpeedLevelFourButton.SetPressed(false);
     }
-    
+
     private void OnSimulationSpeedLevelFourClick()
     {
         Engine.TimeScale = levelFourSimulationSpeed;
@@ -157,13 +157,13 @@ public partial class SimulationUI : CanvasLayer
         this.ViewMode = ViewMode.Simulation;
         this.UpdateViewButtonsState();
     }
-    
+
     private void OnAnalysisViewClick()
     {
         this.ViewMode = ViewMode.Analysis;
         this.UpdateViewButtonsState();
     }
-    
+
     private void OnConfigurationViewClick()
     {
         this.ViewMode = ViewMode.Configuration;
@@ -174,7 +174,7 @@ public partial class SimulationUI : CanvasLayer
     {
         this.Camera.MoveTo(EnvironmentManager.Instance.Environment.Size/2.0f);
     }
-    
+
     public override void _PhysicsProcess(double delta)
     {
         SimulationManager.Instance.Process(delta);
@@ -187,7 +187,7 @@ public partial class SimulationUI : CanvasLayer
         TimeSpan timeSpan = TimeSpan.FromSeconds(SimulationManager.Instance.TimePassed);
         this.SimulationTimeLabel.Text = timeSpan.ToString(@"hh\:mm\:ss");
     }
-    
+
     private void UpdateSystemTime()
     {
         this.SystemTimeLabel.Text = Time.GetTimeStringFromSystem();

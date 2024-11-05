@@ -3,7 +3,7 @@ using Godot;
 
 public partial class CameraBorder : Control
 {
-    [Export] 
+    [Export]
     public Camera Camera;
 
     private readonly int sizeOfTheMinimap = 256; // TODO its hardcoded ! in px
@@ -24,7 +24,7 @@ public partial class CameraBorder : Control
         Vector2 calculatedScale = visibleEnvironmentSize / environmentSize;
         this.Size = calculatedScale * sizeOfTheMinimap;
     }
-    
+
     private void UpdatePosition()
     {
         this.Position = (this.Camera.GlobalPosition / EnvironmentManager.Instance.Environment.Size) * sizeOfTheMinimap - this.Size/2.0f;

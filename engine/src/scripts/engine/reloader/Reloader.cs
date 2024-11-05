@@ -42,7 +42,7 @@ public class Reloader : Singleton<Reloader>
 
         FoodSpawnerSaveData[] foodSpawnersData = EntityManager.Instance.SaveFoodSpawners();
         FoodSaveData[] foodData = EntityManager.Instance.SaveFood();
-        
+
         SimulationStatusData simulationStatusData = SimulationManager.Instance.Save();
 
         var saveData = new EnvironmentSaveData(environmentTemplate, agentsData, cameraPosition, cameraZoom,
@@ -87,7 +87,7 @@ public class Reloader : Singleton<Reloader>
         LoadAgents(agentsData, root);
 
         EntityManager.Instance.LoadFoodSpawnersData(environmentSaveData.FoodSpawnersData, environmentSaveData.FoodData);
-        
+
         SimulationManager.Instance.Load(environmentSaveData.SimulationStatusData);
     }
 

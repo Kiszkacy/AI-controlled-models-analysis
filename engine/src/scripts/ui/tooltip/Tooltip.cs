@@ -46,7 +46,7 @@ public partial class Tooltip : Control
 
     [Export]
     public bool ShowArrow = true;
-    
+
     [Export]
     public float MakeVisibleAfterHoveringFor = 1.0f; // in seconds
 
@@ -56,7 +56,7 @@ public partial class Tooltip : Control
     private Control targetNode;
     private string text = string.Empty;
     private bool isReady = false;
-    
+
     private readonly int paddingVertical = 4;
     private readonly int paddingHorizontal = 8;
 
@@ -133,7 +133,7 @@ public partial class Tooltip : Control
     public override void _Process(double delta)
     {
         this.hoverTimer.Process(delta);
-        
+
         if (!this.Visible || this.targetNode == null)
         {
             return;

@@ -4,10 +4,10 @@ using Godot;
 public class EnvironmentManager : Singleton<EnvironmentManager>, Initializable
 {
     public Environment Environment { get; private set; }
-    
+
     private readonly InitializableWrapper initialized = new();
     public bool IsInitialized => this.initialized.IsInitialized;
-    
+
     public void Initialize(Environment environment)
     {
         this.Environment = environment;
@@ -18,12 +18,12 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, Initializable
     {
         return BiomeType.Ocean != EnvironmentGenerationUtil.GetBiomeAt(where, this.Environment.Size, this.Environment.TemplateData.GenerationSettings.BiomeChunkSize, this.Environment.TemplateData.BiomeData);
     }
-    
+
     public BiomeType GetBiomeAt(Vector2 where)
     {
         return EnvironmentGenerationUtil.GetBiomeAt(where, this.Environment.Size, this.Environment.TemplateData.GenerationSettings.BiomeChunkSize, this.Environment.TemplateData.BiomeData);
     }
-    
+
     public void Reset()
     {
         this.Environment = null;

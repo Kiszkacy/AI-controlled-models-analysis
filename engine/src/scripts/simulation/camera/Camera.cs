@@ -28,7 +28,7 @@ public partial class Camera : Camera2D
 
     [Export(PropertyHint.Range, "0.5,10.0,0.1")]
     public float EdgeMoveSpeedQuantifier { get; set; } = 3f;
-    
+
     private Vector2 moveDirection = Vector2.Zero;
     private Vector2 edgeMoveDirection = Vector2.Zero;
     private bool zoomingIn = false;
@@ -42,7 +42,7 @@ public partial class Camera : Camera2D
     private Vector2 mouseDragStart = Vector2.Zero;
     private bool isDoubleClicked = false;
     private Vector2 doubleClickTarget = Vector2.Zero;
-    
+
     private Timer dragMotionTimer;
     private const float changeCursorShapeIfDraggingFor = 0.3f; // seconds
     private const float minimalDragDistanceToChangeCursorShape = 4.0f; // in px
@@ -129,7 +129,7 @@ public partial class Camera : Camera2D
                     {
                         this.StopDragging();
                     }
-                    
+
                     if (mouseEvent.DoubleClick)
                     {
                         this.CenterOnMousePosition();
@@ -155,7 +155,7 @@ public partial class Camera : Camera2D
         {
             return;
         }
-        
+
         this.isDragging = true;
         this.mouseDragStart = this.GetViewport().GetMousePosition();
         this.positionDragStart = this.GlobalPosition;
@@ -169,7 +169,7 @@ public partial class Camera : Camera2D
         {
             return;
         }
-        
+
         this.dragMotionTimer.Stop();
         this.isDragging = false;
         Vector2 dragLeftOverForce = this.dragTarget - this.GlobalPosition;
@@ -183,7 +183,7 @@ public partial class Camera : Camera2D
         this.isDoubleClicked = true;
         this.doubleClickTarget = position;
     }
-    
+
     private void CenterOnMousePosition()
     {
         this.MoveTo(GetGlobalMousePosition());
@@ -233,7 +233,9 @@ public partial class Camera : Camera2D
             {
                 this.SmoothDragMovement();
                 this.dragTarget.Lerp(Vector2.Zero, DragSmoothness);
-            } else {
+            }
+            else
+            {
                 this.dragTarget = Vector2.Zero;
                 this.hasLeftOverDragForce = false;
             }
@@ -282,7 +284,7 @@ public partial class Camera : Camera2D
             this.isDoubleClicked = false;
         }
     }
-    
+
     private void UpdateCursorShape()
     {
         if ((this.isDragging && this.mouseDragStart.DistanceTo(this.GetViewport().GetMousePosition()) >= minimalDragDistanceToChangeCursorShape) || this.overrideDragCursorShape)
