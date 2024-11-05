@@ -31,7 +31,7 @@ public class AgentSightRayCastManager : Singleton<AgentSightRayCastManager>, Ini
 
     private void SetupRayCastMask()
     {
-        this.rayCast.CollisionMask = 4;
+        this.rayCast.CollisionMask = 4 + 8; // 4 => map objects, 8 => map border
     }
 
     public void Reset()
