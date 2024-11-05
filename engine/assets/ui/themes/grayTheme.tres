@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=12 format=3 uid="uid://de0xa04ygj6gw"]
 
-[ext_resource type="FontFile" uid="uid://lqf2jhb67xdy" path="res://assets/fonts/inter/Inter_18pt-Black.ttf" id="1_4f1wp"]
+[ext_resource type="FontFile" uid="uid://chjp63k0jm20m" path="res://assets/fonts/inter/Inter_18pt-Black.ttf" id="1_4f1wp"]
 [ext_resource type="StyleBox" uid="uid://dlbaa32luhlcp" path="res://assets/ui/themes/button/buttonDarkDisabled.tres" id="2_ab5ai"]
 [ext_resource type="StyleBox" uid="uid://cxhuvqxdolhpj" path="res://assets/ui/themes/button/buttonDarkHover.tres" id="3_ggebr"]
 [ext_resource type="StyleBox" uid="uid://c6dv2cnjqvmwo" path="res://assets/ui/themes/button/buttonDarkNormal.tres" id="4_bfcdh"]
@@ -15,6 +15,7 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vgsvp"]
 
 [resource]
+default_font = ExtResource("1_4f1wp")
 Button/colors/font_color = Color(1, 1, 1, 1)
 Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
 Button/colors/font_focus_color = Color(1, 1, 1, 1)
