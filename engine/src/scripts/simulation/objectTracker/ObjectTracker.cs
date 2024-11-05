@@ -17,7 +17,7 @@ public partial class ObjectTracker : Node2D
 
     public override void _Input(InputEvent @event)
     {
-        if (@event is InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Left })
+        if (@event is InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Right })
         {
             Vector2 mousePos = GetGlobalMousePosition();
             var spaceState = GetWorld2D().DirectSpaceState;
