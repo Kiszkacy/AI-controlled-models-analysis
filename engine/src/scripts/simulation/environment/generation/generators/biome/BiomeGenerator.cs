@@ -14,22 +14,34 @@ public class BiomeGenerator
 
     public BiomeType[] Generate(EnvironmentGenerationSettings settings)
     {
-        Vector2 mapCenter = settings.Size / 2.0f;
-        float maxDistance = Mathf.Min(settings.Size.Y / 2.0f, settings.Size.X / 2.0f);
+        float maxDistance = Mathf.Min(settings.Size.X / 2.0f, settings.Size.Y / 2.0f) * settings.OceanSizeMultiplier;
         Vector2 currentChunkPosition = Vector2.Zero;
         LinkedList<BiomeType> data = new();
 
         while (true)
         {
             Vector2 currentChunkCenter = currentChunkPosition + settings.BiomeChunkSize / 2.0f;
-            float distanceFromCenter = Mathf.Max(
-                (currentChunkCenter.DistanceTo(mapCenter) / maxDistance) + RandomGenerator.Float(-this.distanceRandomness, this.distanceRandomness),
-                0.0f
+            float distanceToClosestTerrainPoint = settings.TerrainPoints.Length == 0
+                ? maxDistance
+                : settings.TerrainPoints.Min(point => currentChunkCenter.DistanceTo(point * settings.Size));
+            float distanceToClosestOceanPoint = settings.OceanPoints.Length == 0
+                ? maxDistance
+                : settings.OceanPoints.Min(point => currentChunkCenter.DistanceTo(point * settings.Size));
+
+            float normalizedDistanceToClosestTerrainPoint = distanceToClosestTerrainPoint / maxDistance;
+            float normalizedDistanceToClosestOceanPoint = distanceToClosestOceanPoint / maxDistance;
+
+
+            float distanceValue = Mathf.Clamp(
+                normalizedDistanceToClosestTerrainPoint + (1.0f-normalizedDistanceToClosestOceanPoint) + RandomGenerator.Float(-this.distanceRandomness, this.distanceRandomness),
+                0.0f,
+                1.0f
             );
+
             float noise1 = Mathf.Remap(this.noise1.At(currentChunkCenter/1000.0f), -1, 1, 0, 1);
             float noise2 = Mathf.Remap(this.noise2.At(currentChunkCenter/1000.0f), -1, 1, 0, 1);
 
-            BiomeType biomeType = this.GetBiomeType(distanceFromCenter, noise1, noise2);
+            BiomeType biomeType = this.GetBiomeType(distanceValue, noise1, noise2);
             data.AddLast(biomeType);
 
             currentChunkPosition.X += settings.BiomeChunkSize.X;
