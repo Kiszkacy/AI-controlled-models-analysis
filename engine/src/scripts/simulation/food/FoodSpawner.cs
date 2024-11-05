@@ -32,6 +32,8 @@ public partial class FoodSpawner : Node, Initializable // TODO remove exports, n
     private readonly Timer spawnFoodTimer;
     private PackedScene packedFood = ResourceLoader.Load<PackedScene>("res://src/scenes/simulation/food/food.tscn");
 
+    private const int maxSpawnTryCount = 5;
+
     private readonly InitializableWrapper initialized = new();
     public bool IsInitialized => this.initialized.IsInitialized;
 
@@ -68,11 +70,30 @@ public partial class FoodSpawner : Node, Initializable // TODO remove exports, n
     {
         Node2D foodInstance = (Node2D)this.packedFood.Instantiate();
         this.AddChild(foodInstance);
-        Vector2 spawnOffset = new(
-            (RandomGenerator.Occurs(0.5f) ? 1 : -1) * RandomGenerator.Float(this.FoodSpawnInnerRadius, this.FoodSpawnOuterRadius),
-            (RandomGenerator.Occurs(0.5f) ? 1 : -1) * RandomGenerator.Float(this.FoodSpawnInnerRadius, this.FoodSpawnOuterRadius)
-        );
-        foodInstance.GlobalPosition = this.SpawnPositionTarget.GlobalPosition + spawnOffset;
+
+        int tryCount = 0;
+        bool validSpawnPosition = false;
+        Vector2 spawnPosition = Vector2.Zero;
+        while (!validSpawnPosition && tryCount < maxSpawnTryCount)
+        {
+            tryCount += 1;
+
+            spawnPosition = this.SpawnPositionTarget.GlobalPosition + new Vector2(
+                (RandomGenerator.Occurs(0.5f) ? 1 : -1) *
+                RandomGenerator.Float(this.FoodSpawnInnerRadius, this.FoodSpawnOuterRadius),
+                (RandomGenerator.Occurs(0.5f) ? 1 : -1) *
+                RandomGenerator.Float(this.FoodSpawnInnerRadius, this.FoodSpawnOuterRadius)
+            );
+
+            validSpawnPosition = EnvironmentManager.Instance.IsTerrainAt(spawnPosition);
+        }
+
+        if (!validSpawnPosition)
+        {
+            return;
+        }
+
+        foodInstance.GlobalPosition = spawnPosition;
         Food food = (Food)foodInstance;
         EntityManager.Get().FoodBuckets.RegisterEntity(food);
 
