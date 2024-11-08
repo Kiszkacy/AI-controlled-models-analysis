@@ -5,7 +5,7 @@ from gymnasium.spaces import Box, Dict
 from ray.rllib.env.multi_agent_env import MultiAgentEnv
 from ray.rllib.utils.typing import MultiAgentDict
 
-from core.src.communication.godot_environment_handler import create_godot_environment
+from core.src.communication.environment.godot_environment_handler import create_godot_environment
 from core.src.settings import get_settings
 
 __all__ = ["GodotServerEnvironment"]

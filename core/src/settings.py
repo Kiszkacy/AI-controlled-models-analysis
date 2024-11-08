@@ -1,5 +1,4 @@
 import functools
-from pathlib import Path
 from typing import Annotated, Self
 
 from loguru import logger
@@ -7,6 +6,7 @@ from pydantic import DirectoryPath, Field, FilePath, ValidationError, field_vali
 from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, SettingsConfigDict, YamlConfigSettingsSource
 
 from core.src.setup import configure_logging
+from core.src.utils.types import FiniteFloat, PositiveInteger
 
 
 class GodotSettings(BaseSettings):
@@ -19,7 +19,7 @@ class GodotSettings(BaseSettings):
     # noinspection PyNestedDecorators
     @field_validator("godot_executable", mode="after")
     @classmethod
-    def validate_godot_executable(cls, value: Path) -> Path:
+    def validate_godot_executable(cls, value: FilePath) -> FilePath:
         if value.suffix == ".exe":
             return value
         raise ValueError(f"Path should point to an .exe file but instead pointed to {value.suffix}")
@@ -27,25 +27,27 @@ class GodotSettings(BaseSettings):
 
 class TrainingSettings(BaseSettings):
     model_config = SettingsConfigDict(frozen=True)
-    number_of_workers: Annotated[int, Field(gt=0)]
-    number_of_env_per_worker: Annotated[int, Field(gt=0)]
-    training_iterations: Annotated[int, Field(gt=0)]
-    training_batch_size: Annotated[int, Field(gt=0)]
-    training_checkpoint_frequency: Annotated[int, Field(gt=0)]
+
+    number_of_workers: PositiveInteger
+    number_of_env_per_worker: PositiveInteger
+    training_iterations: PositiveInteger
+    training_batch_size: PositiveInteger
+    training_checkpoint_frequency: PositiveInteger
 
 
 class EnvironmentSettings(BaseSettings):
     model_config = SettingsConfigDict(frozen=True)
-    observation_space_size: Annotated[int, Field(gt=0, default=5)]
-    observation_space_low: Annotated[float, ...]
-    observation_space_high: Annotated[float, ...]
-    action_space_range: Annotated[int, Field(gt=0, default=2)]
-    action_space_low: Annotated[float, ...]
-    action_space_high: Annotated[float, ...]
-    number_of_agents: Annotated[int, Field(gt=0)]
+
+    observation_space_size: PositiveInteger = 5
+    observation_space_low: FiniteFloat
+    observation_space_high: FiniteFloat
+    action_space_range: PositiveInteger = 2
+    action_space_low: FiniteFloat
+    action_space_high: FiniteFloat
+    number_of_agents: PositiveInteger
 
     @model_validator(mode="after")
-    def check_passwords_match(self) -> Self:
+    def validate_ranges(self: Self) -> Self:
         if self.observation_space_low >= self.observation_space_high:
             raise ValueError(
                 f"Field observation_space_low={self.observation_space_low} has to be strictly less "
