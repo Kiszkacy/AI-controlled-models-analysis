@@ -1,10 +1,10 @@
 import asyncio
 from typing import Self
 
-from core.src.utils.resource_token import ResourceToken, ResourceTokenType
+from core.src.utils.registry.resource_token import ResourceToken, ResourceTokenType
 
 
-class ResourceManager:
+class ResourceTokenManager:
     def __init__(self: Self):
         self.lock = asyncio.Lock()
 

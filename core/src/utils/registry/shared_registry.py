@@ -5,8 +5,8 @@ from typing import Any, Generic, Self, TypeVar
 
 import ray
 
-from core.src.utils.resource_manager import ResourceManager
-from core.src.utils.resource_token import ResourceToken
+from core.src.utils.registry.resource_token import ResourceToken
+from core.src.utils.registry.resource_token_manager import ResourceTokenManager
 
 __all__ = ("RemoteSharedRegistry", "SharedRegistry")
 
@@ -15,7 +15,7 @@ ValueType = TypeVar("ValueType")
 
 
 @ray.remote
-class RemoteSharedRegistry(Generic[KeyType, ValueType], ResourceManager):
+class RemoteSharedRegistry(Generic[KeyType, ValueType], ResourceTokenManager):
     def __init__(self: Self):
         super().__init__()
         self.registry: dict[KeyType, ValueType] = {}

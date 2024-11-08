@@ -10,7 +10,10 @@ from core.src.setup import configure_logging
 
 
 class GodotSettings(BaseSettings):
+    # Path leading to godot executable
     godot_executable: FilePath
+
+    # Path leading to godot project root
     project_path: DirectoryPath
 
     # noinspection PyNestedDecorators
