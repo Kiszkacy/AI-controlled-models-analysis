@@ -6,7 +6,7 @@ from ray.rllib.algorithms import PPOConfig
 from ray.rllib.models import ModelCatalog
 
 from core.src.policies.custom_model import CustomModel
-from core.src.settings import get_settings
+from core.src.settings.settings import get_settings
 
 
 def get_path() -> str | None:

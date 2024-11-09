@@ -80,6 +80,9 @@ class SharedRegistry(Generic[KeyType, ValueType]):
     def __getitem__(self: Self, key: KeyType) -> ValueType:
         return self.get(key)
 
+    def __contains__(self, item):
+        return item in self.keys()
+
     def __setitem__(self: Self, key: KeyType, value: ValueType) -> None:
         self.put(key, value)
 

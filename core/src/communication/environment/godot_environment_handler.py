@@ -2,9 +2,9 @@ import json
 from contextlib import AbstractContextManager
 
 from core.src.communication.environment.godot_launcher import GodotLaunchConfiguration, GodotLauncher
-from core.src.communication.godot_handler import CommunicationCode, GodotHandler
+from core.src.communication.godot_handler import GodotHandler
 from core.src.communication.pipe_handler import PipeHandler
-from core.src.settings import GodotSettings
+from core.src.settings.core_settings import GodotSettings
 from core.src.workers.worker_manager import WorkerManager
 
 
@@ -21,9 +21,8 @@ class GodotEnvironmentHandler(GodotHandler):
         except json.JSONDecodeError:
             return None
 
-    def _handle_communication_code(self, data: bytes) -> CommunicationCode:
-        code = int.from_bytes(data, byteorder="little")  # TODO: later will be changed to enum
-        return CommunicationCode(code)
+    def _handle_communication_code(self, data: bytes) -> int:
+        return int.from_bytes(data, byteorder="little")  # TODO: later will be changed to enum
 
 
 def create_godot_environment(godot_settings: GodotSettings) -> GodotEnvironmentHandler:

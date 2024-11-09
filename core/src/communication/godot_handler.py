@@ -1,24 +1,14 @@
 from abc import ABC, abstractmethod
 from collections.abc import Callable
 from contextlib import AbstractContextManager, ExitStack
-from enum import Enum
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from core.src.communication.pipe_handler import PipeHandler
-from core.src.settings import get_settings
-
-
-class CommunicationCode(Enum):
-    RESET = get_settings().communication.reset
-
-    @classmethod
-    def from_bytes(cls, data: bytes) -> "CommunicationCode":
-        code_value = int.from_bytes(data, byteorder="little")
-        return cls(code_value)
+if TYPE_CHECKING:
+    from core.src.communication.pipe_handler import PipeHandler
 
 
 class GodotHandler(ABC):
-    def __init__(self, pipe_handler: PipeHandler, *additional_resources: AbstractContextManager) -> None:
+    def __init__(self, pipe_handler: "PipeHandler", *additional_resources: AbstractContextManager):
         """
         Abstract base class for handling pipe-based communication and resource management.
 
@@ -33,7 +23,7 @@ class GodotHandler(ABC):
     def send(self, data: bytes) -> None:
         self.pipe_handler.send(data)
 
-    def receive(self) -> list[dict] | CommunicationCode:
+    def receive(self) -> list[dict] | int:
         data: bytes = self.pipe_handler.receive()
         decoded_data = self._attempt_decode(data)
         if decoded_data is None:
@@ -44,7 +34,7 @@ class GodotHandler(ABC):
     def _attempt_decode(self, data: bytes) -> list[dict] | None: ...
 
     @abstractmethod
-    def _handle_communication_code(self, data: bytes) -> CommunicationCode: ...
+    def _handle_communication_code(self, data: bytes) -> int: ...
 
     def release_resources(self) -> None:
         self._release_resources()
@@ -58,6 +48,7 @@ class GodotHandler(ABC):
 
     def __enter__(self):
         self.acquire_resources()
+        return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.release_resources()
