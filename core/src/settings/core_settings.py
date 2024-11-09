@@ -1,11 +1,12 @@
 import functools
-from typing import Annotated, Self
+from typing import Any, Self
 
 from loguru import logger
-from pydantic import DirectoryPath, Field, FilePath, ValidationError, field_validator, model_validator
+from pydantic import DirectoryPath, Field, FilePath, field_validator, model_validator
 from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, SettingsConfigDict, YamlConfigSettingsSource
 
-from core.src.setup import configure_logging
+from core.src.settings.app_settings import APP_REGISTRY
+from core.src.utils.registry.shared_registry import SharedRegistry
 from core.src.utils.types import FiniteFloat, PositiveInteger
 
 
@@ -35,7 +36,7 @@ class TrainingSettings(BaseSettings):
     training_checkpoint_frequency: PositiveInteger
 
 
-class EnvironmentSettings(BaseSettings):
+class AgentEnvironmentSettings(BaseSettings):
     model_config = SettingsConfigDict(frozen=True)
 
     observation_space_size: PositiveInteger = 5
@@ -56,15 +57,9 @@ class EnvironmentSettings(BaseSettings):
         return self
 
 
-class CommunicationSettings(BaseSettings):
-    model_config = SettingsConfigDict(frozen=True)
-
-    reset: Annotated[int, ...]
-
-
-class Settings(BaseSettings):
+class CoreSettings(BaseSettings):
     model_config = SettingsConfigDict(
-        yaml_file=["../settings.yaml", "../../global/config.yaml"],
+        yaml_file="../settings.yaml",
         env_file="../.env",
         env_prefix="CORE_",
         env_nested_delimiter="__",
@@ -73,10 +68,7 @@ class Settings(BaseSettings):
     )
     godot: GodotSettings = Field(description="The godot settings")
     training: TrainingSettings = Field(description="Training settings")
-
-    environment: EnvironmentSettings = Field(description="Training environment settings")
-
-    communication: CommunicationSettings = Field(description="Communication settings")
+    environment: AgentEnvironmentSettings = Field(description="Training environment settings")
 
     @classmethod
     def settings_customise_sources(  # noqa: PLR0913
@@ -97,20 +89,18 @@ class Settings(BaseSettings):
 
 
 @functools.lru_cache(maxsize=1)
-def get_settings() -> Settings:
+def get_core_settings() -> CoreSettings:
     """Loads settings."""
-    configure_logging()
+    registry: SharedRegistry[type, Any] = SharedRegistry(APP_REGISTRY)
+    if CoreSettings not in registry:
+        raise LookupError("CoreSettings were not registered.")
 
-    try:
-        settings = Settings()
-        logger.success("Successfully loaded core settings.")
-        return settings
-    except ValidationError as e:
-        logger.error(f"Error loading core settings: {e}")
-        raise
+    settings = registry.get(CoreSettings)
+    logger.success("Successfully loaded core settings.")
+    return settings
 
 
-def reload_settings() -> Settings:
+def reload_core_settings() -> CoreSettings:
     """Reloads settings."""
-    get_settings.cache_clear()
-    return get_settings()
+    get_core_settings.cache_clear()
+    return get_core_settings()

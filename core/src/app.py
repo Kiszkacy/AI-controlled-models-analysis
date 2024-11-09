@@ -40,10 +40,10 @@ class App:
         pipe_name = self.app_settings.communication.pipe_name
         pipe_handler = PipeHandler(pipe_name)
 
-        with GodotAppHandler(pipe_handler) as handler:  # noqa: F841
-            # raw_settings = handler.handshake()  # hmm?
-            # core_settings = CoreSettings.parse_raw(raw_settings)
-            # self.registry.put(CoreSettings, core_settings)
+        with GodotAppHandler(pipe_handler) as handler:
+            raw_settings = handler.receive()  # hmm?
+            core_settings = CoreSettings.model_validate_json(raw_settings)
+            self.registry.put(CoreSettings, core_settings)
 
             # For now just training?
             self.train()

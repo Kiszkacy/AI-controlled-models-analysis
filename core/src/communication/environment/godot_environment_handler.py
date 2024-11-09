@@ -8,7 +8,7 @@ from core.src.settings.core_settings import GodotSettings
 from core.src.workers.worker_manager import WorkerManager
 
 
-class GodotEnvironmentHandler(GodotHandler):
+class GodotEnvironmentHandler(GodotHandler[list[dict]]):
     def __init__(
         self, pipe_handler: PipeHandler, godot_launcher: GodotLauncher, *additional_resources: AbstractContextManager
     ):
@@ -20,9 +20,6 @@ class GodotEnvironmentHandler(GodotHandler):
             return json.loads(decoded_data)
         except json.JSONDecodeError:
             return None
-
-    def _handle_communication_code(self, data: bytes) -> int:
-        return int.from_bytes(data, byteorder="little")  # TODO: later will be changed to enum
 
 
 def create_godot_environment(godot_settings: GodotSettings) -> GodotEnvironmentHandler:

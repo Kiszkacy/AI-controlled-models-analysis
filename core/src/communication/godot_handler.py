@@ -1,13 +1,15 @@
 from abc import ABC, abstractmethod
 from collections.abc import Callable
 from contextlib import AbstractContextManager, ExitStack
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Generic, TypeVar
 
 if TYPE_CHECKING:
     from core.src.communication.pipe_handler import PipeHandler
 
+T = TypeVar("T")
 
-class GodotHandler(ABC):
+
+class GodotHandler(Generic[T], ABC):
     def __init__(self, pipe_handler: "PipeHandler", *additional_resources: AbstractContextManager):
         """
         Abstract base class for handling pipe-based communication and resource management.
@@ -23,18 +25,22 @@ class GodotHandler(ABC):
     def send(self, data: bytes) -> None:
         self.pipe_handler.send(data)
 
-    def receive(self) -> list[dict] | int:
+    def receive(self) -> T | int | None:
         data: bytes = self.pipe_handler.receive()
-        decoded_data = self._attempt_decode(data)
-        if decoded_data is None:
-            return self._handle_communication_code(data)
-        return decoded_data
+        communication_code = self._handle_communication_code(data)
+        if communication_code is not None:
+            return communication_code
+        return self._attempt_decode(data)
 
     @abstractmethod
-    def _attempt_decode(self, data: bytes) -> list[dict] | None: ...
+    def _attempt_decode(self, data: bytes) -> T | None: ...
 
-    @abstractmethod
-    def _handle_communication_code(self, data: bytes) -> int: ...
+    def _handle_communication_code(self, data: bytes) -> int | None:
+        try:
+            decoded_data = data.decode()
+            return int(decoded_data)  # TODO: later will be changed to enum
+        except ValueError:
+            return None
 
     def release_resources(self) -> None:
         self._release_resources()
