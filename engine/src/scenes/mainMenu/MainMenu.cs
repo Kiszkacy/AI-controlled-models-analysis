@@ -84,7 +84,8 @@ public partial class MainMenu : Control
 
     private void OnNewSimulationClick()
     {
-        // TODO
+        PythonManager.Instance.Start();
+        this.GetTree().ChangeSceneToFile("res://src/scenes/simulation/simulation.tscn");
     }
 
     private void OnSimulationsClick()
@@ -99,7 +100,7 @@ public partial class MainMenu : Control
 
     private void OnSettingsClick()
     {
-        this.GetTree().ChangeSceneToFile("res://src/scenes/screens/settings.tscn");
+        this.GetTree().ChangeSceneToFile("res://src/scenes/settings.tscn");
     }
 
     private void OnExitClick()
