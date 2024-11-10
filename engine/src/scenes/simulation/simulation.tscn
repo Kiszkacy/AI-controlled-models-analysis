@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://d7ustprm3wu2"]
+[gd_scene load_steps=51 format=3 uid="uid://d7ustprm3wu2"]
 
 [ext_resource type="PackedScene" uid="uid://byp6g5lwnjkly" path="res://src/scenes/ui/button/iconButtonSmall.tscn" id="1_4ndtu"]
 [ext_resource type="Script" path="res://src/scripts/simulation/ui/SimulationUI.cs" id="1_p1yyt"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://src/scripts/simulation/supervisor/Supervisor.cs" id="4_wrt4n"]
 [ext_resource type="Script" path="res://src/scripts/simulation/camera/Camera.cs" id="5_kqo4m"]
 [ext_resource type="StyleBox" uid="uid://3x5qu6tt7fqi" path="res://assets/ui/themes/screens/simulation/topBar.tres" id="5_pug4t"]
+[ext_resource type="Script" path="res://src/scripts/simulation/environmentTracker/EnvironmentTracker.cs" id="6_aqfia"]
 [ext_resource type="PackedScene" uid="uid://bgl1wbpqole17" path="res://src/scenes/ui/button/iconButton.tscn" id="6_fhbk4"]
 [ext_resource type="Script" path="res://src/scripts/engine/endOfFrameProcessor/EndOfFrameProcessor.cs" id="6_xiy2k"]
 [ext_resource type="Texture2D" uid="uid://bwo48t7ks4ohn" path="res://assets/icons/solid/tree.svg" id="7_ayw54"]
@@ -27,6 +28,7 @@
 [ext_resource type="Texture2D" uid="uid://dioarrnkvg2r3" path="res://assets/tilesets/biome-tileset.png" id="20_1ggju"]
 [ext_resource type="Script" path="res://src/scripts/simulation/ui/minimap/Minimap.cs" id="21_ye1pt"]
 [ext_resource type="Script" path="res://src/scripts/simulation/ui/minimap/cameraBorder/CameraBorder.cs" id="23_juvhq"]
+[ext_resource type="Script" path="res://src/scripts/simulation/ui/analysis/AnalysisUI.cs" id="25_v5x8k"]
 [ext_resource type="PackedScene" uid="uid://dx6mu0kmrl85u" path="res://src/scenes/ui/button/buttonDarkSmall.tscn" id="27_c32ca"]
 [ext_resource type="PackedScene" uid="uid://bpxv2uqjt5lxb" path="res://src/scenes/ui/chart/chart.tscn" id="28_dpa37"]
 [ext_resource type="PackedScene" uid="uid://cth570o6vdv8g" path="res://src/scenes/ui/button/buttonWhiteSmall.tscn" id="28_e5cgq"]
@@ -210,6 +212,9 @@ EdgeMoveMargin = 16.0
 script = ExtResource("29_qq7m8")
 camera = NodePath("../Camera")
 TargetLabel = NodePath("../UI/SimulationViewUI/ActiveObjectTab/Active object/ActiveObjectDescription")
+
+[node name="EnvironmentTracker" type="Node" parent="."]
+script = ExtResource("6_aqfia")
 
 [node name="UI" type="CanvasLayer" parent="." node_paths=PackedStringArray("ExitButton", "SettingsButton", "PauseButton", "PauseNode", "SimulationSpeedLevelOneButton", "SimulationSpeedLevelTwoButton", "SimulationSpeedLevelThreeButton", "SimulationSpeedLevelFourButton", "SimulationTimeLabel", "SystemTimeLabel", "CenterCameraButton", "Camera", "SubmenuNode", "FadeoutBackground", "SimulationViewButton", "AnalysisViewButton", "ConfigurationViewButton", "SimulationViewNode", "AnalysisViewNode", "ConfigurationViewNode")]
 process_mode = 3
@@ -658,11 +663,14 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = SubResource("StyleBoxEmpty_gdw0h")
 
-[node name="AnalysisViewUI" type="Control" parent="UI"]
+[node name="AnalysisViewUI" type="Control" parent="UI" node_paths=PackedStringArray("EnvironmentTracker", "AgentChart")]
 visible = false
 z_index = 3
 layout_mode = 3
 anchors_preset = 0
+script = ExtResource("25_v5x8k")
+EnvironmentTracker = NodePath("../../EnvironmentTracker")
+AgentChart = NodePath("Box/Agents/AgentCountChart")
 
 [node name="Box" type="TabContainer" parent="UI/AnalysisViewUI"]
 layout_mode = 0
@@ -677,7 +685,7 @@ current_tab = 0
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Chart" parent="UI/AnalysisViewUI/Box/Agents" instance=ExtResource("28_dpa37")]
+[node name="AgentCountChart" parent="UI/AnalysisViewUI/Box/Agents" instance=ExtResource("28_dpa37")]
 layout_mode = 1
 anchors_preset = 0
 anchor_right = 0.0
@@ -688,6 +696,9 @@ offset_right = 512.0
 offset_bottom = 412.0
 grow_horizontal = 1
 grow_vertical = 1
+TitleChart = "Number of agents over time"
+TitleAxisY = "Agent count"
+TitleAxisX = "Time passed in seconds"
 
 [node name="Chart2" parent="UI/AnalysisViewUI/Box/Agents" instance=ExtResource("28_dpa37")]
 layout_mode = 1
