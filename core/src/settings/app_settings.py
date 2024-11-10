@@ -14,16 +14,10 @@ from core.src.utils.registry.shared_registry import SharedRegistry
 APP_REGISTRY = "APP_REGISTRY"
 
 
-class CommunicationSettings(BaseSettings):
+class CommunicationSettingsSchema(BaseSettings):
     model_config = SettingsConfigDict(frozen=True)
 
-    pipe_name: Annotated[str | None, MinLen(1)] = None
     reset: int
-
-
-class Environment(StrEnum):
-    DEVELOPMENT = auto()
-    GODOT = auto()
 
 
 class CliSettingsSource(PydanticBaseSettingsSource):
@@ -80,21 +74,27 @@ class CliSettingsSource(PydanticBaseSettingsSource):
         return data
 
 
-class WorkEnvironmentSettings(BaseSettings):
+class Environment(StrEnum):
+    DEVELOPMENT = auto()
+    GODOT = auto()
+
+
+class WorkEnvironmentSettingsSchema(BaseSettings):
     model_config = SettingsConfigDict(frozen=True)
 
     env: Environment = Field(default=Environment.DEVELOPMENT, description="Work environment")
+    pipe_name: Annotated[str | None, MinLen(1)] = None
 
 
-class AppSettings(BaseSettings):
+class AppSettingsSchema(BaseSettings):
     model_config = SettingsConfigDict(
         yaml_file=["../../global/config.yaml"],
         frozen=True,
     )
 
-    communication: CommunicationSettings = Field(description="Communication settings")
-    work_environment: WorkEnvironmentSettings = Field(
-        description="Work environment settings", default_factory=lambda: WorkEnvironmentSettings()
+    communication: CommunicationSettingsSchema = Field(description="Communication settings")
+    work_environment: WorkEnvironmentSettingsSchema = Field(
+        description="Work environment settings", default_factory=lambda: WorkEnvironmentSettingsSchema()
     )
 
     @classmethod
@@ -113,18 +113,18 @@ class AppSettings(BaseSettings):
 
 
 @functools.lru_cache(maxsize=1)
-def get_app_settings() -> AppSettings:
+def get_app_settings() -> AppSettingsSchema:
     """Loads app settings."""
     registry: SharedRegistry[type, Any] = SharedRegistry(APP_REGISTRY)
-    if AppSettings not in registry:
+    if AppSettingsSchema not in registry:
         raise LookupError("AppSettings were not registered.")
 
-    settings = registry.get(AppSettings)
+    settings = registry.get(AppSettingsSchema)
     logger.success("Successfully loaded app settings.")
     return settings
 
 
-def reload_app_settings() -> AppSettings:
+def reload_app_settings() -> AppSettingsSchema:
     """Reloads app settings."""
     get_app_settings.cache_clear()
     return get_app_settings()

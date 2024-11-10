@@ -1,44 +1,79 @@
 import functools
+from dataclasses import dataclass
+from pathlib import Path
 from typing import Self
 
 from loguru import logger
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import ValidationError
 
 from core.src.settings.app_settings import (
-    AppSettings,
-    CommunicationSettings,
-    WorkEnvironmentSettings,
+    AppSettingsSchema,
+    Environment,
     get_app_settings,
     reload_app_settings,
 )
 from core.src.settings.core_settings import (
-    AgentEnvironmentSettings,
-    CoreSettings,
-    GodotSettings,
-    TrainingSettings,
+    CoreSettingsSchema,
     get_core_settings,
     reload_core_settings,
 )
 from core.src.setup import configure_logging
+from core.src.utils.types import model_to_dataclass
 
 
-class Settings(BaseModel):
-    godot: GodotSettings = Field(description="The godot settings")
-    training: TrainingSettings = Field(description="Training settings")
-    environment: AgentEnvironmentSettings = Field(description="Training environment settings")
-    communication: CommunicationSettings = Field(description="Communication settings")
-    work_environment: WorkEnvironmentSettings = Field(
-        description="Work environment settings"
-    )  # Should the app need to be aware of this?
+@dataclass(frozen=True)
+class GodotSettings:
+    godot_executable: Path
+    project_path: Path
+
+
+@dataclass(frozen=True)
+class TrainingSettings:
+    number_of_workers: int
+    number_of_env_per_worker: int
+    training_iterations: int
+    training_batch_size: int
+    training_checkpoint_frequency: int
+
+
+@dataclass(frozen=True)
+class AgentEnvironmentSettings:
+    observation_space_size: int
+    observation_space_low: float
+    observation_space_high: float
+    action_space_range: int
+    action_space_low: float
+    action_space_high: float
+    number_of_agents: int
+
+
+@dataclass(frozen=True)
+class WorkEnvironmentSettings:
+    env: Environment
+    pipe_name: str | None
+
+
+@dataclass(frozen=True)
+class CommunicationCodes:
+    reset: int
+
+
+@dataclass(frozen=True)
+class Settings:
+    godot: GodotSettings
+    training: TrainingSettings
+    environment: AgentEnvironmentSettings
+    communication_codes: CommunicationCodes
+    work_environment: WorkEnvironmentSettings
 
     @classmethod
-    def from_modules(cls, core_settings: CoreSettings, app_settings: AppSettings) -> Self:
+    def from_schema(cls, core_settings: CoreSettingsSchema, app_settings: AppSettingsSchema) -> Self:
         return cls(
-            godot=core_settings.godot,
-            training=core_settings.training,
-            environment=core_settings.environment,
-            communication=app_settings.communication,
-            work_environment=app_settings.work_environment,
+            godot=model_to_dataclass(core_settings.godot, GodotSettings),
+            training=model_to_dataclass(core_settings.training, TrainingSettings),
+            environment=model_to_dataclass(core_settings.environment, AgentEnvironmentSettings),
+            communication_codes=model_to_dataclass(app_settings.communication, CommunicationCodes),
+            work_environment=model_to_dataclass(app_settings.work_environment, WorkEnvironmentSettings),
         )
 
 
@@ -50,7 +85,7 @@ def get_settings() -> Settings:
     try:
         core_settings = get_core_settings()
         app_settings = get_app_settings()
-        settings = Settings.from_modules(core_settings, app_settings)
+        settings = Settings.from_schema(core_settings, app_settings)
         logger.success("Successfully loaded all settings.")
         return settings
     except ValidationError as e:

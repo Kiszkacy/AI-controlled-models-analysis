@@ -10,7 +10,7 @@ from core.src.utils.registry.shared_registry import SharedRegistry
 from core.src.utils.types import FiniteFloat, PositiveInteger
 
 
-class GodotSettings(BaseSettings):
+class GodotSettingsSchema(BaseSettings):
     # Path leading to godot executable
     godot_executable: FilePath
 
@@ -26,7 +26,7 @@ class GodotSettings(BaseSettings):
         raise ValueError(f"Path should point to an .exe file but instead pointed to {value.suffix}")
 
 
-class TrainingSettings(BaseSettings):
+class TrainingSettingsSchema(BaseSettings):
     model_config = SettingsConfigDict(frozen=True)
 
     number_of_workers: PositiveInteger
@@ -36,7 +36,7 @@ class TrainingSettings(BaseSettings):
     training_checkpoint_frequency: PositiveInteger
 
 
-class AgentEnvironmentSettings(BaseSettings):
+class AgentEnvironmentSettingsSchema(BaseSettings):
     model_config = SettingsConfigDict(frozen=True)
 
     observation_space_size: PositiveInteger = 5
@@ -46,6 +46,8 @@ class AgentEnvironmentSettings(BaseSettings):
     action_space_low: FiniteFloat
     action_space_high: FiniteFloat
     number_of_agents: PositiveInteger
+    # seed: PositiveInteger
+    # use_seed: bool
 
     @model_validator(mode="after")
     def validate_ranges(self: Self) -> Self:
@@ -57,7 +59,7 @@ class AgentEnvironmentSettings(BaseSettings):
         return self
 
 
-class CoreSettings(BaseSettings):
+class CoreSettingsSchema(BaseSettings):
     model_config = SettingsConfigDict(
         yaml_file="../settings.yaml",
         env_file="../.env",
@@ -66,9 +68,9 @@ class CoreSettings(BaseSettings):
         env_file_encoding="utf-8",
         frozen=True,
     )
-    godot: GodotSettings = Field(description="The godot settings")
-    training: TrainingSettings = Field(description="Training settings")
-    environment: AgentEnvironmentSettings = Field(description="Training environment settings")
+    godot: GodotSettingsSchema = Field(description="The godot settings")
+    training: TrainingSettingsSchema = Field(description="Training settings")
+    environment: AgentEnvironmentSettingsSchema = Field(description="Training environment settings")
 
     @classmethod
     def settings_customise_sources(  # noqa: PLR0913
@@ -89,18 +91,18 @@ class CoreSettings(BaseSettings):
 
 
 @functools.lru_cache(maxsize=1)
-def get_core_settings() -> CoreSettings:
+def get_core_settings() -> CoreSettingsSchema:
     """Loads settings."""
     registry: SharedRegistry[type, Any] = SharedRegistry(APP_REGISTRY)
-    if CoreSettings not in registry:
+    if CoreSettingsSchema not in registry:
         raise LookupError("CoreSettings were not registered.")
 
-    settings = registry.get(CoreSettings)
+    settings = registry.get(CoreSettingsSchema)
     logger.success("Successfully loaded core settings.")
     return settings
 
 
-def reload_core_settings() -> CoreSettings:
+def reload_core_settings() -> CoreSettingsSchema:
     """Reloads settings."""
     get_core_settings.cache_clear()
     return get_core_settings()

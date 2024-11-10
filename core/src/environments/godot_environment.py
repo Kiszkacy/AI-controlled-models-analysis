@@ -6,8 +6,7 @@ from ray.rllib.env.multi_agent_env import MultiAgentEnv
 from ray.rllib.utils.typing import MultiAgentDict
 
 from core.src.communication.environment.godot_environment_handler import create_godot_environment
-from core.src.settings.core_settings import AgentEnvironmentSettings
-from core.src.settings.settings import get_settings
+from core.src.settings.settings import AgentEnvironmentSettings, get_settings
 
 __all__ = ["GodotServerEnvironment"]
 
@@ -22,7 +21,7 @@ class GodotServerEnvironment(MultiAgentEnv):
 
         self._agent_ids = set(range(environment_settings.number_of_agents))
         self._states: MultiAgentDict | None = None
-        self.communication_settings = get_settings().communication
+        self.communication_settings = get_settings().communication_codes
 
         godot_settings = get_settings().godot
         self.connection_handler = create_godot_environment(godot_settings)
