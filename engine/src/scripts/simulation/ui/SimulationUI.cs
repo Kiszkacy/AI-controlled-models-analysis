@@ -47,7 +47,7 @@ public partial class SimulationUI : CanvasLayer
     public ButtonHandler AnalysisViewButton;
     [Export]
     public ButtonHandler ConfigurationViewButton;
-    
+
     [Export]
     public Control SimulationViewNode;
     [Export]

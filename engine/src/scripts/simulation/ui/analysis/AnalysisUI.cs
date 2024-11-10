@@ -5,10 +5,10 @@ using Godot;
 
 public partial class AnalysisUI : Control, Observable
 {
-    [Export] 
+    [Export]
     public EnvironmentTracker EnvironmentTracker;
-    
-    [Export] 
+
+    [Export]
     public Chart AgentChart;
 
     public override void _Ready()
