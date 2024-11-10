@@ -47,20 +47,29 @@ public partial class Tooltip : Control
     [Export]
     public bool ShowArrow = true;
 
+    [Export]
+    public float MakeVisibleAfterHoveringFor = 1.0f; // in seconds
+
     private Label label;
+    private Label background;
     private Control arrow;
     private Control targetNode;
     private string text = string.Empty;
     private bool isReady = false;
 
-    private readonly int padding = 4;
+    private readonly int paddingVertical = 4;
+    private readonly int paddingHorizontal = 8;
+
+    private readonly Timer hoverTimer;
 
     public override void _Ready()
     {
         this.label = this.GetNode<Label>("Label");
+        this.background = this.GetNode<Label>("Background");
         this.label.HorizontalAlignment = this.TextAlignment;
+        this.background.HorizontalAlignment = this.TextAlignment;
 
-        this.arrow = this.GetNode<Control>("Label/Arrow");
+        this.arrow = this.GetNode<Control>("Arrow");
         if (!this.ShowArrow)
         {
             this.arrow.Visible = false;
@@ -92,33 +101,39 @@ public partial class Tooltip : Control
         Vector2 textSize = this.label.GetThemeDefaultFont().GetMultilineStringSize(
             text,
             this.TextAlignment,
-            this.MaxWidth-padding*2, // 8 from padding-left: 4px, padding-right: 4px
+            this.MaxWidth-paddingHorizontal*2,
             brkFlags: TextServer.LineBreakFlag.WordBound | TextServer.LineBreakFlag.Adaptive | TextServer.LineBreakFlag.Mandatory,
             justificationFlags: TextServer.JustificationFlag.Kashida | TextServer.JustificationFlag.WordBound | TextServer.JustificationFlag.SkipLastLine | TextServer.JustificationFlag.DoNotSkipSingleLine
         );
 
         this.label.Text = string.Empty;
+        this.background.Text = string.Empty;
 
-        this.label.Size = new Vector2(textSize.X+padding*2, textSize.Y+padding*2);
-        this.Size = new Vector2(textSize.X+padding*2, textSize.Y+padding*2);
+        this.label.Size = new Vector2(textSize.X+paddingHorizontal*2, textSize.Y+paddingVertical*2);
+        this.background.Size = new Vector2(textSize.X+paddingHorizontal*2, textSize.Y+paddingVertical*2);
+        this.Size = new Vector2(textSize.X+paddingHorizontal*2, textSize.Y+paddingVertical*2);
 
         this.label.Text = text;
+        this.background.Text = text;
 
         this.UpdateArrowPosition();
     }
 
     private void OnMouseEntered()
     {
-        this.Visible = true;
+        this.hoverTimer.Activate(this.MakeVisibleAfterHoveringFor);
     }
 
     private void OnMouseExited()
     {
+        this.hoverTimer.Stop();
         this.Visible = false;
     }
 
     public override void _Process(double delta)
     {
+        this.hoverTimer.Process(delta);
+
         if (!this.Visible || this.targetNode == null)
         {
             return;
@@ -194,5 +209,15 @@ public partial class Tooltip : Control
                 this.arrow.Position = new Vector2(labelSizeX-24, lineCount*23-7);
                 break;
         }
+    }
+
+    private void OnHoverTimeout()
+    {
+        this.Visible = true;
+    }
+
+    public Tooltip()
+    {
+        this.hoverTimer = new Timer(this.OnHoverTimeout);
     }
 }

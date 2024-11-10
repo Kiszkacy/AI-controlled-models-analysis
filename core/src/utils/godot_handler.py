@@ -1,4 +1,5 @@
 import json
+import random
 import subprocess
 import threading
 from pathlib import Path
@@ -54,9 +55,13 @@ class GodotHandler:
         if not self.manager.is_leader():
             godot_args.append("--headless")
 
+        random_number = random.randint(0, 10000)
+
         project_args = [
             "--pipe-name",
             self.pipe_name,
+            "--environment-seed",
+            str(random_number),
         ]
 
         separator = ["++"]
