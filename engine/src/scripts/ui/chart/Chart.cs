@@ -9,23 +9,23 @@ public partial class Chart : Control
     public string TitleAxisY { get; set; } = "Axis Y title";
     [Export(PropertyHint.MultilineText)]
     public string TitleAxisX { get; set; } = "Axis X title";
-    
+
     [ExportGroup("DO NOT EDIT THESE")]
-    [Export] 
+    [Export]
     public Label ChartTitle;
-    [Export] 
+    [Export]
     public Label AxisXTitle;
-    [Export] 
+    [Export]
     public Label AxisYTitle;
-    [Export] 
+    [Export]
     public Line2D Line;
-    [Export] 
+    [Export]
     public Control PointsBackground;
     [Export]
     public HBoxContainer TicksAxisX;
-    [Export] 
+    [Export]
     public VBoxContainer TicksAxisY;
-    [Export] 
+    [Export]
     public Control Lines;
 
     private Vector2 chartPointDrawingSize => this.PointsBackground.Size;
@@ -45,7 +45,7 @@ public partial class Chart : Control
         this.UpdateTickLabels(targetTickCount, minimumValues, maximumValues);
         this.UpdateLines(targetTickCount);
     }
-    
+
     private void UpdatePointData(Vector2[] points, Vector2 minimumValues, Vector2 maximumValues)
     {
         this.Line.ClearPoints();
@@ -62,11 +62,11 @@ public partial class Chart : Control
     {
         if (targetTickCount != this.currentTickCount)
         {
-             this.TicksAxisX.RemoveAllChildren();
-             this.TicksAxisY.RemoveAllChildren();
+            this.TicksAxisX.RemoveAllChildren();
+            this.TicksAxisY.RemoveAllChildren();
         }
-        
-        
+
+
         for (int index = 0; index < targetTickCount.X; index++)
         {
             Label label = this.CreateNewLabel();
@@ -77,7 +77,7 @@ public partial class Chart : Control
             label.CustomMinimumSize = new Vector2(this.chartPointDrawingSize.X / targetTickCount.X, 0);
             this.TicksAxisX.AddChild(label);
         }
-        
+
         for (int index = 0; index < targetTickCount.Y; index++)
         {
             Label label = this.CreateNewLabel();
@@ -93,7 +93,7 @@ public partial class Chart : Control
     private void UpdateLines(Vector2 targetTickCount)
     {
         this.Lines.RemoveAllChildren();
-        
+
         for (int index = 0; index < targetTickCount.Y; index++)
         {
             ColorRect line = this.CreateNewColorRect();
@@ -102,7 +102,7 @@ public partial class Chart : Control
             line.Position = new Vector2(0, stepSize*(index+0.5f));
             this.Lines.AddChild(line);
         }
-        
+
         for (int index = 0; index < targetTickCount.X; index++)
         {
             ColorRect line = this.CreateNewColorRect();
@@ -112,7 +112,7 @@ public partial class Chart : Control
             this.Lines.AddChild(line);
         }
     }
-    
+
     private Label CreateNewLabel()
     {
         Label label = new();
@@ -120,7 +120,7 @@ public partial class Chart : Control
         label.AddThemeStyleboxOverride("normal", new StyleBoxEmpty());
         return label;
     }
-    
+
     private ColorRect CreateNewColorRect()
     {
         ColorRect colorRect = new();

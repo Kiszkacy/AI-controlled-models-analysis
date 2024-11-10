@@ -1,5 +1,6 @@
-using Godot;
 using System;
+
+using Godot;
 
 public partial class DialogConfirm : Control
 {
@@ -9,7 +10,7 @@ public partial class DialogConfirm : Control
     public string Description { get; set; } = "You cannot undo this action.";
     [Export]
     public Color BackgroundColor { get; set; } = new Color(0x20202080);
-    
+
     [ExportGroup("DO NOT EDIT THESE")]
     [Export]
     private ColorRect DarkenBackground;
@@ -23,17 +24,18 @@ public partial class DialogConfirm : Control
     private Button CancelButton;
     [Export]
     private Button ConfirmButton;
-    
-    
+
+
     public event Action Confirmed;
     public event Action Cancelled;
-    
+
     public override void _Ready()
     {
         this.Setup();
     }
 
-    private void Setup() {
+    private void Setup()
+    {
         this.TitleLabel.Text = this.Title;
         this.DescriptionLabel.Text = this.Description;
         this.DarkenBackground.Color = this.BackgroundColor;
@@ -47,20 +49,24 @@ public partial class DialogConfirm : Control
         this.CancelButton.Pressed += this.OnCancelClick;
         this.ConfirmButton.Pressed += this.OnConfirmClick;
     }
-    
-    private void OnCloseClick() {
+
+    private void OnCloseClick()
+    {
         this.Close();
     }
-    
-    private void OnConfirmClick() {
+
+    private void OnConfirmClick()
+    {
         this.Confirmed?.Invoke();
     }
-    
-    private void OnCancelClick() {
+
+    private void OnCancelClick()
+    {
         this.Close();
     }
-    
-    private void Close() {
+
+    private void Close()
+    {
         this.Cancelled?.Invoke();
         this.Visible = false;
     }
