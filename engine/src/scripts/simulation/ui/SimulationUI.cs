@@ -38,6 +38,8 @@ public partial class SimulationUI : CanvasLayer
     public Camera Camera;
     [Export]
     public Control SubmenuNode;
+    [Export]
+    public ColorRect FadeoutBackground;
 
     [Export]
     public ButtonHandler SimulationViewButton;
@@ -45,8 +47,18 @@ public partial class SimulationUI : CanvasLayer
     public ButtonHandler AnalysisViewButton;
     [Export]
     public ButtonHandler ConfigurationViewButton;
+    
+    [Export]
+    public Control SimulationViewNode;
+    [Export]
+    public Control AnalysisViewNode;
+    [Export]
+    public Control ConfigurationViewNode;
 
     private ViewMode ViewMode = ViewMode.Simulation;
+
+    private readonly int FadeoutBackgroundZIndex = 2;
+    private readonly int FadeoutBackgroundZIndexWhenNested = 4;
 
     private bool isSubmenuVisible => this.SubmenuNode.Visible;
 
@@ -63,6 +75,8 @@ public partial class SimulationUI : CanvasLayer
         }
         else if (@event.IsActionPressed("escape") && isSubmenuVisible)
         {
+            this.FadeoutBackground.Visible = this.ViewMode != ViewMode.Simulation;
+            this.FadeoutBackground.ZIndex = this.FadeoutBackgroundZIndex;
             this.SubmenuNode.Visible = false;
             SimulationManager.Instance.Resume(this);
         }
@@ -97,6 +111,8 @@ public partial class SimulationUI : CanvasLayer
 
     private void OnSettingsClick()
     {
+        this.FadeoutBackground.Visible = true;
+        this.FadeoutBackground.ZIndex = this.FadeoutBackgroundZIndexWhenNested;
         this.SubmenuNode.Visible = true;
         SimulationManager.Instance.Pause(this);
     }
@@ -156,18 +172,24 @@ public partial class SimulationUI : CanvasLayer
     {
         this.ViewMode = ViewMode.Simulation;
         this.UpdateViewButtonsState();
+        this.UpdateViewVisibility();
+        this.UpdateFadeoutBackgroundVisibility();
     }
 
     private void OnAnalysisViewClick()
     {
         this.ViewMode = ViewMode.Analysis;
         this.UpdateViewButtonsState();
+        this.UpdateViewVisibility();
+        this.UpdateFadeoutBackgroundVisibility();
     }
 
     private void OnConfigurationViewClick()
     {
         this.ViewMode = ViewMode.Configuration;
         this.UpdateViewButtonsState();
+        this.UpdateViewVisibility();
+        this.UpdateFadeoutBackgroundVisibility();
     }
 
     private void OnCenterCameraClick()
@@ -206,5 +228,18 @@ public partial class SimulationUI : CanvasLayer
         this.AnalysisViewButton.UpdateAfterDisabledChange();
         this.ConfigurationViewButton.Disabled = this.ViewMode == ViewMode.Configuration;
         this.ConfigurationViewButton.UpdateAfterDisabledChange();
+    }
+
+    private void UpdateViewVisibility()
+    {
+        this.SimulationViewNode.Visible = this.ViewMode == ViewMode.Simulation || this.ViewMode == ViewMode.Analysis;
+        this.AnalysisViewNode.Visible = this.ViewMode == ViewMode.Analysis;
+        this.ConfigurationViewNode.Visible = this.ViewMode == ViewMode.Configuration;
+    }
+
+    private void UpdateFadeoutBackgroundVisibility()
+    {
+        this.FadeoutBackground.Visible = this.ViewMode != ViewMode.Simulation || this.SubmenuNode.Visible;
+        GD.Print(this.FadeoutBackground.Visible);
     }
 }
