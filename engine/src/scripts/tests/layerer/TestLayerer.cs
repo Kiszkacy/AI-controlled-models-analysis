@@ -106,4 +106,12 @@ public class TestLayerer
                 foreach (string name in before.Before) this.mustBeBefore[test].Add(Type.GetType($"{name}Test")!);
         }
     }
+
+    public void Clear()
+    {
+        this.layerZero = 0;
+        this.queue.Clear();
+        this.layers.Clear();
+        this.mustBeBefore.Clear();
+    }
 }
