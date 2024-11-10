@@ -7,7 +7,7 @@ public partial class EnvironmentTracker : Node
 {
     [Export] public float CacheIntervalSeconds = 5f;
     [Export] public int MaxDataPoints = 60;
-    private Godot.Timer cacheTimer;
+    private Timer cacheTimer;
     public List<int> AgentsCountData = new();
     public List<float> AgentsMeanEnergyData = new();
     public List<float> AgentsEnergySumData = new();
@@ -17,14 +17,13 @@ public partial class EnvironmentTracker : Node
 
     public override void _Ready()
     {
-        cacheTimer = new Godot.Timer
-        {
-            WaitTime = CacheIntervalSeconds,
-            OneShot = false
-        };
-        cacheTimer.Connect("timeout", new Callable(this, nameof(CacheData)));
-        AddChild(cacheTimer);
-        cacheTimer.Start();
+        this.cacheTimer = new Timer(this.CacheData);
+        this.cacheTimer.Activate(this.CacheIntervalSeconds);
+    }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        this.cacheTimer.Process(delta);
     }
 
     private void CacheData()
@@ -36,6 +35,7 @@ public partial class EnvironmentTracker : Node
         FoodToAgentsRatioData.Add(FoodToAgentsRatio());
         TimeData.Add(Time.GetTicksMsec());
         TrimData();
+        this.cacheTimer.Activate(this.CacheIntervalSeconds);
     }
 
     private void TrimData()
