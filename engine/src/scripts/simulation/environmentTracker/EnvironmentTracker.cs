@@ -13,7 +13,7 @@ public partial class EnvironmentTracker : Node
     public List<float> AgentsEnergySumData = new();
     public List<float> EnvironmentTotalEnergyData = new();
     public List<float> FoodToAgentsRatioData = new();
-    public List<ulong> TimeData = new();
+    public List<double> TimeData = new();
 
     public override void _Ready()
     {
@@ -33,8 +33,9 @@ public partial class EnvironmentTracker : Node
         AgentsEnergySumData.Add(AgentsEnergySum());
         EnvironmentTotalEnergyData.Add(EnvironmentTotalEnergy());
         FoodToAgentsRatioData.Add(FoodToAgentsRatio());
-        TimeData.Add(Time.GetTicksMsec());
+        TimeData.Add(SimulationManager.Instance.TimePassed);
         TrimData();
+        EventManager.Instance.RegisterEvent(new NotifyEvent(null), EventChannel.EnvironmentTracker);
         this.cacheTimer.Activate(this.CacheIntervalSeconds);
     }
 
