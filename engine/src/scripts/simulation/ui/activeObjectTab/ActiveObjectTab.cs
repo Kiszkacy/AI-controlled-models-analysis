@@ -3,13 +3,13 @@ using Godot;
 
 public partial class ActiveObjectTab : TabContainer, Observable
 {
-    [Export] 
+    [Export]
     public Button Icon;
-    [Export] 
+    [Export]
     public Label Title;
-    [Export] 
+    [Export]
     public Label Description;
-    
+
     private Texture2D iconTree;
     private Texture2D iconBush;
     private Texture2D iconRock;
@@ -19,7 +19,7 @@ public partial class ActiveObjectTab : TabContainer, Observable
 
     private Trackable activeObject = null;
     private bool stickingOut = false;
-    
+
     public bool HasActiveObject => this.activeObject != null;
 
     public override void _Ready()
@@ -69,12 +69,12 @@ public partial class ActiveObjectTab : TabContainer, Observable
         }
 
         this.activeObject = (Trackable)activeObject;
-        
+
         if (activeObject is Tree)
         {
             this.Icon.Icon = this.iconTree;
             this.Title.Text = "Tree";
-        } 
+        }
         else if (activeObject is Bush)
         {
             this.Icon.Icon = this.iconBush;

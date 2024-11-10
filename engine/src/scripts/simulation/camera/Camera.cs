@@ -351,7 +351,7 @@ public partial class Camera : Camera2D, Observable
             if (nodeEvent.Node != null)
             {
                 this.Follow((Node2D)nodeEvent.Node);
-            } 
+            }
             else if (nodeEvent.Node == null && this.isFollowing)
             {
                 this.StopFollowing();

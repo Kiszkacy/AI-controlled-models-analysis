@@ -224,7 +224,7 @@ public partial class Agent : CharacterBody2D, Trackable
     public string[] GetInformation()
     {
         return new[] {
-            $"ID: {this.Id}", 
+            $"ID: {this.Id}",
             $"Position: ({this.GlobalPosition.X:F2}; {this.GlobalPosition.Y:F2})",
             $"Speed: {this.Speed:F2} px/sec",
             $"Max speed: {this.MaximumSpeed:F2} px/sec",
@@ -233,9 +233,9 @@ public partial class Agent : CharacterBody2D, Trackable
             $"Max acceleration: {this.MaximumAcceleration} px/sec²",
             $"Turn speed: {this.currentRotation:F2} rad/sec",
             $"Max turn speed: {this.MaximumTurnSpeed:F2} rad/sec",
-            $"Energy: {this.energy:F2}/{this.MaximumEnergy}", 
+            $"Energy: {this.energy:F2}/{this.MaximumEnergy}",
             $"Health: {this.health}/{this.MaximumHealth}",
-            $"Sight radius: {this.SightRadius} px", 
+            $"Sight radius: {this.SightRadius} px",
             $"Sight angle: {Mathf.RadToDeg(this.SightAngle):F2} deg",
             $"Distance to closest food: {(float.IsNaN(this.DistanceToClosestFood) ? "N/A" : $"{this.DistanceToClosestFood:F2} px")}",
             $"Angle to closest food: {(float.IsNaN(this.AngleToClosestFood) ? "N/A" : $"{Mathf.RadToDeg(this.AngleToClosestFood):F2} deg")}"

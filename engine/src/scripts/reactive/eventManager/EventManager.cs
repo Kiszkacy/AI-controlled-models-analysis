@@ -57,7 +57,7 @@ public sealed class EventManager : Singleton<EventManager>
             this.NotifyObservers(@event);
         }
         this.delayedEvents.Clear();
-        
+
         foreach ((EventChannel channel, List<IEvent> events) in this.delayedChannelEvents)
         {
             foreach (IEvent @event in events)
@@ -111,7 +111,7 @@ public sealed class EventManager : Singleton<EventManager>
             this.observers.Remove(observer);
         }
     }
-    
+
     private List<T> GetOrCreateEventList<T>(EventChannel channel, Dictionary<EventChannel, List<T>> dictionary)
     {
         if (!dictionary.TryGetValue(channel, out var list))

@@ -25,7 +25,7 @@ public abstract partial class EnvironmentObject : Node2D, Bucketable, Trackable
     {
 
     }
-    
+
     public virtual string[] GetInformation()
     {
         return new[] { "EnvironmentObject" };

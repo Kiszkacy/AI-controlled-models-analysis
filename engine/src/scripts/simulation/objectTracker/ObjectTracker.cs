@@ -6,9 +6,9 @@ public partial class ObjectTracker : Node2D
 {
     [Export]
     private Camera camera;
-    [Export] 
+    [Export]
     private Label TargetLabel;
-    
+
     [System.Obsolete]
     private BiomeMap biomeMap;
     private Node2D activeObject;
