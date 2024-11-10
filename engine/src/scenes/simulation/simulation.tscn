@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://dkr0oii6smq6l"]
+[gd_scene load_steps=44 format=3 uid="uid://dkr0oii6smq6l"]
 
 [ext_resource type="PackedScene" uid="uid://byp6g5lwnjkly" path="res://src/scenes/ui/button/iconButtonSmall.tscn" id="1_4ndtu"]
 [ext_resource type="Script" path="res://src/scripts/simulation/ui/SimulationUI.cs" id="1_p1yyt"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bnh58qujo7guv" path="res://assets/icons/solid/xmark.svg" id="3_nt6u3"]
 [ext_resource type="Theme" uid="uid://de0xa04ygj6gw" path="res://assets/ui/themes/grayTheme.tres" id="4_e5ekc"]
 [ext_resource type="Script" path="res://src/scripts/simulation/supervisor/Supervisor.cs" id="4_wrt4n"]
+[ext_resource type="Script" path="res://src/scripts/simulation/environmentTracker/EnvironmentTracker.cs" id="5_4jkj5"]
 [ext_resource type="Script" path="res://src/scripts/simulation/camera/Camera.cs" id="5_kqo4m"]
 [ext_resource type="StyleBox" uid="uid://3x5qu6tt7fqi" path="res://assets/ui/themes/screens/simulation/topBar.tres" id="5_pug4t"]
 [ext_resource type="PackedScene" uid="uid://bgl1wbpqole17" path="res://src/scenes/ui/button/iconButton.tscn" id="6_fhbk4"]
@@ -191,6 +192,9 @@ MoveSpeed = 500.0
 DragSmoothness = 0.25
 DoubleClickSmoothness = 0.25
 EdgeMoveMargin = 16.0
+
+[node name="EnvironmentTracker" type="Node" parent="."]
+script = ExtResource("5_4jkj5")
 
 [node name="UI" type="CanvasLayer" parent="." node_paths=PackedStringArray("ExitButton", "SettingsButton", "PauseButton", "PauseNode", "SimulationSpeedLevelOneButton", "SimulationSpeedLevelTwoButton", "SimulationSpeedLevelThreeButton", "SimulationSpeedLevelFourButton", "SimulationTimeLabel", "SystemTimeLabel", "CenterCameraButton", "Camera", "SubmenuNode", "SimulationViewButton", "AnalysisViewButton", "ConfigurationViewButton")]
 process_mode = 3
