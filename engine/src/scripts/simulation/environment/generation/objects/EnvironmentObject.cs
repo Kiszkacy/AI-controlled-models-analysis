@@ -1,7 +1,7 @@
 
 using Godot;
 
-public partial class EnvironmentObject : Node2D, Bucketable
+public abstract partial class EnvironmentObject : Node2D, Bucketable, Trackable
 {
     [Export(PropertyHint.Range, "0.5,1.5,")]
     public float InitialScale { get; set; } = 1.0f;
@@ -16,20 +16,6 @@ public partial class EnvironmentObject : Node2D, Bucketable
         this.Scale = new Vector2(this.InitialScale, this.InitialScale);
     }
 
-    public string GetStats()
-    {
-        string typeName = this is Tree ? "Tree" : this is Bush ? "Bush" : "Rock";
-        string stats = $"{typeName}";
-
-        if (this.HasNode("FoodSpawner") && this.GetNode("FoodSpawner") is FoodSpawner spawner)
-        {
-            stats += "\n";
-            stats += spawner.GetStats();
-        }
-
-        return stats;
-    }
-
     public EnvironmentObject(float initialScale)
     {
         this.InitialScale = Mathf.Clamp(initialScale, 0.5f, 1.5f);
@@ -38,5 +24,10 @@ public partial class EnvironmentObject : Node2D, Bucketable
     public EnvironmentObject()
     {
 
+    }
+    
+    public virtual string[] GetInformation()
+    {
+        return new[] { "EnvironmentObject" };
     }
 }

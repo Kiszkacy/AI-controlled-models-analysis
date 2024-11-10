@@ -3,7 +3,7 @@ using System;
 
 using Godot;
 
-public partial class FoodSpawner : Node, Initializable // TODO remove exports, node inheritance and made it into a normal script if performance is bad
+public partial class FoodSpawner : Node, Initializable, Trackable // TODO remove exports, node inheritance and made it into a normal script if performance is bad
 {
     [Export(PropertyHint.Range, "0,25,or_greater")]
     public float FoodPerMinute { get; set; } = 4;
@@ -119,6 +119,7 @@ public partial class FoodSpawner : Node, Initializable // TODO remove exports, n
     }
 
     private bool IsFull => this.GetChildren().Count >= this.MaxFoodCount;
+    private int FoodCount => this.GetChildren().Count;
 
     public FoodSpawnerSaveData Save()
     {
@@ -131,13 +132,15 @@ public partial class FoodSpawner : Node, Initializable // TODO remove exports, n
         this.spawnFoodTimer.IsActive = saveData.TimerIsActive;
     }
 
-    public string GetStats()
+    public string[] GetInformation()
     {
-        return $"Food Spawner:\n" +
-               $"- Timer Active: {this.spawnFoodTimer.IsActive}\n" +
-               $"- Time Left: {this.spawnFoodTimer.Time:F2} seconds\n" +
-               $"- Food Energy Nutrition: {this.FoodEnergyNutrition}\n" +
-               $"- Food Per Minute: {this.FoodPerMinute}";
+        return new[]
+        {
+            $"New food in: {(this.spawnFoodTimer.IsActive ? this.spawnFoodTimer.Time.ToString("F2") : "NaN")} seconds",
+            $"Food energy nutrition: {this.FoodEnergyNutrition}",
+            $"Food per minute: {this.FoodPerMinute}",
+            $"Food count: {this.FoodCount}/{this.MaxFoodCount}",
+        };
     }
     public FoodSpawner()
     {

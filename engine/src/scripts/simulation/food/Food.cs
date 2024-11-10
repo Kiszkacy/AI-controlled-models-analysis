@@ -3,7 +3,7 @@ using System.IO;
 
 using Godot;
 
-public partial class Food : Area2D, Bucketable
+public partial class Food : Area2D, Bucketable, Trackable
 {
     [Export(PropertyHint.Range, "1,100,or_greater")]
     public float EnergyNutrition { get; set; } = 30.0f;
@@ -57,12 +57,21 @@ public partial class Food : Area2D, Bucketable
     public FoodSaveData Save()
     {
         FoodSpawner parent = (FoodSpawner)this.GetParent();
-        return new FoodSaveData(this.GlobalPosition, parent.SpawnPositionTarget.GlobalPosition,
-            this.lifetimeTimer.Time);
+        return new FoodSaveData(this.GlobalPosition, parent.SpawnPositionTarget.GlobalPosition, this.lifetimeTimer.Time);
     }
 
     public Food()
     {
         this.lifetimeTimer = new(this.Die);
+    }
+
+    public string[] GetInformation()
+    {
+        return new[]
+        {
+            $"Position: ({this.GlobalPosition.X:F2}; {this.GlobalPosition.Y:F2})",
+            $"Will disappear in: {this.lifetimeTimer.Time:F2} seconds",
+            $"Nutrition: {this.EnergyNutrition}",
+        };
     }
 }
