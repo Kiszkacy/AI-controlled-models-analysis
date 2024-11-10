@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class Camera : Camera2D
+public partial class Camera : Camera2D, Observable
 {
     [Export(PropertyHint.Range, "100,1000,10,or_greater")]
     public float MoveSpeed { get; set; } = 300.0f; // in px/sec
@@ -54,6 +54,7 @@ public partial class Camera : Camera2D
     {
         this.Zoom = new Vector2(0.5f, 0.5f);
         this.dragMotionTimer = new Timer(this.DragMotionTimeout);
+        EventManager.Instance.Subscribe(this, EventChannel.ObjectTracker);
     }
 
     public override void _Input(InputEvent @event)
@@ -341,5 +342,20 @@ public partial class Camera : Camera2D
     private void DragMotionTimeout()
     {
         this.overrideDragCursorShape = true;
+    }
+
+    public void Notify(IEvent @event)
+    {
+        if (@event is NodeEvent nodeEvent)
+        {
+            if (nodeEvent.Node != null)
+            {
+                this.Follow((Node2D)nodeEvent.Node);
+            } 
+            else if (nodeEvent.Node == null && this.isFollowing)
+            {
+                this.StopFollowing();
+            }
+        }
     }
 }

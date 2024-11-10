@@ -4,17 +4,20 @@ using Godot;
 
 public partial class ObjectTracker : Node2D
 {
-    private Node2D activeObject;
+    [Export]
     private Camera camera;
+    [Export] 
+    private Label TargetLabel;
+    
     [System.Obsolete]
     private BiomeMap biomeMap;
+    private Node2D activeObject;
     private string lastStats;
 
     [System.Obsolete]
     public override void _Ready()
     {
-        camera = GetNode<Camera>("/root/Root/Camera");
-        biomeMap = GetNode<BiomeMap>("/root/Root/Environment/BiomeMap");
+        this.biomeMap = GetNode<BiomeMap>("/root/Root/Environment/BiomeMap");
     }
 
     public override void _Input(InputEvent @event)
@@ -32,22 +35,26 @@ public partial class ObjectTracker : Node2D
             if (result.Count > 0)
             {
                 var collider = result[0]["collider"].As<Node2D>();
-                if (collider is Agent || collider is EnvironmentObject)
+                if (collider is Trackable)
                 {
-                    SetTracking(collider);
+                    this.SetTracking(collider);
                 }
                 else
                 {
                     var parent = (Node2D)collider.GetParent();
-                    SetTracking(parent);
+                    this.SetTracking(parent);
                 }
+            }
+            else
+            {
+                this.SetTracking(null);
             }
         }
         else if (@event.IsActionPressed("focus.on.active.object"))
         {
             if (activeObject != null)
             {
-                camera.Follow(activeObject);
+                this.camera.Follow(activeObject);
             }
         }
     }
@@ -55,62 +62,30 @@ public partial class ObjectTracker : Node2D
     [System.Obsolete]
     public override void _Process(double delta)
     {
-        Vector2 mousePos = GetGlobalMousePosition();
-        BiomeType currentBiome = biomeMap.GetBiomeAtGlobalPosition(mousePos);
-        DisplayBiomeType(currentBiome);
-
-        if (activeObject != null)
-        {
-            string currentStats = "";
-            if (activeObject is Agent agent)
-            {
-                currentStats = agent.GetStats();
-            }
-            else if (activeObject is EnvironmentObject envObject)
-            {
-                currentStats = envObject.GetStats();
-            }
-
-            if (currentStats != lastStats)
-            {
-                HideStats();
-                DisplayStats(currentStats);
-                lastStats = currentStats;
-            }
-        }
+        Vector2 mousePos = this.GetGlobalMousePosition();
+        BiomeType currentBiome = this.biomeMap.GetBiomeAtGlobalPosition(mousePos);
+        this.DisplayBiomeType(currentBiome);
+        this.CheckIfActiveObjectExists();
     }
 
     private void SetTracking(Node2D obj)
     {
-        activeObject = obj;
-        string stats = "";
-        if (activeObject is Agent agent)
-        {
-            stats = agent.GetStats();
-        }
-        else if (activeObject is EnvironmentObject envObject)
-        {
-            stats = envObject.GetStats();
-        }
-
-        lastStats = stats;
-        DisplayStats(stats);
-    }
-
-    private void DisplayStats(string stats)
-    {
-        NeatPrinter.Start()
-            .Print(stats)
-            .End();
-    }
-
-    private void HideStats()
-    {
-
+        this.activeObject = obj;
+        EventManager.Instance.RegisterEvent(new NodeEvent(this.activeObject), EventChannel.ObjectTracker);
     }
 
     private void DisplayBiomeType(BiomeType biome)
     {
+        // TODO add to UI
+        NeatPrinter.Start().Print(biome.ToString()).End();
+    }
 
+    private void CheckIfActiveObjectExists()
+    {
+        if (this.activeObject != null && !IsInstanceValid(this.activeObject)) // if was deleted via godot by queueFree e.g. agent died
+        {
+            this.activeObject = null;
+            EventManager.Instance.RegisterEvent(new NodeEvent(this.activeObject), EventChannel.ObjectTracker);
+        }
     }
 }
