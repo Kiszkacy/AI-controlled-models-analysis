@@ -19,5 +19,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\scenes\ui\" />
+    <Folder Include="src\scripts\screens\settings\controlsSettings\" />
+    <Folder Include="src\scripts\screens\settings\saveSettings\" />
   </ItemGroup>
 </Project>

@@ -1,9 +1,1055 @@
-[gd_scene format=3 uid="uid://beyutvretnd5s"]
+[gd_scene load_steps=50 format=3 uid="uid://beyutvretnd5s"]
 
-[node name="Settings" type="Control"]
+[ext_resource type="FontFile" uid="uid://chjp63k0jm20m" path="res://assets/fonts/inter/Inter_18pt-Black.ttf" id="1_jf5ra"]
+[ext_resource type="StyleBox" uid="uid://dlbaa32luhlcp" path="res://assets/ui/themes/button/buttonDarkDisabled.tres" id="2_aju34"]
+[ext_resource type="StyleBox" uid="uid://cxhuvqxdolhpj" path="res://assets/ui/themes/button/buttonDarkHover.tres" id="3_pfpqn"]
+[ext_resource type="StyleBox" uid="uid://c6dv2cnjqvmwo" path="res://assets/ui/themes/button/buttonDarkNormal.tres" id="4_gth8a"]
+[ext_resource type="StyleBox" uid="uid://depeknfn6m1rk" path="res://assets/ui/themes/button/buttonDarkPressed.tres" id="5_e0vln"]
+[ext_resource type="StyleBox" uid="uid://exp7gp7r36e8" path="res://assets/ui/themes/tab/tabPanel.tres" id="6_0sd08"]
+[ext_resource type="Script" path="res://src/scripts/screens/settings/Settings.cs" id="6_dqbg0"]
+[ext_resource type="StyleBox" uid="uid://u0x1uvtrrpn4" path="res://assets/ui/themes/tab/tabDisabled.tres" id="7_prub7"]
+[ext_resource type="StyleBox" uid="uid://dbeq7wnb3gso0" path="res://assets/ui/themes/tab/tabUnselected.tres" id="8_txqiq"]
+[ext_resource type="StyleBox" uid="uid://rjqmoo5dyhu" path="res://assets/ui/themes/tab/tabSelected.tres" id="9_l67st"]
+[ext_resource type="Texture2D" uid="uid://cysionmgv7rpb" path="res://assets/icons/solid/angles-left.svg" id="10_58tgo"]
+[ext_resource type="Script" path="res://src/scripts/screens/settings/DisplaySettings.cs" id="11_c1m7i"]
+[ext_resource type="Texture2D" uid="uid://b5trv26u07qpe" path="res://assets/icons/solid/angles-right.svg" id="11_wwvm4"]
+[ext_resource type="Texture2D" uid="uid://ct4lnhjfna7ku" path="res://assets/icons/solid/rotate-left.svg" id="14_gsnxk"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t6245"]
+
+[sub_resource type="Theme" id="Theme_fcfkk"]
+default_font = ExtResource("1_jf5ra")
+default_font_size = 16
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_focus_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 1)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 32
+Button/font_sizes/font_size = 16
+Button/fonts/font = ExtResource("1_jf5ra")
+Button/styles/disabled = ExtResource("2_aju34")
+Button/styles/focus = SubResource("StyleBoxEmpty_t6245")
+Button/styles/hover = ExtResource("3_pfpqn")
+Button/styles/normal = ExtResource("4_gth8a")
+Button/styles/pressed = ExtResource("5_e0vln")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_as62a"]
+
+[sub_resource type="Theme" id="Theme_wgahk"]
+default_font = ExtResource("1_jf5ra")
+default_font_size = 16
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_focus_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 1)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 32
+Button/font_sizes/font_size = 16
+Button/fonts/font = ExtResource("1_jf5ra")
+Button/styles/disabled = ExtResource("2_aju34")
+Button/styles/focus = SubResource("StyleBoxEmpty_as62a")
+Button/styles/hover = ExtResource("3_pfpqn")
+Button/styles/normal = ExtResource("4_gth8a")
+Button/styles/pressed = ExtResource("5_e0vln")
+
+[sub_resource type="Gradient" id="Gradient_kun3h"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0, 0, 0, 0.588235, 1, 1, 1, 0.870588, 0, 0, 0, 0.588235)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5bokk"]
+gradient = SubResource("Gradient_kun3h")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uovf8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vgsvp"]
+
+[sub_resource type="Theme" id="Theme_i8qf3"]
+default_font = ExtResource("1_jf5ra")
+default_font_size = 32
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 1)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 32
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 16
+Button/fonts/font = ExtResource("1_jf5ra")
+Button/styles/disabled = ExtResource("2_aju34")
+Button/styles/focus = SubResource("StyleBoxEmpty_uovf8")
+Button/styles/hover = ExtResource("3_pfpqn")
+Button/styles/normal = ExtResource("4_gth8a")
+Button/styles/pressed = ExtResource("5_e0vln")
+TabContainer/colors/font_hovered_color = Color(0.372549, 0.458824, 0.568627, 1)
+TabContainer/colors/font_selected_color = Color(1, 1, 1, 1)
+TabContainer/colors/font_unselected_color = Color(0.466667, 0.552941, 0.662745, 1)
+TabContainer/constants/side_margin = 16
+TabContainer/fonts/font = ExtResource("1_jf5ra")
+TabContainer/styles/panel = ExtResource("6_0sd08")
+TabContainer/styles/tab_disabled = ExtResource("7_prub7")
+TabContainer/styles/tab_focus = SubResource("StyleBoxEmpty_vgsvp")
+TabContainer/styles/tab_hovered = ExtResource("8_txqiq")
+TabContainer/styles/tab_selected = ExtResource("9_l67st")
+TabContainer/styles/tab_unselected = ExtResource("8_txqiq")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_17v1a"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ibrdh"]
+
+[sub_resource type="Theme" id="Theme_3ouoy"]
+default_font = ExtResource("1_jf5ra")
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 1)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 32
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 16
+Button/fonts/font = ExtResource("1_jf5ra")
+Button/styles/disabled = ExtResource("2_aju34")
+Button/styles/focus = SubResource("StyleBoxEmpty_17v1a")
+Button/styles/hover = ExtResource("3_pfpqn")
+Button/styles/normal = ExtResource("4_gth8a")
+Button/styles/pressed = ExtResource("5_e0vln")
+TabContainer/colors/font_hovered_color = Color(0.372549, 0.458824, 0.568627, 1)
+TabContainer/colors/font_selected_color = Color(1, 1, 1, 1)
+TabContainer/colors/font_unselected_color = Color(0.466667, 0.552941, 0.662745, 1)
+TabContainer/constants/side_margin = 16
+TabContainer/fonts/font = ExtResource("1_jf5ra")
+TabContainer/styles/panel = ExtResource("6_0sd08")
+TabContainer/styles/tab_disabled = ExtResource("7_prub7")
+TabContainer/styles/tab_focus = SubResource("StyleBoxEmpty_ibrdh")
+TabContainer/styles/tab_hovered = ExtResource("8_txqiq")
+TabContainer/styles/tab_selected = ExtResource("9_l67st")
+TabContainer/styles/tab_unselected = ExtResource("8_txqiq")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5nsdw"]
+bg_color = Color(0.262745, 0.262745, 0.262745, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="Theme" id="Theme_fgj78"]
+default_font = ExtResource("1_jf5ra")
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 1)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 32
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 16
+Button/fonts/font = ExtResource("1_jf5ra")
+Button/styles/disabled = ExtResource("2_aju34")
+Button/styles/focus = SubResource("StyleBoxEmpty_17v1a")
+Button/styles/hover = ExtResource("3_pfpqn")
+Button/styles/normal = ExtResource("4_gth8a")
+Button/styles/pressed = ExtResource("5_e0vln")
+TabContainer/colors/font_hovered_color = Color(0.372549, 0.458824, 0.568627, 1)
+TabContainer/colors/font_selected_color = Color(1, 1, 1, 1)
+TabContainer/colors/font_unselected_color = Color(0.466667, 0.552941, 0.662745, 1)
+TabContainer/constants/side_margin = 16
+TabContainer/fonts/font = ExtResource("1_jf5ra")
+TabContainer/styles/panel = ExtResource("6_0sd08")
+TabContainer/styles/tab_disabled = ExtResource("7_prub7")
+TabContainer/styles/tab_focus = SubResource("StyleBoxEmpty_ibrdh")
+TabContainer/styles/tab_hovered = ExtResource("8_txqiq")
+TabContainer/styles/tab_selected = ExtResource("9_l67st")
+TabContainer/styles/tab_unselected = ExtResource("8_txqiq")
+
+[sub_resource type="Theme" id="Theme_nbuut"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s6p45"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_khn2n"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n5j7d"]
+bg_color = Color(0.352941, 0.352941, 0.352941, 1)
+
+[sub_resource type="Gradient" id="Gradient_i1is5"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.262745, 0.262745, 0.262745, 1, 0.262745, 0.262745, 0.262745, 0, 0.262745, 0.262745, 0.262745, 1)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_djccj"]
+gradient = SubResource("Gradient_i1is5")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hwhcg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vtxd2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_okxbj"]
+bg_color = Color(0.352941, 0.352941, 0.352941, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_knehp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xk2i6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_73ps1"]
+bg_color = Color(0.352941, 0.352941, 0.352941, 1)
+
+[sub_resource type="Theme" id="Theme_vb3hh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vpoe4"]
+bg_color = Color(0.254902, 0.352941, 0.466667, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+expand_margin_left = 20.0
+expand_margin_right = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v8dj8"]
+bg_color = Color(0.164706, 0.219608, 0.298039, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+expand_margin_left = 20.0
+expand_margin_right = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mfpqo"]
+bg_color = Color(0.454902, 0.490196, 0.541176, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+expand_margin_left = 20.0
+expand_margin_right = 20.0
+
+[sub_resource type="Theme" id="Theme_ywg3x"]
+default_font_size = 22
+
+[sub_resource type="Theme" id="Theme_55jmf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ootqy"]
+bg_color = Color(0.466667, 0.552941, 0.662745, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="Theme" id="Theme_nxl4m"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cag76"]
+bg_color = Color(0.878431, 0.882353, 0.866667, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[node name="Settings" type="Control" node_paths=PackedStringArray("TabContainer", "DisplaySettings", "SaveButton", "ResetButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = SubResource("Theme_fcfkk")
+script = ExtResource("6_dqbg0")
+TabContainer = NodePath("Background/TabContainer")
+DisplaySettings = NodePath("Background/TabContainer/Display")
+SaveButton = NodePath("Background/SaveButton")
+ResetButton = NodePath("Background/ResetButton")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_wgahk")
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect" type="ColorRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -475.0
+offset_top = 50.0
+offset_right = 475.0
+offset_bottom = 100.0
+grow_horizontal = 2
+color = Color(0.262745, 0.262745, 0.262745, 1)
+
+[node name="TextureRect" type="TextureRect" parent="Background/ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_5bokk")
+
+[node name="Label" type="Label" parent="Background/ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_i8qf3")
+theme_override_colors/font_color = Color(0.262745, 0.262745, 0.262745, 1)
+theme_override_font_sizes/font_size = 36
+text = "Settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TabContainer" type="TabContainer" parent="Background"]
+custom_minimum_size = Vector2(1280, 720)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_3ouoy")
+theme_override_constants/outline_size = 0
+theme_override_constants/side_margin = 40
+theme_override_constants/icon_separation = 0
+theme_override_font_sizes/font_size = 22
+theme_override_styles/panel = SubResource("StyleBoxFlat_5nsdw")
+current_tab = 2
+
+[node name="Display" type="Control" parent="Background/TabContainer" node_paths=PackedStringArray("ResolutionArrowLeft", "ResolutionArrowRight", "ResolutionLabel", "ModeArrowLeft", "ModeArrowRight", "ModeLabel", "LockMouseArrowLeft", "LockMouseArrowRight", "LockMouseLabel")]
+visible = false
+layout_mode = 2
+theme = SubResource("Theme_fgj78")
+script = ExtResource("11_c1m7i")
+ResolutionArrowLeft = NodePath("VBoxContainer/Resolution/Arrow Left")
+ResolutionArrowRight = NodePath("VBoxContainer/Resolution/Arrow Right")
+ResolutionLabel = NodePath("VBoxContainer/Resolution/Value")
+ModeArrowLeft = NodePath("VBoxContainer/Mode/Arrow Left")
+ModeArrowRight = NodePath("VBoxContainer/Mode/Arrow Right")
+ModeLabel = NodePath("VBoxContainer/Mode/Value")
+LockMouseArrowLeft = NodePath("VBoxContainer/Lock Mouse/Arrow Left")
+LockMouseArrowRight = NodePath("VBoxContainer/Lock Mouse/Arrow Right")
+LockMouseLabel = NodePath("VBoxContainer/Lock Mouse/Value")
+metadata/_tab_index = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/TabContainer/Display"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -426.5
+offset_top = -239.0
+offset_right = 426.5
+offset_bottom = 221.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 25
+
+[node name="Resolution" type="Button" parent="Background/TabContainer/Display/VBoxContainer"]
+custom_minimum_size = Vector2(0, 55)
+layout_mode = 2
+theme = SubResource("Theme_nbuut")
+theme_override_styles/hover = SubResource("StyleBoxFlat_s6p45")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_khn2n")
+theme_override_styles/normal = SubResource("StyleBoxFlat_n5j7d")
+
+[node name="TextureRect" type="TextureRect" parent="Background/TabContainer/Display/VBoxContainer/Resolution"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_djccj")
+
+[node name="ColorRect" type="ColorRect" parent="Background/TabContainer/Display/VBoxContainer/Resolution"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_right = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Background/TabContainer/Display/VBoxContainer/Resolution"]
+layout_mode = 0
+offset_left = 244.0
+offset_top = 10.0
+offset_right = 394.0
+offset_bottom = 45.0
+theme_override_font_sizes/font_size = 28
+text = "Resolution"
+
+[node name="Arrow Left" type="Button" parent="Background/TabContainer/Display/VBoxContainer/Resolution"]
+layout_mode = 0
+offset_left = 456.0
+offset_top = 7.0
+offset_right = 496.0
+offset_bottom = 47.0
+mouse_filter = 1
+icon = ExtResource("10_58tgo")
+flat = true
+
+[node name="Arrow Right" type="Button" parent="Background/TabContainer/Display/VBoxContainer/Resolution"]
+layout_mode = 0
+offset_left = 757.0
+offset_top = 7.0
+offset_right = 797.0
+offset_bottom = 47.0
+mouse_filter = 1
+button_mask = 3
+icon = ExtResource("11_wwvm4")
+flat = true
+
+[node name="Value" type="Label" parent="Background/TabContainer/Display/VBoxContainer/Resolution"]
+layout_mode = 0
+offset_left = 550.0
+offset_top = 10.0
+offset_right = 720.0
+offset_bottom = 45.0
+theme_override_font_sizes/font_size = 28
+text = "1920 x 1080"
+
+[node name="Mode" type="Button" parent="Background/TabContainer/Display/VBoxContainer"]
+custom_minimum_size = Vector2(0, 55)
+layout_mode = 2
+theme_override_styles/hover = SubResource("StyleBoxFlat_hwhcg")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vtxd2")
+theme_override_styles/normal = SubResource("StyleBoxFlat_okxbj")
+
+[node name="TextureRect" type="TextureRect" parent="Background/TabContainer/Display/VBoxContainer/Mode"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_djccj")
+
+[node name="ColorRect" type="ColorRect" parent="Background/TabContainer/Display/VBoxContainer/Mode"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_right = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Background/TabContainer/Display/VBoxContainer/Mode"]
+layout_mode = 0
+offset_left = 306.5
+offset_top = 10.0
+offset_right = 456.5
+offset_bottom = 45.0
+theme_override_font_sizes/font_size = 28
+text = "Mode
+"
+
+[node name="Arrow Left" type="Button" parent="Background/TabContainer/Display/VBoxContainer/Mode"]
+layout_mode = 0
+offset_left = 456.0
+offset_top = 7.0
+offset_right = 496.0
+offset_bottom = 47.0
+mouse_filter = 1
+icon = ExtResource("10_58tgo")
+flat = true
+
+[node name="Arrow Right" type="Button" parent="Background/TabContainer/Display/VBoxContainer/Mode"]
+layout_mode = 0
+offset_left = 757.0
+offset_top = 7.0
+offset_right = 797.0
+offset_bottom = 47.0
+mouse_filter = 1
+icon = ExtResource("11_wwvm4")
+flat = true
+
+[node name="Value" type="Label" parent="Background/TabContainer/Display/VBoxContainer/Mode"]
+layout_mode = 0
+offset_left = 550.0
+offset_top = 10.0
+offset_right = 720.0
+offset_bottom = 45.0
+theme_override_font_sizes/font_size = 28
+text = "Fullscreen
+"
+
+[node name="Lock Mouse" type="Button" parent="Background/TabContainer/Display/VBoxContainer"]
+custom_minimum_size = Vector2(0, 55)
+layout_mode = 2
+theme_override_styles/hover = SubResource("StyleBoxFlat_knehp")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_xk2i6")
+theme_override_styles/normal = SubResource("StyleBoxFlat_73ps1")
+
+[node name="TextureRect" type="TextureRect" parent="Background/TabContainer/Display/VBoxContainer/Lock Mouse"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_djccj")
+
+[node name="ColorRect" type="ColorRect" parent="Background/TabContainer/Display/VBoxContainer/Lock Mouse"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_right = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Background/TabContainer/Display/VBoxContainer/Lock Mouse"]
+layout_mode = 0
+offset_left = 220.5
+offset_top = 7.0
+offset_right = 387.5
+offset_bottom = 42.0
+theme_override_font_sizes/font_size = 28
+text = "Lock Mouse
+"
+
+[node name="Arrow Left" type="Button" parent="Background/TabContainer/Display/VBoxContainer/Lock Mouse"]
+layout_mode = 0
+offset_left = 456.0
+offset_top = 7.0
+offset_right = 496.0
+offset_bottom = 47.0
+mouse_filter = 1
+icon = ExtResource("10_58tgo")
+flat = true
+
+[node name="Arrow Right" type="Button" parent="Background/TabContainer/Display/VBoxContainer/Lock Mouse"]
+layout_mode = 0
+offset_left = 757.0
+offset_top = 7.0
+offset_right = 797.0
+offset_bottom = 47.0
+mouse_filter = 1
+icon = ExtResource("11_wwvm4")
+flat = true
+
+[node name="Value" type="Label" parent="Background/TabContainer/Display/VBoxContainer/Lock Mouse"]
+layout_mode = 0
+offset_left = 594.5
+offset_top = 7.0
+offset_right = 674.5
+offset_bottom = 42.0
+theme_override_font_sizes/font_size = 28
+text = "Yes
+"
+
+[node name="Controls" type="Control" parent="Background/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Background/TabContainer/Controls"]
+layout_mode = 0
+offset_left = 213.5
+offset_top = 103.0
+offset_right = 1066.5
+offset_bottom = 563.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/TabContainer/Controls/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 30
+
+[node name="Label" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Camera"
+horizontal_alignment = 1
+
+[node name="Camera Options" type="VBoxContainer" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Zoom sensitivity" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options"]
+custom_minimum_size = Vector2(0, 55)
+layout_mode = 2
+theme = SubResource("Theme_nbuut")
+theme_override_styles/hover = SubResource("StyleBoxFlat_s6p45")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_khn2n")
+theme_override_styles/normal = SubResource("StyleBoxFlat_n5j7d")
+
+[node name="TextureRect" type="TextureRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Zoom sensitivity"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_djccj")
+
+[node name="ColorRect" type="ColorRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Zoom sensitivity"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_right = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Zoom sensitivity"]
+layout_mode = 0
+offset_left = 166.5
+offset_top = 10.0
+offset_right = 402.5
+offset_bottom = 45.0
+theme_override_font_sizes/font_size = 28
+text = "Zoom sensitivity"
+
+[node name="HSlider" type="HSlider" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Zoom sensitivity"]
+layout_mode = 0
+offset_left = 504.75
+offset_top = 12.0
+offset_right = 774.75
+offset_bottom = 42.0
+mouse_filter = 1
+
+[node name="Max zoom" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options"]
+custom_minimum_size = Vector2(0, 55)
+layout_mode = 2
+theme = SubResource("Theme_nbuut")
+theme_override_styles/hover = SubResource("StyleBoxFlat_s6p45")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_khn2n")
+theme_override_styles/normal = SubResource("StyleBoxFlat_n5j7d")
+
+[node name="TextureRect" type="TextureRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Max zoom"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_djccj")
+
+[node name="ColorRect" type="ColorRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Max zoom"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_right = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Max zoom"]
+layout_mode = 0
+offset_left = 254.5
+offset_top = 10.0
+offset_right = 404.5
+offset_bottom = 45.0
+theme_override_font_sizes/font_size = 28
+text = "Max Zoom"
+
+[node name="Arrow Left" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Max zoom"]
+layout_mode = 0
+offset_left = 456.0
+offset_top = 7.0
+offset_right = 496.0
+offset_bottom = 47.0
+mouse_filter = 1
+icon = ExtResource("10_58tgo")
+flat = true
+
+[node name="Arrow Right" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Max zoom"]
+layout_mode = 0
+offset_left = 757.0
+offset_top = 7.0
+offset_right = 797.0
+offset_bottom = 47.0
+mouse_filter = 1
+button_mask = 3
+icon = ExtResource("11_wwvm4")
+flat = true
+
+[node name="Value" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Max zoom"]
+layout_mode = 0
+offset_left = 550.0
+offset_top = 10.0
+offset_right = 720.0
+offset_bottom = 45.0
+theme_override_font_sizes/font_size = 28
+text = "3.0
+"
+horizontal_alignment = 1
+
+[node name="Min zoom" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options"]
+custom_minimum_size = Vector2(0, 55)
+layout_mode = 2
+theme = SubResource("Theme_nbuut")
+theme_override_styles/hover = SubResource("StyleBoxFlat_s6p45")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_khn2n")
+theme_override_styles/normal = SubResource("StyleBoxFlat_n5j7d")
+
+[node name="TextureRect" type="TextureRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Min zoom"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_djccj")
+
+[node name="ColorRect" type="ColorRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Min zoom"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_right = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Min zoom"]
+layout_mode = 0
+offset_left = 258.5
+offset_top = 10.0
+offset_right = 408.5
+offset_bottom = 45.0
+theme_override_font_sizes/font_size = 28
+text = "Min Zoom"
+
+[node name="Arrow Left" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Min zoom"]
+layout_mode = 0
+offset_left = 456.0
+offset_top = 7.0
+offset_right = 496.0
+offset_bottom = 47.0
+mouse_filter = 1
+icon = ExtResource("10_58tgo")
+flat = true
+
+[node name="Arrow Right" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Min zoom"]
+layout_mode = 0
+offset_left = 757.0
+offset_top = 7.0
+offset_right = 797.0
+offset_bottom = 47.0
+mouse_filter = 1
+button_mask = 3
+icon = ExtResource("11_wwvm4")
+flat = true
+
+[node name="Value" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Min zoom"]
+layout_mode = 0
+offset_left = 550.0
+offset_top = 10.0
+offset_right = 720.0
+offset_bottom = 45.0
+theme_override_font_sizes/font_size = 28
+text = "0.3
+"
+horizontal_alignment = 1
+
+[node name="Edge move enabled" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options"]
+custom_minimum_size = Vector2(0, 55)
+layout_mode = 2
+theme = SubResource("Theme_nbuut")
+theme_override_styles/hover = SubResource("StyleBoxFlat_s6p45")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_khn2n")
+theme_override_styles/normal = SubResource("StyleBoxFlat_n5j7d")
+
+[node name="TextureRect" type="TextureRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move enabled"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_djccj")
+
+[node name="ColorRect" type="ColorRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move enabled"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_right = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move enabled"]
+layout_mode = 0
+offset_left = 126.5
+offset_top = 10.0
+offset_right = 396.5
+offset_bottom = 45.0
+theme_override_font_sizes/font_size = 28
+text = "Edge move enabled"
+
+[node name="CheckButton" type="CheckButton" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move enabled"]
+layout_mode = 0
+offset_left = 582.5
+offset_top = 1.0
+offset_right = 628.5
+offset_bottom = 27.0
+scale = Vector2(2, 2)
+mouse_filter = 1
+flat = true
+alignment = 1
+icon_alignment = 1
+expand_icon = true
+
+[node name="Edge move margin" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options"]
+custom_minimum_size = Vector2(0, 55)
+layout_mode = 2
+theme = SubResource("Theme_nbuut")
+theme_override_styles/hover = SubResource("StyleBoxFlat_s6p45")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_khn2n")
+theme_override_styles/normal = SubResource("StyleBoxFlat_n5j7d")
+
+[node name="TextureRect" type="TextureRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move margin"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_djccj")
+
+[node name="ColorRect" type="ColorRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move margin"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_right = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move margin"]
+layout_mode = 0
+offset_left = 143.5
+offset_top = 10.0
+offset_right = 399.5
+offset_bottom = 45.0
+theme_override_font_sizes/font_size = 28
+text = "Edge move margin"
+
+[node name="Arrow Left" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move margin"]
+layout_mode = 0
+offset_left = 456.0
+offset_top = 7.0
+offset_right = 496.0
+offset_bottom = 47.0
+mouse_filter = 1
+icon = ExtResource("10_58tgo")
+flat = true
+
+[node name="Arrow Right" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move margin"]
+layout_mode = 0
+offset_left = 757.0
+offset_top = 7.0
+offset_right = 797.0
+offset_bottom = 47.0
+mouse_filter = 1
+button_mask = 3
+icon = ExtResource("11_wwvm4")
+flat = true
+
+[node name="Value" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move margin"]
+layout_mode = 0
+offset_left = 550.0
+offset_top = 10.0
+offset_right = 720.0
+offset_bottom = 45.0
+theme_override_font_sizes/font_size = 28
+text = "50
+"
+horizontal_alignment = 1
+
+[node name="Edge move speed" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options"]
+custom_minimum_size = Vector2(0, 55)
+layout_mode = 2
+theme = SubResource("Theme_nbuut")
+theme_override_styles/hover = SubResource("StyleBoxFlat_s6p45")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_khn2n")
+theme_override_styles/normal = SubResource("StyleBoxFlat_n5j7d")
+
+[node name="TextureRect" type="TextureRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move speed"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_djccj")
+
+[node name="ColorRect" type="ColorRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move speed"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_right = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move speed"]
+layout_mode = 0
+offset_left = 143.5
+offset_top = 10.0
+offset_right = 399.5
+offset_bottom = 45.0
+theme_override_font_sizes/font_size = 28
+text = "Edge move speed"
+
+[node name="HSlider" type="HSlider" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move speed"]
+layout_mode = 0
+offset_left = 504.75
+offset_top = 12.0
+offset_right = 774.75
+offset_bottom = 42.0
+mouse_filter = 1
+
+[node name="Save & Load" type="Control" parent="Background/TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/TabContainer/Save & Load"]
+layout_mode = 0
+offset_left = 213.5
+offset_top = 103.0
+offset_right = 1066.5
+offset_bottom = 563.0
+
+[node name="SavePath" type="Button" parent="Background/TabContainer/Save & Load/VBoxContainer"]
+custom_minimum_size = Vector2(0, 55)
+layout_mode = 2
+theme = SubResource("Theme_nbuut")
+theme_override_styles/hover = SubResource("StyleBoxFlat_s6p45")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_khn2n")
+theme_override_styles/normal = SubResource("StyleBoxFlat_n5j7d")
+
+[node name="TextureRect" type="TextureRect" parent="Background/TabContainer/Save & Load/VBoxContainer/SavePath"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_djccj")
+
+[node name="Label" type="Label" parent="Background/TabContainer/Save & Load/VBoxContainer/SavePath"]
+layout_mode = 0
+offset_left = 223.5
+offset_top = 10.0
+offset_right = 402.5
+offset_bottom = 45.0
+theme_override_font_sizes/font_size = 28
+text = "Save files at:"
+
+[node name="FileDialog" type="FileDialog" parent="Background/TabContainer/Save & Load/VBoxContainer/SavePath"]
+
+[node name="Button" type="Button" parent="Background/TabContainer/Save & Load/VBoxContainer/SavePath"]
+layout_mode = 0
+offset_left = 569.5
+offset_top = 6.0
+offset_right = 649.5
+offset_bottom = 51.0
+mouse_filter = 1
+theme = SubResource("Theme_vb3hh")
+theme_override_styles/hover = SubResource("StyleBoxFlat_vpoe4")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_v8dj8")
+theme_override_styles/normal = SubResource("StyleBoxFlat_mfpqo")
+text = "Open explorer"
+
+[node name="ResetButton" type="Button" parent="Background"]
+custom_minimum_size = Vector2(250, 55)
+layout_mode = 0
+offset_left = 1006.0
+offset_top = 814.0
+offset_right = 1256.0
+offset_bottom = 874.0
+theme = SubResource("Theme_ywg3x")
+text = "Reset all to default"
+
+[node name="SaveButton" type="Button" parent="Background"]
+layout_mode = 0
+offset_left = 1284.0
+offset_top = 814.0
+offset_right = 1534.0
+offset_bottom = 874.0
+theme = SubResource("Theme_55jmf")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_ootqy")
+text = "Save changes"
+
+[node name="BackButton" type="Button" parent="Background"]
+custom_minimum_size = Vector2(55, 55)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.008
+anchor_bottom = 0.015
+offset_left = 36.0
+offset_top = 28.0
+offset_right = 52.64
+offset_bottom = 43.8
+theme = SubResource("Theme_nxl4m")
+theme_override_colors/icon_normal_color = Color(0.282353, 0.352941, 0.443137, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_cag76")
+icon = ExtResource("14_gsnxk")
+icon_alignment = 1
