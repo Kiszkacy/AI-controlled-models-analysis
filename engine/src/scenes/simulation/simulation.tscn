@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://dkr0oii6smq6l"]
+[gd_scene load_steps=48 format=3 uid="uid://d7ustprm3wu2"]
 
 [ext_resource type="PackedScene" uid="uid://byp6g5lwnjkly" path="res://src/scenes/ui/button/iconButtonSmall.tscn" id="1_4ndtu"]
 [ext_resource type="Script" path="res://src/scripts/simulation/ui/SimulationUI.cs" id="1_p1yyt"]
@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://bnh58qujo7guv" path="res://assets/icons/solid/xmark.svg" id="3_nt6u3"]
 [ext_resource type="Theme" uid="uid://de0xa04ygj6gw" path="res://assets/ui/themes/grayTheme.tres" id="4_e5ekc"]
 [ext_resource type="Script" path="res://src/scripts/simulation/supervisor/Supervisor.cs" id="4_wrt4n"]
-[ext_resource type="Script" path="res://src/scripts/simulation/environmentTracker/EnvironmentTracker.cs" id="5_4jkj5"]
 [ext_resource type="Script" path="res://src/scripts/simulation/camera/Camera.cs" id="5_kqo4m"]
 [ext_resource type="StyleBox" uid="uid://3x5qu6tt7fqi" path="res://assets/ui/themes/screens/simulation/topBar.tres" id="5_pug4t"]
 [ext_resource type="PackedScene" uid="uid://bgl1wbpqole17" path="res://src/scenes/ui/button/iconButton.tscn" id="6_fhbk4"]
@@ -30,6 +29,9 @@
 [ext_resource type="Script" path="res://src/scripts/simulation/ui/minimap/cameraBorder/CameraBorder.cs" id="23_juvhq"]
 [ext_resource type="PackedScene" uid="uid://dx6mu0kmrl85u" path="res://src/scenes/ui/button/buttonDarkSmall.tscn" id="27_c32ca"]
 [ext_resource type="PackedScene" uid="uid://cth570o6vdv8g" path="res://src/scenes/ui/button/buttonWhiteSmall.tscn" id="28_e5cgq"]
+[ext_resource type="Script" path="res://src/scripts/simulation/ui/activeObjectTab/ActiveObjectTab.cs" id="29_b2peg"]
+[ext_resource type="Script" path="res://src/scripts/simulation/objectTracker/ObjectTracker.cs" id="29_qq7m8"]
+[ext_resource type="Texture2D" uid="uid://he54r43t40s8" path="res://assets/icons/solid/circle-info.svg" id="30_pnhkp"]
 
 [sub_resource type="Gradient" id="Gradient_xy6gx"]
 offsets = PackedFloat32Array(0.0833333, 0.460784, 0.926471)
@@ -167,6 +169,19 @@ shadow_color = Color(0, 0, 0, 0.12549)
 shadow_size = 6
 anti_aliasing = false
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gdw0h"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_200ap"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
 [node name="Root" type="Node2D"]
 
 [node name="Initializer" type="Node" parent="."]
@@ -193,8 +208,10 @@ DragSmoothness = 0.25
 DoubleClickSmoothness = 0.25
 EdgeMoveMargin = 16.0
 
-[node name="EnvironmentTracker" type="Node" parent="."]
-script = ExtResource("5_4jkj5")
+[node name="ObjectTracker" type="Node2D" parent="." node_paths=PackedStringArray("camera", "TargetLabel")]
+script = ExtResource("29_qq7m8")
+camera = NodePath("../Camera")
+TargetLabel = NodePath("../UI/ActiveObjectTab/Active object/ActiveObjectDescription")
 
 [node name="UI" type="CanvasLayer" parent="." node_paths=PackedStringArray("ExitButton", "SettingsButton", "PauseButton", "PauseNode", "SimulationSpeedLevelOneButton", "SimulationSpeedLevelTwoButton", "SimulationSpeedLevelThreeButton", "SimulationSpeedLevelFourButton", "SimulationTimeLabel", "SystemTimeLabel", "CenterCameraButton", "Camera", "SubmenuNode", "SimulationViewButton", "AnalysisViewButton", "ConfigurationViewButton")]
 process_mode = 3
@@ -672,6 +689,81 @@ offset_right = 182.0
 offset_bottom = 42.0
 icon = ExtResource("3_nt6u3")
 flat = true
+
+[node name="ActiveObjectTab" type="TabContainer" parent="UI" node_paths=PackedStringArray("Icon", "Title", "Description")]
+offset_left = 1892.0
+offset_top = 608.0
+offset_right = 2372.0
+offset_bottom = 880.0
+rotation = -1.5708
+theme = ExtResource("4_e5ekc")
+tab_alignment = 2
+current_tab = 0
+script = ExtResource("29_b2peg")
+Icon = NodePath("Active object/Icon")
+Title = NodePath("Active object/ActiveObjectTitle")
+Description = NodePath("Active object/ActiveObjectDescription")
+
+[node name="Active object" type="Control" parent="UI/ActiveObjectTab"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Icon" parent="UI/ActiveObjectTab/Active object" instance=ExtResource("1_4ndtu")]
+layout_mode = 0
+offset_left = 480.0
+offset_right = 528.0
+rotation = 1.5708
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
+disabled = true
+icon = ExtResource("30_pnhkp")
+flat = true
+
+[node name="ActiveObjectTitle" type="Label" parent="UI/ActiveObjectTab/Active object"]
+layout_mode = 0
+offset_left = 480.0
+offset_top = 44.0
+offset_right = 644.0
+offset_bottom = 90.0
+rotation = 1.5708
+theme = ExtResource("10_7d1gs")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxEmpty_gdw0h")
+text = "No active object"
+vertical_alignment = 1
+
+[node name="Seperator" type="RichTextLabel" parent="UI/ActiveObjectTab/Active object"]
+layout_mode = 0
+offset_left = 432.0
+offset_top = 8.0
+offset_right = 434.0
+offset_bottom = 236.0
+theme = ExtResource("10_7d1gs")
+theme_override_styles/normal = SubResource("StyleBoxFlat_200ap")
+
+[node name="ActiveObjectDescription" type="Label" parent="UI/ActiveObjectTab/Active object"]
+layout_mode = 0
+offset_left = 424.0
+offset_top = 16.0
+offset_right = 464.0
+offset_bottom = 36.0
+rotation = 1.5708
+theme = ExtResource("10_7d1gs")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxEmpty_gdw0h")
 
 [node name="EndOfFrameProcessor" type="Node" parent="."]
 editor_description = "This node must be the last child of the Root node to work properly."

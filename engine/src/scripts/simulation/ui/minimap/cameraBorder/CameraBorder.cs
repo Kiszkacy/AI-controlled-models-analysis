@@ -18,7 +18,6 @@ public partial class CameraBorder : Control
     {
         // TODO this currently assumes that the screen size is 1920 x 1080 wont work properly on other resolutions
         Vector2 screenResolution = new(1920, 1080);
-        GD.Print(this.Camera.Zoom.Inverse());
         Vector2 environmentSize = EnvironmentManager.Instance.Environment.Size;
         Vector2 visibleEnvironmentSize = this.Camera.Zoom.Inverse() * screenResolution;
         Vector2 calculatedScale = visibleEnvironmentSize / environmentSize;
