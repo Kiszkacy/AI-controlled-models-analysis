@@ -1,5 +1,5 @@
 ﻿
 public interface Observable
 {
-    public void Notify(Event @event);
+    public void Notify(IEvent @event);
 }

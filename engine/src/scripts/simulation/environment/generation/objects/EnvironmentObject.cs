@@ -1,7 +1,7 @@
 
 using Godot;
 
-public partial class EnvironmentObject : Node2D, Bucketable
+public abstract partial class EnvironmentObject : Node2D, Bucketable, Trackable
 {
     [Export(PropertyHint.Range, "0.5,1.5,")]
     public float InitialScale { get; set; } = 1.0f;
@@ -24,5 +24,10 @@ public partial class EnvironmentObject : Node2D, Bucketable
     public EnvironmentObject()
     {
 
+    }
+
+    public virtual string[] GetInformation()
+    {
+        return new[] { "EnvironmentObject" };
     }
 }
