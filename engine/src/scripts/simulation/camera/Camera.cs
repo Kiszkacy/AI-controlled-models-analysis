@@ -213,7 +213,7 @@ public partial class Camera : Camera2D, Observable
         this.dragTarget = this.positionDragStart + drag * this.Zoom.Inverse();
     }
 
-    public override void _PhysicsProcess(double delta)
+    public override void _Process(double delta)
     {
         this.dragMotionTimer.Process(delta);
 
