@@ -211,68 +211,42 @@ EdgeMoveMargin = 16.0
 [node name="ObjectTracker" type="Node2D" parent="." node_paths=PackedStringArray("camera", "TargetLabel")]
 script = ExtResource("29_qq7m8")
 camera = NodePath("../Camera")
-TargetLabel = NodePath("../UI/ActiveObjectTab/Active object/ActiveObjectDescription")
+TargetLabel = NodePath("../UI/SimulationViewUI/ActiveObjectTab/Active object/ActiveObjectDescription")
 
 [node name="UI" type="CanvasLayer" parent="." node_paths=PackedStringArray("ExitButton", "SettingsButton", "PauseButton", "PauseNode", "SimulationSpeedLevelOneButton", "SimulationSpeedLevelTwoButton", "SimulationSpeedLevelThreeButton", "SimulationSpeedLevelFourButton", "SimulationTimeLabel", "SystemTimeLabel", "CenterCameraButton", "Camera", "SubmenuNode", "SimulationViewButton", "AnalysisViewButton", "ConfigurationViewButton")]
 process_mode = 3
 layer = 2
 script = ExtResource("1_p1yyt")
-ExitButton = NodePath("ButtonExit")
-SettingsButton = NodePath("ButtonSettings")
-PauseButton = NodePath("SpeedBar/ButtonPause")
-PauseNode = NodePath("Pause")
-SimulationSpeedLevelOneButton = NodePath("SpeedBar/SimulationSpeedButtons/ButtonLevelOne")
-SimulationSpeedLevelTwoButton = NodePath("SpeedBar/SimulationSpeedButtons/ButtonLevelTwo")
-SimulationSpeedLevelThreeButton = NodePath("SpeedBar/SimulationSpeedButtons/ButtonLevelThree")
-SimulationSpeedLevelFourButton = NodePath("SpeedBar/SimulationSpeedButtons/ButtonLevelFour")
-SimulationTimeLabel = NodePath("SpeedBar/SimulationTime/Label")
-SystemTimeLabel = NodePath("TimeBar/SystemTime/Label")
-CenterCameraButton = NodePath("TimeBar/ButtonCenterCamera")
+ExitButton = NodePath("SharedUI/ButtonExit")
+SettingsButton = NodePath("SharedUI/ButtonSettings")
+PauseButton = NodePath("SimulationViewUI/SpeedBar/ButtonPause")
+PauseNode = NodePath("SimulationViewUI/Pause")
+SimulationSpeedLevelOneButton = NodePath("SimulationViewUI/SpeedBar/SimulationSpeedButtons/ButtonLevelOne")
+SimulationSpeedLevelTwoButton = NodePath("SimulationViewUI/SpeedBar/SimulationSpeedButtons/ButtonLevelTwo")
+SimulationSpeedLevelThreeButton = NodePath("SimulationViewUI/SpeedBar/SimulationSpeedButtons/ButtonLevelThree")
+SimulationSpeedLevelFourButton = NodePath("SimulationViewUI/SpeedBar/SimulationSpeedButtons/ButtonLevelFour")
+SimulationTimeLabel = NodePath("SimulationViewUI/SpeedBar/SimulationTime/Label")
+SystemTimeLabel = NodePath("SimulationViewUI/TimeBar/SystemTime/Label")
+CenterCameraButton = NodePath("SimulationViewUI/TimeBar/ButtonCenterCamera")
 Camera = NodePath("../Camera")
-SubmenuNode = NodePath("Submenu")
-SimulationViewButton = NodePath("TopBar/ButtonSimulationView")
-AnalysisViewButton = NodePath("TopBar/ButtonAnalysisView")
-ConfigurationViewButton = NodePath("TopBar/ButtonConfigView")
+SubmenuNode = NodePath("SimulationViewUI/Submenu")
+SimulationViewButton = NodePath("SharedUI/TopBar/ButtonSimulationView")
+AnalysisViewButton = NodePath("SharedUI/TopBar/ButtonAnalysisView")
+ConfigurationViewButton = NodePath("SharedUI/TopBar/ButtonConfigView")
 
-[node name="TopBar" type="Label" parent="UI"]
-offset_left = 832.0
-offset_right = 1088.0
-offset_bottom = 64.0
-theme = ExtResource("4_e5ekc")
-theme_override_styles/normal = ExtResource("5_pug4t")
+[node name="SimulationViewUI" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
 
-[node name="ButtonSimulationView" parent="UI/TopBar" instance=ExtResource("6_fhbk4")]
-layout_mode = 0
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 80.0
-offset_bottom = 80.0
-icon = ExtResource("7_ayw54")
-
-[node name="ButtonAnalysisView" parent="UI/TopBar" instance=ExtResource("6_fhbk4")]
-layout_mode = 0
-offset_left = 96.0
-offset_top = 16.0
-offset_right = 160.0
-offset_bottom = 80.0
-icon = ExtResource("8_3k0nf")
-
-[node name="ButtonConfigView" parent="UI/TopBar" instance=ExtResource("6_fhbk4")]
-layout_mode = 0
-offset_left = 176.0
-offset_top = 16.0
-offset_right = 240.0
-offset_bottom = 80.0
-icon = ExtResource("9_4k7yu")
-
-[node name="Pause" type="Control" parent="UI"]
+[node name="Pause" type="Control" parent="UI/SimulationViewUI"]
 visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="BackgroundGradient" type="TextureRect" parent="UI/Pause"]
+[node name="BackgroundGradient" type="TextureRect" parent="UI/SimulationViewUI/Pause"]
 layout_mode = 0
 offset_left = 320.0
 offset_top = 160.0
@@ -280,7 +254,7 @@ offset_right = 1600.0
 offset_bottom = 192.0
 texture = SubResource("GradientTexture1D_jwypc")
 
-[node name="Label" type="Label" parent="UI/Pause"]
+[node name="Label" type="Label" parent="UI/SimulationViewUI/Pause"]
 layout_mode = 0
 offset_left = 320.0
 offset_top = 160.0
@@ -292,7 +266,7 @@ text = "Paused"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SpeedBar" type="Label" parent="UI"]
+[node name="SpeedBar" type="Label" parent="UI/SimulationViewUI"]
 offset_left = 16.0
 offset_top = 1016.0
 offset_right = 416.0
@@ -300,7 +274,7 @@ offset_bottom = 1080.0
 theme = ExtResource("4_e5ekc")
 theme_override_styles/normal = ExtResource("11_2joy1")
 
-[node name="ButtonPause" parent="UI/SpeedBar" instance=ExtResource("6_fhbk4")]
+[node name="ButtonPause" parent="UI/SimulationViewUI/SpeedBar" instance=ExtResource("6_fhbk4")]
 layout_mode = 0
 offset_left = 16.0
 offset_top = -16.0
@@ -309,7 +283,7 @@ offset_bottom = 48.0
 icon = ExtResource("12_o5bu2")
 script = ExtResource("13_pnh3n")
 
-[node name="SimulationTime" type="Control" parent="UI/SpeedBar"]
+[node name="SimulationTime" type="Control" parent="UI/SimulationViewUI/SpeedBar"]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 240.0
@@ -317,7 +291,7 @@ offset_top = -8.0
 offset_right = 368.0
 offset_bottom = 40.0
 
-[node name="Border" type="Label" parent="UI/SpeedBar/SimulationTime"]
+[node name="Border" type="Label" parent="UI/SimulationViewUI/SpeedBar/SimulationTime"]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
@@ -330,7 +304,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_o1mur")
 text = "
 "
 
-[node name="Label" type="Label" parent="UI/SpeedBar/SimulationTime"]
+[node name="Label" type="Label" parent="UI/SimulationViewUI/SpeedBar/SimulationTime"]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
@@ -345,7 +319,7 @@ text = "00:00:00
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SimulationSpeedButtons" type="Control" parent="UI/SpeedBar"]
+[node name="SimulationSpeedButtons" type="Control" parent="UI/SimulationViewUI/SpeedBar"]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 96.0
@@ -353,7 +327,7 @@ offset_top = -8.0
 offset_right = 148.0
 offset_bottom = 11.0
 
-[node name="Border" type="Label" parent="UI/SpeedBar/SimulationSpeedButtons"]
+[node name="Border" type="Label" parent="UI/SimulationViewUI/SpeedBar/SimulationSpeedButtons"]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
@@ -366,7 +340,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_o1mur")
 text = "
 "
 
-[node name="ButtonLevelOne" type="Button" parent="UI/SpeedBar/SimulationSpeedButtons"]
+[node name="ButtonLevelOne" type="Button" parent="UI/SimulationViewUI/SpeedBar/SimulationSpeedButtons"]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
@@ -379,7 +353,7 @@ text = "x1
 "
 script = ExtResource("14_ltlte")
 
-[node name="ButtonLevelTwo" type="Button" parent="UI/SpeedBar/SimulationSpeedButtons"]
+[node name="ButtonLevelTwo" type="Button" parent="UI/SimulationViewUI/SpeedBar/SimulationSpeedButtons"]
 layout_mode = 0
 offset_left = 37.0
 offset_top = 8.0
@@ -392,7 +366,7 @@ text = "x2
 "
 script = ExtResource("14_ltlte")
 
-[node name="ButtonLevelThree" type="Button" parent="UI/SpeedBar/SimulationSpeedButtons"]
+[node name="ButtonLevelThree" type="Button" parent="UI/SimulationViewUI/SpeedBar/SimulationSpeedButtons"]
 layout_mode = 0
 offset_left = 67.0
 offset_top = 8.0
@@ -405,7 +379,7 @@ text = "x3
 "
 script = ExtResource("14_ltlte")
 
-[node name="ButtonLevelFour" type="Button" parent="UI/SpeedBar/SimulationSpeedButtons"]
+[node name="ButtonLevelFour" type="Button" parent="UI/SimulationViewUI/SpeedBar/SimulationSpeedButtons"]
 layout_mode = 0
 offset_left = 96.0
 offset_top = 8.0
@@ -419,7 +393,7 @@ text = "x4
 "
 script = ExtResource("14_ltlte")
 
-[node name="TimeBar" type="Label" parent="UI"]
+[node name="TimeBar" type="Label" parent="UI/SimulationViewUI"]
 offset_left = 1384.0
 offset_top = 1016.0
 offset_right = 1600.0
@@ -427,7 +401,7 @@ offset_bottom = 1080.0
 theme = ExtResource("4_e5ekc")
 theme_override_styles/normal = ExtResource("14_jxxc8")
 
-[node name="SystemTime" type="Control" parent="UI/TimeBar"]
+[node name="SystemTime" type="Control" parent="UI/SimulationViewUI/TimeBar"]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 71.0
@@ -435,7 +409,7 @@ offset_top = 8.0
 offset_right = 199.0
 offset_bottom = 56.0
 
-[node name="Border" type="Label" parent="UI/TimeBar/SystemTime"]
+[node name="Border" type="Label" parent="UI/SimulationViewUI/TimeBar/SystemTime"]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
@@ -448,7 +422,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_o1mur")
 text = "
 "
 
-[node name="Label" type="Label" parent="UI/TimeBar/SystemTime"]
+[node name="Label" type="Label" parent="UI/SimulationViewUI/TimeBar/SystemTime"]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
@@ -463,7 +437,7 @@ text = "00:00:00
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ButtonCenterCamera" parent="UI/TimeBar" instance=ExtResource("1_4ndtu")]
+[node name="ButtonCenterCamera" parent="UI/SimulationViewUI/TimeBar" instance=ExtResource("1_4ndtu")]
 layout_mode = 0
 offset_left = 12.0
 offset_top = 8.0
@@ -476,59 +450,46 @@ theme_override_colors/icon_hover_color = Color(0.815686, 0.819608, 0.8, 1)
 icon = ExtResource("15_oooo7")
 flat = true
 
-[node name="ButtonSettings" parent="UI" instance=ExtResource("1_4ndtu")]
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 64.0
-offset_bottom = 64.0
-
-[node name="ButtonExit" parent="UI" instance=ExtResource("1_4ndtu")]
-offset_left = 1856.0
-offset_top = 16.0
-offset_right = 1904.0
-offset_bottom = 64.0
-icon = ExtResource("3_nt6u3")
-
-[node name="Tooltips" type="Control" parent="UI"]
+[node name="Tooltips" type="Control" parent="UI/SimulationViewUI"]
 layout_mode = 3
 anchors_preset = 0
 
-[node name="ButtonPause" parent="UI/Tooltips" instance=ExtResource("15_tiow5")]
+[node name="ButtonPause" parent="UI/SimulationViewUI/Tooltips" instance=ExtResource("15_tiow5")]
 visible = false
 Text = "Pause or resume simulation."
 TargetNodePath = NodePath("../../SpeedBar/ButtonPause")
 Layout = 1
 
-[node name="ButtonSimulationView" parent="UI/Tooltips" instance=ExtResource("15_tiow5")]
+[node name="ButtonSimulationView" parent="UI/SimulationViewUI/Tooltips" instance=ExtResource("15_tiow5")]
 visible = false
 Text = "Switch to simulation view."
-TargetNodePath = NodePath("../../TopBar/ButtonSimulationView")
+TargetNodePath = NodePath("../../../SharedUI/TopBar/ButtonSimulationView")
 Layout = 4
 
-[node name="ButtonAnalysisView" parent="UI/Tooltips" instance=ExtResource("15_tiow5")]
+[node name="ButtonAnalysisView" parent="UI/SimulationViewUI/Tooltips" instance=ExtResource("15_tiow5")]
 visible = false
 Text = "Switch to analysis view."
-TargetNodePath = NodePath("../../TopBar/ButtonAnalysisView")
+TargetNodePath = NodePath("../../../SharedUI/TopBar/ButtonAnalysisView")
 Layout = 4
 
-[node name="ButtonConfigView" parent="UI/Tooltips" instance=ExtResource("15_tiow5")]
+[node name="ButtonConfigView" parent="UI/SimulationViewUI/Tooltips" instance=ExtResource("15_tiow5")]
 visible = false
 Text = "Switch to configuration view."
-TargetNodePath = NodePath("../../TopBar/ButtonConfigView")
+TargetNodePath = NodePath("../../../SharedUI/TopBar/ButtonConfigView")
 Layout = 4
 
-[node name="SimulationTime" parent="UI/Tooltips" instance=ExtResource("15_tiow5")]
+[node name="SimulationTime" parent="UI/SimulationViewUI/Tooltips" instance=ExtResource("15_tiow5")]
 visible = false
 Text = "Displays the length of simulation in real time."
 TargetNodePath = NodePath("../../SpeedBar/SimulationTime")
 
-[node name="ButtonExit" parent="UI/Tooltips" instance=ExtResource("15_tiow5")]
+[node name="ButtonExit" parent="UI/SimulationViewUI/Tooltips" instance=ExtResource("15_tiow5")]
 visible = false
 Text = "Close and exit the application."
-TargetNodePath = NodePath("../../ButtonExit")
+TargetNodePath = NodePath("../../../SharedUI/ButtonExit")
 Layout = 5
 
-[node name="BottomRightTabs" type="TabContainer" parent="UI"]
+[node name="BottomRightTabs" type="TabContainer" parent="UI/SimulationViewUI"]
 offset_left = 1600.0
 offset_top = 760.0
 offset_right = 1920.0
@@ -537,11 +498,11 @@ theme = ExtResource("4_e5ekc")
 current_tab = 0
 drag_to_rearrange_enabled = true
 
-[node name="Minimap" type="Control" parent="UI/BottomRightTabs"]
+[node name="Minimap" type="Control" parent="UI/SimulationViewUI/BottomRightTabs"]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Border" type="Label" parent="UI/BottomRightTabs/Minimap"]
+[node name="Border" type="Label" parent="UI/SimulationViewUI/BottomRightTabs/Minimap"]
 layout_mode = 0
 offset_left = 24.0
 offset_top = 10.0
@@ -550,7 +511,7 @@ offset_bottom = 282.0
 theme = ExtResource("10_7d1gs")
 theme_override_styles/normal = SubResource("StyleBoxFlat_vpr1g")
 
-[node name="MinimapSize" type="Label" parent="UI/BottomRightTabs/Minimap/Border"]
+[node name="MinimapSize" type="Label" parent="UI/SimulationViewUI/BottomRightTabs/Minimap/Border"]
 clip_contents = true
 layout_mode = 0
 offset_left = 8.0
@@ -560,7 +521,7 @@ offset_bottom = 264.0
 theme = ExtResource("10_7d1gs")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_3rf7x")
 
-[node name="CameraBorder" type="RichTextLabel" parent="UI/BottomRightTabs/Minimap/Border/MinimapSize" node_paths=PackedStringArray("Camera")]
+[node name="CameraBorder" type="RichTextLabel" parent="UI/SimulationViewUI/BottomRightTabs/Minimap/Border/MinimapSize" node_paths=PackedStringArray("Camera")]
 z_index = 1
 layout_mode = 0
 offset_right = 160.0
@@ -568,40 +529,40 @@ offset_bottom = 90.0
 theme = ExtResource("10_7d1gs")
 theme_override_styles/normal = SubResource("StyleBoxFlat_gmr34")
 script = ExtResource("23_juvhq")
-Camera = NodePath("../../../../../../Camera")
+Camera = NodePath("../../../../../../../Camera")
 
-[node name="MinimapTileSet" type="TileMap" parent="UI/BottomRightTabs/Minimap/Border"]
+[node name="MinimapTileSet" type="TileMap" parent="UI/SimulationViewUI/BottomRightTabs/Minimap/Border"]
 position = Vector2(8, 8)
 scale = Vector2(8, 8)
 tile_set = SubResource("TileSet_0nltd")
 format = 2
 script = ExtResource("21_ye1pt")
 
-[node name="Training" type="Control" parent="UI/BottomRightTabs"]
+[node name="Training" type="Control" parent="UI/SimulationViewUI/BottomRightTabs"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="Options" type="VBoxContainer" parent="UI/BottomRightTabs/Training"]
+[node name="Options" type="VBoxContainer" parent="UI/SimulationViewUI/BottomRightTabs/Training"]
 layout_mode = 0
 offset_left = 16.0
 offset_top = 16.0
 offset_right = 304.0
 offset_bottom = 228.0
 
-[node name="Label1" type="Label" parent="UI/BottomRightTabs/Training/Options"]
+[node name="Label1" type="Label" parent="UI/SimulationViewUI/BottomRightTabs/Training/Options"]
 layout_mode = 2
 text = "Options..."
 
-[node name="Label2" type="Label" parent="UI/BottomRightTabs/Training/Options"]
+[node name="Label2" type="Label" parent="UI/SimulationViewUI/BottomRightTabs/Training/Options"]
 layout_mode = 2
 text = "Options..."
 
-[node name="Label3" type="Label" parent="UI/BottomRightTabs/Training/Options"]
+[node name="Label3" type="Label" parent="UI/SimulationViewUI/BottomRightTabs/Training/Options"]
 layout_mode = 2
 text = "Options..."
 
-[node name="ButtonLightSmall" parent="UI/BottomRightTabs/Training" instance=ExtResource("19_2t6mq")]
+[node name="ButtonLightSmall" parent="UI/SimulationViewUI/BottomRightTabs/Training" instance=ExtResource("19_2t6mq")]
 layout_mode = 0
 offset_left = 96.0
 offset_top = 244.0
@@ -609,7 +570,7 @@ offset_right = 224.0
 offset_bottom = 276.0
 text = "Start training"
 
-[node name="Submenu" type="Control" parent="UI"]
+[node name="Submenu" type="Control" parent="UI/SimulationViewUI"]
 visible = false
 z_index = 10
 layout_mode = 3
@@ -617,14 +578,14 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="FadeoutBackground" type="ColorRect" parent="UI/Submenu"]
+[node name="FadeoutBackground" type="ColorRect" parent="UI/SimulationViewUI/Submenu"]
 material = SubResource("ShaderMaterial_dpfwb")
 layout_mode = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 color = Color(0, 0, 0, 0.25098)
 
-[node name="WhiteBackground" type="Label" parent="UI/Submenu"]
+[node name="WhiteBackground" type="Label" parent="UI/SimulationViewUI/Submenu"]
 layout_mode = 0
 offset_left = 872.0
 offset_top = 377.0
@@ -633,7 +594,7 @@ offset_bottom = 683.0
 theme = ExtResource("10_7d1gs")
 theme_override_styles/normal = SubResource("StyleBoxFlat_jey6k")
 
-[node name="ButtonExit" parent="UI/Submenu/WhiteBackground" instance=ExtResource("27_c32ca")]
+[node name="ButtonExit" parent="UI/SimulationViewUI/Submenu/WhiteBackground" instance=ExtResource("27_c32ca")]
 layout_mode = 0
 offset_left = 24.0
 offset_top = 258.0
@@ -641,7 +602,7 @@ offset_right = 152.0
 offset_bottom = 290.0
 text = "Exit"
 
-[node name="ButtonMenu" parent="UI/Submenu/WhiteBackground" instance=ExtResource("28_e5cgq")]
+[node name="ButtonMenu" parent="UI/SimulationViewUI/Submenu/WhiteBackground" instance=ExtResource("28_e5cgq")]
 layout_mode = 0
 offset_left = 24.0
 offset_top = 214.0
@@ -649,7 +610,7 @@ offset_right = 152.0
 offset_bottom = 246.0
 text = "Menu"
 
-[node name="ButtonSettings" parent="UI/Submenu/WhiteBackground" instance=ExtResource("28_e5cgq")]
+[node name="ButtonSettings" parent="UI/SimulationViewUI/Submenu/WhiteBackground" instance=ExtResource("28_e5cgq")]
 layout_mode = 0
 offset_left = 24.0
 offset_top = 170.0
@@ -657,7 +618,7 @@ offset_right = 152.0
 offset_bottom = 202.0
 text = "Settings"
 
-[node name="ButtonLoad" parent="UI/Submenu/WhiteBackground" instance=ExtResource("28_e5cgq")]
+[node name="ButtonLoad" parent="UI/SimulationViewUI/Submenu/WhiteBackground" instance=ExtResource("28_e5cgq")]
 layout_mode = 0
 offset_left = 24.0
 offset_top = 126.0
@@ -665,7 +626,7 @@ offset_right = 152.0
 offset_bottom = 158.0
 text = "Load"
 
-[node name="ButtonSave" parent="UI/Submenu/WhiteBackground" instance=ExtResource("28_e5cgq")]
+[node name="ButtonSave" parent="UI/SimulationViewUI/Submenu/WhiteBackground" instance=ExtResource("28_e5cgq")]
 layout_mode = 0
 offset_left = 24.0
 offset_top = 82.0
@@ -673,7 +634,7 @@ offset_right = 152.0
 offset_bottom = 114.0
 text = "Save"
 
-[node name="ButtonContinue" parent="UI/Submenu/WhiteBackground" instance=ExtResource("19_2t6mq")]
+[node name="ButtonContinue" parent="UI/SimulationViewUI/Submenu/WhiteBackground" instance=ExtResource("19_2t6mq")]
 layout_mode = 0
 offset_left = 24.0
 offset_top = 38.0
@@ -681,7 +642,7 @@ offset_right = 152.0
 offset_bottom = 70.0
 text = "Continue"
 
-[node name="ButtonClose" parent="UI/Submenu/WhiteBackground" instance=ExtResource("1_4ndtu")]
+[node name="ButtonClose" parent="UI/SimulationViewUI/Submenu/WhiteBackground" instance=ExtResource("1_4ndtu")]
 layout_mode = 0
 offset_left = 134.0
 offset_top = -6.0
@@ -690,7 +651,7 @@ offset_bottom = 42.0
 icon = ExtResource("3_nt6u3")
 flat = true
 
-[node name="ActiveObjectTab" type="TabContainer" parent="UI" node_paths=PackedStringArray("Icon", "Title", "Description")]
+[node name="ActiveObjectTab" type="TabContainer" parent="UI/SimulationViewUI" node_paths=PackedStringArray("Icon", "Title", "Description")]
 offset_left = 1892.0
 offset_top = 608.0
 offset_right = 2372.0
@@ -704,11 +665,11 @@ Icon = NodePath("Active object/Icon")
 Title = NodePath("Active object/ActiveObjectTitle")
 Description = NodePath("Active object/ActiveObjectDescription")
 
-[node name="Active object" type="Control" parent="UI/ActiveObjectTab"]
+[node name="Active object" type="Control" parent="UI/SimulationViewUI/ActiveObjectTab"]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Icon" parent="UI/ActiveObjectTab/Active object" instance=ExtResource("1_4ndtu")]
+[node name="Icon" parent="UI/SimulationViewUI/ActiveObjectTab/Active object" instance=ExtResource("1_4ndtu")]
 layout_mode = 0
 offset_left = 480.0
 offset_right = 528.0
@@ -730,7 +691,7 @@ disabled = true
 icon = ExtResource("30_pnhkp")
 flat = true
 
-[node name="ActiveObjectTitle" type="Label" parent="UI/ActiveObjectTab/Active object"]
+[node name="ActiveObjectTitle" type="Label" parent="UI/SimulationViewUI/ActiveObjectTab/Active object"]
 layout_mode = 0
 offset_left = 480.0
 offset_top = 44.0
@@ -744,7 +705,7 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_gdw0h")
 text = "No active object"
 vertical_alignment = 1
 
-[node name="Seperator" type="RichTextLabel" parent="UI/ActiveObjectTab/Active object"]
+[node name="Seperator" type="RichTextLabel" parent="UI/SimulationViewUI/ActiveObjectTab/Active object"]
 layout_mode = 0
 offset_left = 432.0
 offset_top = 8.0
@@ -753,7 +714,7 @@ offset_bottom = 236.0
 theme = ExtResource("10_7d1gs")
 theme_override_styles/normal = SubResource("StyleBoxFlat_200ap")
 
-[node name="ActiveObjectDescription" type="Label" parent="UI/ActiveObjectTab/Active object"]
+[node name="ActiveObjectDescription" type="Label" parent="UI/SimulationViewUI/ActiveObjectTab/Active object"]
 layout_mode = 0
 offset_left = 424.0
 offset_top = 16.0
@@ -764,6 +725,84 @@ theme = ExtResource("10_7d1gs")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = SubResource("StyleBoxEmpty_gdw0h")
+
+[node name="AnalysisViewUI" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="FadeoutBackground" type="ColorRect" parent="UI/AnalysisViewUI"]
+material = SubResource("ShaderMaterial_dpfwb")
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 0.25098)
+
+[node name="Box" type="TabContainer" parent="UI/AnalysisViewUI"]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 128.0
+offset_right = 1792.0
+offset_bottom = 952.0
+theme = ExtResource("4_e5ekc")
+current_tab = 0
+
+[node name="Agents" type="Control" parent="UI/AnalysisViewUI/Box"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Food" type="Control" parent="UI/AnalysisViewUI/Box"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="SharedUI" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TopBar" type="Label" parent="UI/SharedUI"]
+offset_left = 832.0
+offset_right = 1088.0
+offset_bottom = 64.0
+theme = ExtResource("4_e5ekc")
+theme_override_styles/normal = ExtResource("5_pug4t")
+
+[node name="ButtonSimulationView" parent="UI/SharedUI/TopBar" instance=ExtResource("6_fhbk4")]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 80.0
+offset_bottom = 80.0
+icon = ExtResource("7_ayw54")
+
+[node name="ButtonAnalysisView" parent="UI/SharedUI/TopBar" instance=ExtResource("6_fhbk4")]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 16.0
+offset_right = 160.0
+offset_bottom = 80.0
+icon = ExtResource("8_3k0nf")
+
+[node name="ButtonConfigView" parent="UI/SharedUI/TopBar" instance=ExtResource("6_fhbk4")]
+layout_mode = 0
+offset_left = 176.0
+offset_top = 16.0
+offset_right = 240.0
+offset_bottom = 80.0
+icon = ExtResource("9_4k7yu")
+
+[node name="ButtonSettings" parent="UI/SharedUI" instance=ExtResource("1_4ndtu")]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 64.0
+offset_bottom = 64.0
+
+[node name="ButtonExit" parent="UI/SharedUI" instance=ExtResource("1_4ndtu")]
+offset_left = 1856.0
+offset_top = 16.0
+offset_right = 1904.0
+offset_bottom = 64.0
+icon = ExtResource("3_nt6u3")
 
 [node name="EndOfFrameProcessor" type="Node" parent="."]
 editor_description = "This node must be the last child of the Root node to work properly."
