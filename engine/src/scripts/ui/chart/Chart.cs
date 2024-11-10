@@ -78,7 +78,7 @@ public partial class Chart : Control
             this.TicksAxisX.AddChild(label);
         }
 
-        for (int index = 0; index < targetTickCount.Y; index++)
+        for (int index = (int)targetTickCount.Y-1; index >= 0; index--)
         {
             Label label = this.CreateNewLabel();
             float ratio = ((1.0f/targetTickCount.Y) / 2) + (1.0f/targetTickCount.Y) * index;
