@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class Agent : CharacterBody2D
+public partial class Agent : CharacterBody2D, Trackable
 {
     [Export]
     public float MaximumSpeed { get; set; } = 200.0f; // in px per sec
@@ -221,17 +221,24 @@ public partial class Agent : CharacterBody2D
         this.id = data.Id;
     }
 
-    public string GetStats()
+    public string[] GetInformation()
     {
-        return $"Agent ID: {this.Id}\n" +
-               $"Speed: {this.Speed:F2} px/sec (Max: {this.MaximumSpeed} px/sec)\n" +
-               $"Acceleration: {this.currentAcceleration:F2} px/sec2 (Max: {this.MaximumAcceleration} px/sec2)\n" +
-               $"Turn Speed: {this.currentRotation:F2} rad/sec (Max: {this.MaximumTurnSpeed:F2} rad/sec)\n" +
-               $"Energy: {this.energy:F2}/{this.MaximumEnergy}\n" +
-               $"Health: {this.health}/{this.MaximumHealth}\n" +
-               $"Sight Radius: {this.SightRadius} px\n" +
-               $"Sight Angle: {Mathf.RadToDeg(this.SightAngle):F2} deg\n" +
-               $"Distance to Closest Food: {(float.IsNaN(this.DistanceToClosestFood) ? "N/A" : $"{this.DistanceToClosestFood:F2} px")}\n" +
-               $"Angle to Closest Food: {(float.IsNaN(this.AngleToClosestFood) ? "N/A" : $"{Mathf.RadToDeg(this.AngleToClosestFood):F2} deg")}";
+        return new[] {
+            $"ID: {this.Id}", 
+            $"Position: ({this.GlobalPosition.X:F2}; {this.GlobalPosition.Y:F2})",
+            $"Speed: {this.Speed:F2} px/sec",
+            $"Max speed: {this.MaximumSpeed:F2} px/sec",
+            $"Velocity: ({this.Velocity.X:F2}; {this.Velocity.Y:F2})",
+            $"Acceleration: {this.currentAcceleration:F2} px/sec²",
+            $"Max acceleration: {this.MaximumAcceleration} px/sec²",
+            $"Turn speed: {this.currentRotation:F2} rad/sec",
+            $"Max turn speed: {this.MaximumTurnSpeed:F2} rad/sec",
+            $"Energy: {this.energy:F2}/{this.MaximumEnergy}", 
+            $"Health: {this.health}/{this.MaximumHealth}",
+            $"Sight radius: {this.SightRadius} px", 
+            $"Sight angle: {Mathf.RadToDeg(this.SightAngle):F2} deg",
+            $"Distance to closest food: {(float.IsNaN(this.DistanceToClosestFood) ? "N/A" : $"{this.DistanceToClosestFood:F2} px")}",
+            $"Angle to closest food: {(float.IsNaN(this.AngleToClosestFood) ? "N/A" : $"{Mathf.RadToDeg(this.AngleToClosestFood):F2} deg")}"
+        };
     }
 }
