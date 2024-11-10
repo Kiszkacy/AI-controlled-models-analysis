@@ -1,3 +1,4 @@
 communication:
-  reset: 0
-  pipe_name: "papi"
+  reset: 0 # reset environment
+  start: 1 # start training
+  stop: 2 # stop training (this is unused currently)
