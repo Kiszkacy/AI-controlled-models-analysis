@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class Camera : Camera2D
+public partial class Camera : Camera2D, Observable
 {
     [Export(PropertyHint.Range, "100,1000,10,or_greater")]
     public float MoveSpeed { get; set; } = 300.0f; // in px/sec
@@ -29,7 +29,6 @@ public partial class Camera : Camera2D
     [Export(PropertyHint.Range, "0.5,10.0,0.1")]
     public float EdgeMoveSpeedQuantifier { get; set; } = 3f;
 
-
     private Vector2 moveDirection = Vector2.Zero;
     private Vector2 edgeMoveDirection = Vector2.Zero;
     private bool zoomingIn = false;
@@ -37,15 +36,45 @@ public partial class Camera : Camera2D
     private bool zoomingInByMouse = false;
     private bool zoomingOutByMouse = false;
     private bool isDragging = false;
+    private bool hasLeftOverDragForce = false;
     private Vector2 dragTarget = Vector2.Zero;
+    private Vector2 positionDragStart = Vector2.Zero;
     private Vector2 mouseDragStart = Vector2.Zero;
     private bool isDoubleClicked = false;
     private Vector2 doubleClickTarget = Vector2.Zero;
+    private bool isFollowing = false;
+    private Node2D followTarget = null;
+
+    private Timer dragMotionTimer;
+    private const float changeCursorShapeIfDraggingFor = 0.3f; // seconds
+    private const float minimalDragDistanceToChangeCursorShape = 4.0f; // in px
+    private bool overrideDragCursorShape = false;
+
+    public override void _Ready()
+    {
+        this.Zoom = new Vector2(0.5f, 0.5f);
+        this.dragMotionTimer = new Timer(this.DragMotionTimeout);
+        EventManager.Instance.Subscribe(this, EventChannel.ObjectTracker);
+    }
 
     public override void _Input(InputEvent @event)
     {
         HandleKeyboardInput(@event);
         HandleMouseInput(@event);
+
+        if (isFollowing && IsUserMovement(@event))
+        {
+            StopFollowing();
+        }
+    }
+
+    private bool IsUserMovement(InputEvent @event)
+    {
+        return @event.IsActionPressed("move.camera.up") ||
+               @event.IsActionPressed("move.camera.down") ||
+               @event.IsActionPressed("move.camera.left") ||
+               @event.IsActionPressed("move.camera.right") ||
+               this.isDragging || this.isDoubleClicked;
     }
 
     private void HandleKeyboardInput(InputEvent @event)
@@ -106,29 +135,29 @@ public partial class Camera : Camera2D
     {
         if (@event is InputEventMouseButton mouseEvent)
         {
-            if (mouseEvent.ButtonIndex == MouseButton.Left)
+            switch (mouseEvent.ButtonIndex)
             {
-                if (mouseEvent.IsPressed())
-                {
-                    this.StartDragging();
-                }
-                else
-                {
-                    this.StopDragging();
-                }
+                case MouseButton.Left:
+                    if (mouseEvent.IsPressed())
+                    {
+                        this.StartDragging();
+                    }
+                    else if (mouseEvent.IsReleased())
+                    {
+                        this.StopDragging();
+                    }
 
-                if (mouseEvent.DoubleClick)
-                {
-                    this.CenterOnMousePosition();
-                }
-            }
-            else if (mouseEvent.ButtonIndex == MouseButton.WheelUp)
-            {
-                this.zoomingInByMouse = true;
-            }
-            else if (mouseEvent.ButtonIndex == MouseButton.WheelDown)
-            {
-                this.zoomingOutByMouse = true;
+                    if (mouseEvent.DoubleClick)
+                    {
+                        this.CenterOnMousePosition();
+                    }
+                    break;
+                case MouseButton.WheelUp:
+                    this.zoomingInByMouse = true;
+                    break;
+                case MouseButton.WheelDown:
+                    this.zoomingOutByMouse = true;
+                    break;
             }
         }
         else if (@event is InputEventMouseMotion motionEvent && isDragging)
@@ -139,36 +168,68 @@ public partial class Camera : Camera2D
 
     private void StartDragging()
     {
+        if (this.isDragging)
+        {
+            return;
+        }
+
         this.isDragging = true;
-        this.dragTarget = this.GlobalPosition;
-        this.mouseDragStart = GetGlobalMousePosition();
+        this.mouseDragStart = this.GetViewport().GetMousePosition();
+        this.positionDragStart = this.GlobalPosition;
+        this.dragTarget = this.positionDragStart;
+        this.dragMotionTimer.Activate(changeCursorShapeIfDraggingFor);
     }
 
     private void StopDragging()
     {
+        if (!this.isDragging)
+        {
+            return;
+        }
+
+        this.dragMotionTimer.Stop();
         this.isDragging = false;
+        Vector2 dragLeftOverForce = this.dragTarget - this.GlobalPosition;
+        this.hasLeftOverDragForce = dragLeftOverForce.Length() >= 1.0f;
+        this.overrideDragCursorShape = false;
+    }
+
+    public void MoveTo(Vector2 position)
+    {
+        this.StopDragging();
+        this.isDoubleClicked = true;
+        this.doubleClickTarget = position;
     }
 
     private void CenterOnMousePosition()
     {
-        this.StopDragging();
-        this.isDoubleClicked = true;
-        this.doubleClickTarget = GetGlobalMousePosition();
+        this.MoveTo(GetGlobalMousePosition());
     }
 
     private void DragMotion()
     {
-        Vector2 currentMouse = GetGlobalMousePosition();
+        Vector2 currentMouse = this.GetViewport().GetMousePosition();
         Vector2 drag = this.mouseDragStart - currentMouse;
-        this.dragTarget += drag;
-        this.mouseDragStart = currentMouse;
+        this.dragTarget = this.positionDragStart + drag * this.Zoom.Inverse();
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        this.UpdateEdgeMoveDirection();
-        this.UpdatePosition(delta);
+        this.dragMotionTimer.Process(delta);
+
+        if (this.isFollowing && this.followTarget != null)
+        {
+            this.dragTarget = this.followTarget.GlobalPosition;
+            this.SmoothDragMovement();
+        }
+        else
+        {
+            this.UpdateEdgeMoveDirection();
+            this.UpdatePosition(delta);
+        }
+
         this.UpdateZoom(delta);
+        this.UpdateCursorShape();
     }
 
     private void UpdateEdgeMoveDirection()
@@ -190,10 +251,24 @@ public partial class Camera : Camera2D
 
     private void UpdatePosition(double delta)
     {
-        if (this.isDoubleClicked) this.MoveToDoubleClickPosition(delta);
+        if (this.isDoubleClicked) this.MoveToDoubleClickPosition();
+        else if (this.isDragging) this.SmoothDragMovement();
+        else if (this.hasLeftOverDragForce)
+        {
+            Vector2 dragLeftOverForce = this.dragTarget - this.GlobalPosition;
+            if (dragLeftOverForce.Length() >= 1.0f)
+            {
+                this.SmoothDragMovement();
+                this.dragTarget.Lerp(Vector2.Zero, DragSmoothness);
+            }
+            else
+            {
+                this.dragTarget = Vector2.Zero;
+                this.hasLeftOverDragForce = false;
+            }
+        }
         else
         {
-            if (this.isDragging) this.SmoothDragMovement(delta);
             Vector2 totalMoveDirection = this.moveDirection + this.edgeMoveDirection * this.EdgeMoveSpeedQuantifier;
             this.GlobalPosition += totalMoveDirection * this.MoveSpeed * (float)delta;
         }
@@ -212,15 +287,21 @@ public partial class Camera : Camera2D
         this.zoomingInByMouse = false;
         this.zoomingOutByMouse = false;
     }
-    private void SmoothDragMovement(double delta)
+
+    private void SmoothDragMovement()
     {
-        if (this.GlobalPosition.DistanceTo(this.dragTarget) > 0.1f)
+        Vector2 target = this.dragTarget;
+        if (this.isFollowing)
         {
-            this.GlobalPosition = this.GlobalPosition.Lerp(this.dragTarget, this.DragSmoothness);
+            target = this.followTarget.GlobalPosition;
         }
+
+        this.GlobalPosition = this.GlobalPosition.DistanceTo(target) > 0.1f
+            ? this.GlobalPosition.Lerp(target, this.DragSmoothness)
+            : target;
     }
 
-    private void MoveToDoubleClickPosition(double delta)
+    private void MoveToDoubleClickPosition()
     {
         if (this.GlobalPosition.DistanceTo(this.doubleClickTarget) > 0.1f)
         {
@@ -228,7 +309,53 @@ public partial class Camera : Camera2D
         }
         else
         {
+            this.GlobalPosition = this.doubleClickTarget;
             this.isDoubleClicked = false;
+        }
+    }
+
+    public void Follow(Node2D objectToFollow)
+    {
+        this.isFollowing = true;
+        this.followTarget = objectToFollow;
+    }
+
+    public void StopFollowing()
+    {
+        this.isFollowing = false;
+        this.followTarget = null;
+    }
+
+    private void UpdateCursorShape()
+    {
+        if ((this.isDragging && this.mouseDragStart.DistanceTo(this.GetViewport().GetMousePosition()) >= minimalDragDistanceToChangeCursorShape) || this.overrideDragCursorShape)
+        {
+            Input.SetDefaultCursorShape(Input.CursorShape.Drag);
+            this.overrideDragCursorShape = true;
+        }
+        else
+        {
+            Input.SetDefaultCursorShape(Input.CursorShape.Arrow);
+        }
+    }
+
+    private void DragMotionTimeout()
+    {
+        this.overrideDragCursorShape = true;
+    }
+
+    public void Notify(IEvent @event)
+    {
+        if (@event is NodeEvent nodeEvent)
+        {
+            if (nodeEvent.Node != null)
+            {
+                this.Follow((Node2D)nodeEvent.Node);
+            }
+            else if (nodeEvent.Node == null && this.isFollowing)
+            {
+                this.StopFollowing();
+            }
         }
     }
 }

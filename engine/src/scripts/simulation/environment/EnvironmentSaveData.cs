@@ -11,8 +11,9 @@ public struct EnvironmentSaveData
     public Vector2 CameraZoom { get; set; }
     public FoodSpawnerSaveData[] FoodSpawnersData { get; set; }
     public FoodSaveData[] FoodData { get; set; }
+    public SimulationStatusData SimulationStatusData { get; set; }
     public EnvironmentSaveData(EnvironmentTemplate environmentTemplate, AgentSaveData[] allAgentsData, Vector2 cameraPosition,
-        Vector2 cameraZoom, FoodSpawnerSaveData[] foodSpawnersData, FoodSaveData[] foodData)
+        Vector2 cameraZoom, FoodSpawnerSaveData[] foodSpawnersData, FoodSaveData[] foodData, SimulationStatusData simulationStatusData)
     {
         this.EnvironmentTemplate = environmentTemplate;
         this.AllAgentsData = allAgentsData;
@@ -20,5 +21,6 @@ public struct EnvironmentSaveData
         this.CameraZoom = cameraZoom;
         this.FoodSpawnersData = foodSpawnersData;
         this.FoodData = foodData;
+        this.SimulationStatusData = simulationStatusData;
     }
 }

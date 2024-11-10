@@ -25,7 +25,9 @@ public class Reloader : Singleton<Reloader>
         root.GetTree().ReloadCurrentScene();
         AgentManager.Get().Reset();
         EntityManager.Get().Reset();
+        EnvironmentManager.Get().Reset();
         AgentSightRayCastManager.Get().Reset();
+        TestRunner.Get().Reset();
     }
 
     private void SaveAllData(Node root)
@@ -41,8 +43,10 @@ public class Reloader : Singleton<Reloader>
         FoodSpawnerSaveData[] foodSpawnersData = EntityManager.Instance.SaveFoodSpawners();
         FoodSaveData[] foodData = EntityManager.Instance.SaveFood();
 
+        SimulationStatusData simulationStatusData = SimulationManager.Instance.Save();
+
         var saveData = new EnvironmentSaveData(environmentTemplate, agentsData, cameraPosition, cameraZoom,
-            foodSpawnersData, foodData);
+            foodSpawnersData, foodData, simulationStatusData);
 
         var serializer = new SerializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
@@ -83,6 +87,8 @@ public class Reloader : Singleton<Reloader>
         LoadAgents(agentsData, root);
 
         EntityManager.Instance.LoadFoodSpawnersData(environmentSaveData.FoodSpawnersData, environmentSaveData.FoodData);
+
+        SimulationManager.Instance.Load(environmentSaveData.SimulationStatusData);
     }
 
     private void LoadEnvironment(EnvironmentTemplate environmentTemplate, Node root)
@@ -90,6 +96,7 @@ public class Reloader : Singleton<Reloader>
         EntityManager.Instance.Initialize(environmentTemplate.GenerationSettings.Size);
         Environment environment = (Environment)root.GetNode("Environment");
         environment.Initialize(environmentTemplate);
+        EnvironmentManager.Instance.Initialize(environment);
     }
 
     private void LoadAgents(AgentSaveData[] agentsData, Node root)

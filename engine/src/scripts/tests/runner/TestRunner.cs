@@ -135,4 +135,12 @@ public class TestRunner : Singleton<TestRunner>
     }
 
     private List<Type> GetTestClasses() => this.GetTestFiles().Select(file => Type.GetType(this.GetClassNameFromTestFilePath(file))).ToList();
+
+    public void Reset()
+    {
+        this.testNumber = 0;
+        this.testsPassed = 0;
+        this.testsWarnings = 0;
+        this.testLayerer.Clear();
+    }
 }
