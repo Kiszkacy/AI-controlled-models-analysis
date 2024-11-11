@@ -18,7 +18,7 @@ public partial class DisplaySettings : Control
     [Export] public Button LockMouseArrowRight;
     [Export] public Label LockMouseLabel;
 
-    private readonly string CONFIG_PATH = "./src/config.yaml";
+    private readonly string configPath = "./src/config.yaml";
 
     private readonly Vector2I[] availableResolutions = {
         new(1280, 720),
@@ -67,7 +67,7 @@ public partial class DisplaySettings : Control
         var windowMode = DisplayServer.WindowGetMode();
         this.isFullscreen = windowMode == DisplayServer.WindowMode.Fullscreen ||
                             windowMode == DisplayServer.WindowMode.ExclusiveFullscreen;
-        this.isMouseLocked = Input.GetMouseMode() == Input.MouseModeEnum.Captured;
+        this.isMouseLocked = Input.GetMouseMode() == Input.MouseModeEnum.Confined;
         Vector2I currentResolution = DisplayServer.WindowGetSize();
         var closestDiff = float.MaxValue;
         for (int i = 0; i < this.availableResolutions.Length; i++)
@@ -136,7 +136,7 @@ public partial class DisplaySettings : Control
             DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
             DisplayServer.WindowSetSize(this.availableResolutions[this.currentResolutionIndex]);
         }
-        Input.SetMouseMode(this.isMouseLocked ? Input.MouseModeEnum.Captured : Input.MouseModeEnum.Visible);
+        Input.SetMouseMode(this.isMouseLocked ? Input.MouseModeEnum.Confined : Input.MouseModeEnum.Visible);
         this.initialFullscreen = this.isFullscreen;
         this.initialMouseLocked = this.isMouseLocked;
         this.initialResolutionIndex = this.currentResolutionIndex;
@@ -153,7 +153,7 @@ public partial class DisplaySettings : Control
 
     private void SaveSettingsToConfig()
     {
-        var yaml = File.ReadAllText(CONFIG_PATH);
+        var yaml = File.ReadAllText(configPath);
         var deserializer = new DeserializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .Build();
@@ -169,7 +169,7 @@ public partial class DisplaySettings : Control
             .Build();
         var updatedYaml = serializer.Serialize(configDict);
 
-        File.WriteAllText(CONFIG_PATH, updatedYaml);
+        File.WriteAllText(configPath, updatedYaml);
 
         Config.Instance.Display.Resolution = this.availableResolutions[this.currentResolutionIndex];
         Config.Instance.Display.IsFullscreen = this.isFullscreen;

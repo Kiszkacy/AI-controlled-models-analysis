@@ -15,7 +15,7 @@ public partial class SaveSettings : Control
     private string selectedPath = "user://";
     private string initialPath = "user://";
 
-    private readonly string CONFIG_PATH = "./src/config.yaml";
+    private readonly string configPath = "./src/config.yaml";
 
     public override void _Ready()
     {
@@ -24,7 +24,7 @@ public partial class SaveSettings : Control
 
         this.FileDialogNode.FileMode = FileDialog.FileModeEnum.OpenDir;
         this.FileDialogNode.Access = FileDialog.AccessEnum.Filesystem;
-        this.FileDialogNode.Title = "Select a Directory";
+        this.FileDialogNode.Title = "Select a directory";
     }
 
     public bool HasUnsavedChanges()
@@ -41,7 +41,6 @@ public partial class SaveSettings : Control
     private void OnDirSelected(string path)
     {
         selectedPath = path + "/";
-        GD.Print("Selected directory: " + path);
     }
 
     public void ResetToDefault()
@@ -57,7 +56,7 @@ public partial class SaveSettings : Control
 
     public void SaveSettingsToConfig()
     {
-        var yaml = File.ReadAllText(CONFIG_PATH);
+        var yaml = File.ReadAllText(configPath);
         var deserializer = new DeserializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .Build();
@@ -72,7 +71,7 @@ public partial class SaveSettings : Control
             .Build();
         var updatedYaml = serializer.Serialize(configDict);
 
-        File.WriteAllText(CONFIG_PATH, updatedYaml);
+        File.WriteAllText(configPath, updatedYaml);
 
         Config.Instance.Save.SavePath = selectedPath;
     }

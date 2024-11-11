@@ -41,7 +41,7 @@ public partial class ControlsSettings : Control
     private bool initialEdgeMoveEnabled;
     private double initialEdgeMoveSpeedQuantifier;
 
-    private readonly string CONFIG_PATH = "./src/config.yaml";
+    private readonly string configPath = "./src/config.yaml";
 
     public override void _Ready()
     {
@@ -231,7 +231,7 @@ public partial class ControlsSettings : Control
 
     private void SaveSettingsToConfig()
     {
-        var yaml = File.ReadAllText(CONFIG_PATH);
+        var yaml = File.ReadAllText(configPath);
         var deserializer = new DeserializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .Build();
@@ -252,7 +252,7 @@ public partial class ControlsSettings : Control
             .Build();
         var updatedYaml = serializer.Serialize(configDict);
 
-        File.WriteAllText(CONFIG_PATH, updatedYaml);
+        File.WriteAllText(configPath, updatedYaml);
 
         Config.Instance.Controls.ZoomSensitivity = (float)this.currentZoomSensitivity;
         Config.Instance.Controls.MaxZoom = (float)this.availableMaxZooms[this.currentMaxZoomIndex];
