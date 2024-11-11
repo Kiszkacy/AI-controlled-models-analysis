@@ -13,6 +13,7 @@ public partial class SaveSettings : Control
     [Export] public FileDialog FileDialogNode;
 
     private string selectedPath = "user://";
+    private string initialPath = "user://";
 
     private readonly string CONFIG_PATH = "./src/config.yaml";
 
@@ -24,6 +25,11 @@ public partial class SaveSettings : Control
         this.FileDialogNode.FileMode = FileDialog.FileModeEnum.OpenDir;
         this.FileDialogNode.Access = FileDialog.AccessEnum.Filesystem;
         this.FileDialogNode.Title = "Select a Directory";
+    }
+
+    public bool HasUnsavedChanges()
+    {
+        return initialPath != selectedPath;
     }
 
     private void OnExplorerButtonPressed()
@@ -45,6 +51,7 @@ public partial class SaveSettings : Control
 
     public void ApplySettings()
     {
+        this.initialPath = this.selectedPath;
         SaveSettingsToConfig();
     }
 

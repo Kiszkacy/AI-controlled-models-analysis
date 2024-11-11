@@ -42,6 +42,7 @@ public partial class Camera : Camera2D
     private Vector2 mouseDragStart = Vector2.Zero;
     private bool isDoubleClicked = false;
     private Vector2 doubleClickTarget = Vector2.Zero;
+    private bool isEdgeMoveEnabled = true;
 
     private Timer dragMotionTimer;
     private const float changeCursorShapeIfDraggingFor = 0.3f; // seconds
@@ -52,6 +53,18 @@ public partial class Camera : Camera2D
     {
         this.Zoom = new Vector2(0.5f, 0.5f);
         this.dragMotionTimer = new Timer(this.DragMotionTimeout);
+        this.SetProperties();
+    }
+
+    private void SetProperties()
+    {
+        this.ZoomSpeedKeys = Config.Instance.Data.Controls.ZoomSensitivity;
+        this.ZoomSpeedMouse = Config.Instance.Data.Controls.ZoomSensitivity * 2.5f;
+        this.MaxZoom = Config.Instance.Data.Controls.MaxZoom;
+        this.MinZoom = Config.Instance.Data.Controls.MinZoom;
+        this.isEdgeMoveEnabled = Config.Instance.Data.Controls.EdgeMoveEnabled;
+        this.EdgeMoveMargin = Config.Instance.Data.Controls.EdgeMoveMargin;
+        this.EdgeMoveSpeedQuantifier = Config.Instance.Data.Controls.EdgeMoveSpeed;
     }
 
     public override void _Input(InputEvent @event)
@@ -199,7 +212,10 @@ public partial class Camera : Camera2D
     public override void _PhysicsProcess(double delta)
     {
         this.dragMotionTimer.Process(delta);
-        this.UpdateEdgeMoveDirection();
+        if (isEdgeMoveEnabled)
+        {
+            this.UpdateEdgeMoveDirection();
+        }
         this.UpdatePosition(delta);
         this.UpdateZoom(delta);
         this.UpdateCursorShape();

@@ -16,10 +16,16 @@ public partial class Settings : Control
     public Button SaveButton;
     [Export]
     public Button ResetButton;
+    [Export] public Button BackButton;
+    [Export] public ConfirmationDialog ConfirmDialog;
+
     public override void _Ready()
     {
         this.SaveButton.Pressed += this.OnSaveButtonPressed;
         this.ResetButton.Pressed += this.OnResetButtonPressed;
+        this.BackButton.Pressed += this.OnBackButtonPressed;
+
+        ConfirmDialog.GetOkButton().Pressed += this.LoadMainScene;
     }
 
     private void OnSaveButtonPressed()
@@ -54,5 +60,28 @@ public partial class Settings : Control
         }
     }
 
+    private void OnBackButtonPressed()
+    {
+        if (HasUnsavedChanges())
+        {
+            ConfirmDialog.PopupCentered();
+        }
+        else
+        {
+            LoadMainScene();
+        }
+    }
 
+    private void LoadMainScene()
+    {
+        PackedScene mainScene = ResourceLoader.Load<PackedScene>("res://src/scenes/simulation/simulation.tscn");
+        GetTree().ChangeSceneToPacked(mainScene);
+    }
+
+    private bool HasUnsavedChanges()
+    {
+        return this.DisplaySettings.HasUnsavedChanges() ||
+               this.ControlsSettings.HasUnsavedChanges() ||
+               this.SaveSettings.HasUnsavedChanges();
+    }
 }

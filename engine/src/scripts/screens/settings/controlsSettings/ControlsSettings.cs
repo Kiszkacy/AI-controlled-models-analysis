@@ -34,6 +34,13 @@ public partial class ControlsSettings : Control
     private bool isEdgeMoveEnabled = true;
     private double currentEdgeMoveSpeedQuantifier = 3.0;
 
+    private int initialMaxZoomIndex;
+    private int initialMinZoomIndex;
+    private int initialEdgeMoveMarginIndex;
+    private double initialZoomSensitivity;
+    private bool initialEdgeMoveEnabled;
+    private double initialEdgeMoveSpeedQuantifier;
+
     private readonly string CONFIG_PATH = "./src/config.yaml";
 
     public override void _Ready()
@@ -56,7 +63,28 @@ public partial class ControlsSettings : Control
 
         this.EdgeMoveEnabled.ButtonPressed = isEdgeMoveEnabled;
 
+        StoreInitialState();
         UpdateUI();
+    }
+
+    private void StoreInitialState()
+    {
+        initialMaxZoomIndex = currentMaxZoomIndex;
+        initialMinZoomIndex = currentMinZoomIndex;
+        initialEdgeMoveMarginIndex = currentEdgeMoveMarginIndex;
+        initialZoomSensitivity = currentZoomSensitivity;
+        initialEdgeMoveEnabled = isEdgeMoveEnabled;
+        initialEdgeMoveSpeedQuantifier = currentEdgeMoveSpeedQuantifier;
+    }
+
+    public bool HasUnsavedChanges()
+    {
+        return initialMaxZoomIndex != currentMaxZoomIndex ||
+               initialMinZoomIndex != currentMinZoomIndex ||
+               initialEdgeMoveMarginIndex != currentEdgeMoveMarginIndex ||
+               !Mathf.IsEqualApprox((float)initialZoomSensitivity, (float)currentZoomSensitivity) ||
+               initialEdgeMoveEnabled != isEdgeMoveEnabled ||
+               !Mathf.IsEqualApprox((float)initialEdgeMoveSpeedQuantifier, (float)currentEdgeMoveSpeedQuantifier);
     }
 
     private void SetSliders()
@@ -192,6 +220,12 @@ public partial class ControlsSettings : Control
 
     public void ApplySettings()
     {
+        this.initialZoomSensitivity = this.currentZoomSensitivity;
+        this.initialMaxZoomIndex = this.currentMaxZoomIndex;
+        this.initialMinZoomIndex = this.currentMinZoomIndex;
+        this.initialEdgeMoveMarginIndex = this.currentEdgeMoveMarginIndex;
+        this.initialEdgeMoveEnabled = this.isEdgeMoveEnabled;
+        this.initialEdgeMoveSpeedQuantifier = this.currentEdgeMoveSpeedQuantifier;
         SaveSettingsToConfig();
     }
 

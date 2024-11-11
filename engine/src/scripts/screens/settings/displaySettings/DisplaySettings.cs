@@ -30,6 +30,9 @@ public partial class DisplaySettings : Control
     private int currentResolutionIndex = 1;
     private bool isFullscreen = true;
     private bool isMouseLocked = true;
+    private int initialResolutionIndex;
+    private bool initialFullscreen;
+    private bool initialMouseLocked;
 
     public override void _Ready()
     {
@@ -41,7 +44,22 @@ public partial class DisplaySettings : Control
         this.LockMouseArrowRight.Pressed += this.OnLockMouseArrowRightPressed;
 
         LoadCurrentSettings();
+        StoreInitialState();
         UpdateUI();
+    }
+
+    public bool HasUnsavedChanges()
+    {
+        return initialResolutionIndex != currentResolutionIndex ||
+               initialFullscreen != isFullscreen ||
+               initialMouseLocked != isMouseLocked;
+    }
+
+    private void StoreInitialState()
+    {
+        initialResolutionIndex = currentResolutionIndex;
+        initialFullscreen = isFullscreen;
+        initialMouseLocked = isMouseLocked;
     }
 
     private void LoadCurrentSettings()
@@ -119,6 +137,9 @@ public partial class DisplaySettings : Control
             DisplayServer.WindowSetSize(this.availableResolutions[this.currentResolutionIndex]);
         }
         Input.SetMouseMode(this.isMouseLocked ? Input.MouseModeEnum.Captured : Input.MouseModeEnum.Visible);
+        this.initialFullscreen = this.isFullscreen;
+        this.initialMouseLocked = this.isMouseLocked;
+        this.initialResolutionIndex = this.currentResolutionIndex;
         SaveSettingsToConfig();
     }
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://beyutvretnd5s"]
+[gd_scene load_steps=57 format=3 uid="uid://beyutvretnd5s"]
 
 [ext_resource type="FontFile" uid="uid://chjp63k0jm20m" path="res://assets/fonts/inter/Inter_18pt-Black.ttf" id="1_jf5ra"]
 [ext_resource type="StyleBox" uid="uid://dlbaa32luhlcp" path="res://assets/ui/themes/button/buttonDarkDisabled.tres" id="2_aju34"]
@@ -15,7 +15,9 @@
 [ext_resource type="Texture2D" uid="uid://b5trv26u07qpe" path="res://assets/icons/solid/angles-right.svg" id="11_wwvm4"]
 [ext_resource type="Texture2D" uid="uid://ct4lnhjfna7ku" path="res://assets/icons/solid/rotate-left.svg" id="14_gsnxk"]
 [ext_resource type="Script" path="res://src/scripts/screens/settings/controlsSettings/ControlsSettings.cs" id="14_hux1s"]
+[ext_resource type="Texture2D" uid="uid://he54r43t40s8" path="res://assets/icons/solid/circle-info.svg" id="14_xuakl"]
 [ext_resource type="Script" path="res://src/scripts/screens/settings/saveSettings/SaveSettings.cs" id="15_702fc"]
+[ext_resource type="PackedScene" uid="uid://cmi6acb2oc6qx" path="res://src/scenes/ui/tooltip/tooltip.tscn" id="15_m27x3"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t6245"]
 
@@ -238,6 +240,8 @@ bg_color = Color(0.352941, 0.352941, 0.352941, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_73ps1"]
 bg_color = Color(0.352941, 0.352941, 0.352941, 1)
 
+[sub_resource type="Theme" id="Theme_vtr62"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xngtu"]
 bg_color = Color(0.219608, 0.219608, 0.219608, 1)
 
@@ -294,7 +298,7 @@ corner_radius_top_right = 30
 corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 
-[node name="Settings" type="Control" node_paths=PackedStringArray("TabContainer", "DisplaySettings", "ControlsSettings", "SaveSettings", "SaveButton", "ResetButton")]
+[node name="Settings" type="Control" node_paths=PackedStringArray("TabContainer", "DisplaySettings", "ControlsSettings", "SaveSettings", "SaveButton", "ResetButton", "BackButton", "ConfirmDialog")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -309,6 +313,8 @@ ControlsSettings = NodePath("Background/TabContainer/Controls")
 SaveSettings = NodePath("Background/TabContainer/Save & Load")
 SaveButton = NodePath("Background/SaveButton")
 ResetButton = NodePath("Background/ResetButton")
+BackButton = NodePath("Background/BackButton")
+ConfirmDialog = NodePath("Background/ConfirmationDialog")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
@@ -375,10 +381,9 @@ theme_override_constants/side_margin = 40
 theme_override_constants/icon_separation = 0
 theme_override_font_sizes/font_size = 22
 theme_override_styles/panel = SubResource("StyleBoxFlat_5nsdw")
-current_tab = 1
+current_tab = 0
 
 [node name="Display" type="Control" parent="Background/TabContainer" node_paths=PackedStringArray("ResolutionArrowLeft", "ResolutionArrowRight", "ResolutionLabel", "ModeArrowLeft", "ModeArrowRight", "ModeLabel", "LockMouseArrowLeft", "LockMouseArrowRight", "LockMouseLabel")]
-visible = false
 layout_mode = 2
 theme = SubResource("Theme_fgj78")
 script = ExtResource("11_ipmfa")
@@ -434,6 +439,7 @@ anchor_bottom = 1.0
 offset_right = 3.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="Label" type="Label" parent="Background/TabContainer/Display/VBoxContainer/Resolution"]
 layout_mode = 0
@@ -499,6 +505,7 @@ anchor_bottom = 1.0
 offset_right = 3.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="Label" type="Label" parent="Background/TabContainer/Display/VBoxContainer/Mode"]
 layout_mode = 0
@@ -565,6 +572,7 @@ anchor_bottom = 1.0
 offset_right = 3.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="Label" type="Label" parent="Background/TabContainer/Display/VBoxContainer/Lock Mouse"]
 layout_mode = 0
@@ -606,7 +614,19 @@ theme_override_font_sizes/font_size = 28
 text = "Yes
 "
 
+[node name="Button" type="Button" parent="Background/TabContainer/Display/VBoxContainer/Lock Mouse"]
+layout_mode = 0
+offset_left = 169.5
+offset_top = 7.0
+offset_right = 209.5
+offset_bottom = 47.0
+mouse_filter = 1
+theme = SubResource("Theme_vtr62")
+icon = ExtResource("14_xuakl")
+flat = true
+
 [node name="Controls" type="Control" parent="Background/TabContainer" node_paths=PackedStringArray("ZoomSensitivitySlider", "MaxZoomArrowLeft", "MaxZoomArrowRight", "MaxZoomLabel", "MinZoomArrowLeft", "MinZoomArrowRight", "MinZoomLabel", "EdgeMoveEnabled", "EdgeMoveMarginButton", "EdgeMoveMarginArrowLeft", "EdgeMoveMarginArrowRight", "EdgeMoveMarginLabel", "EdgeMoveSpeedButton", "EdgeMoveSpeedSlider")]
+visible = false
 layout_mode = 2
 script = ExtResource("14_hux1s")
 ZoomSensitivitySlider = NodePath("ScrollContainer/VBoxContainer/Camera Options/Zoom sensitivity/HSlider")
@@ -674,6 +694,7 @@ anchor_bottom = 1.0
 offset_right = 3.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="Label" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Zoom sensitivity"]
 layout_mode = 0
@@ -718,6 +739,7 @@ anchor_bottom = 1.0
 offset_right = 3.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="Label" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Max zoom"]
 layout_mode = 0
@@ -786,6 +808,7 @@ anchor_bottom = 1.0
 offset_right = 3.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="Label" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Min zoom"]
 layout_mode = 0
@@ -854,6 +877,7 @@ anchor_bottom = 1.0
 offset_right = 3.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="Label" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move enabled"]
 layout_mode = 0
@@ -906,6 +930,7 @@ anchor_bottom = 1.0
 offset_right = 3.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="Label" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move margin"]
 layout_mode = 0
@@ -977,6 +1002,7 @@ anchor_bottom = 1.0
 offset_right = 3.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="Label" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move speed"]
 layout_mode = 0
@@ -1087,3 +1113,21 @@ theme_override_colors/icon_normal_color = Color(0.282353, 0.352941, 0.443137, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_cag76")
 icon = ExtResource("14_gsnxk")
 icon_alignment = 1
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="Background"]
+title = "Unsaved Changes"
+size = Vector2i(256, 250)
+ok_button_text = "Yes"
+dialog_text = "
+
+
+You have unsaved changes. 
+Are you sure you want to exit?"
+
+[node name="LockMouse Tooltip" parent="." instance=ExtResource("15_m27x3")]
+offset_left = 533.5
+offset_top = 479.0
+offset_right = 853.5
+offset_bottom = 799.0
+Text = "Lock mouse cursor to the simulation window"
+TargetNodePath = NodePath("../Background/TabContainer/Display/VBoxContainer/Lock Mouse/Button")
