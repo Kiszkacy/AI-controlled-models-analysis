@@ -42,6 +42,7 @@ public partial class Camera : Camera2D, Observable
     private Vector2 mouseDragStart = Vector2.Zero;
     private bool isDoubleClicked = false;
     private Vector2 doubleClickTarget = Vector2.Zero;
+    private bool isEdgeMoveEnabled = true;
     private bool isFollowing = false;
     private Node2D followTarget = null;
 
@@ -54,7 +55,20 @@ public partial class Camera : Camera2D, Observable
     {
         this.Zoom = new Vector2(0.5f, 0.5f);
         this.dragMotionTimer = new Timer(this.DragMotionTimeout);
+        this.SetProperties();
         EventManager.Instance.Subscribe(this, EventChannel.ObjectTracker);
+        EventManager.Instance.Subscribe(this, EventChannel.Settings);
+    }
+
+    private void SetProperties()
+    {
+        this.ZoomSpeedKeys = Config.Instance.Data.Controls.ZoomSensitivity;
+        this.ZoomSpeedMouse = Config.Instance.Data.Controls.ZoomSensitivity * 2.5f;
+        this.MaxZoom = Config.Instance.Data.Controls.MaxZoom;
+        this.MinZoom = Config.Instance.Data.Controls.MinZoom;
+        this.isEdgeMoveEnabled = Config.Instance.Data.Controls.EdgeMoveEnabled;
+        this.EdgeMoveMargin = Config.Instance.Data.Controls.EdgeMoveMargin;
+        this.EdgeMoveSpeedQuantifier = Config.Instance.Data.Controls.EdgeMoveSpeed;
     }
 
     public override void _Input(InputEvent @event)
@@ -224,7 +238,10 @@ public partial class Camera : Camera2D, Observable
         }
         else
         {
-            this.UpdateEdgeMoveDirection();
+            if (isEdgeMoveEnabled)
+            {
+                this.UpdateEdgeMoveDirection();
+            }
             this.UpdatePosition(delta);
         }
 
@@ -356,6 +373,10 @@ public partial class Camera : Camera2D, Observable
             {
                 this.StopFollowing();
             }
+        }
+        else if (@event is NotifyEvent settingsEvent)
+        {
+            this.SetProperties();
         }
     }
 }

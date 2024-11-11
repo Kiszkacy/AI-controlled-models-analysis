@@ -16,6 +16,9 @@ public class Config : Singleton<Config>
     public TestsConfig Tests => this.Data.Tests;
     public EnvironmentConfig Environment => this.Data.Environment;
     public GlobalConfig Global => this.Data.Global;
+    public DisplayData Display => this.Data.Display;
+    public ControlsData Controls => this.Data.Controls;
+    public SavePathData Save => this.Data.Save;
 
     private Config()
     {
@@ -30,6 +33,9 @@ public class ConfigData
     public TestsConfig Tests { get; set; } = new();
     public EnvironmentConfig Environment { get; set; } = new();
     public GlobalConfig Global { get; set; } = new();
+    public DisplayData Display { get; set; } = new();
+    public ControlsData Controls { get; set; } = new();
+    public SavePathData Save { get; set; } = new();
 
     public static ConfigData Load(string localConfigPath, string globalConfigPath)
     {
