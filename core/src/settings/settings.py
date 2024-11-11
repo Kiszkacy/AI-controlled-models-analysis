@@ -17,7 +17,6 @@ from core.src.settings.core_settings import (
     get_core_settings,
     reload_core_settings,
 )
-from core.src.setup import configure_logging
 from core.src.utils.types import model_to_dataclass
 
 
@@ -30,7 +29,7 @@ class GodotSettings:
 @dataclass(frozen=True)
 class TrainingSettings:
     number_of_workers: int
-    number_of_env_per_worker: int
+    number_of_environments_per_worker: int
     training_iterations: int
     training_batch_size: int
     training_checkpoint_frequency: int
@@ -82,8 +81,6 @@ class Settings:
 @functools.lru_cache(maxsize=1)
 def get_settings() -> Settings:
     """Loads settings."""
-    configure_logging()
-
     try:
         core_settings = get_core_settings()
         app_settings = get_app_settings()

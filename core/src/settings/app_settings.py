@@ -85,7 +85,7 @@ class WorkEnvironmentSettingsSchema(BaseSettings):
     model_config = SettingsConfigDict(frozen=True)
 
     env: Environment = Field(default=Environment.GODOT, description="Work environment")
-    pipe_name: Annotated[str, MinLen(1)]
+    pipe_name: Annotated[str, MinLen(1)] = ""  # TODO: do something with this, default should be None
 
     @classmethod
     def settings_customise_sources(  # noqa: PLR0913

@@ -3,6 +3,7 @@ from typing import Any, Self
 
 from loguru import logger
 from pydantic import DirectoryPath, Field, FilePath, field_validator, model_validator
+from pydantic.alias_generators import to_pascal
 from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, SettingsConfigDict, YamlConfigSettingsSource
 
 from core.src.settings.app_settings import APP_REGISTRY
@@ -11,6 +12,8 @@ from core.src.utils.types import FiniteFloat, PositiveInteger
 
 
 class GodotSettingsSchema(BaseSettings):
+    model_config = SettingsConfigDict(frozen=True, alias_generator=to_pascal)
+
     # Path leading to godot executable
     godot_executable: FilePath
 
@@ -27,17 +30,17 @@ class GodotSettingsSchema(BaseSettings):
 
 
 class TrainingSettingsSchema(BaseSettings):
-    model_config = SettingsConfigDict(frozen=True)
+    model_config = SettingsConfigDict(frozen=True, alias_generator=to_pascal)
 
     number_of_workers: PositiveInteger
-    number_of_env_per_worker: PositiveInteger
+    number_of_environments_per_worker: PositiveInteger
     training_iterations: PositiveInteger
     training_batch_size: PositiveInteger
     training_checkpoint_frequency: PositiveInteger
 
 
 class AgentEnvironmentSettingsSchema(BaseSettings):
-    model_config = SettingsConfigDict(frozen=True)
+    model_config = SettingsConfigDict(frozen=True, alias_generator=to_pascal)
 
     observation_space_size: PositiveInteger = 5
     observation_space_low: FiniteFloat
@@ -66,6 +69,7 @@ class CoreSettingsSchema(BaseSettings):
         env_prefix="CORE_",
         env_nested_delimiter="__",
         env_file_encoding="utf-8",
+        alias_generator=to_pascal,
         frozen=True,
     )
     godot: GodotSettingsSchema = Field(description="The godot settings")
