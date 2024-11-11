@@ -9,6 +9,8 @@ public partial class Chart : Control
     public string TitleAxisY { get; set; } = "Axis Y title";
     [Export(PropertyHint.MultilineText)]
     public string TitleAxisX { get; set; } = "Axis X title";
+    [Export]
+    public Color ChartColor { get; set; } = new(0x415A77);
 
     [ExportGroup("DO NOT EDIT THESE")]
     [Export]
@@ -27,6 +29,8 @@ public partial class Chart : Control
     public VBoxContainer TicksAxisY;
     [Export]
     public Control Lines;
+    [Export]
+    public Control NotEnoughData;
 
     private Vector2 chartPointDrawingSize => this.PointsBackground.Size;
 
@@ -37,13 +41,29 @@ public partial class Chart : Control
         this.ChartTitle.Text = this.TitleChart;
         this.AxisXTitle.Text = this.TitleAxisX;
         this.AxisYTitle.Text = this.TitleAxisY;
+        this.Line.DefaultColor = this.ChartColor;
     }
 
     public void UpdateChartData(Vector2[] points, Vector2 minimumValues, Vector2 maximumValues, Vector2 targetTickCount)
     {
-        this.UpdatePointData(points, minimumValues, maximumValues);
-        this.UpdateTickLabels(targetTickCount, minimumValues, maximumValues);
-        this.UpdateLines(targetTickCount);
+        if (points.Length < 2)
+        {
+            this.Line.ClearPoints();
+            this.NotEnoughData.Visible = true;
+            this.TicksAxisX.Visible = false;
+            this.TicksAxisY.Visible = false;
+            this.Lines.Visible = false;
+        }
+        else
+        {
+            this.NotEnoughData.Visible = false;
+            this.TicksAxisX.Visible = true;
+            this.TicksAxisY.Visible = true;
+            this.Lines.Visible = true;
+            this.UpdatePointData(points, minimumValues, maximumValues);
+            this.UpdateTickLabels(targetTickCount, minimumValues, maximumValues);
+            this.UpdateLines(targetTickCount);
+        }
     }
 
     private void UpdatePointData(Vector2[] points, Vector2 minimumValues, Vector2 maximumValues)
@@ -78,7 +98,7 @@ public partial class Chart : Control
             this.TicksAxisX.AddChild(label);
         }
 
-        for (int index = 0; index < targetTickCount.Y; index++)
+        for (int index = (int)targetTickCount.Y-1; index >= 0; index--)
         {
             Label label = this.CreateNewLabel();
             float ratio = ((1.0f/targetTickCount.Y) / 2) + (1.0f/targetTickCount.Y) * index;
