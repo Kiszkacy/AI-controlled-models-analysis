@@ -18,6 +18,8 @@ class CommunicationSettingsSchema(BaseSettings):
     model_config = SettingsConfigDict(frozen=True)
 
     reset: int
+    start: int
+    stop: int
 
 
 class CliSettingsSource(PydanticBaseSettingsSource):
@@ -82,13 +84,27 @@ class Environment(StrEnum):
 class WorkEnvironmentSettingsSchema(BaseSettings):
     model_config = SettingsConfigDict(frozen=True)
 
-    env: Environment = Field(default=Environment.DEVELOPMENT, description="Work environment")
-    pipe_name: Annotated[str | None, MinLen(1)] = None
+    env: Environment = Field(default=Environment.GODOT, description="Work environment")
+    pipe_name: Annotated[str, MinLen(1)]
+
+    @classmethod
+    def settings_customise_sources(  # noqa: PLR0913
+        cls,
+        settings_cls: type[BaseSettings],
+        init_settings: PydanticBaseSettingsSource,
+        env_settings: PydanticBaseSettingsSource,  # noqa: ARG003
+        dotenv_settings: PydanticBaseSettingsSource,  # noqa: ARG003
+        file_secret_settings: PydanticBaseSettingsSource,  # noqa: ARG003
+    ) -> tuple[PydanticBaseSettingsSource, ...]:
+        return (
+            init_settings,
+            CliSettingsSource(settings_cls),
+        )
 
 
 class AppSettingsSchema(BaseSettings):
     model_config = SettingsConfigDict(
-        yaml_file=["../../global/config.yaml"],
+        yaml_file=["global/config.yaml"],
         frozen=True,
     )
 

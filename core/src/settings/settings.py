@@ -56,6 +56,8 @@ class WorkEnvironmentSettings:
 @dataclass(frozen=True)
 class CommunicationCodes:
     reset: int
+    start: int
+    stop: int
 
 
 @dataclass(frozen=True)
