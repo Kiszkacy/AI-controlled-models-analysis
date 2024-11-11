@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/scenes/mainMenu/MainMenu.cs" id="1_2ct11"]
 [ext_resource type="PackedScene" uid="uid://tai7ju750fc6" path="res://src/scenes/ui/button/buttonWhiteBig.tscn" id="1_bk0sv"]
-[ext_resource type="FontFile" uid="uid://lqf2jhb67xdy" path="res://assets/fonts/inter/Inter_18pt-Black.ttf" id="2_5j1m0"]
+[ext_resource type="FontFile" uid="uid://chjp63k0jm20m" path="res://assets/fonts/inter/Inter_18pt-Black.ttf" id="2_5j1m0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sil7k"]
 content_margin_left = 4.0
@@ -39,6 +39,12 @@ SettingsButton = NodePath("ButtonSettings")
 ExitButton = NodePath("ButtonExit")
 HelpBoxParent = NodePath("HelpBoxParent")
 HelpBoxLabel = NodePath("HelpBoxParent/CenterHelpBoxVertically/HelpBoxText")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.41, 0.41, 0.41, 1)
 
 [node name="ButtonsBackground" type="ColorRect" parent="."]
 layout_mode = 2

@@ -1,0 +1,273 @@
+[gd_scene load_steps=11 format=3 uid="uid://bpxv2uqjt5lxb"]
+
+[ext_resource type="Script" path="res://src/scripts/ui/chart/Chart.cs" id="1_gormu"]
+[ext_resource type="Theme" uid="uid://de0xa04ygj6gw" path="res://assets/ui/themes/grayTheme.tres" id="2_gxf1e"]
+[ext_resource type="Theme" uid="uid://c81i2ymfrd5c3" path="res://assets/ui/themes/whiteTheme.tres" id="3_de3lt"]
+[ext_resource type="PackedScene" uid="uid://byp6g5lwnjkly" path="res://src/scenes/ui/button/iconButtonSmall.tscn" id="4_amyka"]
+[ext_resource type="Texture2D" uid="uid://b1h1njg60o6os" path="res://assets/icons/solid/clipboard-question.svg" id="5_4106g"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tgjb4"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.26, 0.26, 0.26, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.12549)
+shadow_size = 8
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hw5c5"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.878431, 0.882353, 0.866667, 1)
+corner_radius_top_right = 4
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kyaph"]
+bg_color = Color(0.8756, 0.88, 0.8624, 0.501961)
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_color = Color(0, 0, 0, 0.12549)
+shadow_size = 8
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7d12c"]
+bg_color = Color(0.8756, 0.88, 0.8624, 0.501961)
+corner_radius_top_left = 4
+corner_radius_bottom_left = 4
+shadow_color = Color(0, 0, 0, 0.12549)
+shadow_size = 8
+anti_aliasing = false
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iyr0n"]
+
+[node name="Chart" type="Control" node_paths=PackedStringArray("ChartTitle", "AxisXTitle", "AxisYTitle", "Line", "PointsBackground", "TicksAxisX", "TicksAxisY", "Lines", "NotEnoughData")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1424.0
+offset_bottom = -684.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gormu")
+ChartColor = Color(0.180392, 0.34902, 0.541176, 1)
+ChartTitle = NodePath("ChartTitle")
+AxisXTitle = NodePath("TitleAxisX")
+AxisYTitle = NodePath("TitleAxisY")
+Line = NodePath("Points/Line")
+PointsBackground = NodePath("PointsBackground")
+TicksAxisX = NodePath("TicksAxisX")
+TicksAxisY = NodePath("TicksAxisY")
+Lines = NodePath("Lines")
+NotEnoughData = NodePath("NotEnoughPoints")
+
+[node name="BackgroundBox" type="Label" parent="."]
+layout_mode = 0
+offset_right = 496.0
+offset_bottom = 396.0
+theme = ExtResource("2_gxf1e")
+theme_override_styles/normal = SubResource("StyleBoxFlat_tgjb4")
+
+[node name="Points" type="Control" parent="."]
+clip_contents = true
+layout_mode = 2
+anchors_preset = 0
+offset_left = 84.0
+offset_top = 32.0
+offset_right = 484.0
+offset_bottom = 344.0
+
+[node name="Line" type="Line2D" parent="Points"]
+z_index = 1
+width = 5.0
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
+
+[node name="PointsBackground" type="Label" parent="."]
+layout_mode = 2
+offset_left = 84.0
+offset_top = 32.0
+offset_right = 484.0
+offset_bottom = 344.0
+theme = ExtResource("3_de3lt")
+theme_override_styles/normal = SubResource("StyleBoxFlat_hw5c5")
+
+[node name="TicksXBackground" type="Label" parent="."]
+layout_mode = 0
+offset_left = 84.0
+offset_top = 344.0
+offset_right = 484.0
+offset_bottom = 364.0
+theme = ExtResource("3_de3lt")
+theme_override_styles/normal = SubResource("StyleBoxFlat_kyaph")
+
+[node name="TicksYBackground" type="Label" parent="."]
+layout_mode = 2
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 84.0
+offset_bottom = 344.0
+theme = ExtResource("3_de3lt")
+theme_override_styles/normal = SubResource("StyleBoxFlat_7d12c")
+
+[node name="ChartTitle" type="Label" parent="."]
+layout_mode = 2
+offset_left = 84.0
+offset_top = 5.0
+offset_right = 484.0
+offset_bottom = 28.0
+theme = ExtResource("2_gxf1e")
+theme_override_font_sizes/font_size = 18
+text = "CHART TITLE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TitleAxisX" type="Label" parent="."]
+layout_mode = 0
+offset_left = 84.0
+offset_top = 368.0
+offset_right = 484.0
+offset_bottom = 391.0
+theme = ExtResource("2_gxf1e")
+text = "CHART AXIS X TITLE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TitleAxisY" type="Label" parent="."]
+layout_mode = 2
+offset_left = 5.0
+offset_top = 346.0
+offset_right = 319.0
+offset_bottom = 369.0
+rotation = -1.5708
+theme = ExtResource("2_gxf1e")
+text = "CHART AXIS Y TITLE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TicksAxisX" type="HBoxContainer" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 84.0
+offset_top = 344.0
+offset_right = 484.0
+offset_bottom = 364.0
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="TicksAxisX"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme = ExtResource("3_de3lt")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_iyr0n")
+text = "1000"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="TicksAxisX"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme = ExtResource("3_de3lt")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_iyr0n")
+text = "1000"
+horizontal_alignment = 1
+
+[node name="TicksAxisY" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 80.0
+offset_bottom = 344.0
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="TicksAxisY"]
+custom_minimum_size = Vector2(0, 78)
+layout_mode = 2
+theme = ExtResource("3_de3lt")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_iyr0n")
+text = "1000"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="TicksAxisY"]
+custom_minimum_size = Vector2(0, 78)
+layout_mode = 2
+theme = ExtResource("3_de3lt")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_iyr0n")
+text = "1000"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="TicksAxisY"]
+custom_minimum_size = Vector2(0, 78)
+layout_mode = 2
+theme = ExtResource("3_de3lt")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_iyr0n")
+text = "1000"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Label4" type="Label" parent="TicksAxisY"]
+custom_minimum_size = Vector2(0, 78)
+layout_mode = 2
+theme = ExtResource("3_de3lt")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_iyr0n")
+text = "1000"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Lines" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 84.0
+offset_top = 32.0
+offset_right = 484.0
+offset_bottom = 344.0
+
+[node name="NotEnoughPoints" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 84.0
+offset_top = 32.0
+offset_right = 484.0
+offset_bottom = 344.0
+
+[node name="Label" type="Label" parent="NotEnoughPoints"]
+layout_mode = 0
+offset_left = 88.0
+offset_right = 400.0
+offset_bottom = 312.0
+theme = ExtResource("2_gxf1e")
+theme_override_colors/font_color = Color(0.262745, 0.262745, 0.262745, 1)
+text = "Chart needs at least 2 data points
+to render data"
+vertical_alignment = 1
+
+[node name="IconButtonSmall" parent="NotEnoughPoints" instance=ExtResource("4_amyka")]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 132.0
+offset_right = 80.0
+offset_bottom = 180.0
+theme_override_colors/font_disabled_color = Color(0.262745, 0.262745, 0.262745, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.262745, 0.262745, 0.262745, 1)
+theme_override_colors/font_hover_color = Color(0.262745, 0.262745, 0.262745, 1)
+theme_override_colors/font_pressed_color = Color(0.262745, 0.262745, 0.262745, 1)
+theme_override_colors/font_focus_color = Color(0.262745, 0.262745, 0.262745, 1)
+theme_override_colors/font_color = Color(0.262745, 0.262745, 0.262745, 1)
+theme_override_colors/font_outline_color = Color(0.262745, 0.262745, 0.262745, 1)
+theme_override_colors/icon_normal_color = Color(0.262745, 0.262745, 0.262745, 1)
+theme_override_colors/icon_focus_color = Color(0.262745, 0.262745, 0.262745, 1)
+theme_override_colors/icon_pressed_color = Color(0.262745, 0.262745, 0.262745, 1)
+theme_override_colors/icon_hover_color = Color(0.262745, 0.262745, 0.262745, 1)
+theme_override_colors/icon_hover_pressed_color = Color(0.262745, 0.262745, 0.262745, 1)
+theme_override_colors/icon_disabled_color = Color(0.262745, 0.262745, 0.262745, 1)
+disabled = true
+icon = ExtResource("5_4106g")
+flat = true

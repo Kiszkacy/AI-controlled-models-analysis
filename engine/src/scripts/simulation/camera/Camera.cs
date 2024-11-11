@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class Camera : Camera2D
+public partial class Camera : Camera2D, Observable
 {
     [Export(PropertyHint.Range, "100,1000,10,or_greater")]
     public float MoveSpeed { get; set; } = 300.0f; // in px/sec
@@ -43,6 +43,8 @@ public partial class Camera : Camera2D
     private bool isDoubleClicked = false;
     private Vector2 doubleClickTarget = Vector2.Zero;
     private bool isEdgeMoveEnabled = true;
+    private bool isFollowing = false;
+    private Node2D followTarget = null;
 
     private Timer dragMotionTimer;
     private const float changeCursorShapeIfDraggingFor = 0.3f; // seconds
@@ -54,6 +56,7 @@ public partial class Camera : Camera2D
         this.Zoom = new Vector2(0.5f, 0.5f);
         this.dragMotionTimer = new Timer(this.DragMotionTimeout);
         this.SetProperties();
+		EventManager.Instance.Subscribe(this, EventChannel.ObjectTracker);
     }
 
     private void SetProperties()
@@ -71,6 +74,20 @@ public partial class Camera : Camera2D
     {
         HandleKeyboardInput(@event);
         HandleMouseInput(@event);
+
+        if (isFollowing && IsUserMovement(@event))
+        {
+            StopFollowing();
+        }
+    }
+
+    private bool IsUserMovement(InputEvent @event)
+    {
+        return @event.IsActionPressed("move.camera.up") ||
+               @event.IsActionPressed("move.camera.down") ||
+               @event.IsActionPressed("move.camera.left") ||
+               @event.IsActionPressed("move.camera.right") ||
+               this.isDragging || this.isDoubleClicked;
     }
 
     private void HandleKeyboardInput(InputEvent @event)
@@ -212,11 +229,21 @@ public partial class Camera : Camera2D
     public override void _PhysicsProcess(double delta)
     {
         this.dragMotionTimer.Process(delta);
-        if (isEdgeMoveEnabled)
+
+        if (this.isFollowing && this.followTarget != null)
         {
-            this.UpdateEdgeMoveDirection();
+            this.dragTarget = this.followTarget.GlobalPosition;
+            this.SmoothDragMovement();
         }
-        this.UpdatePosition(delta);
+        else
+        {
+            if (isEdgeMoveEnabled)
+			{
+				this.UpdateEdgeMoveDirection();
+			}
+            this.UpdatePosition(delta);
+        }
+
         this.UpdateZoom(delta);
         this.UpdateCursorShape();
     }
@@ -276,16 +303,18 @@ public partial class Camera : Camera2D
         this.zoomingInByMouse = false;
         this.zoomingOutByMouse = false;
     }
+
     private void SmoothDragMovement()
     {
-        if (this.GlobalPosition.DistanceTo(this.dragTarget) > 0.1f)
+        Vector2 target = this.dragTarget;
+        if (this.isFollowing)
         {
-            this.GlobalPosition = this.GlobalPosition.Lerp(this.dragTarget, this.DragSmoothness);
+            target = this.followTarget.GlobalPosition;
         }
-        else
-        {
-            this.GlobalPosition = this.dragTarget;
-        }
+
+        this.GlobalPosition = this.GlobalPosition.DistanceTo(target) > 0.1f
+            ? this.GlobalPosition.Lerp(target, this.DragSmoothness)
+            : target;
     }
 
     private void MoveToDoubleClickPosition()
@@ -299,6 +328,18 @@ public partial class Camera : Camera2D
             this.GlobalPosition = this.doubleClickTarget;
             this.isDoubleClicked = false;
         }
+    }
+
+    public void Follow(Node2D objectToFollow)
+    {
+        this.isFollowing = true;
+        this.followTarget = objectToFollow;
+    }
+
+    public void StopFollowing()
+    {
+        this.isFollowing = false;
+        this.followTarget = null;
     }
 
     private void UpdateCursorShape()
@@ -317,5 +358,20 @@ public partial class Camera : Camera2D
     private void DragMotionTimeout()
     {
         this.overrideDragCursorShape = true;
+    }
+
+    public void Notify(IEvent @event)
+    {
+        if (@event is NodeEvent nodeEvent)
+        {
+            if (nodeEvent.Node != null)
+            {
+                this.Follow((Node2D)nodeEvent.Node);
+            }
+            else if (nodeEvent.Node == null && this.isFollowing)
+            {
+                this.StopFollowing();
+            }
+        }
     }
 }

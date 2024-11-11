@@ -1,7 +1,6 @@
 using Godot;
-using Godot.Collections;
 
-public partial class Agent : CharacterBody2D
+public partial class Agent : CharacterBody2D, Trackable
 {
     [Export]
     public float MaximumSpeed { get; set; } = 200.0f; // in px per sec
@@ -33,7 +32,7 @@ public partial class Agent : CharacterBody2D
     [Export]
     public float SightRadius { get; set; } = 256.0f; // in px
 
-    protected float energy;
+    public float energy { get; protected set; }
     protected float health;
     protected float currentRotation = 0.0f;
     protected float currentAcceleration = 0.0f;
@@ -220,5 +219,26 @@ public partial class Agent : CharacterBody2D
         this.Direction = data.Direction;
         this.Velocity = data.Velocity;
         this.id = data.Id;
+    }
+
+    public string[] GetInformation()
+    {
+        return new[] {
+            $"ID: {this.Id}",
+            $"Position: ({this.GlobalPosition.X:F2}; {this.GlobalPosition.Y:F2})",
+            $"Speed: {this.Speed:F2} px/sec",
+            $"Max speed: {this.MaximumSpeed:F2} px/sec",
+            $"Velocity: ({this.Velocity.X:F2}; {this.Velocity.Y:F2})",
+            $"Acceleration: {this.currentAcceleration:F2} px/sec²",
+            $"Max acceleration: {this.MaximumAcceleration} px/sec²",
+            $"Turn speed: {this.currentRotation:F2} rad/sec",
+            $"Max turn speed: {this.MaximumTurnSpeed:F2} rad/sec",
+            $"Energy: {this.energy:F2}/{this.MaximumEnergy}",
+            $"Health: {this.health}/{this.MaximumHealth}",
+            $"Sight radius: {this.SightRadius} px",
+            $"Sight angle: {Mathf.RadToDeg(this.SightAngle):F2} deg",
+            $"Distance to closest food: {(float.IsNaN(this.DistanceToClosestFood) ? "N/A" : $"{this.DistanceToClosestFood:F2} px")}",
+            $"Angle to closest food: {(float.IsNaN(this.AngleToClosestFood) ? "N/A" : $"{Mathf.RadToDeg(this.AngleToClosestFood):F2} deg")}"
+        };
     }
 }

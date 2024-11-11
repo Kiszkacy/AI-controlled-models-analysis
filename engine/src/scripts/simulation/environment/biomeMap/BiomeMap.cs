@@ -38,4 +38,11 @@ public partial class BiomeMap : TileMap
             }
         }
     }
+
+    public BiomeType GetBiomeAtGlobalPosition(Vector2 globalPosition)
+    {
+        Vector2I tilePosition = LocalToMap(ToLocal(globalPosition));
+        Vector2I atlasCoords = GetCellAtlasCoords(0, tilePosition);
+        return (BiomeType)atlasCoords.X;
+    }
 }
