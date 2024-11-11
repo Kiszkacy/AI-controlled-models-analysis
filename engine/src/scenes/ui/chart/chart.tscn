@@ -75,23 +75,6 @@ offset_bottom = 396.0
 theme = ExtResource("2_gxf1e")
 theme_override_styles/normal = SubResource("StyleBoxFlat_tgjb4")
 
-[node name="Points" type="Control" parent="."]
-clip_contents = true
-layout_mode = 2
-anchors_preset = 0
-offset_left = 84.0
-offset_top = 32.0
-offset_right = 484.0
-offset_bottom = 344.0
-
-[node name="Line" type="Line2D" parent="Points"]
-z_index = 1
-width = 5.0
-joint_mode = 2
-begin_cap_mode = 2
-end_cap_mode = 2
-antialiased = true
-
 [node name="PointsBackground" type="Label" parent="."]
 layout_mode = 2
 offset_left = 84.0
@@ -230,6 +213,22 @@ offset_left = 84.0
 offset_top = 32.0
 offset_right = 484.0
 offset_bottom = 344.0
+
+[node name="Points" type="Control" parent="."]
+clip_contents = true
+layout_mode = 2
+anchors_preset = 0
+offset_left = 84.0
+offset_top = 32.0
+offset_right = 484.0
+offset_bottom = 344.0
+
+[node name="Line" type="Line2D" parent="Points"]
+width = 5.0
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
 
 [node name="NotEnoughPoints" type="Control" parent="."]
 anchors_preset = 0
