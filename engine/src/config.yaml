@@ -2,7 +2,7 @@ pipe:
   name: 'godot-python-pipe'
   bufferSize: 8192
 engine:
-  timeScale: 1.0 # multiplier
+  timeScale: 1.0
   ticksPerSecond: 60
 tests:
   runTests: true
@@ -23,3 +23,18 @@ environment:
   supervisorAgentSpawnSafeDistance: 16
   supervisorAgentMaxSpawnTryCount: 50
   seed: 0
+display:
+  resolution:
+    x: 1920
+    y: 1080
+  isFullscreen: true
+  isMouseLocked: true
+controls:
+  zoomSensitivity: 1
+  maxZoom: 3
+  minZoom: 0.3
+  edgeMoveEnabled: true
+  edgeMoveMargin: 50
+  edgeMoveSpeed: 3
+save:
+  savePath: user://

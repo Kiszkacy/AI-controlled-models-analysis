@@ -17,17 +17,19 @@ public partial class Camera : Camera2D, Observable
     [Export(PropertyHint.Range, "0.1,1.0,0.1")]
     public float MinZoom { get; set; } = 0.3f;
 
-    [Export(PropertyHint.Range, "0.1,1.0,0.01")]
-    public float DragSmoothness { get; set; } = 0.15f;
+    [Export(PropertyHint.Range, "0.1,100.0,")]
+    public float DragSmoothness { get; set; } = 15.0f;
 
-    [Export(PropertyHint.Range, "0.1,1.0,0.01")]
-    public float DoubleClickSmoothness { get; set; } = 0.15f;
+    [Export(PropertyHint.Range, "0.1,100.0,")]
+    public float DoubleClickSmoothness { get; set; } = 15.0f;
 
     [Export(PropertyHint.Range, "10,100,1")]
     public float EdgeMoveMargin { get; set; } = 50f;
 
     [Export(PropertyHint.Range, "0.5,10.0,0.1")]
     public float EdgeMoveSpeedQuantifier { get; set; } = 3f;
+
+    [Export] public CanvasLayer UILayer;
 
     private Vector2 moveDirection = Vector2.Zero;
     private Vector2 edgeMoveDirection = Vector2.Zero;
@@ -42,6 +44,7 @@ public partial class Camera : Camera2D, Observable
     private Vector2 mouseDragStart = Vector2.Zero;
     private bool isDoubleClicked = false;
     private Vector2 doubleClickTarget = Vector2.Zero;
+    private bool isEdgeMoveEnabled = true;
     private bool isFollowing = false;
     private Node2D followTarget = null;
 
@@ -54,7 +57,20 @@ public partial class Camera : Camera2D, Observable
     {
         this.Zoom = new Vector2(0.5f, 0.5f);
         this.dragMotionTimer = new Timer(this.DragMotionTimeout);
+        this.SetProperties();
         EventManager.Instance.Subscribe(this, EventChannel.ObjectTracker);
+        EventManager.Instance.Subscribe(this, EventChannel.Settings);
+    }
+
+    private void SetProperties()
+    {
+        this.ZoomSpeedKeys = Config.Instance.Data.Controls.ZoomSensitivity;
+        this.ZoomSpeedMouse = Config.Instance.Data.Controls.ZoomSensitivity * 2.5f;
+        this.MaxZoom = Config.Instance.Data.Controls.MaxZoom;
+        this.MinZoom = Config.Instance.Data.Controls.MinZoom;
+        this.isEdgeMoveEnabled = Config.Instance.Data.Controls.EdgeMoveEnabled;
+        this.EdgeMoveMargin = Config.Instance.Data.Controls.EdgeMoveMargin;
+        this.EdgeMoveSpeedQuantifier = Config.Instance.Data.Controls.EdgeMoveSpeed;
     }
 
     public override void _Input(InputEvent @event)
@@ -138,7 +154,7 @@ public partial class Camera : Camera2D, Observable
             switch (mouseEvent.ButtonIndex)
             {
                 case MouseButton.Left:
-                    if (mouseEvent.IsPressed())
+                    if (mouseEvent.IsPressed() && !IsMouseOverUI())
                     {
                         this.StartDragging();
                     }
@@ -147,7 +163,7 @@ public partial class Camera : Camera2D, Observable
                         this.StopDragging();
                     }
 
-                    if (mouseEvent.DoubleClick)
+                    if (mouseEvent.DoubleClick && !IsMouseOverUI())
                     {
                         this.CenterOnMousePosition();
                     }
@@ -213,18 +229,21 @@ public partial class Camera : Camera2D, Observable
         this.dragTarget = this.positionDragStart + drag * this.Zoom.Inverse();
     }
 
-    public override void _PhysicsProcess(double delta)
+    public override void _Process(double delta)
     {
         this.dragMotionTimer.Process(delta);
 
         if (this.isFollowing && this.followTarget != null)
         {
             this.dragTarget = this.followTarget.GlobalPosition;
-            this.SmoothDragMovement();
+            this.SmoothDragMovement(delta);
         }
         else
         {
-            this.UpdateEdgeMoveDirection();
+            if (isEdgeMoveEnabled)
+            {
+                this.UpdateEdgeMoveDirection();
+            }
             this.UpdatePosition(delta);
         }
 
@@ -232,8 +251,18 @@ public partial class Camera : Camera2D, Observable
         this.UpdateCursorShape();
     }
 
+    private bool IsMouseOverUI()
+    {
+        Control hoveredNode = GetViewport().GuiGetHoveredControl();
+        return hoveredNode != null && UILayer.IsAncestorOf(hoveredNode);
+    }
+
     private void UpdateEdgeMoveDirection()
     {
+        if (IsMouseOverUI())
+        {
+            return;
+        }
         Vector2 mousePos = GetViewport().GetMousePosition();
         Vector2 viewportSize = GetViewportRect().Size;
         Vector2 viewportCenter = viewportSize / 2;
@@ -251,15 +280,15 @@ public partial class Camera : Camera2D, Observable
 
     private void UpdatePosition(double delta)
     {
-        if (this.isDoubleClicked) this.MoveToDoubleClickPosition();
-        else if (this.isDragging) this.SmoothDragMovement();
+        if (this.isDoubleClicked) this.MoveToDoubleClickPosition(delta);
+        else if (this.isDragging) this.SmoothDragMovement(delta);
         else if (this.hasLeftOverDragForce)
         {
             Vector2 dragLeftOverForce = this.dragTarget - this.GlobalPosition;
             if (dragLeftOverForce.Length() >= 1.0f)
             {
-                this.SmoothDragMovement();
-                this.dragTarget.Lerp(Vector2.Zero, DragSmoothness);
+                this.SmoothDragMovement(delta);
+                this.dragTarget.Lerp(Vector2.Zero, Mathf.Min(0.5f, DragSmoothness*(float)delta));
             }
             else
             {
@@ -288,7 +317,7 @@ public partial class Camera : Camera2D, Observable
         this.zoomingOutByMouse = false;
     }
 
-    private void SmoothDragMovement()
+    private void SmoothDragMovement(double delta)
     {
         Vector2 target = this.dragTarget;
         if (this.isFollowing)
@@ -297,15 +326,15 @@ public partial class Camera : Camera2D, Observable
         }
 
         this.GlobalPosition = this.GlobalPosition.DistanceTo(target) > 0.1f
-            ? this.GlobalPosition.Lerp(target, this.DragSmoothness)
+            ? this.GlobalPosition.Lerp(target, Mathf.Min(0.5f, this.DragSmoothness * (float)delta))
             : target;
     }
 
-    private void MoveToDoubleClickPosition()
+    private void MoveToDoubleClickPosition(double delta)
     {
         if (this.GlobalPosition.DistanceTo(this.doubleClickTarget) > 0.1f)
         {
-            this.GlobalPosition = this.GlobalPosition.Lerp(this.doubleClickTarget, this.DoubleClickSmoothness);
+            this.GlobalPosition = this.GlobalPosition.Lerp(this.doubleClickTarget, Mathf.Min(0.5f, this.DoubleClickSmoothness * (float)delta));
         }
         else
         {
@@ -356,6 +385,10 @@ public partial class Camera : Camera2D, Observable
             {
                 this.StopFollowing();
             }
+        }
+        else if (@event is NotifyEvent settingsEvent)
+        {
+            this.SetProperties();
         }
     }
 }

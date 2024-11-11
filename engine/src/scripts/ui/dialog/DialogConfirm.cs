@@ -40,7 +40,6 @@ public partial class DialogConfirm : Control
         this.DescriptionLabel.Text = this.Description;
         this.DarkenBackground.Color = this.BackgroundColor;
         this.ConnectButtons();
-        this.DarkenBackground.Color = this.BackgroundColor;
     }
 
     private void ConnectButtons()
@@ -58,6 +57,7 @@ public partial class DialogConfirm : Control
     private void OnConfirmClick()
     {
         this.Confirmed?.Invoke();
+        this.Close();
     }
 
     private void OnCancelClick()
@@ -69,5 +69,10 @@ public partial class DialogConfirm : Control
     {
         this.Cancelled?.Invoke();
         this.Visible = false;
+    }
+
+    public void Open()
+    {
+        this.Visible = true;
     }
 }

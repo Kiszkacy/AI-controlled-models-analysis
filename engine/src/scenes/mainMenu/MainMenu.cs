@@ -100,7 +100,7 @@ public partial class MainMenu : Control
 
     private void OnSettingsClick()
     {
-        this.GetTree().ChangeSceneToFile("res://src/scenes/settings.tscn");
+        this.GetTree().ChangeSceneToFile("res://src/scenes/settings/settings.tscn");
     }
 
     private void OnExitClick()
