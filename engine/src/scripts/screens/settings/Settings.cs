@@ -30,18 +30,9 @@ public partial class Settings : Control
 
     private void OnSaveButtonPressed()
     {
-        switch (this.TabContainer.CurrentTab)
-        {
-            case 0:
-                this.DisplaySettings.ApplySettings();
-                break;
-            case 1:
-                this.ControlsSettings.ApplySettings();
-                break;
-            case 2:
-                this.SaveSettings.ApplySettings();
-                break;
-        }
+        this.DisplaySettings.ApplySettings();
+        this.ControlsSettings.ApplySettings();
+        this.SaveSettings.ApplySettings();
     }
 
     private void OnResetButtonPressed()
