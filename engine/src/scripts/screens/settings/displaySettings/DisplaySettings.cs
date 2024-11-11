@@ -1,6 +1,10 @@
 
+using System.IO;
+
 using Godot;
-using Godot.Collections;
+
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 
 public partial class DisplaySettings : Control
 {
@@ -13,6 +17,8 @@ public partial class DisplaySettings : Control
     [Export] public Button LockMouseArrowLeft;
     [Export] public Button LockMouseArrowRight;
     [Export] public Label LockMouseLabel;
+
+    private readonly string CONFIG_PATH = "./src/config.yaml";
 
     private readonly Vector2I[] availableResolutions = {
         new(1280, 720),
@@ -113,6 +119,7 @@ public partial class DisplaySettings : Control
             DisplayServer.WindowSetSize(this.availableResolutions[this.currentResolutionIndex]);
         }
         Input.SetMouseMode(this.isMouseLocked ? Input.MouseModeEnum.Captured : Input.MouseModeEnum.Visible);
+        SaveSettingsToConfig();
     }
 
     public void ResetToDefault()
@@ -123,4 +130,45 @@ public partial class DisplaySettings : Control
         UpdateUI();
     }
 
+    private void SaveSettingsToConfig()
+    {
+        var yaml = File.ReadAllText(CONFIG_PATH);
+        var deserializer = new DeserializerBuilder()
+            .WithNamingConvention(CamelCaseNamingConvention.Instance)
+            .Build();
+        var configDict = deserializer.Deserialize<System.Collections.Generic.Dictionary<string, object>>(yaml);
+
+        var displayData = new DisplayData(new Vector2I(this.availableResolutions[this.currentResolutionIndex].X, this.availableResolutions[this.currentResolutionIndex].Y),
+            this.isFullscreen, this.isMouseLocked);
+
+        configDict["display"] = displayData;
+
+        var serializer = new SerializerBuilder()
+            .WithNamingConvention(CamelCaseNamingConvention.Instance)
+            .Build();
+        var updatedYaml = serializer.Serialize(configDict);
+
+        File.WriteAllText(CONFIG_PATH, updatedYaml);
+
+        Config.Instance.Display.Resolution = this.availableResolutions[this.currentResolutionIndex];
+        Config.Instance.Display.IsFullscreen = this.isFullscreen;
+        Config.Instance.Display.IsMouseLocked = this.isMouseLocked;
+    }
+
+}
+
+public class DisplayData
+{
+    public Vector2I Resolution { get; set; }
+    public bool IsFullscreen { get; set; }
+    public bool IsMouseLocked { get; set; }
+
+    public DisplayData(Vector2I resolution, bool isFullscreen, bool isMouseLocked)
+    {
+        this.Resolution = resolution;
+        this.IsFullscreen = isFullscreen;
+        this.IsMouseLocked = isMouseLocked;
+    }
+
+    public DisplayData() { }
 }

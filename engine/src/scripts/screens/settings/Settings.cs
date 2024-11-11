@@ -1,8 +1,6 @@
-using System;
 
 using Godot;
 
-using Newtonsoft.Json.Linq;
 
 public partial class Settings : Control
 {
@@ -10,10 +8,10 @@ public partial class Settings : Control
     public TabContainer TabContainer;
     [Export]
     public DisplaySettings DisplaySettings;
-    // [Export]
-    // public ControlsSettings ControlsSettings;
-    // [Export]
-    // public SaveSettings SaveSettings;
+    [Export]
+    public ControlsSettings ControlsSettings;
+    [Export]
+    public SaveSettings SaveSettings;
     [Export]
     public Button SaveButton;
     [Export]
@@ -32,10 +30,10 @@ public partial class Settings : Control
                 this.DisplaySettings.ApplySettings();
                 break;
             case 1:
-                // TODO
+                this.ControlsSettings.ApplySettings();
                 break;
             case 2:
-                // TODO
+                this.SaveSettings.ApplySettings();
                 break;
         }
     }
@@ -48,11 +46,13 @@ public partial class Settings : Control
                 this.DisplaySettings.ResetToDefault();
                 break;
             case 1:
-                // TODO
+                this.ControlsSettings.ResetToDefault();
                 break;
             case 2:
-                // TODO
+                this.SaveSettings.ResetToDefault();
                 break;
         }
     }
+
+
 }
