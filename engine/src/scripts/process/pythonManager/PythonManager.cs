@@ -22,8 +22,8 @@ public class PythonManager : Singleton<PythonManager>
         {
             FileName = pythonPath,
             Arguments = scriptPath,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
+//            RedirectStandardOutput = true,
+//            RedirectStandardError = true,
             UseShellExecute = false,
             CreateNoWindow = false,
             WorkingDirectory = workingDirectory,
@@ -35,27 +35,27 @@ public class PythonManager : Singleton<PythonManager>
         process.StartInfo = processStartInfo;
         process.Start();
         
-        string output = process.StandardOutput.ReadToEnd();
-        string error = process.StandardError.ReadToEnd();
-        process.WaitForExit();
-        
-        if (!string.IsNullOrEmpty(output))
-        {
-            Console.WriteLine("Output: " + output);
-        }
-        else
-        {
-            Console.WriteLine("No output from Python script.");
-        }
-
-        if (!string.IsNullOrEmpty(error))
-        {
-            Console.WriteLine("Error: " + error);
-        }
-        else
-        {
-            Console.WriteLine("No errors from Python script.");
-        }
+//        string output = process.StandardOutput.ReadToEnd();
+//        string error = process.StandardError.ReadToEnd();
+////        process.WaitForExit();
+//
+//        if (!string.IsNullOrEmpty(output))
+//        {
+//            Console.WriteLine("Output: " + output);
+//        }
+//        else
+//        {
+//            Console.WriteLine("No output from Python script.");
+//        }
+//
+//        if (!string.IsNullOrEmpty(error))
+//        {
+//            Console.WriteLine("Error: " + error);
+//        }
+//        else
+//        {
+//            Console.WriteLine("No errors from Python script.");
+//        }
     }
     
     public void Stop()

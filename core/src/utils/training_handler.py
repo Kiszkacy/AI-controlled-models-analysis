@@ -2,7 +2,7 @@ import os
 
 from loguru import logger
 from ray.rllib import MultiAgentEnv
-from ray.rllib.algorithms import PPOConfig
+from ray.rllib.algorithms import Algorithm, PPOConfig
 from ray.rllib.models import ModelCatalog
 
 from core.src.policies.custom_model import CustomModel
@@ -29,11 +29,7 @@ class TrainingHandler:
         self.model_name = model_name
         self.environment_cls = environment_cls
 
-    def train(self, training_settings: TrainingSettings):
-        save_interval = training_settings.training_checkpoint_frequency
-        # model_dir = get_path() # infinitive loop :(
-        model_dir = None
-
+    def build_trainer(self, training_settings: TrainingSettings) -> Algorithm:
         ModelCatalog.register_custom_model("custom_ppo_model", CustomModel)
 
         ppo_config = (
@@ -63,7 +59,14 @@ class TrainingHandler:
             )
         )
 
-        trainer = ppo_config.build()
+        return ppo_config.build()
+
+    def train(self, training_settings: TrainingSettings):
+        save_interval = training_settings.training_checkpoint_frequency
+        # model_dir = get_path() # infinitive loop :(
+        model_dir = None
+
+        trainer = self.build_trainer(training_settings)
 
         # if self.model_name:
         #     model_dir = get_path() + "\\" + self.model_name

@@ -25,7 +25,7 @@ public partial class Supervisor : Node
 
     private bool justSentACommunicationCode = false;
     private bool areAgentsReady = false;
-    private bool firstMessage = true;
+    private bool firstMessage = !PythonManager.Instance.IsRunning;
 
     public override void _Ready()
     {

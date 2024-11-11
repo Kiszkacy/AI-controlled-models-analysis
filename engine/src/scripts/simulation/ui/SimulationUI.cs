@@ -173,6 +173,8 @@ public partial class SimulationUI : CanvasLayer
     private void OnCenterCameraClick()
     {
         this.Camera.MoveTo(EnvironmentManager.Instance.Environment.Size/2.0f);
+        byte[] codeInBytes = BitConverter.GetBytes(Config.Get().Global.Communication.Start);
+        PipeHandler.Get().Send(codeInBytes);
     }
 
     public override void _PhysicsProcess(double delta)

@@ -37,8 +37,10 @@ class GodotHandler(Generic[T], ABC):
 
     def _handle_communication_code(self, data: bytes) -> int | None:
         try:
-            decoded_data = data.decode()
-            return int(decoded_data)  # TODO: later will be changed to enum
+            value = int.from_bytes(data, byteorder="little")
+            if 0 < value < 4:  # noqa: PLR2004
+                return value
+            return None  # TODO: later will be changed to enum
         except ValueError:
             return None
 
