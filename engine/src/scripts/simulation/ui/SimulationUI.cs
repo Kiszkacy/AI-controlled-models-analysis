@@ -240,6 +240,5 @@ public partial class SimulationUI : CanvasLayer
     private void UpdateFadeoutBackgroundVisibility()
     {
         this.FadeoutBackground.Visible = this.ViewMode != ViewMode.Simulation || this.SubmenuNode.Visible;
-        GD.Print(this.FadeoutBackground.Visible);
     }
 }
