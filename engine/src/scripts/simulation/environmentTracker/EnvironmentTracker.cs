@@ -49,7 +49,7 @@ public partial class EnvironmentTracker : Node
         this.FoodCountData.Add(this.FoodCount());
         this.TimeData.Add(SimulationManager.Instance.TimePassed);
         this.TrimData();
-        
+
         EventManager.Instance.RegisterEvent(new NotifyEvent(null), EventChannel.EnvironmentTracker);
         this.cacheTimer.Activate(this.CacheIntervalSeconds);
     }
@@ -112,7 +112,7 @@ public partial class EnvironmentTracker : Node
     {
         return (float)this.FoodCount() / this.AgentsCount();
     }
-    
+
     private int FoodCount()
     {
         int foodCount = 0;

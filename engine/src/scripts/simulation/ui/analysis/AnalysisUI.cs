@@ -19,17 +19,17 @@ public partial class AnalysisUI : Control, Observable
     public Chart FoodToAgentsRatioChart;
     [Export]
     public Chart FoodCountChart;
-    
+
     [Export]
     public Button SaveDataButton;
     [Export]
     public Button ClearDataButton;
-    
+
     [Export]
     public LineEdit CacheSizeInput;
     [Export]
     public LineEdit CacheIntervalInput;
-    
+
     [Export]
     public DialogConfirm ClearDataConfirmDialog;
 
@@ -67,14 +67,14 @@ public partial class AnalysisUI : Control, Observable
     {
         this.ClearDataConfirmDialog.Open();
     }
-    
+
     private void OnCacheSizeInput(string text)
     {
         // TODO no validation on input
         // TODO create input component
         this.EnvironmentTracker.MaxDataPoints = text.ToInt();
     }
-    
+
     private void OnCacheIntervalInput(string text)
     {
         // TODO no validation on input
@@ -101,35 +101,35 @@ public partial class AnalysisUI : Control, Observable
             new Vector2((float)this.EnvironmentTracker.TimeData.Max(), 100),
             new Vector2(5, 5)
         );
-        
+
         this.AgentsMeanEnergyChart.UpdateChartData(
             this.EnvironmentTracker.AgentsMeanEnergyData.Zip(this.EnvironmentTracker.TimeData, (agentEnergy, time) => new Vector2((float)time, agentEnergy)).ToArray(),
             new Vector2((float)this.EnvironmentTracker.TimeData.Min(), 0),
             new Vector2((float)this.EnvironmentTracker.TimeData.Max(), 200),
             new Vector2(5, 5)
         );
-        
+
         this.AgentsEnergySumChart.UpdateChartData(
             this.EnvironmentTracker.AgentsEnergySumData.Zip(this.EnvironmentTracker.TimeData, (agentEnergy, time) => new Vector2((float)time, agentEnergy)).ToArray(),
             new Vector2((float)this.EnvironmentTracker.TimeData.Min(), 0),
             new Vector2((float)this.EnvironmentTracker.TimeData.Max(), 10000),
             new Vector2(5, 5)
         );
-        
+
         this.EnvironmentTotalEnergyChart.UpdateChartData(
             this.EnvironmentTracker.EnvironmentTotalEnergyData.Zip(this.EnvironmentTracker.TimeData, (energy, time) => new Vector2((float)time, energy)).ToArray(),
             new Vector2((float)this.EnvironmentTracker.TimeData.Min(), 0),
             new Vector2((float)this.EnvironmentTracker.TimeData.Max(), 50000),
             new Vector2(5, 5)
         );
-        
+
         this.FoodToAgentsRatioChart.UpdateChartData(
             this.EnvironmentTracker.FoodToAgentsRatioData.Zip(this.EnvironmentTracker.TimeData, (ratio, time) => new Vector2((float)time, ratio)).ToArray(),
             new Vector2((float)this.EnvironmentTracker.TimeData.Min(), 0),
             new Vector2((float)this.EnvironmentTracker.TimeData.Max(), 20),
             new Vector2(5, 5)
         );
-        
+
         this.FoodCountChart.UpdateChartData(
             this.EnvironmentTracker.FoodCountData.Zip(this.EnvironmentTracker.TimeData, (amount, time) => new Vector2((float)time, amount)).ToArray(),
             new Vector2((float)this.EnvironmentTracker.TimeData.Min(), 0),
@@ -141,42 +141,42 @@ public partial class AnalysisUI : Control, Observable
     private void FillChartsWithEmptyData()
     {
         this.AgentCountChart.UpdateChartData(
-            new Vector2[]{},
+            new Vector2[] { },
             Vector2.Zero,
             Vector2.Zero,
             Vector2.Zero
         );
-        
+
         this.AgentsMeanEnergyChart.UpdateChartData(
-            new Vector2[]{},
+            new Vector2[] { },
             Vector2.Zero,
             Vector2.Zero,
             Vector2.Zero
         );
-        
+
         this.AgentsEnergySumChart.UpdateChartData(
-            new Vector2[]{},
+            new Vector2[] { },
             Vector2.Zero,
             Vector2.Zero,
             Vector2.Zero
         );
-        
+
         this.EnvironmentTotalEnergyChart.UpdateChartData(
-            new Vector2[]{},
+            new Vector2[] { },
             Vector2.Zero,
             Vector2.Zero,
             Vector2.Zero
         );
-        
+
         this.FoodToAgentsRatioChart.UpdateChartData(
-            new Vector2[]{},
+            new Vector2[] { },
             Vector2.Zero,
             Vector2.Zero,
             Vector2.Zero
         );
-        
+
         this.FoodCountChart.UpdateChartData(
-            new Vector2[]{},
+            new Vector2[] { },
             Vector2.Zero,
             Vector2.Zero,
             Vector2.Zero

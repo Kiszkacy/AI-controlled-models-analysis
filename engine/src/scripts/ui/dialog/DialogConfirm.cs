@@ -70,7 +70,7 @@ public partial class DialogConfirm : Control
         this.Cancelled?.Invoke();
         this.Visible = false;
     }
-    
+
     public void Open()
     {
         this.Visible = true;
