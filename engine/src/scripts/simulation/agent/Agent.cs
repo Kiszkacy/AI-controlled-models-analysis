@@ -32,7 +32,7 @@ public partial class Agent : CharacterBody2D, Trackable
     [Export]
     public float SightRadius { get; set; } = 256.0f; // in px
 
-    protected float energy;
+    public float energy { get; protected set; }
     protected float health;
     protected float currentRotation = 0.0f;
     protected float currentAcceleration = 0.0f;

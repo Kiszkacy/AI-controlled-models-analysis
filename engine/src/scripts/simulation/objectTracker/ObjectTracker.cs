@@ -77,7 +77,7 @@ public partial class ObjectTracker : Node2D
     private void DisplayBiomeType(BiomeType biome)
     {
         // TODO add to UI
-        NeatPrinter.Start().Print(biome.ToString()).End();
+        // NeatPrinter.Start().Print(biome.ToString()).End();
     }
 
     private void CheckIfActiveObjectExists()
