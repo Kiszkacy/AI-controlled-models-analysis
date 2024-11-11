@@ -56,8 +56,8 @@ public partial class Camera : Camera2D, Observable
         this.Zoom = new Vector2(0.5f, 0.5f);
         this.dragMotionTimer = new Timer(this.DragMotionTimeout);
         this.SetProperties();
-		EventManager.Instance.Subscribe(this, EventChannel.ObjectTracker);
-		EventManager.Instance.Subscribe(this, EventChannel.Settings);
+        EventManager.Instance.Subscribe(this, EventChannel.ObjectTracker);
+        EventManager.Instance.Subscribe(this, EventChannel.Settings);
     }
 
     private void SetProperties()
@@ -239,9 +239,9 @@ public partial class Camera : Camera2D, Observable
         else
         {
             if (isEdgeMoveEnabled)
-			{
-				this.UpdateEdgeMoveDirection();
-			}
+            {
+                this.UpdateEdgeMoveDirection();
+            }
             this.UpdatePosition(delta);
         }
 
@@ -373,7 +373,8 @@ public partial class Camera : Camera2D, Observable
             {
                 this.StopFollowing();
             }
-        } else if (@event is NotifyEvent settingsEvent)
+        }
+        else if (@event is NotifyEvent settingsEvent)
         {
             this.SetProperties();
         }

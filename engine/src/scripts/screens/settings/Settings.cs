@@ -4,11 +4,11 @@ using Godot;
 
 public partial class Settings : Control
 {
-    [Export] 
+    [Export]
     public bool ShowBackground = true;
-    [Export] 
+    [Export]
     public bool InsideSimulation = false;
-    
+
     [ExportGroup("DO NOT EDIT THESE")]
     [Export]
     public TabContainer TabContainer;
@@ -22,12 +22,12 @@ public partial class Settings : Control
     public Button SaveButton;
     [Export]
     public Button ResetButton;
-    [Export] 
+    [Export]
     public Button BackButton;
-    [Export] 
+    [Export]
     public DialogConfirm ConfirmDialog;
-    
-    [Export] 
+
+    [Export]
     public ColorRect Background;
 
     public override void _Ready()
@@ -96,8 +96,8 @@ public partial class Settings : Control
 
     private bool HasUnsavedChanges()
     {
-        return this.DisplaySettings.HasUnsavedChanges() 
-               || this.ControlsSettings.HasUnsavedChanges() 
+        return this.DisplaySettings.HasUnsavedChanges()
+               || this.ControlsSettings.HasUnsavedChanges()
                || this.SaveSettings.HasUnsavedChanges();
     }
 }

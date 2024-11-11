@@ -52,10 +52,10 @@ public partial class SimulationUI : CanvasLayer
     public Control AnalysisViewNode;
     [Export]
     public Control ConfigurationViewNode;
-    
+
     [Export]
     public Settings Settings;
-    
+
     [Export]
     public Control Submenu;
     [Export]
@@ -217,7 +217,7 @@ public partial class SimulationUI : CanvasLayer
     {
         this.Camera.MoveTo(EnvironmentManager.Instance.Environment.Size/2.0f);
     }
-    
+
     private void OnSubmenuContinueButtonClick()
     {
         this.CloseSubmenu();
@@ -248,12 +248,12 @@ public partial class SimulationUI : CanvasLayer
     {
         this.GetTree().Quit();
     }
-    
+
     private void OnSubmenuCloseButtonClick()
     {
         this.CloseSubmenu();
     }
-    
+
     private void OpenSubmenu()
     {
         this.FadeoutBackground.Visible = true;
