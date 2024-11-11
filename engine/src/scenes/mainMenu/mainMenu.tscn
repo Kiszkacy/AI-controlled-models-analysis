@@ -40,6 +40,12 @@ ExitButton = NodePath("ButtonExit")
 HelpBoxParent = NodePath("HelpBoxParent")
 HelpBoxLabel = NodePath("HelpBoxParent/CenterHelpBoxVertically/HelpBoxText")
 
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.41, 0.41, 0.41, 1)
+
 [node name="ButtonsBackground" type="ColorRect" parent="."]
 layout_mode = 2
 offset_left = 144.0
