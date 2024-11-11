@@ -17,11 +17,11 @@ public partial class Camera : Camera2D, Observable
     [Export(PropertyHint.Range, "0.1,1.0,0.1")]
     public float MinZoom { get; set; } = 0.3f;
 
-    [Export(PropertyHint.Range, "0.1,1.0,0.01")]
-    public float DragSmoothness { get; set; } = 0.15f;
+    [Export(PropertyHint.Range, "0.1,100.0,")]
+    public float DragSmoothness { get; set; } = 15.0f;
 
-    [Export(PropertyHint.Range, "0.1,1.0,0.01")]
-    public float DoubleClickSmoothness { get; set; } = 0.15f;
+    [Export(PropertyHint.Range, "0.1,100.0,")]
+    public float DoubleClickSmoothness { get; set; } = 15.0f;
 
     [Export(PropertyHint.Range, "10,100,1")]
     public float EdgeMoveMargin { get; set; } = 50f;
@@ -229,14 +229,14 @@ public partial class Camera : Camera2D, Observable
         this.dragTarget = this.positionDragStart + drag * this.Zoom.Inverse();
     }
 
-    public override void _PhysicsProcess(double delta)
+    public override void _Process(double delta)
     {
         this.dragMotionTimer.Process(delta);
 
         if (this.isFollowing && this.followTarget != null)
         {
             this.dragTarget = this.followTarget.GlobalPosition;
-            this.SmoothDragMovement();
+            this.SmoothDragMovement(delta);
         }
         else
         {
@@ -280,15 +280,15 @@ public partial class Camera : Camera2D, Observable
 
     private void UpdatePosition(double delta)
     {
-        if (this.isDoubleClicked) this.MoveToDoubleClickPosition();
-        else if (this.isDragging) this.SmoothDragMovement();
+        if (this.isDoubleClicked) this.MoveToDoubleClickPosition(delta);
+        else if (this.isDragging) this.SmoothDragMovement(delta);
         else if (this.hasLeftOverDragForce)
         {
             Vector2 dragLeftOverForce = this.dragTarget - this.GlobalPosition;
             if (dragLeftOverForce.Length() >= 1.0f)
             {
-                this.SmoothDragMovement();
-                this.dragTarget.Lerp(Vector2.Zero, DragSmoothness);
+                this.SmoothDragMovement(delta);
+                this.dragTarget.Lerp(Vector2.Zero, Mathf.Min(0.5f, DragSmoothness*(float)delta));
             }
             else
             {
@@ -317,7 +317,7 @@ public partial class Camera : Camera2D, Observable
         this.zoomingOutByMouse = false;
     }
 
-    private void SmoothDragMovement()
+    private void SmoothDragMovement(double delta)
     {
         Vector2 target = this.dragTarget;
         if (this.isFollowing)
@@ -326,15 +326,15 @@ public partial class Camera : Camera2D, Observable
         }
 
         this.GlobalPosition = this.GlobalPosition.DistanceTo(target) > 0.1f
-            ? this.GlobalPosition.Lerp(target, this.DragSmoothness)
+            ? this.GlobalPosition.Lerp(target, Mathf.Min(0.5f, this.DragSmoothness * (float)delta))
             : target;
     }
 
-    private void MoveToDoubleClickPosition()
+    private void MoveToDoubleClickPosition(double delta)
     {
         if (this.GlobalPosition.DistanceTo(this.doubleClickTarget) > 0.1f)
         {
-            this.GlobalPosition = this.GlobalPosition.Lerp(this.doubleClickTarget, this.DoubleClickSmoothness);
+            this.GlobalPosition = this.GlobalPosition.Lerp(this.doubleClickTarget, Mathf.Min(0.5f, this.DoubleClickSmoothness * (float)delta));
         }
         else
         {
