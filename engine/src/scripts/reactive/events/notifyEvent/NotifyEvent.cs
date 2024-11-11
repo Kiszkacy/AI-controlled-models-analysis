@@ -1,0 +1,1 @@
+﻿public record NotifyEvent(object Object) : Event<object>(Object);
