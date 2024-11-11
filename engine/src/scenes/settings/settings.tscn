@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://beyutvretnd5s"]
+[gd_scene load_steps=53 format=3 uid="uid://beyutvretnd5s"]
 
 [ext_resource type="FontFile" uid="uid://chjp63k0jm20m" path="res://assets/fonts/inter/Inter_18pt-Black.ttf" id="1_jf5ra"]
 [ext_resource type="StyleBox" uid="uid://dlbaa32luhlcp" path="res://assets/ui/themes/button/buttonDarkDisabled.tres" id="2_aju34"]
@@ -18,6 +18,11 @@
 [ext_resource type="Texture2D" uid="uid://he54r43t40s8" path="res://assets/icons/solid/circle-info.svg" id="14_xuakl"]
 [ext_resource type="Script" path="res://src/scripts/screens/settings/saveSettings/SaveSettings.cs" id="15_702fc"]
 [ext_resource type="PackedScene" uid="uid://cmi6acb2oc6qx" path="res://src/scenes/ui/tooltip/tooltip.tscn" id="15_m27x3"]
+[ext_resource type="PackedScene" uid="uid://cth570o6vdv8g" path="res://src/scenes/ui/button/buttonWhiteSmall.tscn" id="17_edwuq"]
+[ext_resource type="PackedScene" uid="uid://iuf0eb4wytu" path="res://src/scenes/ui/button/buttonDarkBig.tscn" id="17_fqj6e"]
+[ext_resource type="PackedScene" uid="uid://oab67af044gx" path="res://src/scenes/ui/button/buttonLightBig.tscn" id="18_4aywl"]
+[ext_resource type="PackedScene" uid="uid://b0cjqe3fox1hs" path="res://src/scenes/ui/dialog/dialogConfirm.tscn" id="18_5gmbv"]
+[ext_resource type="PackedScene" uid="uid://byp6g5lwnjkly" path="res://src/scenes/ui/button/iconButtonSmall.tscn" id="20_f046g"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t6245"]
 
@@ -72,8 +77,8 @@ Button/styles/normal = ExtResource("4_gth8a")
 Button/styles/pressed = ExtResource("5_e0vln")
 
 [sub_resource type="Gradient" id="Gradient_kun3h"]
-offsets = PackedFloat32Array(0, 0.5, 1)
-colors = PackedColorArray(0, 0, 0, 0.588235, 1, 1, 1, 0.870588, 0, 0, 0, 0.588235)
+offsets = PackedFloat32Array(0.083, 0.461, 0.926)
+colors = PackedColorArray(0.411765, 0.411765, 0.411765, 0, 0.878431, 0.882353, 0.866667, 1, 0.6, 0.6, 0.6, 0)
 metadata/_snap_enabled = true
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_5bokk"]
@@ -248,57 +253,7 @@ bg_color = Color(0.219608, 0.219608, 0.219608, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yknk4"]
 bg_color = Color(0.219608, 0.219608, 0.219608, 1)
 
-[sub_resource type="Theme" id="Theme_vb3hh"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vpoe4"]
-bg_color = Color(0.211765, 0.282353, 0.368627, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-expand_margin_left = 20.0
-expand_margin_right = 20.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v8dj8"]
-bg_color = Color(0.164706, 0.219608, 0.298039, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-expand_margin_left = 20.0
-expand_margin_right = 20.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mfpqo"]
-bg_color = Color(0.254902, 0.352941, 0.466667, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-expand_margin_left = 20.0
-expand_margin_right = 20.0
-
-[sub_resource type="Theme" id="Theme_ywg3x"]
-default_font_size = 22
-
-[sub_resource type="Theme" id="Theme_55jmf"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ootqy"]
-bg_color = Color(0.466667, 0.552941, 0.662745, 1)
-corner_radius_top_left = 30
-corner_radius_top_right = 30
-corner_radius_bottom_right = 30
-corner_radius_bottom_left = 30
-
-[sub_resource type="Theme" id="Theme_nxl4m"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cag76"]
-bg_color = Color(0.878431, 0.882353, 0.866667, 1)
-corner_radius_top_left = 30
-corner_radius_top_right = 30
-corner_radius_bottom_right = 30
-corner_radius_bottom_left = 30
-
-[node name="Settings" type="Control" node_paths=PackedStringArray("TabContainer", "DisplaySettings", "ControlsSettings", "SaveSettings", "SaveButton", "ResetButton", "BackButton", "ConfirmDialog")]
+[node name="Settings" type="Control" node_paths=PackedStringArray("TabContainer", "DisplaySettings", "ControlsSettings", "SaveSettings", "SaveButton", "ResetButton", "BackButton", "ConfirmDialog", "Background")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -307,14 +262,15 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_fcfkk")
 script = ExtResource("6_dqbg0")
-TabContainer = NodePath("Background/TabContainer")
-DisplaySettings = NodePath("Background/TabContainer/Display")
-ControlsSettings = NodePath("Background/TabContainer/Controls")
-SaveSettings = NodePath("Background/TabContainer/Save & Load")
-SaveButton = NodePath("Background/SaveButton")
-ResetButton = NodePath("Background/ResetButton")
-BackButton = NodePath("Background/BackButton")
-ConfirmDialog = NodePath("Background/ConfirmationDialog")
+TabContainer = NodePath("Content/TabContainer")
+DisplaySettings = NodePath("Content/TabContainer/Display")
+ControlsSettings = NodePath("Content/TabContainer/Controls")
+SaveSettings = NodePath("Content/TabContainer/Save & Load")
+SaveButton = NodePath("Content/SaveButton")
+ResetButton = NodePath("Content/ResetButton")
+BackButton = NodePath("Content/BackButton")
+ConfirmDialog = NodePath("DialogConfirm")
+Background = NodePath("Background")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
@@ -324,21 +280,24 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_wgahk")
-color = Color(0, 0, 0, 1)
+color = Color(0.411765, 0.411765, 0.411765, 1)
 
-[node name="ColorRect" type="ColorRect" parent="Background"]
+[node name="Content" type="Control" parent="."]
+anchors_preset = 0
+
+[node name="Title" type="ColorRect" parent="Content"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -475.0
-offset_top = 50.0
-offset_right = 475.0
-offset_bottom = 100.0
+offset_left = 485.0
+offset_top = 96.0
+offset_right = 1435.0
+offset_bottom = 146.0
 grow_horizontal = 2
-color = Color(0.262745, 0.262745, 0.262745, 1)
+color = Color(0.26, 0.26, 0.26, 0)
 
-[node name="TextureRect" type="TextureRect" parent="Background/ColorRect"]
+[node name="TextureRect" type="TextureRect" parent="Content/Title"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -347,7 +306,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture1D_5bokk")
 
-[node name="Label" type="Label" parent="Background/ColorRect"]
+[node name="Label" type="Label" parent="Content/Title"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -361,7 +320,7 @@ text = "Settings"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TabContainer" type="TabContainer" parent="Background"]
+[node name="TabContainer" type="TabContainer" parent="Content"]
 custom_minimum_size = Vector2(1280, 720)
 layout_mode = 1
 anchors_preset = 8
@@ -369,10 +328,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+offset_left = 320.0
+offset_top = 180.0
+offset_right = 1600.0
+offset_bottom = 900.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_3ouoy")
@@ -383,7 +342,7 @@ theme_override_font_sizes/font_size = 22
 theme_override_styles/panel = SubResource("StyleBoxFlat_5nsdw")
 current_tab = 0
 
-[node name="Display" type="Control" parent="Background/TabContainer" node_paths=PackedStringArray("ResolutionArrowLeft", "ResolutionArrowRight", "ResolutionLabel", "ModeArrowLeft", "ModeArrowRight", "ModeLabel", "LockMouseArrowLeft", "LockMouseArrowRight", "LockMouseLabel")]
+[node name="Display" type="Control" parent="Content/TabContainer" node_paths=PackedStringArray("ResolutionArrowLeft", "ResolutionArrowRight", "ResolutionLabel", "ModeArrowLeft", "ModeArrowRight", "ModeLabel", "LockMouseArrowLeft", "LockMouseArrowRight", "LockMouseLabel")]
 layout_mode = 2
 theme = SubResource("Theme_fgj78")
 script = ExtResource("11_ipmfa")
@@ -398,22 +357,22 @@ LockMouseArrowRight = NodePath("VBoxContainer/Lock Mouse/Arrow Right")
 LockMouseLabel = NodePath("VBoxContainer/Lock Mouse/Value")
 metadata/_tab_index = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Background/TabContainer/Display"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Content/TabContainer/Display"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -426.5
-offset_top = -239.0
-offset_right = 426.5
-offset_bottom = 221.0
+offset_left = -424.0
+offset_top = -230.0
+offset_right = 424.0
+offset_bottom = 230.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 25
 
-[node name="Resolution" type="Button" parent="Background/TabContainer/Display/VBoxContainer"]
+[node name="Resolution" type="Button" parent="Content/TabContainer/Display/VBoxContainer"]
 custom_minimum_size = Vector2(0, 55)
 layout_mode = 2
 theme = SubResource("Theme_nbuut")
@@ -421,7 +380,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_s6p45")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_khn2n")
 theme_override_styles/normal = SubResource("StyleBoxFlat_n5j7d")
 
-[node name="TextureRect" type="TextureRect" parent="Background/TabContainer/Display/VBoxContainer/Resolution"]
+[node name="TextureRect" type="TextureRect" parent="Content/TabContainer/Display/VBoxContainer/Resolution"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -430,7 +389,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture1D_djccj")
 
-[node name="ColorRect" type="ColorRect" parent="Background/TabContainer/Display/VBoxContainer/Resolution"]
+[node name="ColorRect" type="ColorRect" parent="Content/TabContainer/Display/VBoxContainer/Resolution"]
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -441,7 +400,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="Label" type="Label" parent="Background/TabContainer/Display/VBoxContainer/Resolution"]
+[node name="Label" type="Label" parent="Content/TabContainer/Display/VBoxContainer/Resolution"]
 layout_mode = 0
 offset_left = 244.0
 offset_top = 10.0
@@ -450,7 +409,7 @@ offset_bottom = 45.0
 theme_override_font_sizes/font_size = 28
 text = "Resolution"
 
-[node name="Arrow Left" type="Button" parent="Background/TabContainer/Display/VBoxContainer/Resolution"]
+[node name="Arrow Left" type="Button" parent="Content/TabContainer/Display/VBoxContainer/Resolution"]
 layout_mode = 0
 offset_left = 456.0
 offset_top = 7.0
@@ -460,7 +419,7 @@ mouse_filter = 1
 icon = ExtResource("10_58tgo")
 flat = true
 
-[node name="Arrow Right" type="Button" parent="Background/TabContainer/Display/VBoxContainer/Resolution"]
+[node name="Arrow Right" type="Button" parent="Content/TabContainer/Display/VBoxContainer/Resolution"]
 layout_mode = 0
 offset_left = 757.0
 offset_top = 7.0
@@ -471,7 +430,7 @@ button_mask = 3
 icon = ExtResource("11_wwvm4")
 flat = true
 
-[node name="Value" type="Label" parent="Background/TabContainer/Display/VBoxContainer/Resolution"]
+[node name="Value" type="Label" parent="Content/TabContainer/Display/VBoxContainer/Resolution"]
 layout_mode = 0
 offset_left = 550.0
 offset_top = 10.0
@@ -480,14 +439,14 @@ offset_bottom = 45.0
 theme_override_font_sizes/font_size = 28
 text = "1920 x 1080"
 
-[node name="Mode" type="Button" parent="Background/TabContainer/Display/VBoxContainer"]
+[node name="Mode" type="Button" parent="Content/TabContainer/Display/VBoxContainer"]
 custom_minimum_size = Vector2(0, 55)
 layout_mode = 2
 theme_override_styles/hover = SubResource("StyleBoxFlat_hwhcg")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_vtxd2")
 theme_override_styles/normal = SubResource("StyleBoxFlat_okxbj")
 
-[node name="TextureRect" type="TextureRect" parent="Background/TabContainer/Display/VBoxContainer/Mode"]
+[node name="TextureRect" type="TextureRect" parent="Content/TabContainer/Display/VBoxContainer/Mode"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -496,7 +455,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture1D_djccj")
 
-[node name="ColorRect" type="ColorRect" parent="Background/TabContainer/Display/VBoxContainer/Mode"]
+[node name="ColorRect" type="ColorRect" parent="Content/TabContainer/Display/VBoxContainer/Mode"]
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -507,7 +466,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="Label" type="Label" parent="Background/TabContainer/Display/VBoxContainer/Mode"]
+[node name="Label" type="Label" parent="Content/TabContainer/Display/VBoxContainer/Mode"]
 layout_mode = 0
 offset_left = 306.5
 offset_top = 10.0
@@ -517,7 +476,7 @@ theme_override_font_sizes/font_size = 28
 text = "Mode
 "
 
-[node name="Arrow Left" type="Button" parent="Background/TabContainer/Display/VBoxContainer/Mode"]
+[node name="Arrow Left" type="Button" parent="Content/TabContainer/Display/VBoxContainer/Mode"]
 layout_mode = 0
 offset_left = 456.0
 offset_top = 7.0
@@ -527,7 +486,7 @@ mouse_filter = 1
 icon = ExtResource("10_58tgo")
 flat = true
 
-[node name="Arrow Right" type="Button" parent="Background/TabContainer/Display/VBoxContainer/Mode"]
+[node name="Arrow Right" type="Button" parent="Content/TabContainer/Display/VBoxContainer/Mode"]
 layout_mode = 0
 offset_left = 757.0
 offset_top = 7.0
@@ -537,7 +496,7 @@ mouse_filter = 1
 icon = ExtResource("11_wwvm4")
 flat = true
 
-[node name="Value" type="Label" parent="Background/TabContainer/Display/VBoxContainer/Mode"]
+[node name="Value" type="Label" parent="Content/TabContainer/Display/VBoxContainer/Mode"]
 layout_mode = 0
 offset_left = 550.0
 offset_top = 10.0
@@ -547,14 +506,14 @@ theme_override_font_sizes/font_size = 28
 text = "Fullscreen
 "
 
-[node name="Lock Mouse" type="Button" parent="Background/TabContainer/Display/VBoxContainer"]
+[node name="Lock Mouse" type="Button" parent="Content/TabContainer/Display/VBoxContainer"]
 custom_minimum_size = Vector2(0, 55)
 layout_mode = 2
 theme_override_styles/hover = SubResource("StyleBoxFlat_knehp")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_xk2i6")
 theme_override_styles/normal = SubResource("StyleBoxFlat_73ps1")
 
-[node name="TextureRect" type="TextureRect" parent="Background/TabContainer/Display/VBoxContainer/Lock Mouse"]
+[node name="TextureRect" type="TextureRect" parent="Content/TabContainer/Display/VBoxContainer/Lock Mouse"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -563,7 +522,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture1D_djccj")
 
-[node name="ColorRect" type="ColorRect" parent="Background/TabContainer/Display/VBoxContainer/Lock Mouse"]
+[node name="ColorRect" type="ColorRect" parent="Content/TabContainer/Display/VBoxContainer/Lock Mouse"]
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -574,7 +533,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="Label" type="Label" parent="Background/TabContainer/Display/VBoxContainer/Lock Mouse"]
+[node name="Label" type="Label" parent="Content/TabContainer/Display/VBoxContainer/Lock Mouse"]
 layout_mode = 0
 offset_left = 220.5
 offset_top = 7.0
@@ -584,7 +543,7 @@ theme_override_font_sizes/font_size = 28
 text = "Lock Mouse
 "
 
-[node name="Arrow Left" type="Button" parent="Background/TabContainer/Display/VBoxContainer/Lock Mouse"]
+[node name="Arrow Left" type="Button" parent="Content/TabContainer/Display/VBoxContainer/Lock Mouse"]
 layout_mode = 0
 offset_left = 456.0
 offset_top = 7.0
@@ -594,7 +553,7 @@ mouse_filter = 1
 icon = ExtResource("10_58tgo")
 flat = true
 
-[node name="Arrow Right" type="Button" parent="Background/TabContainer/Display/VBoxContainer/Lock Mouse"]
+[node name="Arrow Right" type="Button" parent="Content/TabContainer/Display/VBoxContainer/Lock Mouse"]
 layout_mode = 0
 offset_left = 757.0
 offset_top = 7.0
@@ -604,7 +563,7 @@ mouse_filter = 1
 icon = ExtResource("11_wwvm4")
 flat = true
 
-[node name="Value" type="Label" parent="Background/TabContainer/Display/VBoxContainer/Lock Mouse"]
+[node name="Value" type="Label" parent="Content/TabContainer/Display/VBoxContainer/Lock Mouse"]
 layout_mode = 0
 offset_left = 594.5
 offset_top = 7.0
@@ -614,7 +573,7 @@ theme_override_font_sizes/font_size = 28
 text = "Yes
 "
 
-[node name="Button" type="Button" parent="Background/TabContainer/Display/VBoxContainer/Lock Mouse"]
+[node name="Button" type="Button" parent="Content/TabContainer/Display/VBoxContainer/Lock Mouse"]
 layout_mode = 0
 offset_left = 169.5
 offset_top = 7.0
@@ -625,7 +584,7 @@ theme = SubResource("Theme_vtr62")
 icon = ExtResource("14_xuakl")
 flat = true
 
-[node name="Controls" type="Control" parent="Background/TabContainer" node_paths=PackedStringArray("ZoomSensitivitySlider", "MaxZoomArrowLeft", "MaxZoomArrowRight", "MaxZoomLabel", "MinZoomArrowLeft", "MinZoomArrowRight", "MinZoomLabel", "EdgeMoveEnabled", "EdgeMoveMarginButton", "EdgeMoveMarginArrowLeft", "EdgeMoveMarginArrowRight", "EdgeMoveMarginLabel", "EdgeMoveSpeedButton", "EdgeMoveSpeedSlider")]
+[node name="Controls" type="Control" parent="Content/TabContainer" node_paths=PackedStringArray("ZoomSensitivitySlider", "MaxZoomArrowLeft", "MaxZoomArrowRight", "MaxZoomLabel", "MinZoomArrowLeft", "MinZoomArrowRight", "MinZoomLabel", "EdgeMoveEnabled", "EdgeMoveMarginButton", "EdgeMoveMarginArrowLeft", "EdgeMoveMarginArrowRight", "EdgeMoveMarginLabel", "EdgeMoveSpeedButton", "EdgeMoveSpeedSlider")]
 visible = false
 layout_mode = 2
 script = ExtResource("14_hux1s")
@@ -645,30 +604,37 @@ EdgeMoveSpeedButton = NodePath("ScrollContainer/VBoxContainer/Camera Options/Edg
 EdgeMoveSpeedSlider = NodePath("ScrollContainer/VBoxContainer/Camera Options/Edge move speed/HSlider")
 metadata/_tab_index = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Background/TabContainer/Controls"]
-layout_mode = 0
-offset_left = 213.5
-offset_top = 103.0
-offset_right = 1066.5
-offset_bottom = 563.0
+[node name="ScrollContainer" type="ScrollContainer" parent="Content/TabContainer/Controls"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -424.0
+offset_top = -230.0
+offset_right = 424.0
+offset_bottom = 230.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Background/TabContainer/Controls/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Content/TabContainer/Controls/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 30
 
-[node name="Label" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
 text = "Camera"
 horizontal_alignment = 1
 
-[node name="Camera Options" type="VBoxContainer" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer"]
+[node name="Camera Options" type="VBoxContainer" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="Zoom sensitivity" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options"]
+[node name="Zoom sensitivity" type="Button" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options"]
 custom_minimum_size = Vector2(0, 55)
 layout_mode = 2
 theme = SubResource("Theme_nbuut")
@@ -676,7 +642,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_s6p45")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_khn2n")
 theme_override_styles/normal = SubResource("StyleBoxFlat_n5j7d")
 
-[node name="TextureRect" type="TextureRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Zoom sensitivity"]
+[node name="TextureRect" type="TextureRect" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Zoom sensitivity"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -685,7 +651,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture1D_djccj")
 
-[node name="ColorRect" type="ColorRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Zoom sensitivity"]
+[node name="ColorRect" type="ColorRect" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Zoom sensitivity"]
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -696,7 +662,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="Label" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Zoom sensitivity"]
+[node name="Label" type="Label" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Zoom sensitivity"]
 layout_mode = 0
 offset_left = 166.5
 offset_top = 10.0
@@ -705,7 +671,7 @@ offset_bottom = 45.0
 theme_override_font_sizes/font_size = 28
 text = "Zoom sensitivity"
 
-[node name="HSlider" type="HSlider" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Zoom sensitivity"]
+[node name="HSlider" type="HSlider" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Zoom sensitivity"]
 layout_mode = 0
 offset_left = 504.75
 offset_top = 12.0
@@ -713,7 +679,7 @@ offset_right = 774.75
 offset_bottom = 42.0
 mouse_filter = 1
 
-[node name="Max zoom" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options"]
+[node name="Max zoom" type="Button" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options"]
 custom_minimum_size = Vector2(0, 55)
 layout_mode = 2
 theme = SubResource("Theme_nbuut")
@@ -721,7 +687,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_s6p45")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_khn2n")
 theme_override_styles/normal = SubResource("StyleBoxFlat_n5j7d")
 
-[node name="TextureRect" type="TextureRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Max zoom"]
+[node name="TextureRect" type="TextureRect" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Max zoom"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -730,7 +696,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture1D_djccj")
 
-[node name="ColorRect" type="ColorRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Max zoom"]
+[node name="ColorRect" type="ColorRect" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Max zoom"]
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -741,7 +707,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="Label" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Max zoom"]
+[node name="Label" type="Label" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Max zoom"]
 layout_mode = 0
 offset_left = 254.5
 offset_top = 10.0
@@ -750,7 +716,7 @@ offset_bottom = 45.0
 theme_override_font_sizes/font_size = 28
 text = "Max Zoom"
 
-[node name="Arrow Left" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Max zoom"]
+[node name="Arrow Left" type="Button" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Max zoom"]
 layout_mode = 0
 offset_left = 456.0
 offset_top = 7.0
@@ -760,7 +726,7 @@ mouse_filter = 1
 icon = ExtResource("10_58tgo")
 flat = true
 
-[node name="Arrow Right" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Max zoom"]
+[node name="Arrow Right" type="Button" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Max zoom"]
 layout_mode = 0
 offset_left = 757.0
 offset_top = 7.0
@@ -771,7 +737,7 @@ button_mask = 3
 icon = ExtResource("11_wwvm4")
 flat = true
 
-[node name="Value" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Max zoom"]
+[node name="Value" type="Label" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Max zoom"]
 layout_mode = 0
 offset_left = 550.0
 offset_top = 10.0
@@ -782,7 +748,7 @@ text = "3.0
 "
 horizontal_alignment = 1
 
-[node name="Min zoom" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options"]
+[node name="Min zoom" type="Button" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options"]
 custom_minimum_size = Vector2(0, 55)
 layout_mode = 2
 theme = SubResource("Theme_nbuut")
@@ -790,7 +756,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_s6p45")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_khn2n")
 theme_override_styles/normal = SubResource("StyleBoxFlat_n5j7d")
 
-[node name="TextureRect" type="TextureRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Min zoom"]
+[node name="TextureRect" type="TextureRect" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Min zoom"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -799,7 +765,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture1D_djccj")
 
-[node name="ColorRect" type="ColorRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Min zoom"]
+[node name="ColorRect" type="ColorRect" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Min zoom"]
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -810,7 +776,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="Label" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Min zoom"]
+[node name="Label" type="Label" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Min zoom"]
 layout_mode = 0
 offset_left = 258.5
 offset_top = 10.0
@@ -819,7 +785,7 @@ offset_bottom = 45.0
 theme_override_font_sizes/font_size = 28
 text = "Min Zoom"
 
-[node name="Arrow Left" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Min zoom"]
+[node name="Arrow Left" type="Button" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Min zoom"]
 layout_mode = 0
 offset_left = 456.0
 offset_top = 7.0
@@ -829,7 +795,7 @@ mouse_filter = 1
 icon = ExtResource("10_58tgo")
 flat = true
 
-[node name="Arrow Right" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Min zoom"]
+[node name="Arrow Right" type="Button" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Min zoom"]
 layout_mode = 0
 offset_left = 757.0
 offset_top = 7.0
@@ -840,7 +806,7 @@ button_mask = 3
 icon = ExtResource("11_wwvm4")
 flat = true
 
-[node name="Value" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Min zoom"]
+[node name="Value" type="Label" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Min zoom"]
 layout_mode = 0
 offset_left = 550.0
 offset_top = 10.0
@@ -851,7 +817,7 @@ text = "0.3
 "
 horizontal_alignment = 1
 
-[node name="Edge move enabled" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options"]
+[node name="Edge move enabled" type="Button" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options"]
 custom_minimum_size = Vector2(0, 55)
 layout_mode = 2
 theme = SubResource("Theme_nbuut")
@@ -859,7 +825,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_s6p45")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_khn2n")
 theme_override_styles/normal = SubResource("StyleBoxFlat_n5j7d")
 
-[node name="TextureRect" type="TextureRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move enabled"]
+[node name="TextureRect" type="TextureRect" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move enabled"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -868,7 +834,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture1D_djccj")
 
-[node name="ColorRect" type="ColorRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move enabled"]
+[node name="ColorRect" type="ColorRect" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move enabled"]
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -879,7 +845,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="Label" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move enabled"]
+[node name="Label" type="Label" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move enabled"]
 layout_mode = 0
 offset_left = 126.5
 offset_top = 10.0
@@ -888,7 +854,7 @@ offset_bottom = 45.0
 theme_override_font_sizes/font_size = 28
 text = "Edge move enabled"
 
-[node name="CheckButton" type="CheckButton" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move enabled"]
+[node name="CheckButton" type="CheckButton" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move enabled"]
 layout_mode = 0
 offset_left = 582.5
 offset_top = 1.0
@@ -901,7 +867,7 @@ alignment = 1
 icon_alignment = 1
 expand_icon = true
 
-[node name="Edge move margin" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options"]
+[node name="Edge move margin" type="Button" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options"]
 custom_minimum_size = Vector2(0, 55)
 layout_mode = 2
 theme = SubResource("Theme_nbuut")
@@ -912,7 +878,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_s6p45")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_khn2n")
 theme_override_styles/normal = SubResource("StyleBoxFlat_n5j7d")
 
-[node name="TextureRect" type="TextureRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move margin"]
+[node name="TextureRect" type="TextureRect" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move margin"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -921,7 +887,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture1D_djccj")
 
-[node name="ColorRect" type="ColorRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move margin"]
+[node name="ColorRect" type="ColorRect" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move margin"]
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -932,7 +898,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="Label" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move margin"]
+[node name="Label" type="Label" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move margin"]
 layout_mode = 0
 offset_left = 143.5
 offset_top = 10.0
@@ -941,7 +907,7 @@ offset_bottom = 45.0
 theme_override_font_sizes/font_size = 28
 text = "Edge move margin"
 
-[node name="Arrow Left" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move margin"]
+[node name="Arrow Left" type="Button" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move margin"]
 layout_mode = 0
 offset_left = 456.0
 offset_top = 7.0
@@ -952,7 +918,7 @@ theme_override_colors/icon_disabled_color = Color(0.313726, 0.313726, 0.313726, 
 icon = ExtResource("10_58tgo")
 flat = true
 
-[node name="Arrow Right" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move margin"]
+[node name="Arrow Right" type="Button" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move margin"]
 layout_mode = 0
 offset_left = 757.0
 offset_top = 7.0
@@ -964,7 +930,7 @@ button_mask = 3
 icon = ExtResource("11_wwvm4")
 flat = true
 
-[node name="Value" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move margin"]
+[node name="Value" type="Label" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move margin"]
 layout_mode = 0
 offset_left = 550.0
 offset_top = 10.0
@@ -975,7 +941,7 @@ text = "50
 "
 horizontal_alignment = 1
 
-[node name="Edge move speed" type="Button" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options"]
+[node name="Edge move speed" type="Button" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options"]
 custom_minimum_size = Vector2(0, 55)
 layout_mode = 2
 theme = SubResource("Theme_nbuut")
@@ -984,7 +950,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_s6p45")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_khn2n")
 theme_override_styles/normal = SubResource("StyleBoxFlat_n5j7d")
 
-[node name="TextureRect" type="TextureRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move speed"]
+[node name="TextureRect" type="TextureRect" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move speed"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -993,7 +959,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture1D_djccj")
 
-[node name="ColorRect" type="ColorRect" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move speed"]
+[node name="ColorRect" type="ColorRect" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move speed"]
 layout_mode = 1
 anchors_preset = 13
 anchor_left = 0.5
@@ -1004,7 +970,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="Label" type="Label" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move speed"]
+[node name="Label" type="Label" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move speed"]
 layout_mode = 0
 offset_left = 143.5
 offset_top = 10.0
@@ -1013,7 +979,7 @@ offset_bottom = 45.0
 theme_override_font_sizes/font_size = 28
 text = "Edge move speed"
 
-[node name="HSlider" type="HSlider" parent="Background/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move speed"]
+[node name="HSlider" type="HSlider" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move speed"]
 layout_mode = 0
 offset_left = 504.75
 offset_top = 12.0
@@ -1021,22 +987,29 @@ offset_right = 774.75
 offset_bottom = 42.0
 mouse_filter = 1
 
-[node name="Save & Load" type="Control" parent="Background/TabContainer" node_paths=PackedStringArray("ExplorerButton", "FileDialogNode")]
+[node name="Save & Load" type="Control" parent="Content/TabContainer" node_paths=PackedStringArray("ExplorerButton", "FileDialogNode")]
 visible = false
 layout_mode = 2
 script = ExtResource("15_702fc")
-ExplorerButton = NodePath("VBoxContainer/SavePath/Button")
+ExplorerButton = NodePath("VBoxContainer/SavePath/ExplorerButton")
 FileDialogNode = NodePath("VBoxContainer/SavePath/FileDialog")
 metadata/_tab_index = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Background/TabContainer/Save & Load"]
-layout_mode = 0
-offset_left = 213.5
-offset_top = 103.0
-offset_right = 1066.5
-offset_bottom = 563.0
+[node name="VBoxContainer" type="VBoxContainer" parent="Content/TabContainer/Save & Load"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -424.0
+offset_top = -230.0
+offset_right = 424.0
+offset_bottom = 230.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="SavePath" type="Button" parent="Background/TabContainer/Save & Load/VBoxContainer"]
+[node name="SavePath" type="Button" parent="Content/TabContainer/Save & Load/VBoxContainer"]
 custom_minimum_size = Vector2(0, 55)
 layout_mode = 2
 theme = SubResource("Theme_nbuut")
@@ -1044,7 +1017,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_s6p45")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_khn2n")
 theme_override_styles/normal = SubResource("StyleBoxFlat_n5j7d")
 
-[node name="TextureRect" type="TextureRect" parent="Background/TabContainer/Save & Load/VBoxContainer/SavePath"]
+[node name="TextureRect" type="TextureRect" parent="Content/TabContainer/Save & Load/VBoxContainer/SavePath"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1053,81 +1026,71 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture1D_djccj")
 
-[node name="Label" type="Label" parent="Background/TabContainer/Save & Load/VBoxContainer/SavePath"]
+[node name="Label" type="Label" parent="Content/TabContainer/Save & Load/VBoxContainer/SavePath"]
 layout_mode = 0
-offset_left = 223.5
+offset_left = 160.0
 offset_top = 10.0
-offset_right = 402.5
+offset_right = 399.0
 offset_bottom = 45.0
 theme_override_font_sizes/font_size = 28
-text = "Save files at:"
+text = "Save file location"
 
-[node name="FileDialog" type="FileDialog" parent="Background/TabContainer/Save & Load/VBoxContainer/SavePath"]
+[node name="FileDialog" type="FileDialog" parent="Content/TabContainer/Save & Load/VBoxContainer/SavePath"]
 
-[node name="Button" type="Button" parent="Background/TabContainer/Save & Load/VBoxContainer/SavePath"]
+[node name="ExplorerButton" parent="Content/TabContainer/Save & Load/VBoxContainer/SavePath" instance=ExtResource("17_edwuq")]
 layout_mode = 0
-offset_left = 569.5
-offset_top = 6.0
-offset_right = 649.5
-offset_bottom = 51.0
+offset_left = 453.0
+offset_top = 13.0
+offset_right = 613.0
+offset_bottom = 45.0
+text = "Open file explorer"
+
+[node name="ColorRect" type="ColorRect" parent="Content/TabContainer/Save & Load/VBoxContainer/SavePath"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_right = 3.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 1
-theme = SubResource("Theme_vb3hh")
-theme_override_styles/hover = SubResource("StyleBoxFlat_vpoe4")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_v8dj8")
-theme_override_styles/normal = SubResource("StyleBoxFlat_mfpqo")
-text = "Open explorer"
 
-[node name="ResetButton" type="Button" parent="Background"]
-custom_minimum_size = Vector2(250, 55)
-layout_mode = 0
-offset_left = 1006.0
-offset_top = 814.0
-offset_right = 1256.0
-offset_bottom = 874.0
-theme = SubResource("Theme_ywg3x")
+[node name="ResetButton" parent="Content" instance=ExtResource("17_fqj6e")]
+layout_mode = 2
+offset_left = 1032.0
+offset_top = 812.0
+offset_right = 1288.0
+offset_bottom = 876.0
 text = "Reset all to default"
 
-[node name="SaveButton" type="Button" parent="Background"]
+[node name="SaveButton" parent="Content" instance=ExtResource("18_4aywl")]
 layout_mode = 0
-offset_left = 1284.0
-offset_top = 814.0
-offset_right = 1534.0
-offset_bottom = 874.0
-theme = SubResource("Theme_55jmf")
-theme_override_font_sizes/font_size = 22
-theme_override_styles/normal = SubResource("StyleBoxFlat_ootqy")
+offset_left = 1312.0
+offset_top = 812.0
+offset_right = 1568.0
+offset_bottom = 876.0
 text = "Save changes"
 
-[node name="BackButton" type="Button" parent="Background"]
-custom_minimum_size = Vector2(55, 55)
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.008
-anchor_bottom = 0.015
-offset_left = 36.0
-offset_top = 28.0
-offset_right = 52.64
-offset_bottom = 43.8
-theme = SubResource("Theme_nxl4m")
-theme_override_colors/icon_normal_color = Color(0.282353, 0.352941, 0.443137, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_cag76")
+[node name="BackButton" parent="Content" instance=ExtResource("20_f046g")]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 64.0
+offset_bottom = 64.0
 icon = ExtResource("14_gsnxk")
-icon_alignment = 1
 
-[node name="ConfirmationDialog" type="ConfirmationDialog" parent="Background"]
-title = "Unsaved Changes"
-size = Vector2i(256, 250)
-ok_button_text = "Yes"
-dialog_text = "
+[node name="DialogConfirm" parent="." instance=ExtResource("18_5gmbv")]
+visible = false
+Title = "You have unsaved changes."
+Description = "Are you sure you want to exit?"
 
+[node name="Tooltips" type="Control" parent="."]
+anchors_preset = 0
 
-You have unsaved changes. 
-Are you sure you want to exit?"
-
-[node name="LockMouse Tooltip" parent="." instance=ExtResource("15_m27x3")]
-offset_left = 533.5
-offset_top = 479.0
-offset_right = 853.5
-offset_bottom = 799.0
-Text = "Lock mouse cursor to the simulation window"
-TargetNodePath = NodePath("../Background/TabContainer/Display/VBoxContainer/Lock Mouse/Button")
+[node name="LockMouseTooltip" parent="Tooltips" instance=ExtResource("15_m27x3")]
+visible = false
+Text = "Lock mouse cursor to the application window."
+TargetNodePath = NodePath("../../Content/TabContainer/Display/VBoxContainer/Lock Mouse/Button")
+Layout = 6
+TextAlignment = 0

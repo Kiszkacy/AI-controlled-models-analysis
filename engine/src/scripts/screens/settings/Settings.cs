@@ -4,6 +4,12 @@ using Godot;
 
 public partial class Settings : Control
 {
+    [Export] 
+    public bool ShowBackground = true;
+    [Export] 
+    public bool InsideSimulation = false;
+    
+    [ExportGroup("DO NOT EDIT THESE")]
     [Export]
     public TabContainer TabContainer;
     [Export]
@@ -16,8 +22,13 @@ public partial class Settings : Control
     public Button SaveButton;
     [Export]
     public Button ResetButton;
-    [Export] public Button BackButton;
-    [Export] public ConfirmationDialog ConfirmDialog;
+    [Export] 
+    public Button BackButton;
+    [Export] 
+    public DialogConfirm ConfirmDialog;
+    
+    [Export] 
+    public ColorRect Background;
 
     public override void _Ready()
     {
@@ -25,7 +36,9 @@ public partial class Settings : Control
         this.ResetButton.Pressed += this.OnResetButtonPressed;
         this.BackButton.Pressed += this.OnBackButtonPressed;
 
-        ConfirmDialog.GetOkButton().Pressed += this.LoadMainScene;
+        this.ConfirmDialog.Confirmed += this.OnConfirmDialogClick;
+
+        this.Background.Visible = this.ShowBackground;
     }
 
     private void OnSaveButtonPressed()
@@ -33,6 +46,7 @@ public partial class Settings : Control
         this.DisplaySettings.ApplySettings();
         this.ControlsSettings.ApplySettings();
         this.SaveSettings.ApplySettings();
+        EventManager.Instance.RegisterEvent(new NotifyEvent(null), EventChannel.Settings);
     }
 
     private void OnResetButtonPressed()
@@ -55,24 +69,35 @@ public partial class Settings : Control
     {
         if (HasUnsavedChanges())
         {
-            ConfirmDialog.PopupCentered();
+            this.ConfirmDialog.Open();
         }
         else
         {
-            LoadMainScene();
+            this.Return();
         }
     }
 
-    private void LoadMainScene()
+    private void OnConfirmDialogClick()
     {
-        PackedScene mainScene = ResourceLoader.Load<PackedScene>("res://src/scenes/simulation/simulation.tscn");
-        GetTree().ChangeSceneToPacked(mainScene);
+        this.Return();
+    }
+
+    private void Return()
+    {
+        if (this.InsideSimulation)
+        {
+            this.Visible = false;
+        }
+        else
+        {
+            this.GetTree().ChangeSceneToFile("res://src/scenes/mainMenu/mainMenu.tscn");
+        }
     }
 
     private bool HasUnsavedChanges()
     {
-        return this.DisplaySettings.HasUnsavedChanges() ||
-               this.ControlsSettings.HasUnsavedChanges() ||
-               this.SaveSettings.HasUnsavedChanges();
+        return this.DisplaySettings.HasUnsavedChanges() 
+               || this.ControlsSettings.HasUnsavedChanges() 
+               || this.SaveSettings.HasUnsavedChanges();
     }
 }
