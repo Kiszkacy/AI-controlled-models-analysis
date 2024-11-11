@@ -2,5 +2,6 @@
 public enum EventChannel
 {
     ObjectTracker,
-    EnvironmentTracker
+    EnvironmentTracker,
+    Settings
 }
