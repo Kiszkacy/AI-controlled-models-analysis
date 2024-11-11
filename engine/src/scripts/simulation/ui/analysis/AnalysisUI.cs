@@ -24,17 +24,29 @@ public partial class AnalysisUI : Control, Observable
     public Button SaveDataButton;
     [Export]
     public Button ClearDataButton;
+    
+    [Export]
+    public LineEdit CacheSizeInput;
+    [Export]
+    public LineEdit CacheIntervalInput;
 
     public override void _Ready()
     {
         EventManager.Instance.Subscribe(this, EventChannel.EnvironmentTracker);
         this.ConnectButtons();
+        this.ConnectInputs();
     }
 
     private void ConnectButtons()
     {
         this.SaveDataButton.Pressed += this.OnSaveDataClick;
         this.ClearDataButton.Pressed += this.OnClearDataClick;
+    }
+
+    private void ConnectInputs()
+    {
+        this.CacheSizeInput.TextSubmitted += this.OnCacheSizeInput;
+        this.CacheIntervalInput.TextSubmitted += this.OnCacheIntervalInput;
     }
 
     private void OnSaveDataClick()
@@ -46,6 +58,20 @@ public partial class AnalysisUI : Control, Observable
     {
         this.EnvironmentTracker.ClearCacheData();
         this.FillChartsWithEmptyData();
+    }
+    
+    private void OnCacheSizeInput(string text)
+    {
+        // TODO no validation on input
+        // TODO create input component
+        this.EnvironmentTracker.MaxDataPoints = text.ToInt();
+    }
+    
+    private void OnCacheIntervalInput(string text)
+    {
+        // TODO no validation on input
+        // TODO create input component
+        this.EnvironmentTracker.CacheIntervalSeconds = text.ToFloat();
     }
 
     public void Notify(IEvent @event)
