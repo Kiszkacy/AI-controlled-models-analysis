@@ -2,11 +2,11 @@ import os
 
 from loguru import logger
 from ray.rllib import MultiAgentEnv
-from ray.rllib.algorithms import PPOConfig
+from ray.rllib.algorithms import Algorithm, PPOConfig
 from ray.rllib.models import ModelCatalog
 
 from core.src.policies.custom_model import CustomModel
-from core.src.settings import get_settings
+from core.src.settings.settings import TrainingSettings
 
 
 def get_path() -> str | None:
@@ -29,11 +29,7 @@ class TrainingHandler:
         self.model_name = model_name
         self.environment_cls = environment_cls
 
-    def train(self):
-        training_settings = get_settings().training
-        save_interval = training_settings.training_checkpoint_frequency
-        model_dir = get_path()
-
+    def build_trainer(self, training_settings: TrainingSettings) -> Algorithm:
         ModelCatalog.register_custom_model("custom_ppo_model", CustomModel)
 
         ppo_config = (
@@ -42,7 +38,7 @@ class TrainingHandler:
             .rollouts(
                 num_rollout_workers=training_settings.number_of_workers,
                 create_env_on_local_worker=False,
-                num_envs_per_worker=training_settings.number_of_env_per_worker,
+                num_envs_per_worker=training_settings.number_of_environments_per_worker,
             )
             .resources(
                 num_gpus=0,
@@ -55,7 +51,7 @@ class TrainingHandler:
                 train_batch_size=training_settings.training_batch_size,
                 lr=1e-4,
                 entropy_coeff=0.01,
-                num_sgd_iter=20,
+                num_sgd_iter=20,  # type: ignore [call-arg]
                 sgd_minibatch_size=128,
                 vf_clip_param=10,
                 # grad_clip=10.0,
@@ -63,12 +59,19 @@ class TrainingHandler:
             )
         )
 
-        trainer = ppo_config.build()
+        return ppo_config.build()
 
-        if self.model_name:
-            model_dir = get_path() + "\\" + self.model_name
-            if os.path.exists(model_dir):
-                trainer.restore(model_dir)
+    def train(self, training_settings: TrainingSettings):
+        save_interval = training_settings.training_checkpoint_frequency
+        # model_dir = get_path() # infinitive loop :(
+        model_dir = None
+
+        trainer = self.build_trainer(training_settings)
+
+        # if self.model_name:
+        #     model_dir = get_path() + "\\" + self.model_name
+        #     if os.path.exists(model_dir):
+        #         trainer.restore(model_dir)
 
         for iteration in range(training_settings.training_iterations):
             all_info = trainer.train()

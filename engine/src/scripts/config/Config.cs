@@ -115,4 +115,6 @@ public class GlobalConfig
 public class CommunicationConfig
 {
     public int Reset { get; set; }
+    public int Start { get; set; }
+    public int Stop { get; set; }
 }

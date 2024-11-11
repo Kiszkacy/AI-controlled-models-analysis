@@ -84,7 +84,8 @@ public partial class MainMenu : Control
 
     private void OnNewSimulationClick()
     {
-        // TODO
+        PythonManager.Instance.Start();
+        this.GetTree().ChangeSceneToFile("res://src/scenes/simulation/simulation.tscn");
     }
 
     private void OnSimulationsClick()

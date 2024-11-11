@@ -1,0 +1,17 @@
+﻿godot:
+  godotExecutable: 'C:\Users\Karol\Downloads\Godot_v4.3-stable_mono_win64 (1)\Godot_v4.3-stable_mono_win64\Godot_v4.3-stable_mono_win64.exe'
+  projectPath: 'C:\Users\Karol\Documents\Projects-Github\inzynierka\engine'
+training:
+  numberOfWorkers: 1
+  numberOfEnvironmentsPerWorker: 1
+  trainingIterations: 2000
+  trainingBatchSize: 1000
+  trainingCheckpointFrequency: 100
+environment:
+  observationSpaceSize: 5
+  observationSpaceLow: -100.0
+  observationSpaceHigh: 100.0
+  actionSpaceRange: 2.0
+  actionSpaceLow: -1.0
+  actionSpaceHigh: 1.0
+  numberOfAgents: 50

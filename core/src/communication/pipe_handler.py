@@ -96,3 +96,9 @@ class PipeHandler:
             raise RuntimeError(f"Unexpected data type: {type(data)} received from pipe")
 
         return b""
+
+    def __enter__(self):
+        self.connect()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.disconnect()
