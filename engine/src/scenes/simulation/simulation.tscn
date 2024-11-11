@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://d7ustprm3wu2"]
+[gd_scene load_steps=53 format=3 uid="uid://d7ustprm3wu2"]
 
 [ext_resource type="PackedScene" uid="uid://byp6g5lwnjkly" path="res://src/scenes/ui/button/iconButtonSmall.tscn" id="1_4ndtu"]
 [ext_resource type="Script" path="res://src/scripts/simulation/ui/SimulationUI.cs" id="1_p1yyt"]
@@ -36,6 +36,7 @@
 [ext_resource type="Script" path="res://src/scripts/simulation/ui/activeObjectTab/ActiveObjectTab.cs" id="29_b2peg"]
 [ext_resource type="Script" path="res://src/scripts/simulation/objectTracker/ObjectTracker.cs" id="29_qq7m8"]
 [ext_resource type="Texture2D" uid="uid://he54r43t40s8" path="res://assets/icons/solid/circle-info.svg" id="30_pnhkp"]
+[ext_resource type="PackedScene" uid="uid://b0cjqe3fox1hs" path="res://src/scenes/ui/dialog/dialogConfirm.tscn" id="30_xjq8k"]
 
 [sub_resource type="Shader" id="Shader_yjnl1"]
 code = "shader_type canvas_item;
@@ -665,7 +666,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = SubResource("StyleBoxEmpty_gdw0h")
 
-[node name="AnalysisViewUI" type="Control" parent="UI" node_paths=PackedStringArray("EnvironmentTracker", "AgentCountChart", "AgentsMeanEnergyChart", "AgentsEnergySumChart", "EnvironmentTotalEnergyChart", "FoodToAgentsRatioChart", "FoodCountChart", "SaveDataButton", "ClearDataButton", "CacheSizeInput", "CacheIntervalInput")]
+[node name="AnalysisViewUI" type="Control" parent="UI" node_paths=PackedStringArray("EnvironmentTracker", "AgentCountChart", "AgentsMeanEnergyChart", "AgentsEnergySumChart", "EnvironmentTotalEnergyChart", "FoodToAgentsRatioChart", "FoodCountChart", "SaveDataButton", "ClearDataButton", "CacheSizeInput", "CacheIntervalInput", "ClearDataConfirmDialog")]
 z_index = 3
 layout_mode = 3
 anchors_preset = 0
@@ -681,6 +682,7 @@ SaveDataButton = NodePath("ButtonSaveData")
 ClearDataButton = NodePath("ButtonClearData")
 CacheSizeInput = NodePath("Box/Settings/CacheSizeInput")
 CacheIntervalInput = NodePath("Box/Settings/CacheIntervalInput")
+ClearDataConfirmDialog = NodePath("../ClearDataConfirmDialog")
 
 [node name="Box" type="TabContainer" parent="UI/AnalysisViewUI"]
 layout_mode = 0
@@ -855,6 +857,10 @@ offset_top = 968.0
 offset_right = 1792.0
 offset_bottom = 1000.0
 text = "Clear data cache"
+
+[node name="ClearDataConfirmDialog" parent="UI" instance=ExtResource("30_xjq8k")]
+visible = false
+z_index = 10
 
 [node name="ConfigurationViewUI" type="Control" parent="UI"]
 visible = false

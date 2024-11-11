@@ -29,12 +29,16 @@ public partial class AnalysisUI : Control, Observable
     public LineEdit CacheSizeInput;
     [Export]
     public LineEdit CacheIntervalInput;
+    
+    [Export]
+    public DialogConfirm ClearDataConfirmDialog;
 
     public override void _Ready()
     {
         EventManager.Instance.Subscribe(this, EventChannel.EnvironmentTracker);
         this.ConnectButtons();
         this.ConnectInputs();
+        this.ConnectDialogs();
     }
 
     private void ConnectButtons()
@@ -49,6 +53,11 @@ public partial class AnalysisUI : Control, Observable
         this.CacheIntervalInput.TextSubmitted += this.OnCacheIntervalInput;
     }
 
+    private void ConnectDialogs()
+    {
+        this.ClearDataConfirmDialog.Confirmed += this.OnConfirmClearDataClick;
+    }
+
     private void OnSaveDataClick()
     {
         // TODO open file explorer and create a csv file from existing data
@@ -56,8 +65,7 @@ public partial class AnalysisUI : Control, Observable
 
     private void OnClearDataClick()
     {
-        this.EnvironmentTracker.ClearCacheData();
-        this.FillChartsWithEmptyData();
+        this.ClearDataConfirmDialog.Open();
     }
     
     private void OnCacheSizeInput(string text)
@@ -72,6 +80,12 @@ public partial class AnalysisUI : Control, Observable
         // TODO no validation on input
         // TODO create input component
         this.EnvironmentTracker.CacheIntervalSeconds = text.ToFloat();
+    }
+
+    private void OnConfirmClearDataClick()
+    {
+        this.EnvironmentTracker.ClearCacheData();
+        this.FillChartsWithEmptyData();
     }
 
     public void Notify(IEvent @event)
