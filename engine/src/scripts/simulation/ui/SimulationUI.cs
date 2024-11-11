@@ -37,8 +37,6 @@ public partial class SimulationUI : CanvasLayer
     [Export]
     public Camera Camera;
     [Export]
-    public Control SubmenuNode;
-    [Export]
     public ColorRect FadeoutBackground;
 
     [Export]
@@ -54,13 +52,34 @@ public partial class SimulationUI : CanvasLayer
     public Control AnalysisViewNode;
     [Export]
     public Control ConfigurationViewNode;
+    
+    [Export]
+    public Settings Settings;
+    
+    [Export]
+    public Control Submenu;
+    [Export]
+    public Button SubmenuContinueButton;
+    [Export]
+    public Button SubmenuSaveButton;
+    [Export]
+    public Button SubmenuLoadButton;
+    [Export]
+    public Button SubmenuSettingsButton;
+    [Export]
+    public Button SubmenuMenuButton;
+    [Export]
+    public Button SubmenuExitButton;
+    [Export]
+    public Button SubmenuCloseButton;
 
     private ViewMode ViewMode = ViewMode.Simulation;
 
     private readonly int FadeoutBackgroundZIndex = 2;
     private readonly int FadeoutBackgroundZIndexWhenNested = 4;
 
-    private bool isSubmenuVisible => this.SubmenuNode.Visible;
+    private bool isSubmenuVisible => this.Submenu.Visible;
+    private bool areSettingsVisible => this.Settings.Visible;
 
     private const float levelOneSimulationSpeed = 1.0f;
     private const float levelTwoSimulationSpeed = 2.0f;
@@ -71,14 +90,11 @@ public partial class SimulationUI : CanvasLayer
     {
         if (@event.IsActionPressed("escape") && !isSubmenuVisible)
         {
-            this.OnSettingsClick();
+            this.OpenSubmenu();
         }
-        else if (@event.IsActionPressed("escape") && isSubmenuVisible)
+        else if (@event.IsActionPressed("escape") && isSubmenuVisible && !areSettingsVisible)
         {
-            this.FadeoutBackground.Visible = this.ViewMode != ViewMode.Simulation;
-            this.FadeoutBackground.ZIndex = this.FadeoutBackgroundZIndex;
-            this.SubmenuNode.Visible = false;
-            SimulationManager.Instance.Resume(this);
+            this.CloseSubmenu();
         }
     }
 
@@ -102,6 +118,14 @@ public partial class SimulationUI : CanvasLayer
         this.AnalysisViewButton.Pressed += this.OnAnalysisViewClick;
         this.ConfigurationViewButton.Pressed += this.OnConfigurationViewClick;
         this.CenterCameraButton.Pressed += this.OnCenterCameraClick;
+
+        this.SubmenuContinueButton.Pressed += this.OnSubmenuContinueButtonClick;
+        this.SubmenuSaveButton.Pressed += this.OnSubmenuSaveButtonClick;
+        this.SubmenuLoadButton.Pressed += this.OnSubmenuLoadButtonClick;
+        this.SubmenuSettingsButton.Pressed += this.OnSubmenuSettingsButtonClick;
+        this.SubmenuMenuButton.Pressed += this.OnSubmenuMenuButtonClick;
+        this.SubmenuExitButton.Pressed += this.OnSubmenuExitButtonClick;
+        this.SubmenuCloseButton.Pressed += this.OnSubmenuCloseButtonClick;
     }
 
     private void OnExitClick()
@@ -111,10 +135,7 @@ public partial class SimulationUI : CanvasLayer
 
     private void OnSettingsClick()
     {
-        this.FadeoutBackground.Visible = true;
-        this.FadeoutBackground.ZIndex = this.FadeoutBackgroundZIndexWhenNested;
-        this.SubmenuNode.Visible = true;
-        SimulationManager.Instance.Pause(this);
+        this.OpenSubmenu();
     }
 
     private void OnPauseClick()
@@ -196,6 +217,58 @@ public partial class SimulationUI : CanvasLayer
     {
         this.Camera.MoveTo(EnvironmentManager.Instance.Environment.Size/2.0f);
     }
+    
+    private void OnSubmenuContinueButtonClick()
+    {
+        this.CloseSubmenu();
+    }
+
+    private void OnSubmenuSaveButtonClick()
+    {
+        // TODO
+    }
+
+    private void OnSubmenuLoadButtonClick()
+    {
+        // TODO
+    }
+
+    private void OnSubmenuSettingsButtonClick()
+    {
+        this.Settings.Visible = true;
+    }
+
+    private void OnSubmenuMenuButtonClick()
+    {
+        this.GetTree().Paused = false;
+        this.GetTree().ChangeSceneToFile("res://src/scenes/mainMenu/mainMenu.tscn");
+    }
+
+    private void OnSubmenuExitButtonClick()
+    {
+        this.GetTree().Quit();
+    }
+    
+    private void OnSubmenuCloseButtonClick()
+    {
+        this.CloseSubmenu();
+    }
+    
+    private void OpenSubmenu()
+    {
+        this.FadeoutBackground.Visible = true;
+        this.FadeoutBackground.ZIndex = this.FadeoutBackgroundZIndexWhenNested;
+        this.Submenu.Visible = true;
+        SimulationManager.Instance.Pause(this);
+    }
+
+    private void CloseSubmenu()
+    {
+        this.FadeoutBackground.Visible = this.ViewMode != ViewMode.Simulation;
+        this.FadeoutBackground.ZIndex = this.FadeoutBackgroundZIndex;
+        this.Submenu.Visible = false;
+        SimulationManager.Instance.Resume(this);
+    }
 
     public override void _PhysicsProcess(double delta)
     {
@@ -239,6 +312,6 @@ public partial class SimulationUI : CanvasLayer
 
     private void UpdateFadeoutBackgroundVisibility()
     {
-        this.FadeoutBackground.Visible = this.ViewMode != ViewMode.Simulation || this.SubmenuNode.Visible;
+        this.FadeoutBackground.Visible = this.ViewMode != ViewMode.Simulation || this.Submenu.Visible;
     }
 }
