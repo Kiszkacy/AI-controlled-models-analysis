@@ -199,7 +199,7 @@ Environment = NodePath("../Environment")
 InitialAgentCount = 50
 UseLogicAgents = true
 
-[node name="Camera" type="Camera2D" parent="."]
+[node name="Camera" type="Camera2D" parent="." node_paths=PackedStringArray("UILayer")]
 process_mode = 3
 position = Vector2(960, 540)
 script = ExtResource("5_kqo4m")
@@ -207,6 +207,7 @@ MoveSpeed = 500.0
 DragSmoothness = 0.25
 DoubleClickSmoothness = 0.25
 EdgeMoveMargin = 16.0
+UILayer = NodePath("../UI")
 
 [node name="ObjectTracker" type="Node2D" parent="." node_paths=PackedStringArray("camera", "TargetLabel")]
 script = ExtResource("29_qq7m8")
@@ -238,6 +239,7 @@ ConfigurationViewButton = NodePath("TopBar/ButtonConfigView")
 offset_left = 832.0
 offset_right = 1088.0
 offset_bottom = 64.0
+mouse_filter = 1
 theme = ExtResource("4_e5ekc")
 theme_override_styles/normal = ExtResource("5_pug4t")
 
@@ -297,6 +299,7 @@ offset_left = 16.0
 offset_top = 1016.0
 offset_right = 416.0
 offset_bottom = 1080.0
+mouse_filter = 1
 theme = ExtResource("4_e5ekc")
 theme_override_styles/normal = ExtResource("11_2joy1")
 
@@ -424,6 +427,7 @@ offset_left = 1384.0
 offset_top = 1016.0
 offset_right = 1600.0
 offset_bottom = 1080.0
+mouse_filter = 1
 theme = ExtResource("4_e5ekc")
 theme_override_styles/normal = ExtResource("14_jxxc8")
 
@@ -696,6 +700,7 @@ offset_top = 608.0
 offset_right = 2372.0
 offset_bottom = 880.0
 rotation = -1.5708
+mouse_filter = 0
 theme = ExtResource("4_e5ekc")
 tab_alignment = 2
 current_tab = 0

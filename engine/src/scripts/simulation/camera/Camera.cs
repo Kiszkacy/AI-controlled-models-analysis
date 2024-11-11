@@ -29,6 +29,8 @@ public partial class Camera : Camera2D, Observable
     [Export(PropertyHint.Range, "0.5,10.0,0.1")]
     public float EdgeMoveSpeedQuantifier { get; set; } = 3f;
 
+    [Export] public CanvasLayer UILayer;
+
     private Vector2 moveDirection = Vector2.Zero;
     private Vector2 edgeMoveDirection = Vector2.Zero;
     private bool zoomingIn = false;
@@ -138,7 +140,7 @@ public partial class Camera : Camera2D, Observable
             switch (mouseEvent.ButtonIndex)
             {
                 case MouseButton.Left:
-                    if (mouseEvent.IsPressed())
+                    if (mouseEvent.IsPressed() && !IsMouseOverUI())
                     {
                         this.StartDragging();
                     }
@@ -147,7 +149,7 @@ public partial class Camera : Camera2D, Observable
                         this.StopDragging();
                     }
 
-                    if (mouseEvent.DoubleClick)
+                    if (mouseEvent.DoubleClick && !IsMouseOverUI())
                     {
                         this.CenterOnMousePosition();
                     }
@@ -232,8 +234,18 @@ public partial class Camera : Camera2D, Observable
         this.UpdateCursorShape();
     }
 
+    private bool IsMouseOverUI()
+    {
+        Node hoveredNode = GetViewport().GuiGetHoveredControl();
+        return UILayer.IsAncestorOf(hoveredNode);
+    }
+
     private void UpdateEdgeMoveDirection()
     {
+        if (IsMouseOverUI())
+        {
+            return;
+        }
         Vector2 mousePos = GetViewport().GetMousePosition();
         Vector2 viewportSize = GetViewportRect().Size;
         Vector2 viewportCenter = viewportSize / 2;
