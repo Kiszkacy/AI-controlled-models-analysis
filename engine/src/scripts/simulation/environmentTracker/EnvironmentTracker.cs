@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Linq;
 
 using Godot;
 
@@ -13,6 +14,7 @@ public partial class EnvironmentTracker : Node
     public List<float> AgentsEnergySumData = new();
     public List<float> EnvironmentTotalEnergyData = new();
     public List<float> FoodToAgentsRatioData = new();
+    public List<int> FoodCountData = new();
     public List<double> TimeData = new();
 
     public override void _Ready()
@@ -26,58 +28,95 @@ public partial class EnvironmentTracker : Node
         this.cacheTimer.Process(delta);
     }
 
+    public void ClearCacheData()
+    {
+        this.AgentsCountData.Clear();
+        this.AgentsMeanEnergyData.Clear();
+        this.AgentsEnergySumData.Clear();
+        this.EnvironmentTotalEnergyData.Clear();
+        this.FoodToAgentsRatioData.Clear();
+        this.FoodCountData.Clear();
+        this.TimeData.Clear();
+    }
+
     private void CacheData()
     {
-        AgentsCountData.Add(AgentsCount());
-        AgentsMeanEnergyData.Add(AgentsMeanEnergy());
-        AgentsEnergySumData.Add(AgentsEnergySum());
-        EnvironmentTotalEnergyData.Add(EnvironmentTotalEnergy());
-        FoodToAgentsRatioData.Add(FoodToAgentsRatio());
-        TimeData.Add(SimulationManager.Instance.TimePassed);
-        TrimData();
+        this.AgentsCountData.Add(this.AgentsCount());
+        this.AgentsMeanEnergyData.Add(this.AgentsMeanEnergy());
+        this.AgentsEnergySumData.Add(this.AgentsEnergySum());
+        this.EnvironmentTotalEnergyData.Add(this.EnvironmentTotalEnergy());
+        this.FoodToAgentsRatioData.Add(this.FoodToAgentsRatio());
+        this.FoodCountData.Add(this.FoodCount());
+        this.TimeData.Add(SimulationManager.Instance.TimePassed);
+        this.TrimData();
+        
         EventManager.Instance.RegisterEvent(new NotifyEvent(null), EventChannel.EnvironmentTracker);
         this.cacheTimer.Activate(this.CacheIntervalSeconds);
     }
 
     private void TrimData()
     {
-        if (AgentsCountData.Count > MaxDataPoints)
+        if (this.AgentsCountData.Count > this.MaxDataPoints)
         {
-            AgentsCountData.RemoveRange(0, AgentsCountData.Count - MaxDataPoints);
-            AgentsMeanEnergyData.RemoveRange(0, AgentsMeanEnergyData.Count - MaxDataPoints);
-            AgentsEnergySumData.RemoveRange(0, AgentsEnergySumData.Count - MaxDataPoints);
-            EnvironmentTotalEnergyData.RemoveRange(0, EnvironmentTotalEnergyData.Count - MaxDataPoints);
-            FoodToAgentsRatioData.RemoveRange(0, FoodToAgentsRatioData.Count - MaxDataPoints);
-            TimeData.RemoveRange(0, TimeData.Count - MaxDataPoints);
+            this.AgentsCountData.RemoveRange(0, this.AgentsCountData.Count - this.MaxDataPoints);
+        }
+        if (this.AgentsMeanEnergyData.Count > this.MaxDataPoints)
+        {
+            this.AgentsMeanEnergyData.RemoveRange(0, this.AgentsMeanEnergyData.Count - this.MaxDataPoints);
+        }
+        if (this.AgentsEnergySumData.Count > this.MaxDataPoints)
+        {
+            this.AgentsEnergySumData.RemoveRange(0, this.AgentsEnergySumData.Count - this.MaxDataPoints);
+        }
+        if (this.EnvironmentTotalEnergyData.Count > this.MaxDataPoints)
+        {
+            this.EnvironmentTotalEnergyData.RemoveRange(0, this.EnvironmentTotalEnergyData.Count - this.MaxDataPoints);
+        }
+        if (this.FoodToAgentsRatioData.Count > this.MaxDataPoints)
+        {
+            this.FoodToAgentsRatioData.RemoveRange(0, this.FoodToAgentsRatioData.Count - this.MaxDataPoints);
+        }
+        if (this.FoodCountData.Count > this.MaxDataPoints)
+        {
+            this.FoodCountData.RemoveRange(0, this.FoodToAgentsRatioData.Count - this.MaxDataPoints);
+        }
+        if (this.TimeData.Count > this.MaxDataPoints)
+        {
+            this.TimeData.RemoveRange(0, this.TimeData.Count - this.MaxDataPoints);
         }
     }
 
-    private static int AgentsCount()
+    private int AgentsCount()
     {
-        return AgentManager.Instance.GetAgentsCount();
+        return AgentManager.Instance.Agents.Count;
     }
 
-    private static float AgentsMeanEnergy()
+    private float AgentsMeanEnergy()
     {
-        return AgentManager.Instance.GetAgentsEnergySum() / AgentsCount();
+        return this.AgentsEnergySum() / this.AgentsCount();
     }
 
-    private static float AgentsEnergySum()
+    private float AgentsEnergySum()
     {
-        return AgentManager.Instance.GetAgentsEnergySum();
+        return AgentManager.Instance.Agents.Values.Sum(agent => agent.energy);
     }
 
-    private static float EnvironmentTotalEnergy()
+    private float EnvironmentTotalEnergy()
     {
         float foodEnergy = 0f;
         EntityManager.Instance.FoodBuckets.ForEachEntity(entity => foodEnergy += entity.EnergyNutrition);
-        return foodEnergy + AgentsEnergySum();
+        return foodEnergy + this.AgentsEnergySum();
     }
 
-    private static float FoodToAgentsRatio()
+    private float FoodToAgentsRatio()
+    {
+        return (float)this.FoodCount() / this.AgentsCount();
+    }
+    
+    private int FoodCount()
     {
         int foodCount = 0;
         EntityManager.Instance.FoodBuckets.ForEachEntity(_ => foodCount++);
-        return (float)foodCount / AgentsCount();
+        return foodCount;
     }
 }
