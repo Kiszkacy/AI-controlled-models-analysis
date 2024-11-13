@@ -3,9 +3,8 @@ import os
 from loguru import logger
 from ray.rllib import MultiAgentEnv
 from ray.rllib.algorithms import PPOConfig
-from ray.rllib.models import ModelCatalog
 
-from core.src.policies.custom_model import CustomModel
+from core.src.environments.godot_environment import GodotServerEnvironment
 from core.src.settings import get_settings
 
 
@@ -24,7 +23,7 @@ class TrainingHandler:
     def __init__(
         self,
         model_name: str | None = None,
-        environment_cls: type[MultiAgentEnv] | str = "Pendulum-v1",
+        environment_cls: type[MultiAgentEnv] | str = GodotServerEnvironment,
     ):
         self.model_name = model_name
         self.environment_cls = environment_cls
@@ -34,7 +33,15 @@ class TrainingHandler:
         save_interval = training_settings.training_checkpoint_frequency
         model_dir = get_path()
 
-        ModelCatalog.register_custom_model("custom_ppo_model", CustomModel)
+        model_config = {
+            "use_lstm": True,
+            "lstm_cell_size": 256,
+            "max_seq_len": 32,
+            "fcnet_hiddens": [128, 64],
+            "lstm_use_prev_action": True,
+            "lstm_use_prev_reward": True,
+            "_disable_action_flattening": True,
+        }
 
         ppo_config = (
             PPOConfig()
@@ -49,17 +56,16 @@ class TrainingHandler:
             )
             .framework("torch")
             .training(
-                model={
-                    "custom_model": "custom_ppo_model",
-                },
+                model=model_config,
                 train_batch_size=training_settings.training_batch_size,
                 lr=1e-4,
                 entropy_coeff=0.01,
-                num_sgd_iter=20,
-                sgd_minibatch_size=128,
-                vf_clip_param=10,
+                num_sgd_iter=10,
+                sgd_minibatch_size=1024,
+                vf_clip_param=15,
                 # grad_clip=10.0,
                 use_gae=True,
+                gamma=0.99,
             )
         )
 
