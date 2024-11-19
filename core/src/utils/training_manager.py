@@ -2,7 +2,7 @@ import os
 
 from loguru import logger
 from ray.rllib import MultiAgentEnv
-from ray.rllib.algorithms import Algorithm, PPOConfig
+from ray.rllib.algorithms import Algorithm, DQNConfig, PPOConfig, SACConfig
 
 from core.src.environments.godot_environment import GodotServerEnvironment
 from core.src.settings import TrainingSettings
@@ -10,10 +10,11 @@ from core.src.utils.model_manager import ModelManager
 
 
 class TrainingManager:
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         save_dir: str,
         training_settings: TrainingSettings,
+        algorithm: str,
         is_resume: bool = False,
         environment_cls: type[MultiAgentEnv] | str = GodotServerEnvironment,
     ):
@@ -21,31 +22,35 @@ class TrainingManager:
         self.training_settings: TrainingSettings = training_settings
         self.trainer: Algorithm | None = None
 
-        save_path: str = os.path.join(self.training_settings.base_model_dir, save_dir)
-        self.model_manager = ModelManager(save_path=save_path)
+        self.model_manager = self.create_model_manager(save_dir)
+        self.launch_trainer(is_resume, algorithm)
 
-        self.launch_trainer(is_resume)
-
-    def launch_trainer(self, is_resume: bool) -> None:
+    def launch_trainer(self, is_resume: bool, algorithm: str) -> None:
         if is_resume:
             config_dict = self.model_manager.load_config()
-            trainer = self.build_trainer_from_dict(config_dict)
+            trainer = self.build_trainer_from_dict(config_dict, algorithm)
             trainer = self.model_manager.load_checkpoint(trainer)
         else:
             config_dict = self.create_config_dict()
-            trainer = self.build_trainer_from_dict(config_dict)
+            trainer = self.build_trainer_from_dict(config_dict, algorithm)
 
         self.trainer = trainer
 
-    def build_trainer_from_dict(self, config_dict: dict) -> Algorithm:
-        ppo_config = PPOConfig()
-        ppo_config.environment(self.environment_cls)
-        ppo_config.rollouts(**config_dict["rollouts"])
-        ppo_config.resources(**config_dict["resources"])
-        ppo_config.framework(config_dict["framework"])
-        ppo_config.training(**config_dict["training"])
+    def build_trainer_from_dict(self, config_dict: dict, algorithm: str) -> Algorithm:
+        config_dict.update(
+            {
+                "env": self.environment_cls,
+            }
+        )
+        if algorithm == "PPO":
+            return PPOConfig().from_dict(config_dict).build()
 
-        return ppo_config.build()
+        if algorithm == "DQN":
+            return DQNConfig().from_dict(config_dict).build()
+
+        if algorithm == "SAC":
+            return SACConfig().from_dict(config_dict).build()
+        raise ValueError(f"Unsupported algorithm: {algorithm}")
 
     def create_config_dict(self) -> dict:
         algorithm_config_dict = {
@@ -99,3 +104,10 @@ class TrainingManager:
 
             if (iteration + 1) % self.training_settings.training_checkpoint_frequency == 0:
                 self.model_manager.save_checkpoint(trainer=self.trainer)
+
+    def create_model_manager(self, save_dir):
+        if not save_dir or not isinstance(save_dir, str):
+            raise ValueError("save_dir must be a non-empty string.")
+
+        save_path: str = os.path.join(self.training_settings.base_model_dir, save_dir)
+        return ModelManager(save_path)
