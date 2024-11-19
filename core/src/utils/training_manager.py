@@ -1,5 +1,6 @@
 import os
 
+import torch
 from loguru import logger
 from ray.rllib import MultiAgentEnv
 from ray.rllib.algorithms import Algorithm, DQNConfig, PPOConfig, SACConfig
@@ -14,43 +15,42 @@ class TrainingManager:
         self,
         save_dir: str,
         training_settings: TrainingSettings,
-        algorithm: str,
+        algorithm: str = "PPO",
         is_resume: bool = False,
         environment_cls: type[MultiAgentEnv] | str = GodotServerEnvironment,
     ):
         self.environment_cls = environment_cls  # Could be hardcoded(?)
         self.training_settings: TrainingSettings = training_settings
+        self.algorithm: str = algorithm
         self.trainer: Algorithm | None = None
 
         self.model_manager = self.create_model_manager(save_dir)
-        self.launch_trainer(is_resume, algorithm)
+        self.launch_trainer(is_resume)
 
-    def launch_trainer(self, is_resume: bool, algorithm: str) -> None:
+    def launch_trainer(self, is_resume: bool) -> None:
         if is_resume:
-            config_dict = self.model_manager.load_config()
-            trainer = self.build_trainer_from_dict(config_dict, algorithm)
-            trainer = self.model_manager.load_checkpoint(trainer)
+            config_dict, self.algorithm = self.model_manager.load_config()
+            self.trainer = self.build_trainer_from_dict(config_dict)
+            self.trainer = self.model_manager.load_checkpoint(self.trainer)
         else:
             config_dict = self.create_config_dict()
-            trainer = self.build_trainer_from_dict(config_dict, algorithm)
+            self.trainer = self.build_trainer_from_dict(config_dict)
 
-        self.trainer = trainer
-
-    def build_trainer_from_dict(self, config_dict: dict, algorithm: str) -> Algorithm:
+    def build_trainer_from_dict(self, config_dict: dict) -> Algorithm:
         config_dict.update(
             {
                 "env": self.environment_cls,
             }
         )
-        if algorithm == "PPO":
+        if self.algorithm == "PPO":
             return PPOConfig().from_dict(config_dict).build()
 
-        if algorithm == "DQN":
+        if self.algorithm == "DQN":
             return DQNConfig().from_dict(config_dict).build()
 
-        if algorithm == "SAC":
+        if self.algorithm == "SAC":
             return SACConfig().from_dict(config_dict).build()
-        raise ValueError(f"Unsupported algorithm: {algorithm}")
+        raise ValueError(f"Unsupported algorithm: {self.algorithm}")
 
     def create_config_dict(self) -> dict:
         algorithm_config_dict = {
@@ -60,7 +60,7 @@ class TrainingManager:
                 "num_envs_per_worker": self.training_settings.number_of_env_per_worker,
             },
             "resources": {
-                "num_gpus": 0,
+                "num_gpus": torch.cuda.device_count() if self.training_settings.use_gpu else 0,
             },
             "framework": "torch",
             "training": {
@@ -85,7 +85,7 @@ class TrainingManager:
                 # "use_gae": True,
             },
         }
-        self.model_manager.save_config(algorithm_config_dict)
+        self.model_manager.save_config(config_dict=algorithm_config_dict, algorithm=self.algorithm)
         return algorithm_config_dict
 
     def train(self):

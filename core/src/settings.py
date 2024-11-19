@@ -30,6 +30,7 @@ class TrainingSettings(BaseSettings):
     training_batch_size: Annotated[int, Field(gt=0)]
     training_checkpoint_frequency: Annotated[int, Field(gt=0)]
     base_model_dir: Annotated[str, ...]
+    use_gpu: Annotated[bool, ...]
 
 
 class EnvironmentSettings(BaseSettings):
