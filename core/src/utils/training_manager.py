@@ -25,9 +25,9 @@ class TrainingManager:
         self.trainer: Algorithm | None = None
 
         self.model_manager = self.create_model_manager(save_dir)
-        self.launch_trainer(is_resume)
+        self.set_trainer(is_resume)
 
-    def launch_trainer(self, is_resume: bool) -> None:
+    def set_trainer(self, is_resume: bool) -> None:
         if is_resume:
             config_dict, self.algorithm = self.model_manager.load_config()
             self.trainer = self.build_trainer_from_dict(config_dict)
