@@ -9,7 +9,7 @@ class ModelManager:
     def __init__(self, save_path: str) -> None:
         config_base_path = os.path.join(save_path, "config")
         self.config_path = os.path.join(config_base_path, "config.json")
-        self.algorithm_path = os.path.join(config_base_path, "algorithm.json")
+        self.algorithm_path = os.path.join(config_base_path, "algorithm.txt")
         self.checkpoints_path = os.path.join(save_path, "checkpoints")
         os.makedirs(config_base_path, exist_ok=True)
         os.makedirs(self.checkpoints_path, exist_ok=True)
