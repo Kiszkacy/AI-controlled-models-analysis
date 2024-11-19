@@ -12,5 +12,5 @@ training:
   training_iterations: 2000  # Total number of training iterations (over a) to perform.
   training_batch_size: 400 # 2048 # Total amount of environment steps taken during each training iteration
   training_checkpoint_frequency: 1 # Number of training steps how often Tuner is saved
-  base_model_dir: "C:\\Users\\sokol\\PycharmProjects\\AI-controlled-models-analysis\\core\\src\\model" # Dir where the models are saved
+  base_storage_dir: "C:\\Users\\sokol\\PycharmProjects\\AI-controlled-models-analysis\\core\\src\\model" # Dir where the models are saved
   use_gpu: False # Defines if gpu should be used

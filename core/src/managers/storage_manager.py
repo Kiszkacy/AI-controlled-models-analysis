@@ -5,7 +5,7 @@ from loguru import logger
 from ray.rllib.algorithms import Algorithm
 
 
-class ModelManager:
+class StorageManager:
     def __init__(self, save_path: str) -> None:
         config_base_path = os.path.join(save_path, "config")
         self.config_path = os.path.join(config_base_path, "config.json")
