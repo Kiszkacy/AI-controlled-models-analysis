@@ -18,5 +18,5 @@ if __name__ == "__main__":
     logger.info(f"Using {DEVICE=}")
 
     settings = get_settings()
-    training_handler = TrainingManager("try", settings.training, is_resume=False)
+    training_handler = TrainingManager("try", settings.training, is_resume=True)
     training_handler.train()

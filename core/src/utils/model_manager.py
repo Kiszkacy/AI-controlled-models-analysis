@@ -2,7 +2,7 @@ import json
 import os
 
 from loguru import logger
-from ray.rllib.algorithms import Algorithm, AlgorithmConfig
+from ray.rllib.algorithms import Algorithm
 
 
 class ModelManager:
@@ -13,11 +13,10 @@ class ModelManager:
         os.makedirs(config_base_path, exist_ok=True)
         os.makedirs(self.checkpoints_path, exist_ok=True)
 
-    def save_config(self, config: AlgorithmConfig) -> None:
-        config_dict = {key: value for key, value in config.items() if key != "env"}
+    def save_config(self, config_dict: dict) -> None:
         try:
             with open(self.config_path, "w") as config_file:
-                json.dump(config_dict, config_file)
+                json.dump(config_dict, config_file, indent=4)
             logger.info(f"Saved config to {self.config_path}")
         except Exception as e:
             logger.error(f"Error saving config: {e}")
@@ -29,29 +28,21 @@ class ModelManager:
         except Exception as e:
             logger.error(f"Error saving model: {e}")
 
-    def load_config(self) -> Algorithm | None:
+    def load_config(self) -> dict:
         try:
             with open(self.config_path) as config_file:
                 config_dict = json.load(config_file)
-            config = AlgorithmConfig.from_dict(config_dict)
             logger.info(f"Loaded config from {self.config_path}")
-            return config.build()
+            return config_dict
         except Exception as e:
             logger.error(f"Error loading config: {e}")
-            return None
+            return {}
 
-    def load_checkpoint(self, trainer: Algorithm) -> Algorithm | None:
+    def load_checkpoint(self, trainer: Algorithm) -> Algorithm:
         try:
             trainer.restore(self.checkpoints_path)
             logger.info(f"Loaded checkpoint from {self.checkpoints_path}")
             return trainer
         except Exception as e:
             logger.error(f"Error loading checkpoint: {e}")
-            return None
-
-    def load_model_and_config(self) -> Algorithm | None:
-        trainer = self.load_config()
-        if trainer is None:
-            logger.error("Failed to load config, cannot load checkpoint.")
-            return None
-        return self.load_checkpoint(trainer)
+            return trainer
