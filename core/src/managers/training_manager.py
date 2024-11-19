@@ -6,8 +6,8 @@ from ray.rllib import MultiAgentEnv
 from ray.rllib.algorithms import Algorithm, DQNConfig, PPOConfig, SACConfig
 
 from core.src.environments.godot_environment import GodotServerEnvironment
+from core.src.managers.model_manager import ModelManager
 from core.src.settings import TrainingSettings
-from core.src.utils.model_manager import ModelManager
 
 
 class TrainingManager:
