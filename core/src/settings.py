@@ -31,6 +31,7 @@ class TrainingSettings(BaseSettings):
     training_checkpoint_frequency: Annotated[int, Field(gt=0)]
     base_storage_dir: Annotated[str, ...]
     use_gpu: Annotated[bool, ...]
+    algorithm: Annotated[str, ...]
 
 
 class EnvironmentSettings(BaseSettings):

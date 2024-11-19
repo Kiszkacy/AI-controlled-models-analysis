@@ -1,15 +1,33 @@
+import os
+
 from loguru import logger
 from ray.rllib.algorithms import Algorithm
 
 from core.src.managers.storage_manager import StorageManager
+from core.src.managers.trainer_configurator import TrainerConfigurator
 from core.src.settings import TrainingSettings
 
 
 class TrainingManager:
-    def __init__(self, storage_manager: StorageManager, trainer: Algorithm | None, training_settings: TrainingSettings):
-        self.storage_manager = storage_manager
-        self.trainer = trainer
-        self.training_settings = training_settings
+    def __init__(self, save_dir: str, training_settings: TrainingSettings, is_resume: bool = False):
+        self.training_settings: TrainingSettings = training_settings
+        self.storage_manager: StorageManager = self.create_storage_manager(save_dir)
+        self.trainer: Algorithm = self.create_trainer(is_resume)
+
+    def create_storage_manager(self, save_dir: str) -> StorageManager:
+        if not save_dir or not isinstance(save_dir, str):
+            raise ValueError("save_dir must be a non-empty string.")
+
+        save_path = os.path.join(self.training_settings.base_storage_dir, save_dir)
+        return StorageManager(save_path=save_path)
+
+    def create_trainer(self, is_resume: bool) -> Algorithm:
+        trainer_configurator = TrainerConfigurator(
+            storage_manager=self.storage_manager, training_settings=self.training_settings
+        )
+        if is_resume:
+            return trainer_configurator.load_trainer()
+        return trainer_configurator.create_new_trainer()
 
     def train(self):
         for iteration in range(self.training_settings.training_iterations):

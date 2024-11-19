@@ -8,48 +8,33 @@ from core.src.settings import TrainingSettings
 
 
 class TrainerConfigurator:
-    def __init__(  # noqa: PLR0913
+    def __init__(
         self,
         storage_manager: StorageManager,
         training_settings: TrainingSettings,
-        algorithm: str = "PPO",
-        is_resume: bool = False,
         environment_cls: type[MultiAgentEnv] | str = GodotServerEnvironment,
     ):
-        self.environment_cls = environment_cls  # Could be hardcoded(?)
+        self.environment_cls = environment_cls
         self.training_settings: TrainingSettings = training_settings
-        self.algorithm: str = algorithm
-        self.trainer: Algorithm | None = None
-
         self.storage_manager = storage_manager
-        self.set_trainer(is_resume)
 
-    def set_trainer(self, is_resume: bool) -> None:
-        if is_resume:
-            config_dict, self.algorithm = self.storage_manager.load_config()
-            self.trainer = self.build_trainer_from_dict(config_dict)
-            self.trainer = self.storage_manager.load_checkpoint(self.trainer)
-        else:
-            config_dict = self.create_config_dict()
-            self.trainer = self.build_trainer_from_dict(config_dict)
-
-    def build_trainer_from_dict(self, config_dict: dict) -> Algorithm:
+    def build_trainer_from_dict(self, config_dict: dict, algorithm: str) -> Algorithm:
         config_dict.update(
             {
                 "env": self.environment_cls,
             }
         )
-        if self.algorithm == "PPO":
+        if algorithm == "PPO":
             return PPOConfig().from_dict(config_dict).build()
 
-        if self.algorithm == "DQN":
+        if algorithm == "DQN":
             return DQNConfig().from_dict(config_dict).build()
 
-        if self.algorithm == "SAC":
+        if algorithm == "SAC":
             return SACConfig().from_dict(config_dict).build()
-        raise ValueError(f"Unsupported algorithm: {self.algorithm}")
+        raise ValueError(f"Unsupported algorithm: {algorithm}")
 
-    def create_config_dict(self) -> dict:
+    def create_config_dict(self) -> tuple[dict, str]:
         algorithm_config_dict = {
             "rollouts": {
                 "num_rollout_workers": self.training_settings.number_of_workers,
@@ -82,8 +67,15 @@ class TrainerConfigurator:
                 # "use_gae": True,
             },
         }
-        self.storage_manager.save_config(config_dict=algorithm_config_dict, algorithm=self.algorithm)
-        return algorithm_config_dict
+        algorithm = self.training_settings.algorithm
+        self.storage_manager.save_config(config_dict=algorithm_config_dict, algorithm=algorithm)
+        return algorithm_config_dict, algorithm
 
-    def get_trainer(self) -> Algorithm | None:
-        return self.trainer
+    def load_trainer(self) -> Algorithm:
+        config_dict, algorithm = self.storage_manager.load_config()
+        trainer = self.build_trainer_from_dict(config_dict, algorithm)
+        return self.storage_manager.load_checkpoint(trainer)
+
+    def create_new_trainer(self) -> Algorithm:
+        config_dict, algorithm = self.create_config_dict()
+        return self.build_trainer_from_dict(config_dict, algorithm)
