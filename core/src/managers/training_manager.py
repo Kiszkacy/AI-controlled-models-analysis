@@ -35,7 +35,8 @@ class TrainingManager:
 
             sampler_info = all_info["sampler_results"]
             logger.info(
-                "episode_reward_mean: {}, episode_reward_max: {}, episode_reward_min: {}, episodes_this_iter: {}".format(  # noqa: E501
+                "iteration: {}, episode_reward_mean: {}, episode_reward_max: {}, episode_reward_min: {}, episodes_this_iter: {}".format(  # noqa: E501
+                    iteration,
                     sampler_info["episode_reward_mean"],
                     sampler_info["episode_reward_max"],
                     sampler_info["episode_reward_min"],
