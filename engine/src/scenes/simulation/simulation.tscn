@@ -207,8 +207,6 @@ process_mode = 3
 position = Vector2(960, 540)
 script = ExtResource("5_kqo4m")
 MoveSpeed = 500.0
-DragSmoothness = 0.25
-DoubleClickSmoothness = 0.25
 EdgeMoveMargin = 16.0
 UILayer = NodePath("../UI")
 
@@ -264,6 +262,7 @@ color = Color(0, 0, 0, 0.25098)
 [node name="SimulationViewUI" type="Control" parent="UI"]
 layout_mode = 3
 anchors_preset = 0
+mouse_filter = 1
 
 [node name="Pause" type="Control" parent="UI/SimulationViewUI"]
 visible = false
@@ -298,6 +297,7 @@ offset_left = 16.0
 offset_top = 1016.0
 offset_right = 416.0
 offset_bottom = 1080.0
+mouse_filter = 1
 theme = ExtResource("4_e5ekc")
 theme_override_styles/normal = ExtResource("11_2joy1")
 
@@ -426,6 +426,7 @@ offset_left = 1384.0
 offset_top = 1016.0
 offset_right = 1600.0
 offset_bottom = 1080.0
+mouse_filter = 0
 theme = ExtResource("4_e5ekc")
 theme_override_styles/normal = ExtResource("14_jxxc8")
 
@@ -616,6 +617,7 @@ Description = NodePath("Active object/ActiveObjectDescription")
 
 [node name="Active object" type="Control" parent="UI/SimulationViewUI/ActiveObjectTab"]
 layout_mode = 2
+mouse_filter = 1
 metadata/_tab_index = 0
 
 [node name="Icon" parent="UI/SimulationViewUI/ActiveObjectTab/Active object" instance=ExtResource("1_4ndtu")]
@@ -981,6 +983,7 @@ layout_mode = 0
 offset_left = 832.0
 offset_right = 1088.0
 offset_bottom = 64.0
+mouse_filter = 1
 theme = ExtResource("4_e5ekc")
 theme_override_styles/normal = ExtResource("5_pug4t")
 

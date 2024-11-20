@@ -247,8 +247,11 @@ public partial class Camera : Camera2D, Observable
             this.UpdatePosition(delta);
         }
 
-        this.UpdateZoom(delta);
-        this.UpdateCursorShape();
+        if (!IsMouseOverUI())
+        {
+            this.UpdateZoom(delta);
+            this.UpdateCursorShape();
+        }
     }
 
     private bool IsMouseOverUI()
@@ -261,6 +264,7 @@ public partial class Camera : Camera2D, Observable
     {
         if (IsMouseOverUI())
         {
+            this.edgeMoveDirection = Vector2.Zero;
             return;
         }
         Vector2 mousePos = GetViewport().GetMousePosition();
