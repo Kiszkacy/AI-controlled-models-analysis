@@ -662,6 +662,7 @@ offset_left = 432.0
 offset_top = 8.0
 offset_right = 434.0
 offset_bottom = 236.0
+mouse_filter = 2
 theme = ExtResource("10_7d1gs")
 theme_override_styles/normal = SubResource("StyleBoxFlat_200ap")
 
@@ -676,6 +677,14 @@ theme = ExtResource("10_7d1gs")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = SubResource("StyleBoxEmpty_gdw0h")
+
+[node name="TransparentControl" type="Control" parent="UI/SimulationViewUI/ActiveObjectTab/Active object"]
+anchors_preset = 0
+offset_left = 336.0
+offset_top = -27.0
+offset_right = 462.0
+offset_bottom = 2.0
+mouse_filter = 1
 
 [node name="AnalysisViewUI" type="Control" parent="UI" node_paths=PackedStringArray("EnvironmentTracker", "AgentCountChart", "AgentsMeanEnergyChart", "AgentsEnergySumChart", "EnvironmentTotalEnergyChart", "FoodToAgentsRatioChart", "FoodCountChart", "SaveDataButton", "ClearDataButton", "CacheSizeInput", "CacheIntervalInput", "ClearDataConfirmDialog")]
 visible = false

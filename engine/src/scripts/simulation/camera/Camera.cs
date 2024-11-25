@@ -257,7 +257,18 @@ public partial class Camera : Camera2D, Observable
     private bool IsMouseOverUI()
     {
         Control hoveredNode = GetViewport().GuiGetHoveredControl();
-        return hoveredNode != null && UILayer.IsAncestorOf(hoveredNode);
+
+        if (hoveredNode != null && UILayer.IsAncestorOf(hoveredNode))
+        {
+
+            if (hoveredNode.GetParent() is Collapsible collapsible)
+            {
+                return collapsible.IsExpanded();
+            }
+
+            return true;
+        }
+        return false;
     }
 
     private void UpdateEdgeMoveDirection()
