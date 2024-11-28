@@ -73,10 +73,10 @@ class TrainerConfigurator:
         self.storage_manager.save_config(config_dict=algorithm_config_dict, algorithm=algorithm)
         return algorithm_config_dict, algorithm
 
-    def load_trainer(self) -> Algorithm:
+    def load_trainer(self, iteration: int | None = None) -> Algorithm:
         config_dict, algorithm = self.storage_manager.load_config()
         trainer = self.build_trainer_from_dict(config_dict, algorithm)
-        return self.storage_manager.load_checkpoint(trainer)
+        return self.storage_manager.load_checkpoint(trainer, iteration=iteration)
 
     def create_new_trainer(self) -> Algorithm:
         config_dict, algorithm = self.create_config_dict()

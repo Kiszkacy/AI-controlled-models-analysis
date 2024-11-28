@@ -20,7 +20,7 @@ if __name__ == "__main__":
     logger.info(f"Using {DEVICE=}")
 
     training_settings = get_settings().training
-    training_manager = TrainingManager(training_settings=training_settings, is_resume=True, save_dir="test_storage")
+    training_manager = TrainingManager(training_settings=training_settings, is_resume=True, save_dir="test_3")
     training_manager.train()
 
     # simulation_manager = SimulationManager("try", training_settings)

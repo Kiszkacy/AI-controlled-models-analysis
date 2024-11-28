@@ -9,10 +9,12 @@ from core.src.settings import TrainingSettings
 
 
 class TrainingManager:
-    def __init__(self, save_dir: str, training_settings: TrainingSettings, is_resume: bool = False):
+    def __init__(
+        self, save_dir: str, training_settings: TrainingSettings, is_resume: bool = False, iteration: int | None = None
+    ):
         self.training_settings: TrainingSettings = training_settings
         self.storage_manager: StorageManager = self.create_storage_manager(save_dir)
-        self.trainer: Algorithm = self.create_trainer(is_resume)
+        self.trainer: Algorithm = self.create_trainer(is_resume, iteration)
 
     def create_storage_manager(self, save_dir: str) -> StorageManager:
         if not save_dir or not isinstance(save_dir, str):
@@ -21,12 +23,12 @@ class TrainingManager:
         save_path = os.path.join(self.training_settings.base_storage_dir, save_dir)
         return StorageManager(save_path=save_path)
 
-    def create_trainer(self, is_resume: bool) -> Algorithm:
+    def create_trainer(self, is_resume: bool, iteration: int | None = None) -> Algorithm:
         trainer_configurator = TrainerConfigurator(
             storage_manager=self.storage_manager, training_settings=self.training_settings
         )
         if is_resume:
-            return trainer_configurator.load_trainer()
+            return trainer_configurator.load_trainer(iteration=iteration)
         return trainer_configurator.create_new_trainer()
 
     def train(self):
