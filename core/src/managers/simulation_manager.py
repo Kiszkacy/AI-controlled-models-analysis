@@ -5,8 +5,8 @@ from ray.rllib import MultiAgentEnv
 from ray.rllib.algorithms import Algorithm
 
 from core.src.environments.godot_environment import GodotServerEnvironment
+from core.src.managers.algorithm_configurator import AlgorithmConfigurator
 from core.src.managers.storage_manager import StorageManager
-from core.src.managers.trainer_configurator import TrainerConfigurator
 from core.src.settings import TrainingSettings
 
 
@@ -21,7 +21,7 @@ class SimulationManager:
         self.training_settings = training_settings
         self.storage_manager = self.create_storage_manager(save_dir)
         self.env = environment_cls()
-        self.trainer = self.get_trainer(iteration)
+        self.algorithm = self.get_algorithm(iteration)
 
     def create_storage_manager(self, save_dir: str) -> StorageManager:
         if not save_dir or not isinstance(save_dir, str):
@@ -30,11 +30,11 @@ class SimulationManager:
         save_path = os.path.join(self.training_settings.base_storage_dir, save_dir)
         return StorageManager(save_path=save_path)
 
-    def get_trainer(self, iteration: int | None) -> Algorithm:
-        trainer_configurator = TrainerConfigurator(
+    def get_algorithm(self, iteration: int | None) -> Algorithm:
+        algorithm_configurator = AlgorithmConfigurator(
             storage_manager=self.storage_manager, training_settings=self.training_settings
         )
-        return trainer_configurator.load_trainer(iteration=iteration)
+        return algorithm_configurator.load_algorithm(iteration=iteration)
 
     def run(self, num_episodes: int = 10) -> None:
         for episode in range(num_episodes):
@@ -45,7 +45,7 @@ class SimulationManager:
             while not done:
                 actions = {}
                 for agent_id, agent_obs in obs.items():
-                    action = self.trainer.compute_single_action(agent_obs)
+                    action = self.algorithm.compute_single_action(agent_obs)
                     actions[agent_id] = action
 
                 next_obs, rewards, dones, _, _ = self.env.step(actions)

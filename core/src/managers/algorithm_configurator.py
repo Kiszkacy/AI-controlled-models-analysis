@@ -7,7 +7,7 @@ from core.src.managers.storage_manager import StorageManager
 from core.src.settings import TrainingSettings
 
 
-class TrainerConfigurator:
+class AlgorithmConfigurator:
     def __init__(
         self,
         storage_manager: StorageManager,
@@ -18,21 +18,21 @@ class TrainerConfigurator:
         self.training_settings: TrainingSettings = training_settings
         self.storage_manager = storage_manager
 
-    def build_trainer_from_dict(self, config_dict: dict, algorithm: str) -> Algorithm:
+    def build_trainer_from_dict(self, config_dict: dict, algorithm_cls: str) -> Algorithm:
         config_dict.update(
             {
                 "env": self.environment_cls,
             }
         )
-        if algorithm == "PPO":
+        if algorithm_cls == "PPO":
             return PPOConfig().from_dict(config_dict).build()
 
-        if algorithm == "DQN":
+        if algorithm_cls == "DQN":
             return DQNConfig().from_dict(config_dict).build()
 
-        if algorithm == "SAC":
+        if algorithm_cls == "SAC":
             return SACConfig().from_dict(config_dict).build()
-        raise ValueError(f"Unsupported algorithm: {algorithm}")
+        raise ValueError(f"Unsupported algorithm: {algorithm_cls}")
 
     def create_config_dict(self) -> tuple[dict, str]:
         algorithm_config_dict = {
@@ -69,15 +69,15 @@ class TrainerConfigurator:
                 # "use_gae": True,
             },
         }
-        algorithm = self.training_settings.algorithm
-        self.storage_manager.save_config(config_dict=algorithm_config_dict, algorithm=algorithm)
-        return algorithm_config_dict, algorithm
+        algorithm_cls = self.training_settings.algorithm
+        self.storage_manager.save_config(config_dict=algorithm_config_dict, algorithm_cls=algorithm_cls)
+        return algorithm_config_dict, algorithm_cls
 
-    def load_trainer(self, iteration: int | None = None) -> Algorithm:
-        config_dict, algorithm = self.storage_manager.load_config()
-        trainer = self.build_trainer_from_dict(config_dict, algorithm)
-        return self.storage_manager.load_checkpoint(trainer, iteration=iteration)
+    def load_algorithm(self, iteration: int | None = None) -> Algorithm:
+        config_dict, algorithm_cls = self.storage_manager.load_config()
+        algorithm = self.build_trainer_from_dict(config_dict, algorithm_cls)
+        return self.storage_manager.load_checkpoint(algorithm, iteration=iteration)
 
-    def create_new_trainer(self) -> Algorithm:
-        config_dict, algorithm = self.create_config_dict()
-        return self.build_trainer_from_dict(config_dict, algorithm)
+    def create_new_algorithm(self) -> Algorithm:
+        config_dict, algorithm_cls = self.create_config_dict()
+        return self.build_trainer_from_dict(config_dict, algorithm_cls)
