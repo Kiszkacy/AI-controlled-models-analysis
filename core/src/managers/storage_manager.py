@@ -67,12 +67,12 @@ class StorageManager:
 
         return os.path.join(self.checkpoints_path, checkpoints[0])
 
-    def load_checkpoint(self, algorithm: Algorithm, iteration: int | None = None) -> Algorithm:
+    def load_checkpoint(self, algorithm: Algorithm, restore_iteration: int | None = None) -> Algorithm:
         try:
-            if not iteration:
+            if not restore_iteration:
                 checkpoint_path = self.get_latest_checkpoint()
             else:
-                checkpoint_path = os.path.join(self.checkpoints_path, f"checkpoint_{iteration}.pth")
+                checkpoint_path = os.path.join(self.checkpoints_path, f"checkpoint_{restore_iteration}.pth")
             algorithm.restore(checkpoint_path)
             logger.info(f"Loaded checkpoint from {checkpoint_path}")
             return algorithm

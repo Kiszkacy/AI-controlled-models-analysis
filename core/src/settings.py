@@ -32,6 +32,10 @@ class TrainingSettings(BaseSettings):
     base_storage_dir: Annotated[str, ...]
     use_gpu: Annotated[bool, ...]
     algorithm: Annotated[str, ...]
+    save_dir: Annotated[str, ...]
+    max_checkpoints: Annotated[int, Field(gt=0)]
+    restore_iteration: int | None
+    is_resume: Annotated[bool, ...]
 
 
 class EnvironmentSettings(BaseSettings):

@@ -13,15 +13,13 @@ from core.src.settings import TrainingSettings
 class SimulationManager:
     def __init__(
         self,
-        save_dir: str,
         training_settings: TrainingSettings,
         environment_cls: type[MultiAgentEnv] = GodotServerEnvironment,
-        iteration: int | None = None,
     ):
         self.training_settings = training_settings
-        self.storage_manager = self.create_storage_manager(save_dir)
+        self.storage_manager = self.create_storage_manager(training_settings.save_dir)
         self.env = environment_cls()
-        self.algorithm = self.get_algorithm(iteration)
+        self.algorithm = self.get_algorithm(training_settings.restore_iteration)
 
     def create_storage_manager(self, save_dir: str) -> StorageManager:
         if not save_dir or not isinstance(save_dir, str):
@@ -30,11 +28,11 @@ class SimulationManager:
         save_path = os.path.join(self.training_settings.base_storage_dir, save_dir)
         return StorageManager(save_path=save_path)
 
-    def get_algorithm(self, iteration: int | None) -> Algorithm:
+    def get_algorithm(self, restore_iteration: int | None) -> Algorithm:
         algorithm_configurator = AlgorithmConfigurator(
             storage_manager=self.storage_manager, training_settings=self.training_settings
         )
-        return algorithm_configurator.load_algorithm(iteration=iteration)
+        return algorithm_configurator.load_algorithm(restore_iteration=restore_iteration)
 
     def run(self, num_episodes: int = 10) -> None:
         for episode in range(num_episodes):

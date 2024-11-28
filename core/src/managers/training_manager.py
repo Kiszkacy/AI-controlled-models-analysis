@@ -9,12 +9,12 @@ from core.src.settings import TrainingSettings
 
 
 class TrainingManager:
-    def __init__(
-        self, save_dir: str, training_settings: TrainingSettings, is_resume: bool = False, iteration: int | None = None
-    ):
+    def __init__(self, training_settings: TrainingSettings):
         self.training_settings: TrainingSettings = training_settings
-        self.storage_manager: StorageManager = self.create_storage_manager(save_dir)
-        self.algorithm: Algorithm = self.create_algorithm(is_resume, iteration)
+        self.storage_manager: StorageManager = self.create_storage_manager(training_settings.save_dir)
+        self.algorithm: Algorithm = self.create_algorithm(
+            training_settings.is_resume, training_settings.restore_iteration
+        )
 
     def create_storage_manager(self, save_dir: str) -> StorageManager:
         if not save_dir or not isinstance(save_dir, str):
@@ -23,12 +23,12 @@ class TrainingManager:
         save_path = os.path.join(self.training_settings.base_storage_dir, save_dir)
         return StorageManager(save_path=save_path)
 
-    def create_algorithm(self, is_resume: bool, iteration: int | None = None) -> Algorithm:
+    def create_algorithm(self, is_resume: bool, restore_iteration: int | None = None) -> Algorithm:
         algorithm_configurator = AlgorithmConfigurator(
             storage_manager=self.storage_manager, training_settings=self.training_settings
         )
         if is_resume:
-            return algorithm_configurator.load_algorithm(iteration=iteration)
+            return algorithm_configurator.load_algorithm(restore_iteration=restore_iteration)
         return algorithm_configurator.create_new_algorithm()
 
     def train(self):
@@ -45,5 +45,5 @@ class TrainingManager:
                 )
             )
 
-            if (iteration + 1) % self.training_settings.training_checkpoint_frequency == 0:
+            if iteration % self.training_settings.training_checkpoint_frequency == 0:
                 self.storage_manager.save_checkpoint(algorithm=self.algorithm, iteration=iteration)

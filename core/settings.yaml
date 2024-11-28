@@ -10,8 +10,13 @@ training:
   number_of_workers: 5  # Number of parallel processes to use for training.
   number_of_env_per_worker: 1  # Number of training environments simulated by each worker process.
   training_iterations: 2000  # Total number of training iterations (over a) to perform.
-  training_batch_size: 400 # 2048 # Total amount of environment steps taken during each training iteration
-  training_checkpoint_frequency: 100 # Number of training steps how often Tuner is saved
-  base_storage_dir: "C:\\Users\\sokol\\PycharmProjects\\AI-controlled-models-analysis\\core\\src\\model" # Dir where the models are saved
+  training_batch_size: 100 # 2048 # Total amount of environment steps taken during each training iteration
+  training_checkpoint_frequency: 10 # Number of training steps how often Tuner is saved
   use_gpu: False # Defines if gpu should be used
   algorithm: "PPO" # Algorithm used for training, works with PPO, DQN, SAC
+  is_resume: False  # Defines if it's a resume of training or not
+  base_storage_dir: "C:\\Users\\sokol\\PycharmProjects\\AI-controlled-models-analysis\\core\\src\\model" # Dir where the models are saved
+  save_dir: "test_3"  # Dir in the base_storage dir where the current algorithm will be saved/be restored from
+  max_checkpoints: 5  # Num of checkpoints saved
+  restore_iteration:  # If we want to restore model from "special" iteration we need to provide it here (needs to be in the saved iterations!),
+  # by default empty/None restarts training from the latest checkpoint
