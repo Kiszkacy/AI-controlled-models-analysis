@@ -1,5 +1,6 @@
 
 using System.IO;
+using System.Linq;
 
 using Godot;
 
@@ -29,7 +30,7 @@ public partial class ControlsSettings : Control
 
     private int currentMaxZoomIndex = 4;
     private int currentMinZoomIndex = 2;
-    private int currentEdgeMoveMarginIndex = 4;
+    private int currentEdgeMoveMarginIndex = 1;
     private double currentZoomSensitivity = 1.0;
     private bool isEdgeMoveEnabled = true;
     private double currentEdgeMoveSpeedQuantifier = 3.0;
@@ -45,9 +46,6 @@ public partial class ControlsSettings : Control
 
     public override void _Ready()
     {
-        SetSliders();
-        ConnectButtons();
-
         for (int i = 0; i < this.availableMaxZooms.Length; i++)
         {
             this.availableMaxZooms[i] = System.Math.Round(1.0 + i * 0.5, 1);
@@ -61,8 +59,13 @@ public partial class ControlsSettings : Control
             this.availableEdgeMoveMargins[i] = 10.0f + i * 10.0f;
         }
 
+        LoadFromConfig();
+        SetSliders();
+        
         this.EdgeMoveEnabled.ButtonPressed = isEdgeMoveEnabled;
-
+        
+        ConnectButtons();
+        
         StoreInitialState();
         UpdateUI();
     }
@@ -92,12 +95,20 @@ public partial class ControlsSettings : Control
         this.ZoomSensitivitySlider.MinValue = 0.1;
         this.ZoomSensitivitySlider.MaxValue = 2.0;
         this.ZoomSensitivitySlider.Step = 0.1;
-        this.ZoomSensitivitySlider.Value = this.currentZoomSensitivity;
+        this.ZoomSensitivitySlider.Value = Mathf.Clamp(
+            this.currentZoomSensitivity,
+            this.ZoomSensitivitySlider.MinValue,
+            this.ZoomSensitivitySlider.MaxValue
+        );
 
         this.EdgeMoveSpeedSlider.MinValue = 0.5;
         this.EdgeMoveSpeedSlider.MaxValue = 10.0;
         this.EdgeMoveSpeedSlider.Step = 0.1;
-        this.EdgeMoveSpeedSlider.Value = this.currentEdgeMoveSpeedQuantifier;
+        this.EdgeMoveSpeedSlider.Value = Mathf.Clamp(
+            this.currentEdgeMoveSpeedQuantifier,
+            this.EdgeMoveSpeedSlider.MinValue,
+            this.EdgeMoveSpeedSlider.MaxValue
+        );
     }
 
     private void ConnectButtons()
@@ -118,6 +129,23 @@ public partial class ControlsSettings : Control
         this.MaxZoomLabel.Text = this.availableMaxZooms[this.currentMaxZoomIndex].ToString();
         this.MinZoomLabel.Text = this.availableMinZooms[this.currentMinZoomIndex].ToString();
         this.EdgeMoveMarginLabel.Text = $"{this.availableEdgeMoveMargins[this.currentEdgeMoveMarginIndex]} px";
+        
+        if (!this.isEdgeMoveEnabled)
+        {
+            this.EdgeMoveMarginButton.Disabled = true;
+            this.EdgeMoveMarginArrowLeft.Disabled = true;
+            this.EdgeMoveMarginArrowRight.Disabled = true;
+            this.EdgeMoveSpeedButton.Disabled = true;
+            this.EdgeMoveSpeedSlider.Editable = false;
+        }
+        else
+        {
+            this.EdgeMoveMarginButton.Disabled = false;
+            this.EdgeMoveMarginArrowLeft.Disabled = false;
+            this.EdgeMoveMarginArrowRight.Disabled = false;
+            this.EdgeMoveSpeedButton.Disabled = false;
+            this.EdgeMoveSpeedSlider.Editable = true;
+        }
     }
 
     private void OnZoomSensitivitySliderValueChanged(double value)
@@ -164,22 +192,7 @@ public partial class ControlsSettings : Control
     private void OnEdgeMoveEnabledPressed()
     {
         this.isEdgeMoveEnabled = !this.isEdgeMoveEnabled;
-        if (!this.isEdgeMoveEnabled)
-        {
-            this.EdgeMoveMarginButton.Disabled = true;
-            this.EdgeMoveMarginArrowLeft.Disabled = true;
-            this.EdgeMoveMarginArrowRight.Disabled = true;
-            this.EdgeMoveSpeedButton.Disabled = true;
-            this.EdgeMoveSpeedSlider.Editable = false;
-        }
-        else
-        {
-            this.EdgeMoveMarginButton.Disabled = false;
-            this.EdgeMoveMarginArrowLeft.Disabled = false;
-            this.EdgeMoveMarginArrowRight.Disabled = false;
-            this.EdgeMoveSpeedButton.Disabled = false;
-            this.EdgeMoveSpeedSlider.Editable = true;
-        }
+        UpdateUI();
     }
 
     private void OnEdgeMoveMarginArrowLeftPressed()
@@ -209,7 +222,7 @@ public partial class ControlsSettings : Control
     {
         currentMaxZoomIndex = 4;
         currentMinZoomIndex = 2;
-        currentEdgeMoveMarginIndex = 4;
+        currentEdgeMoveMarginIndex = 1;
         currentZoomSensitivity = 1.0;
         ZoomSensitivitySlider.Value = currentZoomSensitivity;
         isEdgeMoveEnabled = true;
@@ -260,6 +273,18 @@ public partial class ControlsSettings : Control
         Config.Instance.Controls.EdgeMoveEnabled = this.isEdgeMoveEnabled;
         Config.Instance.Controls.EdgeMoveMargin = this.availableEdgeMoveMargins[this.currentEdgeMoveMarginIndex];
         Config.Instance.Controls.EdgeMoveSpeed = (float)this.currentEdgeMoveSpeedQuantifier;
+    }
+
+    private void LoadFromConfig()
+    {
+        this.currentZoomSensitivity = System.Math.Round(Config.Instance.Data.Controls.ZoomSensitivity, 1);
+        this.currentMaxZoomIndex = System.Array.IndexOf(availableMaxZooms, 
+            availableMaxZooms.MinBy(zoom => Mathf.Abs(zoom - Config.Instance.Data.Controls.MaxZoom)));
+        this.currentMinZoomIndex = System.Array.IndexOf(availableMinZooms, 
+            availableMinZooms.MinBy(zoom => Mathf.Abs(zoom - Config.Instance.Data.Controls.MinZoom)));
+        this.isEdgeMoveEnabled = Config.Instance.Data.Controls.EdgeMoveEnabled;
+        this.currentEdgeMoveMarginIndex = System.Array.IndexOf(this.availableEdgeMoveMargins, Config.Instance.Data.Controls.EdgeMoveMargin);
+        this.currentEdgeMoveSpeedQuantifier = System.Math.Round(Config.Instance.Data.Controls.EdgeMoveSpeed, 1);
     }
 }
 

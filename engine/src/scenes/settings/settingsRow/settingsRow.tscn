@@ -12,11 +12,11 @@
 [ext_resource type="Texture2D" uid="uid://cysionmgv7rpb" path="res://assets/icons/solid/angles-left.svg" id="10_6rdw6"]
 [ext_resource type="Texture2D" uid="uid://b5trv26u07qpe" path="res://assets/icons/solid/angles-right.svg" id="11_s6cyb"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3twd6"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r4hfu"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_j5bnt"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_byjrc"]
 
-[sub_resource type="Theme" id="Theme_2d5q6"]
+[sub_resource type="Theme" id="Theme_jvsyf"]
 default_font = ExtResource("1_1il1o")
 Button/colors/font_color = Color(1, 1, 1, 1)
 Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
@@ -38,7 +38,7 @@ Button/constants/outline_size = 0
 Button/font_sizes/font_size = 16
 Button/fonts/font = ExtResource("1_1il1o")
 Button/styles/disabled = ExtResource("2_lqict")
-Button/styles/focus = SubResource("StyleBoxEmpty_3twd6")
+Button/styles/focus = SubResource("StyleBoxEmpty_r4hfu")
 Button/styles/hover = ExtResource("3_e5n14")
 Button/styles/normal = ExtResource("4_1o7kw")
 Button/styles/pressed = ExtResource("5_ibv0v")
@@ -49,33 +49,33 @@ TabContainer/constants/side_margin = 16
 TabContainer/fonts/font = ExtResource("1_1il1o")
 TabContainer/styles/panel = ExtResource("6_dkym6")
 TabContainer/styles/tab_disabled = ExtResource("7_87fh6")
-TabContainer/styles/tab_focus = SubResource("StyleBoxEmpty_j5bnt")
+TabContainer/styles/tab_focus = SubResource("StyleBoxEmpty_byjrc")
 TabContainer/styles/tab_hovered = ExtResource("8_83i1q")
 TabContainer/styles/tab_selected = ExtResource("9_m8r0q")
 TabContainer/styles/tab_unselected = ExtResource("8_83i1q")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fxgca"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oqcq2"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bf0cr"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hqaw2"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w4e1j"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fn8ud"]
 bg_color = Color(0.352941, 0.352941, 0.352941, 1)
 
-[sub_resource type="Gradient" id="Gradient_i1is5"]
+[sub_resource type="Gradient" id="Gradient_marq4"]
 offsets = PackedFloat32Array(0, 0.5, 1)
 colors = PackedColorArray(0.262745, 0.262745, 0.262745, 1, 0.262745, 0.262745, 0.262745, 0, 0.262745, 0.262745, 0.262745, 1)
 metadata/_snap_enabled = true
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_3p5a2"]
-gradient = SubResource("Gradient_i1is5")
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_lkbk1"]
+gradient = SubResource("Gradient_marq4")
 
 [node name="SettingsRow" type="Button"]
 offset_right = 848.0
 offset_bottom = 55.0
-theme = SubResource("Theme_2d5q6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_fxgca")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_bf0cr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_w4e1j")
+theme = SubResource("Theme_jvsyf")
+theme_override_styles/hover = SubResource("StyleBoxFlat_oqcq2")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_hqaw2")
+theme_override_styles/normal = SubResource("StyleBoxFlat_fn8ud")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
@@ -84,7 +84,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = SubResource("GradientTexture1D_3p5a2")
+texture = SubResource("GradientTexture1D_lkbk1")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
