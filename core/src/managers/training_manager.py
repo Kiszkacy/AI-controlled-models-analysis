@@ -45,4 +45,4 @@ class TrainingManager:
             )
 
             if (iteration + 1) % self.training_settings.training_checkpoint_frequency == 0:
-                self.storage_manager.save_checkpoint(trainer=self.trainer)
+                self.storage_manager.save_checkpoint(trainer=self.trainer, iteration=iteration)
