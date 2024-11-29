@@ -21,16 +21,15 @@ if __name__ == "__main__":
     DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     logger.info(f"Using {DEVICE=}")
 
-    training = False
+    training = True
 
     storage_settings = get_settings().storage
-    training_settings = get_settings().training
-
     storage_manager = StorageManager(storage_settings)
 
     if training:
+        training_settings = get_settings().training
         training_manager = TrainingManager(training_settings=training_settings, storage_manager=storage_manager)
         training_manager.train()
     else:
-        simulation_manager = SimulationManager(training_settings=training_settings, storage_manager=storage_manager)
+        simulation_manager = SimulationManager(storage_manager=storage_manager)
         simulation_manager.run(num_episodes=1)

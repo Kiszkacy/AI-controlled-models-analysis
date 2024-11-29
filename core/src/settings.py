@@ -22,19 +22,33 @@ class GodotSettings(BaseSettings):
         raise ValueError(f"Path should point to an .exe file but instead pointed to {value.suffix}")
 
 
-class TrainingSettings(BaseSettings):
-    model_config = SettingsConfigDict(frozen=True)
+class ConfigSettings(BaseSettings):
     number_of_workers: Annotated[int, Field(gt=0)]
     number_of_env_per_worker: Annotated[int, Field(gt=0)]
-    training_iterations: Annotated[int, Field(gt=0)]
-    training_batch_size: Annotated[int, Field(gt=0)]
-    training_checkpoint_frequency: Annotated[int, Field(gt=0)]
+    model_config = SettingsConfigDict(frozen=True)
     use_gpu: Annotated[bool, ...]
     algorithm: Annotated[str, ...]
+    training_batch_size: Annotated[int, Field(gt=0)]
+    lr: Annotated[float, Field(gt=0)]
+    grad_clip: Annotated[float, Field(gt=0)]
+    gamma: Annotated[float, Field(gt=0)]
+    entropy_coeff: Annotated[float, Field(gt=0)]
+    clip_param: Annotated[float, ...]
+    lstm_cell_size: Annotated[int, Field(gt=0)]
+    max_seq_len: Annotated[int, Field(gt=0)]
+    fcnet_hiddens: Annotated[list[int], ...]
+
+
+class TrainingSettings(BaseSettings):
+    model_config = SettingsConfigDict(frozen=True)
+    training_iterations: Annotated[int, Field(gt=0)]
+    training_checkpoint_frequency: Annotated[int, Field(gt=0)]
     is_resume: Annotated[bool, ...]
+    config_settings: ConfigSettings = Field(description="Algorithm configuration settings")
 
 
 class StorageSettings(BaseSettings):
+    model_config = SettingsConfigDict(frozen=True)
     save_path: Annotated[str, ...]
     max_checkpoints: Annotated[int, Field(gt=0)]
     restore_iteration: int | None

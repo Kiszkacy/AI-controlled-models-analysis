@@ -4,20 +4,16 @@ from ray.rllib import MultiAgentEnv
 from core.src.environments.godot_environment import GodotServerEnvironment
 from core.src.managers.algorithm_configurator import AlgorithmConfigurator
 from core.src.managers.storage_manager import StorageManager
-from core.src.settings import TrainingSettings
 
 
 class SimulationManager:
     def __init__(
         self,
-        training_settings: TrainingSettings,
         storage_manager: StorageManager,
         environment_cls: type[MultiAgentEnv] = GodotServerEnvironment,
     ):
         self.env = environment_cls()
-        self.algorithm = AlgorithmConfigurator(
-            storage_manager=storage_manager, training_settings=training_settings
-        ).load_algorithm()
+        self.algorithm = AlgorithmConfigurator(storage_manager=storage_manager).load_algorithm()
 
     def run(self, num_episodes: int = 10) -> None:
         for episode in range(num_episodes):

@@ -10,15 +10,13 @@ class TrainingManager:
     def __init__(self, training_settings: TrainingSettings, storage_manager: StorageManager):
         self.training_settings: TrainingSettings = training_settings
         self.storage_manager: StorageManager = storage_manager
-        self.algorithm: Algorithm = self.create_algorithm(training_settings.is_resume)
+        self.algorithm: Algorithm = self.create_algorithm()
 
-    def create_algorithm(self, is_resume: bool) -> Algorithm:
-        algorithm_configurator = AlgorithmConfigurator(
-            storage_manager=self.storage_manager, training_settings=self.training_settings
-        )
-        if is_resume:
+    def create_algorithm(self) -> Algorithm:
+        algorithm_configurator = AlgorithmConfigurator(storage_manager=self.storage_manager)
+        if self.training_settings.is_resume:
             return algorithm_configurator.load_algorithm()
-        return algorithm_configurator.create_new_algorithm()
+        return algorithm_configurator.create_new_algorithm(self.training_settings.config_settings)
 
     def train(self):
         for iteration in range(self.training_settings.training_iterations):
