@@ -5,14 +5,16 @@ import shutil
 from loguru import logger
 from ray.rllib.algorithms import Algorithm
 
+from core.src.settings import StorageSettings
+
 
 class StorageManager:
-    def __init__(self, save_path: str, max_checkpoints: int = 5) -> None:
-        config_base_path = os.path.join(save_path, "config")
+    def __init__(self, storage_settings: StorageSettings) -> None:
+        config_base_path = os.path.join(storage_settings.save_path, "config")
         self.config_path = os.path.join(config_base_path, "config.json")
         self.algorithm_cls_path = os.path.join(config_base_path, "algorithm.txt")
-        self.checkpoints_path = os.path.join(save_path, "checkpoints")
-        self.max_checkpoints = max_checkpoints
+        self.checkpoints_path = os.path.join(storage_settings.save_path, "checkpoints")
+        self.storage_settings = storage_settings
         os.makedirs(config_base_path, exist_ok=True)
         os.makedirs(self.checkpoints_path, exist_ok=True)
 
@@ -67,12 +69,14 @@ class StorageManager:
 
         return os.path.join(self.checkpoints_path, checkpoints[0])
 
-    def load_checkpoint(self, algorithm: Algorithm, restore_iteration: int | None = None) -> Algorithm:
+    def load_checkpoint(self, algorithm: Algorithm) -> Algorithm:
         try:
-            if not restore_iteration:
+            if not self.storage_settings.restore_iteration:
                 checkpoint_path = self.get_latest_checkpoint()
             else:
-                checkpoint_path = os.path.join(self.checkpoints_path, f"checkpoint_{restore_iteration}.pth")
+                checkpoint_path = os.path.join(
+                    self.checkpoints_path, f"checkpoint_{self.storage_settings.restore_iteration}.pth"
+                )
             algorithm.restore(checkpoint_path)
             logger.info(f"Loaded checkpoint from {checkpoint_path}")
             return algorithm
@@ -87,7 +91,7 @@ class StorageManager:
         )
         if not checkpoints:
             return
-        while len(checkpoints) > self.max_checkpoints:
+        while len(checkpoints) > self.storage_settings.max_checkpoints:
             try:
                 checkpoint_path = os.path.join(self.checkpoints_path, checkpoints.pop(0))
                 shutil.rmtree(checkpoint_path)

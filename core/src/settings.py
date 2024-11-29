@@ -29,13 +29,15 @@ class TrainingSettings(BaseSettings):
     training_iterations: Annotated[int, Field(gt=0)]
     training_batch_size: Annotated[int, Field(gt=0)]
     training_checkpoint_frequency: Annotated[int, Field(gt=0)]
-    base_storage_dir: Annotated[str, ...]
     use_gpu: Annotated[bool, ...]
     algorithm: Annotated[str, ...]
-    save_dir: Annotated[str, ...]
+    is_resume: Annotated[bool, ...]
+
+
+class StorageSettings(BaseSettings):
+    save_path: Annotated[str, ...]
     max_checkpoints: Annotated[int, Field(gt=0)]
     restore_iteration: int | None
-    is_resume: Annotated[bool, ...]
 
 
 class EnvironmentSettings(BaseSettings):
@@ -75,6 +77,7 @@ class Settings(BaseSettings):
     )
     godot: GodotSettings = Field(description="The godot settings")
     training: TrainingSettings = Field(description="Training settings")
+    storage: StorageSettings = Field(description="Storage settings")
 
     environment: EnvironmentSettings = Field(description="Training environment settings")
 

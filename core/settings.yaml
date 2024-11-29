@@ -14,9 +14,9 @@ training:
   training_checkpoint_frequency: 10 # Number of training steps how often Tuner is saved
   use_gpu: False # Defines if gpu should be used
   algorithm: "PPO" # Algorithm used for training, works with PPO, DQN, SAC
-  is_resume: False  # Defines if it's a resume of training or not
-  base_storage_dir: "C:\\Users\\sokol\\PycharmProjects\\AI-controlled-models-analysis\\core\\src\\model" # Dir where the models are saved
-  save_dir: "test_3"  # Dir in the base_storage dir where the current algorithm will be saved/be restored from
+  is_resume: True  # Defines if it's a resume of training or not
+storage:
+  save_path: "C:\\Users\\sokol\\PycharmProjects\\AI-controlled-models-analysis\\core\\src\\model\\test_3"  # Dir where the model will be saved/restored from
   max_checkpoints: 5  # Num of checkpoints saved
-  restore_iteration:  # If we want to restore model from "special" iteration we need to provide it here (needs to be in the saved iterations!),
+  restore_iteration: 850 # If we want to restore model from "special" iteration we need to provide it here (needs to be in the saved iterations!),
   # by default empty/None restarts training from the latest checkpoint
