@@ -61,11 +61,11 @@ public partial class ControlsSettings : Control
 
         LoadFromConfig();
         SetSliders();
-        
+
         this.EdgeMoveEnabled.ButtonPressed = isEdgeMoveEnabled;
-        
+
         ConnectButtons();
-        
+
         StoreInitialState();
         UpdateUI();
     }
@@ -129,7 +129,7 @@ public partial class ControlsSettings : Control
         this.MaxZoomLabel.Text = this.availableMaxZooms[this.currentMaxZoomIndex].ToString();
         this.MinZoomLabel.Text = this.availableMinZooms[this.currentMinZoomIndex].ToString();
         this.EdgeMoveMarginLabel.Text = $"{this.availableEdgeMoveMargins[this.currentEdgeMoveMarginIndex]} px";
-        
+
         if (!this.isEdgeMoveEnabled)
         {
             this.EdgeMoveMarginButton.Disabled = true;
@@ -278,9 +278,9 @@ public partial class ControlsSettings : Control
     private void LoadFromConfig()
     {
         this.currentZoomSensitivity = System.Math.Round(Config.Instance.Data.Controls.ZoomSensitivity, 1);
-        this.currentMaxZoomIndex = System.Array.IndexOf(availableMaxZooms, 
+        this.currentMaxZoomIndex = System.Array.IndexOf(availableMaxZooms,
             availableMaxZooms.MinBy(zoom => Mathf.Abs(zoom - Config.Instance.Data.Controls.MaxZoom)));
-        this.currentMinZoomIndex = System.Array.IndexOf(availableMinZooms, 
+        this.currentMinZoomIndex = System.Array.IndexOf(availableMinZooms,
             availableMinZooms.MinBy(zoom => Mathf.Abs(zoom - Config.Instance.Data.Controls.MinZoom)));
         this.isEdgeMoveEnabled = Config.Instance.Data.Controls.EdgeMoveEnabled;
         this.currentEdgeMoveMarginIndex = System.Array.IndexOf(this.availableEdgeMoveMargins, Config.Instance.Data.Controls.EdgeMoveMargin);
