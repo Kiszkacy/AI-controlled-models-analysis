@@ -6,8 +6,6 @@ public partial class Initializer : Node
 {
     public override void _Ready()
     {
-        Input.SetMouseMode(Input.MouseModeEnum.Confined);
-
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[INITIALIZER]")
             .Print("  | LOADING SCENE")
@@ -79,6 +77,7 @@ public partial class Initializer : Node
             .End();
         this.LoadConfig();
         EventManager.Get();
+        Reloader.Get().Initialize();
     }
 
     private void LoadConfig()

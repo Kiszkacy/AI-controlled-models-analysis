@@ -1,5 +1,5 @@
 pipe:
-  name: 'godot-python-pipe'
+  name: godot-python-pipe
   bufferSize: 8192
 engine:
   timeScale: 1.0
@@ -30,11 +30,11 @@ display:
   isFullscreen: true
   isMouseLocked: true
 controls:
-  zoomSensitivity: 1
-  maxZoom: 3
+  zoomSensitivity: 0.5
+  maxZoom: 2
   minZoom: 0.3
-  edgeMoveEnabled: true
-  edgeMoveMargin: 50
-  edgeMoveSpeed: 3
+  edgeMoveEnabled: false
+  edgeMoveMargin: 20
+  edgeMoveSpeed: 0.5
 save:
   savePath: user://

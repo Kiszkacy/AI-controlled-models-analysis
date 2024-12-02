@@ -206,9 +206,6 @@ UseLogicAgents = true
 process_mode = 3
 position = Vector2(960, 540)
 script = ExtResource("5_kqo4m")
-MoveSpeed = 500.0
-DragSmoothness = 0.25
-DoubleClickSmoothness = 0.25
 EdgeMoveMargin = 16.0
 UILayer = NodePath("../UI")
 
