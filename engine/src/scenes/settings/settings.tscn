@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://beyutvretnd5s"]
+[gd_scene load_steps=54 format=3 uid="uid://beyutvretnd5s"]
 
 [ext_resource type="FontFile" uid="uid://chjp63k0jm20m" path="res://assets/fonts/inter/Inter_18pt-Black.ttf" id="1_jf5ra"]
 [ext_resource type="StyleBox" uid="uid://dlbaa32luhlcp" path="res://assets/ui/themes/button/buttonDarkDisabled.tres" id="2_aju34"]
@@ -272,6 +272,63 @@ metadata/_snap_enabled = true
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_3p5a2"]
 gradient = SubResource("Gradient_i1is5")
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r4hfu"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_byjrc"]
+
+[sub_resource type="Theme" id="Theme_jvsyf"]
+default_font = ExtResource("1_jf5ra")
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 1)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 32
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 16
+Button/fonts/font = ExtResource("1_jf5ra")
+Button/styles/disabled = ExtResource("2_aju34")
+Button/styles/focus = SubResource("StyleBoxEmpty_r4hfu")
+Button/styles/hover = ExtResource("3_pfpqn")
+Button/styles/normal = ExtResource("4_gth8a")
+Button/styles/pressed = ExtResource("5_e0vln")
+TabContainer/colors/font_hovered_color = Color(0.372549, 0.458824, 0.568627, 1)
+TabContainer/colors/font_selected_color = Color(1, 1, 1, 1)
+TabContainer/colors/font_unselected_color = Color(0.466667, 0.552941, 0.662745, 1)
+TabContainer/constants/side_margin = 16
+TabContainer/fonts/font = ExtResource("1_jf5ra")
+TabContainer/styles/panel = ExtResource("6_0sd08")
+TabContainer/styles/tab_disabled = ExtResource("7_prub7")
+TabContainer/styles/tab_focus = SubResource("StyleBoxEmpty_byjrc")
+TabContainer/styles/tab_hovered = ExtResource("8_txqiq")
+TabContainer/styles/tab_selected = ExtResource("9_l67st")
+TabContainer/styles/tab_unselected = ExtResource("8_txqiq")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oqcq2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hqaw2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fn8ud"]
+bg_color = Color(0.352941, 0.352941, 0.352941, 1)
+
+[sub_resource type="Gradient" id="Gradient_marq4"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.262745, 0.262745, 0.262745, 1, 0.262745, 0.262745, 0.262745, 0, 0.262745, 0.262745, 0.262745, 1)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_lkbk1"]
+gradient = SubResource("Gradient_marq4")
+
 [node name="Settings" type="Control" node_paths=PackedStringArray("TabContainer", "DisplaySettings", "ControlsSettings", "SaveSettings", "SaveButton", "ResetButton", "BackButton", "ConfirmDialog", "Background")]
 layout_mode = 3
 anchors_preset = 15
@@ -359,16 +416,22 @@ theme_override_constants/side_margin = 40
 theme_override_constants/icon_separation = 0
 theme_override_font_sizes/font_size = 22
 theme_override_styles/panel = SubResource("StyleBoxFlat_5nsdw")
-current_tab = 2
+current_tab = 1
 
-[node name="Display" type="Control" parent="Content/TabContainer" node_paths=PackedStringArray("LockMouseArrowLeft", "LockMouseArrowRight", "LockMouseLabel")]
+[node name="Display" type="Control" parent="Content/TabContainer" node_paths=PackedStringArray("ResolutionArrowLeft", "ResolutionArrowRight", "ResolutionLabel", "ModeArrowLeft", "ModeArrowRight", "ModeLabel", "LockMouseArrowLeft", "LockMouseArrowRight", "LockMouseLabel")]
 visible = false
 layout_mode = 2
 theme = SubResource("Theme_fgj78")
 script = ExtResource("11_ipmfa")
-LockMouseArrowLeft = NodePath("")
-LockMouseArrowRight = NodePath("")
-LockMouseLabel = NodePath("")
+ResolutionArrowLeft = NodePath("VBoxContainer/Resolution/Arrow Left")
+ResolutionArrowRight = NodePath("VBoxContainer/Resolution/Arrow Right")
+ResolutionLabel = NodePath("VBoxContainer/Resolution/Value")
+ModeArrowLeft = NodePath("VBoxContainer/Mode/Arrow Left")
+ModeArrowRight = NodePath("VBoxContainer/Mode/Arrow Right")
+ModeLabel = NodePath("VBoxContainer/Mode/Value")
+LockMouseArrowLeft = NodePath("VBoxContainer/Lock Mouse/Arrow Left")
+LockMouseArrowRight = NodePath("VBoxContainer/Lock Mouse/Arrow Right")
+LockMouseLabel = NodePath("VBoxContainer/Lock Mouse/Value")
 metadata/_tab_index = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Content/TabContainer/Display"]
@@ -429,23 +492,22 @@ icon = ExtResource("14_xuakl")
 flat = true
 
 [node name="Controls" type="Control" parent="Content/TabContainer" node_paths=PackedStringArray("ZoomSensitivitySlider", "MaxZoomArrowLeft", "MaxZoomArrowRight", "MaxZoomLabel", "MinZoomArrowLeft", "MinZoomArrowRight", "MinZoomLabel", "EdgeMoveEnabled", "EdgeMoveMarginButton", "EdgeMoveMarginArrowLeft", "EdgeMoveMarginArrowRight", "EdgeMoveMarginLabel", "EdgeMoveSpeedButton", "EdgeMoveSpeedSlider")]
-visible = false
 layout_mode = 2
 script = ExtResource("14_hux1s")
-ZoomSensitivitySlider = NodePath("")
-MaxZoomArrowLeft = NodePath("")
-MaxZoomArrowRight = NodePath("")
-MaxZoomLabel = NodePath("")
-MinZoomArrowLeft = NodePath("")
-MinZoomArrowRight = NodePath("")
-MinZoomLabel = NodePath("")
-EdgeMoveEnabled = NodePath("")
-EdgeMoveMarginButton = NodePath("")
-EdgeMoveMarginArrowLeft = NodePath("")
-EdgeMoveMarginArrowRight = NodePath("")
-EdgeMoveMarginLabel = NodePath("")
-EdgeMoveSpeedButton = NodePath("")
-EdgeMoveSpeedSlider = NodePath("")
+ZoomSensitivitySlider = NodePath("ScrollContainer/VBoxContainer/Camera Options/Zoom sensitivity/HSlider")
+MaxZoomArrowLeft = NodePath("ScrollContainer/VBoxContainer/Camera Options/Max zoom/Arrow Left")
+MaxZoomArrowRight = NodePath("ScrollContainer/VBoxContainer/Camera Options/Max zoom/Arrow Right")
+MaxZoomLabel = NodePath("ScrollContainer/VBoxContainer/Camera Options/Max zoom/Value")
+MinZoomArrowLeft = NodePath("ScrollContainer/VBoxContainer/Camera Options/Min zoom/Arrow Left")
+MinZoomArrowRight = NodePath("ScrollContainer/VBoxContainer/Camera Options/Min zoom/Arrow Right")
+MinZoomLabel = NodePath("ScrollContainer/VBoxContainer/Camera Options/Min zoom/Value")
+EdgeMoveEnabled = NodePath("ScrollContainer/VBoxContainer/Camera Options/Edge move enabled/CheckButton")
+EdgeMoveMarginButton = NodePath("ScrollContainer/VBoxContainer/Camera Options/Edge move margin")
+EdgeMoveMarginArrowLeft = NodePath("ScrollContainer/VBoxContainer/Camera Options/Edge move margin/Arrow Left")
+EdgeMoveMarginArrowRight = NodePath("ScrollContainer/VBoxContainer/Camera Options/Edge move margin/Arrow Right")
+EdgeMoveMarginLabel = NodePath("ScrollContainer/VBoxContainer/Camera Options/Edge move margin/Value")
+EdgeMoveSpeedButton = NodePath("ScrollContainer/VBoxContainer/Camera Options/Edge move speed")
+EdgeMoveSpeedSlider = NodePath("ScrollContainer/VBoxContainer/Camera Options/Edge move speed/HSlider")
 metadata/_tab_index = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Content/TabContainer/Controls"]
@@ -517,6 +579,7 @@ text = "Zoom sensitivity"
 horizontal_alignment = 2
 
 [node name="HSlider" type="HSlider" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Zoom sensitivity"]
+layout_mode = 0
 offset_left = 504.75
 offset_top = 12.0
 offset_right = 774.75
@@ -584,6 +647,7 @@ text = "Edge move enabled"
 horizontal_alignment = 2
 
 [node name="CheckButton" type="CheckButton" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move enabled"]
+layout_mode = 0
 offset_left = 582.5
 offset_top = 1.0
 offset_right = 628.5
@@ -604,14 +668,15 @@ offset_left = 114.0
 text = "Edge move margin"
 
 [node name="Value" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move margin" index="3"]
-text = "50"
+text = "20"
 
 [node name="Edge move speed" type="Button" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options"]
+custom_minimum_size = Vector2(0, 55)
 layout_mode = 2
-theme = SubResource("Theme_2d5q6")
-theme_override_styles/hover = SubResource("StyleBoxFlat_fxgca")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_bf0cr")
-theme_override_styles/normal = SubResource("StyleBoxFlat_w4e1j")
+theme = SubResource("Theme_jvsyf")
+theme_override_styles/hover = SubResource("StyleBoxFlat_oqcq2")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_hqaw2")
+theme_override_styles/normal = SubResource("StyleBoxFlat_fn8ud")
 
 [node name="TextureRect" type="TextureRect" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move speed"]
 layout_mode = 1
@@ -620,7 +685,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = SubResource("GradientTexture1D_3p5a2")
+texture = SubResource("GradientTexture1D_lkbk1")
 
 [node name="ColorRect" type="ColorRect" parent="Content/TabContainer/Controls/ScrollContainer/VBoxContainer/Camera Options/Edge move speed"]
 layout_mode = 1
@@ -651,10 +716,11 @@ offset_bottom = 42.0
 mouse_filter = 1
 
 [node name="Save & Load" type="Control" parent="Content/TabContainer" node_paths=PackedStringArray("ExplorerButton", "FileDialogNode")]
+visible = false
 layout_mode = 2
 script = ExtResource("15_702fc")
-ExplorerButton = NodePath("")
-FileDialogNode = NodePath("")
+ExplorerButton = NodePath("VBoxContainer/SavePath/ExplorerButton")
+FileDialogNode = NodePath("VBoxContainer/SavePath/FileDialog")
 metadata/_tab_index = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Content/TabContainer/Save & Load"]
@@ -714,6 +780,7 @@ auto_translate_mode = 1
 size = Vector2i(306, 175)
 
 [node name="ExplorerButton" parent="Content/TabContainer/Save & Load/VBoxContainer/SavePath" instance=ExtResource("17_edwuq")]
+layout_mode = 0
 offset_left = 453.0
 offset_top = 13.0
 offset_right = 613.0

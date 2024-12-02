@@ -9,10 +9,16 @@ using YamlDotNet.Serialization.NamingConventions;
 
 using FileAccess = Godot.FileAccess;
 
-public class Reloader : Singleton<Reloader>
+public class Reloader : Singleton<Reloader>, Observable
 {
     public bool IsReloading { get; set; } = false;
-    private String saveFilePath = "user://savegame.yaml";
+    private String saveFileDir = Config.Instance.Data.Save.SavePath;
+    private String saveFileName = "savegame.yaml";
+
+    public void Initialize()
+    {
+        EventManager.Instance.Subscribe(this, EventChannel.Settings);
+    }
 
     public void Reload(Node root)
     {
@@ -44,6 +50,8 @@ public class Reloader : Singleton<Reloader>
         FoodSaveData[] foodData = EntityManager.Instance.SaveFood();
 
         SimulationStatusData simulationStatusData = SimulationManager.Instance.Save();
+        
+        String saveFilePath = saveFileDir + saveFileName;
 
         var saveData = new EnvironmentSaveData(environmentTemplate, agentsData, cameraPosition, cameraZoom,
             foodSpawnersData, foodData, simulationStatusData);
@@ -59,6 +67,8 @@ public class Reloader : Singleton<Reloader>
 
     public void LoadAllData(Node root)
     {
+        String saveFilePath = saveFileDir + saveFileName;
+        
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[RELOADER]")
             .Print("  | LOADING ENVIRONMENT")
@@ -108,9 +118,23 @@ public class Reloader : Singleton<Reloader>
     public void SetSaveFilePath(String saveFileName)
     {
         String filePath = "user://" + saveFileName + ".yaml";
-        if (FileAccess.FileExists(saveFilePath))
+        if (FileAccess.FileExists(filePath))
         {
-            this.saveFilePath = filePath;
+            this.saveFileName = saveFileName;
+        }
+    }
+    
+    public void SetFileDir()
+    {
+        saveFileDir = Config.Instance.Data.Save.SavePath;
+    }
+
+
+    public void Notify(IEvent @event)
+    {
+        if (@event is NotifyEvent settingsEvent)
+        {
+            this.SetFileDir();
         }
     }
 }
