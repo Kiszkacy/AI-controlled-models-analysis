@@ -30,7 +30,7 @@ class StorageManager:
 
     def save_checkpoint(self, algorithm: Algorithm, iteration: int) -> None:
         try:
-            checkpoint_path = os.path.join(self.checkpoints_path, f"checkpoint_{iteration}.pth")
+            checkpoint_path = os.path.join(self.checkpoints_path, f"checkpoint_{iteration}")
             os.makedirs(checkpoint_path, exist_ok=True)
             algorithm.save_checkpoint(checkpoint_path)
             logger.info(f"Model saved to {checkpoint_path}")
@@ -75,7 +75,7 @@ class StorageManager:
                 checkpoint_path = self.get_latest_checkpoint()
             else:
                 checkpoint_path = os.path.join(
-                    self.checkpoints_path, f"checkpoint_{self.storage_settings.restore_iteration}.pth"
+                    self.checkpoints_path, f"checkpoint_{self.storage_settings.restore_iteration}"
                 )
             algorithm.restore(checkpoint_path)
             logger.info(f"Loaded checkpoint from {checkpoint_path}")
