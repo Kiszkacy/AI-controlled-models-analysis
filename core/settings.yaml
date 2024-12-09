@@ -8,7 +8,7 @@ environment:
   number_of_agents: 25 # Number af agents in environment starting
 
 training:
-  is_resume: True  # Defines if it's a resume of training or not
+  is_resume: False  # Defines if it's a resume of training or not
   training_iterations: 2000  # Total number of training iterations (over a) to perform.
   training_checkpoint_frequency: 100 # Number of training steps how often Tuner is saved
   config_settings:

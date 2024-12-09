@@ -1,5 +1,6 @@
 import os.path
 
+import torch
 from ray import train, tune
 from ray.air import CheckpointConfig
 from ray.rllib import MultiAgentEnv
@@ -31,12 +32,12 @@ class TunerConfigurator:
             return config
 
         hyperparam_mutations = {
-            "lambda": tune.uniform(0.9, 1.0),
+            "gamma": tune.uniform(0.9, 1.0),
             "clip_param": tune.uniform(0.01, 0.5),
             "lr": tune.choice([1e-3, 5e-4, 1e-4, 5e-5, 1e-5]),
             "num_sgd_iter": tune.randint(1, 31),
-            "sgd_minibatch_size": tune.randint(128, 16384),
-            "train_batch_size": tune.randint(2000, 160000),
+            "sgd_minibatch_size": tune.randint(32, 256),
+            "train_batch_size": tune.randint(400, 2400),
         }
 
         pbt = PopulationBasedTraining(
@@ -52,7 +53,7 @@ class TunerConfigurator:
         }
 
         return tune.Tuner(
-            "PPO",
+            self.config_settings.algorithm,
             tune_config=tune.TuneConfig(
                 metric="episode_reward_mean",
                 mode="max",
@@ -61,10 +62,12 @@ class TunerConfigurator:
             ),
             param_space={
                 "env": self.environment_cls,
+                "framework": "torch",
                 "kl_coeff": 1.0,
                 "num_workers": self.config_settings.number_of_workers,
-                "num_cpus": 1,
-                "num_gpus": 0,
+                "num_envs_per_worker": self.config_settings.number_of_env_per_worker,
+                # "num_cpus": 1,
+                "num_gpus": torch.cuda.device_count() if self.config_settings.use_gpu else 0,
                 "model": {
                     "use_lstm": True,
                     "lstm_cell_size": self.config_settings.lstm_cell_size,
@@ -78,9 +81,11 @@ class TunerConfigurator:
                 "gamma": self.config_settings.gamma,
                 "clip_param": self.config_settings.clip_param,
                 "lr": self.config_settings.lr,
+                "grad_clip": self.config_settings.grad_clip,
                 "num_sgd_iter": tune.choice([10, 20, 30]),
-                "sgd_minibatch_size": tune.choice([128, 512, 2048]),
-                "train_batch_size": tune.choice([10000, 20000, 40000]),
+                "sgd_minibatch_size": tune.choice([32, 64, 128]),
+                "train_batch_size": tune.choice([400, 800, 1200, 1600, 2000]),
+                "entropy_coeff": self.config_settings.entropy_coeff,
             },
             run_config=train.RunConfig(
                 name=self.storage_settings.name,

@@ -30,7 +30,9 @@ class TrainingManager:
 
     def train(self):
         if isinstance(self.algorithm, Tuner):
-            self.algorithm.fit()
+            results = self.algorithm.fit()
+            best_result = results.get_best_result(metric="episode_reward_mean", mode="max")
+            logger.info(f"Best configuration: {best_result.config}")
         else:
             for iteration in range(self.training_settings.training_iterations):
                 all_info = self.algorithm.train()
