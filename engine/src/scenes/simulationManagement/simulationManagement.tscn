@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=3 uid="uid://ce4g7f0qw8i1w"]
+
+[ext_resource type="PackedScene" uid="uid://byp6g5lwnjkly" path="res://src/scenes/ui/button/iconButtonSmall.tscn" id="1_8mvoa"]
+[ext_resource type="Texture2D" uid="uid://ct4lnhjfna7ku" path="res://assets/icons/solid/rotate-left.svg" id="2_jtug3"]
+[ext_resource type="PackedScene" uid="uid://c65lb0kphj48s" path="res://src/scenes/simulationManagement/simulationButton.tscn" id="3_x628j"]
+
+[node name="SimulationManagement" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.411765, 0.411765, 0.411765, 1)
+
+[node name="BackButton" parent="." instance=ExtResource("1_8mvoa")]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 64.0
+offset_bottom = 64.0
+icon = ExtResource("2_jtug3")
+
+[node name="SimulationList" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 150.0
+offset_right = 570.0
+grow_vertical = 2
+color = Color(0.262745, 0.262745, 0.262745, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="SimulationList"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 45.0
+offset_bottom = -45.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" parent="SimulationList/ScrollContainer" instance=ExtResource("3_x628j")]
+layout_mode = 2
