@@ -1,3 +1,5 @@
+import os.path
+
 from ray import train, tune
 from ray.air import CheckpointConfig
 from ray.rllib import MultiAgentEnv
@@ -5,17 +7,20 @@ from ray.tune import Tuner
 from ray.tune.schedulers import PopulationBasedTraining
 
 from core.src.environments.godot_environment import GodotServerEnvironment
-from core.src.settings import ConfigSettings
+from core.src.settings import ConfigSettings, StorageSettings, TrainingSettings
 
 
 class TunerConfigurator:
     def __init__(
         self,
-        config_settings: ConfigSettings,
+        training_settings: TrainingSettings,
+        storage_settings: StorageSettings,
         environment_cls: type[MultiAgentEnv] | str = GodotServerEnvironment,
     ):
         self.environment_cls = environment_cls
-        self.config_settings = config_settings
+        self.training_settings = training_settings
+        self.config_settings: ConfigSettings = training_settings.config_settings
+        self.storage_settings = storage_settings
 
     def create_new_tuner(self) -> Tuner:
         def explore(config):
@@ -41,7 +46,10 @@ class TunerConfigurator:
             hyperparam_mutations=hyperparam_mutations,
             custom_explore_fn=explore,
         )
-        stopping_criteria = {"training_iteration": 100, "episode_reward_mean": 300}
+        stopping_criteria = {
+            "training_iteration": self.training_settings.training_iterations,
+            "episode_reward_mean": 30000,
+        }
 
         return tune.Tuner(
             "PPO",
@@ -54,26 +62,37 @@ class TunerConfigurator:
             param_space={
                 "env": self.environment_cls,
                 "kl_coeff": 1.0,
-                "num_workers": 4,
+                "num_workers": self.config_settings.number_of_workers,
                 "num_cpus": 1,
                 "num_gpus": 0,
-                "model": {"free_log_std": True},
-                "lambda": 0.95,
-                "clip_param": 0.2,
-                "lr": 1e-4,
+                "model": {
+                    "use_lstm": True,
+                    "lstm_cell_size": self.config_settings.lstm_cell_size,
+                    "max_seq_len": self.config_settings.max_seq_len,
+                    "fcnet_hiddens": self.config_settings.fcnet_hiddens,
+                    "lstm_use_prev_action": True,
+                    "lstm_use_prev_reward": True,
+                    "_disable_action_flattening": True,
+                    # "vf_share_layers": False, (rozdzielenie polityki i funkcji straty)
+                },
+                "gamma": self.config_settings.gamma,
+                "clip_param": self.config_settings.clip_param,
+                "lr": self.config_settings.lr,
                 "num_sgd_iter": tune.choice([10, 20, 30]),
                 "sgd_minibatch_size": tune.choice([128, 512, 2048]),
                 "train_batch_size": tune.choice([10000, 20000, 40000]),
             },
             run_config=train.RunConfig(
+                name=self.storage_settings.name,
+                storage_path=self.storage_settings.save_path,
                 stop=stopping_criteria,
                 checkpoint_config=CheckpointConfig(
-                    checkpoint_frequency=1,
-                    num_to_keep=3,
+                    checkpoint_frequency=self.training_settings.training_checkpoint_frequency,
+                    num_to_keep=self.storage_settings.max_checkpoints,
                 ),
             ),
         )
 
-    @staticmethod
-    def load_tuner(path: str, trainable: str) -> Tuner:
-        return Tuner.restore(path=path, trainable=trainable)
+    def load_tuner(self) -> Tuner:
+        path = os.path.join(self.storage_settings.save_path, self.storage_settings.name)
+        return Tuner.restore(path=path, trainable=self.config_settings.algorithm)

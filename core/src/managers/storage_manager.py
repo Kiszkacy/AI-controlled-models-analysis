@@ -10,10 +10,11 @@ from core.src.settings import StorageSettings
 
 class StorageManager:
     def __init__(self, storage_settings: StorageSettings) -> None:
-        config_base_path = os.path.join(storage_settings.save_path, "config")
+        base_path = os.path.join(storage_settings.save_path, storage_settings.name)
+        config_base_path = os.path.join(base_path, "config")
         self.config_path = os.path.join(config_base_path, "config.json")
         self.algorithm_cls_path = os.path.join(config_base_path, "algorithm.txt")
-        self.checkpoints_path = os.path.join(storage_settings.save_path, "checkpoints")
+        self.checkpoints_path = os.path.join(base_path, "checkpoints")
         self.storage_settings = storage_settings
         os.makedirs(config_base_path, exist_ok=True)
         os.makedirs(self.checkpoints_path, exist_ok=True)

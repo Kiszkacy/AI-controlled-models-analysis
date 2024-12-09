@@ -49,6 +49,7 @@ class TrainingSettings(BaseSettings):
 
 class StorageSettings(BaseSettings):
     model_config = SettingsConfigDict(frozen=True)
+    name: Annotated[str, ...]
     save_path: Annotated[str, ...]
     max_checkpoints: Annotated[int, Field(gt=0)]
     restore_iteration: int | None

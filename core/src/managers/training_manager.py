@@ -5,7 +5,7 @@ from ray.tune import Tuner
 from core.src.managers.algorithm_configurator import AlgorithmConfigurator
 from core.src.managers.storage_manager import StorageManager
 from core.src.managers.tuner_configurator import TunerConfigurator
-from core.src.settings import TrainingSettings
+from core.src.settings import TrainingSettings, get_settings
 
 
 class TrainingManager:
@@ -21,7 +21,11 @@ class TrainingManager:
         return algorithm_configurator.create_new_algorithm(self.training_settings.config_settings)
 
     def create_tuner(self) -> Tuner:
-        tuner_configurator = TunerConfigurator(config_settings=self.training_settings.config_settings)
+        tuner_configurator = TunerConfigurator(
+            training_settings=self.training_settings, storage_settings=get_settings().storage
+        )
+        if self.training_settings.is_resume:
+            return tuner_configurator.load_tuner()
         return tuner_configurator.create_new_tuner()
 
     def train(self):
