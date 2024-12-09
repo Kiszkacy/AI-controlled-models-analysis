@@ -1,16 +1,18 @@
 from loguru import logger
 from ray.rllib.algorithms import Algorithm
+from ray.tune import Tuner
 
 from core.src.managers.algorithm_configurator import AlgorithmConfigurator
 from core.src.managers.storage_manager import StorageManager
+from core.src.managers.tuner_configurator import TunerConfigurator
 from core.src.settings import TrainingSettings
 
 
 class TrainingManager:
-    def __init__(self, training_settings: TrainingSettings, storage_manager: StorageManager):
+    def __init__(self, training_settings: TrainingSettings, storage_manager: StorageManager, tuner: bool):
         self.training_settings: TrainingSettings = training_settings
         self.storage_manager: StorageManager = storage_manager
-        self.algorithm: Algorithm = self.create_algorithm()
+        self.algorithm: Algorithm | Tuner = self.create_tuner() if tuner else self.create_algorithm()
 
     def create_algorithm(self) -> Algorithm:
         algorithm_configurator = AlgorithmConfigurator(storage_manager=self.storage_manager)
@@ -18,19 +20,26 @@ class TrainingManager:
             return algorithm_configurator.load_algorithm()
         return algorithm_configurator.create_new_algorithm(self.training_settings.config_settings)
 
-    def train(self):
-        for iteration in range(self.training_settings.training_iterations):
-            all_info = self.algorithm.train()
-            sampler_info = all_info["sampler_results"]
-            logger.info(
-                "iteration: {}, episode_reward_mean: {}, episode_reward_max: {}, episode_reward_min: {}, episodes_this_iter: {}".format(  # noqa: E501
-                    iteration,
-                    sampler_info["episode_reward_mean"],
-                    sampler_info["episode_reward_max"],
-                    sampler_info["episode_reward_min"],
-                    sampler_info["episodes_this_iter"],
-                )
-            )
+    def create_tuner(self) -> Tuner:
+        tuner_configurator = TunerConfigurator(config_settings=self.training_settings.config_settings)
+        return tuner_configurator.create_new_tuner()
 
-            if iteration % self.training_settings.training_checkpoint_frequency == 0:
-                self.storage_manager.save_checkpoint(algorithm=self.algorithm, iteration=iteration)
+    def train(self):
+        if isinstance(self.algorithm, Tuner):
+            self.algorithm.fit()
+        else:
+            for iteration in range(self.training_settings.training_iterations):
+                all_info = self.algorithm.train()
+                sampler_info = all_info["sampler_results"]
+                logger.info(
+                    "iteration: {}, episode_reward_mean: {}, episode_reward_max: {}, episode_reward_min: {}, episodes_this_iter: {}".format(  # noqa: E501
+                        iteration,
+                        sampler_info["episode_reward_mean"],
+                        sampler_info["episode_reward_max"],
+                        sampler_info["episode_reward_min"],
+                        sampler_info["episodes_this_iter"],
+                    )
+                )
+
+                if iteration % self.training_settings.training_checkpoint_frequency == 0:
+                    self.storage_manager.save_checkpoint(algorithm=self.algorithm, iteration=iteration)

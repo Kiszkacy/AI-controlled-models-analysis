@@ -28,7 +28,9 @@ if __name__ == "__main__":
 
     if training:
         training_settings = get_settings().training
-        training_manager = TrainingManager(training_settings=training_settings, storage_manager=storage_manager)
+        training_manager = TrainingManager(
+            training_settings=training_settings, storage_manager=storage_manager, tuner=False
+        )
         training_manager.train()
     else:
         simulation_manager = SimulationManager(storage_manager=storage_manager)
