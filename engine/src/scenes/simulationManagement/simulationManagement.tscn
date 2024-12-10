@@ -1,8 +1,84 @@
-[gd_scene load_steps=4 format=3 uid="uid://ce4g7f0qw8i1w"]
+[gd_scene load_steps=27 format=3 uid="uid://ce4g7f0qw8i1w"]
 
 [ext_resource type="PackedScene" uid="uid://byp6g5lwnjkly" path="res://src/scenes/ui/button/iconButtonSmall.tscn" id="1_8mvoa"]
+[ext_resource type="Script" path="res://src/scenes/simulationManagement/SimulationManagement.cs" id="1_jf0to"]
 [ext_resource type="Texture2D" uid="uid://ct4lnhjfna7ku" path="res://assets/icons/solid/rotate-left.svg" id="2_jtug3"]
 [ext_resource type="PackedScene" uid="uid://c65lb0kphj48s" path="res://src/scenes/simulationManagement/simulationButton.tscn" id="3_x628j"]
+[ext_resource type="Texture2D" uid="uid://dlbg5ulf2e626" path="res://assets/icons/solid/file.svg" id="4_xjno6"]
+[ext_resource type="Texture2D" uid="uid://bnh58qujo7guv" path="res://assets/icons/solid/xmark.svg" id="5_ja36q"]
+[ext_resource type="Shader" path="res://assets/shaders/ui/simulationManagement.gdshader" id="6_tsicd"]
+[ext_resource type="Texture2D" uid="uid://420svoggw6nb" path="res://assets/icons/solid/trash.svg" id="6_xxvsd"]
+[ext_resource type="FontFile" uid="uid://chjp63k0jm20m" path="res://assets/fonts/inter/Inter_18pt-Black.ttf" id="7_juncr"]
+[ext_resource type="StyleBox" uid="uid://dlbaa32luhlcp" path="res://assets/ui/themes/button/buttonDarkDisabled.tres" id="8_emgrm"]
+[ext_resource type="StyleBox" uid="uid://cxhuvqxdolhpj" path="res://assets/ui/themes/button/buttonDarkHover.tres" id="9_xjnuy"]
+[ext_resource type="StyleBox" uid="uid://c6dv2cnjqvmwo" path="res://assets/ui/themes/button/buttonDarkNormal.tres" id="10_ap6ea"]
+[ext_resource type="StyleBox" uid="uid://depeknfn6m1rk" path="res://assets/ui/themes/button/buttonDarkPressed.tres" id="11_xyur5"]
+[ext_resource type="StyleBox" uid="uid://exp7gp7r36e8" path="res://assets/ui/themes/tab/tabPanel.tres" id="12_2ts6q"]
+[ext_resource type="StyleBox" uid="uid://u0x1uvtrrpn4" path="res://assets/ui/themes/tab/tabDisabled.tres" id="13_tn2ju"]
+[ext_resource type="StyleBox" uid="uid://dbeq7wnb3gso0" path="res://assets/ui/themes/tab/tabUnselected.tres" id="14_ws08d"]
+[ext_resource type="StyleBox" uid="uid://rjqmoo5dyhu" path="res://assets/ui/themes/tab/tabSelected.tres" id="15_u7ra6"]
+[ext_resource type="Texture2D" uid="uid://dphuhtuv5x2xf" path="res://assets/icons/solid/bug.svg" id="16_hfs0q"]
+[ext_resource type="Texture2D" uid="uid://c40axm0fijyd5" path="res://assets/icons/solid/clock.svg" id="17_q7ggq"]
+[ext_resource type="Script" path="res://src/scripts/ui/button/ButtonHandler.cs" id="17_xak2d"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gsnfb"]
+bg_color = Color(0.262745, 0.262745, 0.262745, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y77u4"]
+shader = ExtResource("6_tsicd")
+shader_parameter/radius_scale = 0.05
+shader_parameter/rounded_corner_top_left = true
+shader_parameter/rounded_corner_top_right = true
+shader_parameter/rounded_corner_bottom_left = true
+shader_parameter/rounded_corner_bottom_right = true
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_deatu"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t6245"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vgsvp"]
+
+[sub_resource type="Theme" id="Theme_hcart"]
+default_font = ExtResource("7_juncr")
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 1)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 32
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 16
+Button/fonts/font = ExtResource("7_juncr")
+Button/styles/disabled = ExtResource("8_emgrm")
+Button/styles/focus = SubResource("StyleBoxEmpty_t6245")
+Button/styles/hover = ExtResource("9_xjnuy")
+Button/styles/normal = ExtResource("10_ap6ea")
+Button/styles/pressed = ExtResource("11_xyur5")
+TabContainer/colors/font_hovered_color = Color(0.372549, 0.458824, 0.568627, 1)
+TabContainer/colors/font_selected_color = Color(1, 1, 1, 1)
+TabContainer/colors/font_unselected_color = Color(0.466667, 0.552941, 0.662745, 1)
+TabContainer/constants/side_margin = 16
+TabContainer/fonts/font = ExtResource("7_juncr")
+TabContainer/styles/panel = ExtResource("12_2ts6q")
+TabContainer/styles/tab_disabled = ExtResource("13_tn2ju")
+TabContainer/styles/tab_focus = SubResource("StyleBoxEmpty_vgsvp")
+TabContainer/styles/tab_hovered = ExtResource("14_ws08d")
+TabContainer/styles/tab_selected = ExtResource("15_u7ra6")
+TabContainer/styles/tab_unselected = ExtResource("14_ws08d")
 
 [node name="SimulationManagement" type="Control"]
 layout_mode = 3
@@ -11,6 +87,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_jf0to")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
@@ -34,7 +111,7 @@ layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
 offset_left = 150.0
-offset_right = 570.0
+offset_right = 640.0
 grow_vertical = 2
 color = Color(0.262745, 0.262745, 0.262745, 1)
 
@@ -48,5 +125,141 @@ offset_bottom = -45.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Button" parent="SimulationList/ScrollContainer" instance=ExtResource("3_x628j")]
+[node name="VBoxContainer" type="VBoxContainer" parent="SimulationList/ScrollContainer"]
 layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="Button" parent="SimulationList/ScrollContainer/VBoxContainer" instance=ExtResource("3_x628j")]
+layout_mode = 2
+
+[node name="Button2" parent="SimulationList/ScrollContainer/VBoxContainer" instance=ExtResource("3_x628j")]
+layout_mode = 2
+
+[node name="SelectedSimulation" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 750.0
+offset_top = 160.0
+offset_right = 1774.0
+offset_bottom = 920.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_gsnfb")
+
+[node name="ManagerButton" parent="SelectedSimulation" instance=ExtResource("1_8mvoa")]
+layout_mode = 0
+offset_left = 37.0
+offset_top = 28.0
+offset_right = 85.0
+offset_bottom = 76.0
+theme_override_constants/icon_max_width = 20
+icon = ExtResource("4_xjno6")
+
+[node name="CloseButton" parent="SelectedSimulation" instance=ExtResource("1_8mvoa")]
+layout_mode = 0
+offset_left = 949.0
+offset_top = 28.0
+offset_right = 997.0
+offset_bottom = 76.0
+theme_override_constants/icon_max_width = 20
+icon = ExtResource("5_ja36q")
+
+[node name="SimulationScreenshot" type="TextureRect" parent="SelectedSimulation"]
+material = SubResource("ShaderMaterial_y77u4")
+layout_mode = 0
+offset_left = 112.0
+offset_top = 73.0
+offset_right = 912.0
+offset_bottom = 523.0
+texture = SubResource("PlaceholderTexture2D_deatu")
+
+[node name="SettingsButton" parent="SelectedSimulation" instance=ExtResource("1_8mvoa")]
+layout_mode = 0
+offset_left = 641.0
+offset_top = 668.0
+offset_right = 705.0
+offset_bottom = 732.0
+
+[node name="DeleteButton" parent="SelectedSimulation" instance=ExtResource("1_8mvoa")]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_left = 553.0
+offset_top = 668.0
+offset_right = 617.0
+offset_bottom = 732.0
+icon = ExtResource("6_xxvsd")
+
+[node name="RunButton" type="Button" parent="SelectedSimulation"]
+layout_mode = 0
+offset_left = 727.0
+offset_top = 668.0
+offset_right = 983.0
+offset_bottom = 732.0
+mouse_default_cursor_shape = 2
+theme = SubResource("Theme_hcart")
+theme_override_font_sizes/font_size = 24
+text = "Uruchom"
+script = ExtResource("17_xak2d")
+
+[node name="NameLabel" type="Label" parent="SelectedSimulation"]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 560.0
+offset_right = 332.0
+offset_bottom = 602.0
+theme_override_fonts/font = ExtResource("7_juncr")
+theme_override_font_sizes/font_size = 28
+text = "Nazwa symulacji"
+
+[node name="DateTimeLabel" type="Label" parent="SelectedSimulation"]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 605.0
+offset_right = 274.0
+offset_bottom = 628.0
+theme_override_fonts/font = ExtResource("7_juncr")
+theme_override_font_sizes/font_size = 18
+text = "2024-11-11 17:00:00"
+
+[node name="ColorRect" type="ColorRect" parent="SelectedSimulation"]
+layout_mode = 0
+offset_left = 368.0
+offset_top = 551.0
+offset_right = 370.0
+offset_bottom = 631.0
+
+[node name="TextureRect2" type="TextureRect" parent="SelectedSimulation"]
+layout_mode = 0
+offset_left = 408.0
+offset_top = 560.0
+offset_right = 437.0
+offset_bottom = 589.0
+texture = ExtResource("16_hfs0q")
+expand_mode = 1
+
+[node name="TextureRect3" type="TextureRect" parent="SelectedSimulation"]
+layout_mode = 0
+offset_left = 408.0
+offset_top = 603.0
+offset_right = 435.0
+offset_bottom = 630.0
+texture = ExtResource("17_q7ggq")
+expand_mode = 1
+
+[node name="AgentCount" type="Label" parent="SelectedSimulation"]
+layout_mode = 0
+offset_left = 448.0
+offset_top = 563.0
+offset_right = 559.0
+offset_bottom = 590.0
+theme_override_fonts/font = ExtResource("7_juncr")
+theme_override_font_sizes/font_size = 20
+text = "12
+"
+
+[node name="Label" type="Label" parent="SelectedSimulation"]
+layout_mode = 0
+offset_left = 448.0
+offset_top = 603.0
+offset_right = 535.0
+offset_bottom = 628.0
+theme_override_fonts/font = ExtResource("7_juncr")
+theme_override_font_sizes/font_size = 20
+text = "01:12:30"

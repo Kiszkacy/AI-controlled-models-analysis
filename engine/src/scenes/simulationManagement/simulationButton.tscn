@@ -1,9 +1,24 @@
-[gd_scene load_steps=6 format=3 uid="uid://c65lb0kphj48s"]
+[gd_scene load_steps=9 format=3 uid="uid://c65lb0kphj48s"]
 
 [ext_resource type="FontFile" uid="uid://chjp63k0jm20m" path="res://assets/fonts/inter/Inter_18pt-Black.ttf" id="1_sjhco"]
 [ext_resource type="FontFile" uid="uid://b0ljku3x3kh70" path="res://assets/fonts/inter/Inter_18pt-Bold.ttf" id="2_cqaku"]
 
 [sub_resource type="Theme" id="Theme_k33s5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gw72f"]
+bg_color = Color(0.454902, 0.490196, 0.541176, 1)
+corner_radius_top_right = 35
+corner_radius_bottom_right = 35
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0a23p"]
+bg_color = Color(0.756863, 0.768627, 0.733333, 1)
+corner_radius_top_right = 35
+corner_radius_bottom_right = 35
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_csw2o"]
+bg_color = Color(0.454902, 0.490196, 0.541176, 1)
+corner_radius_top_right = 35
+corner_radius_bottom_right = 35
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6co38"]
 bg_color = Color(0.878431, 0.882353, 0.866667, 1)
@@ -13,8 +28,11 @@ corner_radius_bottom_right = 35
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_45033"]
 
 [node name="Button" type="Button"]
-custom_minimum_size = Vector2(406, 120)
+custom_minimum_size = Vector2(480, 128)
 theme = SubResource("Theme_k33s5")
+theme_override_styles/focus = SubResource("StyleBoxFlat_gw72f")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0a23p")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_csw2o")
 theme_override_styles/normal = SubResource("StyleBoxFlat_6co38")
 
 [node name="Screenshot" type="TextureRect" parent="."]
