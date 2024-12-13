@@ -55,7 +55,10 @@ public partial class Camera : Camera2D, Observable
 
     public override void _Ready()
     {
-        this.Zoom = new Vector2(0.5f, 0.5f);
+        if (!Reloader.Get().IsReloading)
+        {
+            this.Zoom = new Vector2(0.5f, 0.5f);
+        }
         this.dragMotionTimer = new Timer(this.DragMotionTimeout);
         this.SetProperties();
         EventManager.Instance.Subscribe(this, EventChannel.ObjectTracker);
@@ -83,6 +86,34 @@ public partial class Camera : Camera2D, Observable
             StopFollowing();
         }
     }
+    
+    private void OnFramePostDrawScreenshot()
+{
+    RenderingServer.FramePostDraw -= OnFramePostDrawScreenshot;
+    var viewport = GetViewport();
+    var img = viewport.GetTexture().GetImage();
+    string screenshotPath = "user://ss1.png";
+    UILayer.Visible = true;
+    if (img.SavePng(screenshotPath) != Error.Ok)
+    {
+        GD.PrintErr($"Failed to save screenshot to {screenshotPath}");
+    }
+    else
+    {
+        GD.Print($"Screenshot saved to {screenshotPath}");
+    }
+}
+
+private void SetLayerChildrenVisibility(Node node, bool visible)
+{
+    if (node is CanvasItem canvasItem)
+    {
+        if (!visible)
+        {canvasItem.Visible = false;}
+        else
+        {canvasItem.Visible = true;}
+    }
+}
 
     private bool IsUserMovement(InputEvent @event)
     {

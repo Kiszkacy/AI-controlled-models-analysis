@@ -1,10 +1,11 @@
-[gd_scene load_steps=27 format=3 uid="uid://ce4g7f0qw8i1w"]
+[gd_scene load_steps=29 format=3 uid="uid://ce4g7f0qw8i1w"]
 
 [ext_resource type="PackedScene" uid="uid://byp6g5lwnjkly" path="res://src/scenes/ui/button/iconButtonSmall.tscn" id="1_8mvoa"]
 [ext_resource type="Script" path="res://src/scenes/simulationManagement/SimulationManagement.cs" id="1_jf0to"]
 [ext_resource type="Texture2D" uid="uid://ct4lnhjfna7ku" path="res://assets/icons/solid/rotate-left.svg" id="2_jtug3"]
 [ext_resource type="PackedScene" uid="uid://c65lb0kphj48s" path="res://src/scenes/simulationManagement/simulationButton.tscn" id="3_x628j"]
 [ext_resource type="Texture2D" uid="uid://dlbg5ulf2e626" path="res://assets/icons/solid/file.svg" id="4_xjno6"]
+[ext_resource type="Script" path="res://src/scenes/simulationManagement/SelectedSimulation.cs" id="5_hfi4p"]
 [ext_resource type="Texture2D" uid="uid://bnh58qujo7guv" path="res://assets/icons/solid/xmark.svg" id="5_ja36q"]
 [ext_resource type="Shader" path="res://assets/shaders/ui/simulationManagement.gdshader" id="6_tsicd"]
 [ext_resource type="Texture2D" uid="uid://420svoggw6nb" path="res://assets/icons/solid/trash.svg" id="6_xxvsd"]
@@ -20,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://dphuhtuv5x2xf" path="res://assets/icons/solid/bug.svg" id="16_hfs0q"]
 [ext_resource type="Texture2D" uid="uid://c40axm0fijyd5" path="res://assets/icons/solid/clock.svg" id="17_q7ggq"]
 [ext_resource type="Script" path="res://src/scripts/ui/button/ButtonHandler.cs" id="17_xak2d"]
+[ext_resource type="PackedScene" uid="uid://b0cjqe3fox1hs" path="res://src/scenes/ui/dialog/dialogConfirm.tscn" id="22_seevh"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gsnfb"]
 bg_color = Color(0.262745, 0.262745, 0.262745, 1)
@@ -135,13 +137,26 @@ layout_mode = 2
 [node name="Button2" parent="SimulationList/ScrollContainer/VBoxContainer" instance=ExtResource("3_x628j")]
 layout_mode = 2
 
-[node name="SelectedSimulation" type="Panel" parent="."]
+[node name="SelectedSimulation" type="Panel" parent="." node_paths=PackedStringArray("FileManagerButton", "CloseButton", "SimulationScreenshot", "SettingsButton", "DeleteButton", "RunButton", "NameLabel", "DateTimeLabel", "AgentCountLabel", "TimeRunningLabel", "FileDialogWindow", "ConfirmDialog")]
 layout_mode = 0
 offset_left = 750.0
 offset_top = 160.0
 offset_right = 1774.0
 offset_bottom = 920.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_gsnfb")
+script = ExtResource("5_hfi4p")
+FileManagerButton = NodePath("ManagerButton")
+CloseButton = NodePath("CloseButton")
+SimulationScreenshot = NodePath("SimulationScreenshot")
+SettingsButton = NodePath("SettingsButton")
+DeleteButton = NodePath("DeleteButton")
+RunButton = NodePath("RunButton")
+NameLabel = NodePath("NameLabel")
+DateTimeLabel = NodePath("DateTimeLabel")
+AgentCountLabel = NodePath("AgentCount")
+TimeRunningLabel = NodePath("TimeRunning")
+FileDialogWindow = NodePath("FileDialog")
+ConfirmDialog = NodePath("DialogConfirm")
 
 [node name="ManagerButton" parent="SelectedSimulation" instance=ExtResource("1_8mvoa")]
 layout_mode = 0
@@ -254,7 +269,7 @@ theme_override_font_sizes/font_size = 20
 text = "12
 "
 
-[node name="Label" type="Label" parent="SelectedSimulation"]
+[node name="TimeRunning" type="Label" parent="SelectedSimulation"]
 layout_mode = 0
 offset_left = 448.0
 offset_top = 603.0
@@ -263,3 +278,23 @@ offset_bottom = 628.0
 theme_override_fonts/font = ExtResource("7_juncr")
 theme_override_font_sizes/font_size = 20
 text = "01:12:30"
+
+[node name="FileDialog" type="FileDialog" parent="SelectedSimulation"]
+
+[node name="DialogConfirm" parent="SelectedSimulation" instance=ExtResource("22_seevh")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -80.0
+offset_right = 240.0
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+Title = "Delete Simulation?"
+Description = "
+You are about to delete current simulation. "

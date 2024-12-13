@@ -13,6 +13,7 @@ public class Reloader : Singleton<Reloader>
 {
     public bool IsReloading { get; set; } = false;
     private String saveFilePath = "user://savegame.yaml";
+    private String loadPath;
 
     public void Reload(Node root)
     {
@@ -22,12 +23,34 @@ public class Reloader : Singleton<Reloader>
             .ColorPrint(ConsoleColor.Blue, "[RELOADER]")
             .Print("  | SAVE COMPLETE")
             .End();
+        this.loadPath = this.saveFilePath;
         root.GetTree().ReloadCurrentScene();
         AgentManager.Get().Reset();
         EntityManager.Get().Reset();
         EnvironmentManager.Get().Reset();
         AgentSightRayCastManager.Get().Reset();
         TestRunner.Get().Reset();
+    }
+
+    public void LoadSimulation(Node root, String loadFilePath)
+    {
+        if (SetLoadPath(loadFilePath))
+        {
+            IsReloading = true;
+            root.GetTree().ReloadCurrentScene();
+            AgentManager.Get().Reset();
+            EntityManager.Get().Reset();
+            EnvironmentManager.Get().Reset();
+            AgentSightRayCastManager.Get().Reset();
+            TestRunner.Get().Reset();
+        }
+        else
+        {
+            NeatPrinter.Start()
+                .ColorPrint(ConsoleColor.Red, "[RELOADER]")
+                .Print("  | LOAD FAILED")
+                .End();
+        }
     }
 
     private void SaveAllData(Node root)
@@ -63,12 +86,12 @@ public class Reloader : Singleton<Reloader>
             .ColorPrint(ConsoleColor.Blue, "[RELOADER]")
             .Print("  | LOADING ENVIRONMENT")
             .End();
-        if (!FileAccess.FileExists(saveFilePath))
+        if (!FileAccess.FileExists(loadPath))
         {
-            throw new FileNotFoundException($"File '{saveFilePath}' does not exist.");
+            throw new FileNotFoundException($"File '{loadPath}' does not exist.");
         }
 
-        FileAccess file = FileAccess.Open(saveFilePath, FileAccess.ModeFlags.Read);
+        FileAccess file = FileAccess.Open(loadPath, FileAccess.ModeFlags.Read);
         string yaml = file.GetAsText();
         file.Close();
 
@@ -108,9 +131,17 @@ public class Reloader : Singleton<Reloader>
     public void SetSaveFilePath(String saveFileName)
     {
         String filePath = "user://" + saveFileName + ".yaml";
-        if (FileAccess.FileExists(saveFilePath))
+        this.saveFilePath = filePath;
+    }
+    
+    public bool SetLoadPath(String loadFilePath)
+    {
+        if (FileAccess.FileExists(loadFilePath))
         {
-            this.saveFilePath = filePath;
+            this.loadPath = loadFilePath;
+            return true;
         }
+
+        return false;
     }
 }
