@@ -57,7 +57,7 @@ public partial class Camera : Camera2D, Observable
     private bool overrideDragCursorShape = false;
 
     private string screenshotPath;
-    
+
     [Signal]
     public delegate void ScreenshotSavedEventHandler();
 
@@ -95,16 +95,16 @@ public partial class Camera : Camera2D, Observable
         }
     }
 
-private void SetLayerChildrenVisibility(Node node, bool visible)
-{
-    if (node is CanvasItem canvasItem)
+    private void SetLayerChildrenVisibility(Node node, bool visible)
     {
-        if (!visible)
-        {canvasItem.Visible = false;}
-        else
-        {canvasItem.Visible = true;}
+        if (node is CanvasItem canvasItem)
+        {
+            if (!visible)
+            { canvasItem.Visible = false; }
+            else
+            { canvasItem.Visible = true; }
+        }
     }
-}
 
     private bool IsUserMovement(InputEvent @event)
     {
@@ -397,13 +397,12 @@ private void SetLayerChildrenVisibility(Node node, bool visible)
 
     public async Task TakeScreenshot(string screenshotPath)
     {
-        GD.Print("Camera taking screenshot");
         UILayer.Visible = false;
         this.screenshotPath = screenshotPath;
         RenderingServer.FramePostDraw += OnFramePostDrawScreenshot;
         await ToSignal(this, "ScreenshotSaved");
     }
-    
+
     private void OnFramePostDrawScreenshot()
     {
         RenderingServer.FramePostDraw -= OnFramePostDrawScreenshot;
@@ -416,10 +415,6 @@ private void SetLayerChildrenVisibility(Node node, bool visible)
                 .ColorPrint(ConsoleColor.Red, "[CAMERA]")
                 .Print("  | Failed to save screenshot to " + this.screenshotPath)
                 .End();
-        }
-        else
-        {
-            GD.Print("Camera Saved screenshot to " + this.screenshotPath);
         }
         EmitSignal("ScreenshotSaved");
     }

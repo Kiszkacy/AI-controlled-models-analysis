@@ -17,11 +17,11 @@ public class Reloader : Singleton<Reloader>, Observable, Initializable
     private String saveFileName = "savegame";
     private String loadPath;
     public bool IsInitialized { get; private set; } = false;
-    
+
     public void Initialize()
     {
         if (IsInitialized) return;
-        
+
         EventManager.Get().Subscribe(this, EventChannel.Settings);
         IsInitialized = true;
     }
@@ -72,7 +72,7 @@ public class Reloader : Singleton<Reloader>, Observable, Initializable
         {
             this.loadPath = simulationFilePath;
         }
-        
+
         Camera camera = ((Camera)root.GetNode("Camera"));
         await camera.TakeScreenshot(screenshotFilePath);
 
@@ -96,7 +96,6 @@ public class Reloader : Singleton<Reloader>, Observable, Initializable
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .Build();
         String yamlText = serializer.Serialize(saveData);
-        GD.Print(simulationFilePath);
         FileAccess file = FileAccess.Open(simulationFilePath, FileAccess.ModeFlags.Write);
         file.StoreString(yamlText);
         file.Close();
@@ -154,7 +153,7 @@ public class Reloader : Singleton<Reloader>, Observable, Initializable
     {
         this.saveFileName = saveFileName;
     }
-    
+
     private bool SetLoadPath(String loadFilePath)
     {
         if (FileAccess.FileExists(loadFilePath))
@@ -168,7 +167,7 @@ public class Reloader : Singleton<Reloader>, Observable, Initializable
 
         return false;
     }
-    
+
     private string GetSaveFilePath()
     {
         string timestamp = Time.GetDatetimeStringFromSystem().Replace(":", "-").Replace(" ", "_");
@@ -181,14 +180,14 @@ public class Reloader : Singleton<Reloader>, Observable, Initializable
         {
             string oldSaveDir = this.saveDir;
             string newSaveDir = Config.Instance.Save.SavePath;
-            
+
             if (oldSaveDir == newSaveDir) return;
-            
+
             if (!DirAccess.DirExistsAbsolute(newSaveDir))
             {
                 DirAccess.MakeDirAbsolute(newSaveDir);
             }
-            
+
             if (DirAccess.DirExistsAbsolute(oldSaveDir))
             {
                 using var dir = DirAccess.Open(oldSaveDir);
@@ -196,7 +195,7 @@ public class Reloader : Singleton<Reloader>, Observable, Initializable
                 {
                     dir.ListDirBegin();
                     string fileName = dir.GetNext();
-                    
+
                     while (fileName != "")
                     {
                         if (!dir.CurrentIsDir() && fileName.EndsWith(".gsave"))
@@ -206,21 +205,21 @@ public class Reloader : Singleton<Reloader>, Observable, Initializable
                             string newGsavePath = Path.Combine(newSaveDir, fileName);
                             DirAccess.CopyAbsolute(oldGsavePath, newGsavePath);
                             DirAccess.RemoveAbsolute(oldGsavePath);
-                            
+
                             string pngFileName = baseName + ".png";
                             string oldPngPath = Path.Combine(oldSaveDir, pngFileName);
                             string newPngPath = Path.Combine(newSaveDir, pngFileName);
-                            
+
                             if (FileAccess.FileExists(oldPngPath))
                             {
                                 DirAccess.CopyAbsolute(oldPngPath, newPngPath);
                                 DirAccess.RemoveAbsolute(oldPngPath);
                             }
                         }
-                        
+
                         fileName = dir.GetNext();
                     }
-                    
+
                     dir.ListDirEnd();
                 }
             }

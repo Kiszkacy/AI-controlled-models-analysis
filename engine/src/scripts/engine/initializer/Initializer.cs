@@ -79,6 +79,7 @@ public partial class Initializer : Node
             .End();
         this.LoadConfig();
         EventManager.Get();
+        Reloader.Get().Initialize();
     }
 
     private void LoadConfig()

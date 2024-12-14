@@ -1,6 +1,7 @@
-using Godot;
 using System.IO;
 using System.Linq;
+
+using Godot;
 
 public partial class SimulationManagement : Control
 {
@@ -14,11 +15,11 @@ public partial class SimulationManagement : Control
     {
         LoadSimulations();
     }
-    
+
     private void LoadSimulations()
     {
         PackedScene simulationButtonScene = GD.Load<PackedScene>("res://src/scenes/simulationManagement/simulationButton.tscn");
-        
+
         string saveDir = Config.Instance.Save.SavePath;
         if (DirAccess.DirExistsAbsolute(saveDir))
         {
@@ -33,14 +34,14 @@ public partial class SimulationManagement : Control
                     {
                         string fullPath = Path.Combine(saveDir, fileName);
                         string pngPath = Path.ChangeExtension(fullPath, ".png");
-                        
+
                         Node simulationButton = simulationButtonScene.Instantiate();
 
                         if (simulationButton is Control button)
                         {
                             string[] pathParts = Path.GetFileNameWithoutExtension(fileName).Split('-');
                             string simulationName = pathParts[0];
-                            
+
                             var nameLabel = button.FindChild("NameLabel") as Label;
                             if (nameLabel != null)
                                 nameLabel.Text = simulationName;
@@ -49,7 +50,7 @@ public partial class SimulationManagement : Control
                             var dateTimeLabel = button.FindChild("DateTimeLabel") as Label;
                             if (dateTimeLabel != null)
                                 dateTimeLabel.Text = dateTime;
-                            
+
                             if (Godot.FileAccess.FileExists(pngPath))
                             {
                                 var textureRect = button.FindChild("TextureRect") as TextureRect;
@@ -59,7 +60,7 @@ public partial class SimulationManagement : Control
                                     textureRect.Texture = texture;
                                 }
                             }
-                            
+
                             if (button is Button btn)
                             {
                                 btn.Pressed += () => OnSimulationButtonPressed(fullPath);
@@ -75,7 +76,7 @@ public partial class SimulationManagement : Control
             }
         }
     }
-    
+
     private void OnSimulationButtonPressed(string fullPath)
     {
         SelectedSimulation selectedSimulation = SelectedSimulation as SelectedSimulation;
