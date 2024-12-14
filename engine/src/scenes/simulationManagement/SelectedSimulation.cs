@@ -1,7 +1,14 @@
 using System;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 
 using Godot;
+
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
+
+using FileAccess = Godot.FileAccess;
 
 public partial class SelectedSimulation: Panel
 {
@@ -20,8 +27,10 @@ public partial class SelectedSimulation: Panel
     [Export] public DialogConfirm ConfirmDialog;
 
     private String simulationPath;
+    private Timer fadeinTimer;
     private Timer fadeoutTimer;
-    private float fadeoutDuration = 1.0f; // in seconds
+    private float fadeDuration = 1.0f; // in seconds
+    
     
     public override void _Ready()
     {
@@ -32,6 +41,7 @@ public partial class SelectedSimulation: Panel
         this.FileDialogWindow.GetOkButton().Disabled = true;
         this.FileDialogWindow.GetCancelButton().Disabled = true;
         
+        this.fadeinTimer = new(this.OnFadeinTimeout);
         this.fadeoutTimer = new(this.OnFadeoutTimeout);
     }
 
@@ -44,14 +54,83 @@ public partial class SelectedSimulation: Panel
         this.RunButton.Pressed += this.OnRunButtonPressed;
         this.ConfirmDialog.Confirmed += this.OnConfirmDialogClick;
     }
+
+    public void ShowSimulation(string simulationPath)
+    {
+        if (!FileAccess.FileExists(simulationPath) || !simulationPath.EndsWith(".gsave"))
+        {
+            NeatPrinter.Start()
+                .ColorPrint(ConsoleColor.Red, "[SELECTED SIMULATION]")
+                .Print("  | ERROR: Invalid simulation path.")
+                .End();
+            return;
+        }
+        
+        this.simulationPath = simulationPath;
+        this.SetDisplayValues();
+        this.fadeinTimer.Activate(this.fadeDuration);
+    }
+    
+    private void SetDisplayValues()
+    {
+        string[] pathParts = Path.GetFileNameWithoutExtension(this.simulationPath).Split('-');
+        string simulationName = pathParts[0];
+        this.NameLabel.Text = simulationName;
+        string dateTime = string.Join("-", pathParts.Skip(1));
+        DateTime parsedDateTime = DateTime.ParseExact(
+            dateTime.Replace('_', ' '), 
+            "yyyy-MM-dd HH-mm-ss", 
+            CultureInfo.InvariantCulture
+        );
+        this.DateTimeLabel.Text = parsedDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+        
+        FileAccess file = FileAccess.Open(this.simulationPath, FileAccess.ModeFlags.Read);
+        string yaml = file.GetAsText();
+        file.Close();
+
+        var deserializer = new DeserializerBuilder()
+            .WithNamingConvention(CamelCaseNamingConvention.Instance)
+            .Build();
+        EnvironmentSaveData environmentSaveData = deserializer.Deserialize<EnvironmentSaveData>(yaml);
+
+        this.AgentCountLabel.Text = environmentSaveData.AllAgentsData.Length.ToString();
+        TimeSpan timeSpan = TimeSpan.FromSeconds(environmentSaveData.SimulationStatusData.TimePassed);
+        this.TimeRunningLabel.Text = timeSpan.ToString(@"hh\:mm\:ss");
+
+        this.SetScreenshotTexture();
+    }
+
+    private void SetScreenshotTexture()
+    {
+        string screenshotPath = Path.ChangeExtension(this.simulationPath, ".png");
+        
+        if (File.Exists(screenshotPath))
+        {
+            var texture = ResourceLoader.Load<Texture2D>(screenshotPath);
+            this.SimulationScreenshot.Texture = texture;
+        }
+        else
+        {
+            NeatPrinter.Start()
+                .ColorPrint(ConsoleColor.Red, "[SELECTED SIMULATION]")
+                .Print("  | ERROR: Screenshot not found.")
+                .End();
+        }
+    }
     
     public override void _Process(double delta)
     {
-        if (this.fadeoutTimer.IsActive)
+        if (this.fadeinTimer.IsActive)
+        {
+            this.fadeinTimer.Process(delta);
+            this.Modulate =  new Color(1.0f, 1.0f, 1.0f, (float)(1.0f - this.fadeinTimer.Time/this.fadeDuration));
+            this.SimulationScreenshot.Modulate =  new Color(1.0f, 1.0f, 1.0f, (float)(1.0f - this.fadeinTimer.Time/this.fadeDuration));
+        }
+        else if (this.fadeoutTimer.IsActive)
         {
             this.fadeoutTimer.Process(delta);
-            this.Modulate =  new Color(1.0f, 1.0f, 1.0f, (float)(this.fadeoutTimer.Time/this.fadeoutDuration));
-            this.SimulationScreenshot.Modulate =  new Color(1.0f, 1.0f, 1.0f, (float)(this.fadeoutTimer.Time/this.fadeoutDuration));
+            this.Modulate =  new Color(1.0f, 1.0f, 1.0f, (float)(this.fadeoutTimer.Time/this.fadeDuration));
+            this.SimulationScreenshot.Modulate =  new Color(1.0f, 1.0f, 1.0f, (float)(this.fadeoutTimer.Time/this.fadeDuration));
         }
     }
 
@@ -63,7 +142,7 @@ public partial class SelectedSimulation: Panel
     
     private void OnCloseButtonPressed()
     {
-        this.fadeoutTimer.Activate(this.fadeoutDuration);
+        this.fadeoutTimer.Activate(this.fadeDuration);
     }
 
     private void OnSettingsButtonPressed()
@@ -103,9 +182,18 @@ public partial class SelectedSimulation: Panel
                 .End();
         }
         
-        this.fadeoutTimer.Activate(this.fadeoutDuration);
+        this.fadeoutTimer.Activate(this.fadeDuration);
         
-        // TODO: delete screenshot also
+        string screenshotPath = Path.ChangeExtension(this.simulationPath, ".png");
+        string absoluteScreenshotPath = ProjectSettings.GlobalizePath(screenshotPath);
+        if (File.Exists(absoluteScreenshotPath))
+        {
+            File.Delete(absoluteScreenshotPath);
+        }
+    }
+    
+    private void OnFadeinTimeout()
+    {
     }
 
     private void OnFadeoutTimeout()
