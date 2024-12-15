@@ -30,6 +30,9 @@ public partial class SelectedSimulation : Panel
     private Timer fadeinTimer;
     private Timer fadeoutTimer;
     private float fadeDuration = 1.0f; // in seconds
+    public Action SimulationDeleted;
+    public Action SimulationClosed;
+    public int nameCharacterLimit { get; private set; } = 13;
 
 
     public override void _Ready()
@@ -37,7 +40,7 @@ public partial class SelectedSimulation : Panel
         this.ConnectButtons();
 
         this.FileDialogWindow.FileMode = FileDialog.FileModeEnum.OpenFile;
-        this.FileDialogWindow.CurrentPath = simulationPath;
+        this.FileDialogWindow.Filters = new[] { "*.gsave" };
         this.FileDialogWindow.GetOkButton().Disabled = true;
         this.FileDialogWindow.GetCancelButton().Disabled = true;
 
@@ -67,6 +70,7 @@ public partial class SelectedSimulation : Panel
         }
 
         this.simulationPath = simulationPath;
+        this.FileDialogWindow.CurrentPath = simulationPath;
         this.SetDisplayValues();
         this.Visible = true;
         this.Modulate = new Color(1.0f, 1.0f, 1.0f, 0.0f);
@@ -81,7 +85,7 @@ public partial class SelectedSimulation : Panel
     {
         string[] pathParts = Path.GetFileNameWithoutExtension(this.simulationPath).Split('-');
         string simulationName = pathParts[0];
-        this.NameLabel.Text = simulationName;
+        SetNameLabel(simulationName);
         string dateTime = string.Join("-", pathParts.Skip(1));
         DateTime parsedDateTime = DateTime.ParseExact(
             dateTime,
@@ -104,6 +108,13 @@ public partial class SelectedSimulation : Panel
         this.TimeRunningLabel.Text = timeSpan.ToString(@"hh\:mm\:ss");
 
         this.SetScreenshotTexture();
+    }
+
+    private void SetNameLabel(string simulationName)
+    {
+        this.NameLabel.Text = simulationName.Length > this.nameCharacterLimit
+            ? simulationName.Substring(0, this.nameCharacterLimit) + "..."
+            : simulationName;
     }
 
     private void SetScreenshotTexture()
@@ -162,6 +173,7 @@ public partial class SelectedSimulation : Panel
     private void OnCloseButtonPressed()
     {
         this.fadeoutTimer.Activate(this.fadeDuration);
+        SimulationClosed?.Invoke();
     }
 
     private void OnSettingsButtonPressed()
@@ -176,7 +188,7 @@ public partial class SelectedSimulation : Panel
 
     private void OnRunButtonPressed()
     {
-        Node root = GetTree().Root.GetChild(0);
+        Node root = GetTree().Root.GetNode("Root");
         NeatPrinter.Start()
             .Print("  | LOADING SELECTED SIMULATION")
             .End();
@@ -193,6 +205,7 @@ public partial class SelectedSimulation : Panel
             NeatPrinter.Start()
                 .Print("Deleted simulation at " + simulationPath + ".")
                 .End();
+            SimulationDeleted?.Invoke();
         }
         else
         {

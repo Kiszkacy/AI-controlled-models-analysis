@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://ce4g7f0qw8i1w"]
+[gd_scene load_steps=35 format=3 uid="uid://ce4g7f0qw8i1w"]
 
 [ext_resource type="PackedScene" uid="uid://byp6g5lwnjkly" path="res://src/scenes/ui/button/iconButtonSmall.tscn" id="1_8mvoa"]
 [ext_resource type="Script" path="res://src/scenes/simulationManagement/SimulationManagement.cs" id="1_jf0to"]
@@ -20,7 +20,12 @@
 [ext_resource type="Texture2D" uid="uid://dphuhtuv5x2xf" path="res://assets/icons/solid/bug.svg" id="16_hfs0q"]
 [ext_resource type="Texture2D" uid="uid://c40axm0fijyd5" path="res://assets/icons/solid/clock.svg" id="17_q7ggq"]
 [ext_resource type="Script" path="res://src/scripts/ui/button/ButtonHandler.cs" id="17_xak2d"]
-[ext_resource type="PackedScene" uid="uid://b0cjqe3fox1hs" path="res://src/scenes/ui/dialog/dialogConfirm.tscn" id="22_seevh"]
+[ext_resource type="Script" path="res://src/scripts/ui/dialog/DialogConfirm.cs" id="21_djj11"]
+[ext_resource type="Theme" uid="uid://c81i2ymfrd5c3" path="res://assets/ui/themes/whiteTheme.tres" id="22_fju04"]
+[ext_resource type="Theme" uid="uid://de0xa04ygj6gw" path="res://assets/ui/themes/grayTheme.tres" id="23_466bq"]
+[ext_resource type="PackedScene" uid="uid://bgl1wbpqole17" path="res://src/scenes/ui/button/iconButton.tscn" id="24_bpo63"]
+[ext_resource type="PackedScene" uid="uid://7q7fbm6qh3mi" path="res://src/scenes/ui/button/buttonLightSmall.tscn" id="25_ladiu"]
+[ext_resource type="PackedScene" uid="uid://dx6mu0kmrl85u" path="res://src/scenes/ui/button/buttonDarkSmall.tscn" id="26_7gopt"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gsnfb"]
 bg_color = Color(0.262745, 0.262745, 0.262745, 1)
@@ -75,6 +80,27 @@ TabContainer/styles/tab_focus = SubResource("StyleBoxEmpty_vgsvp")
 TabContainer/styles/tab_hovered = ExtResource("14_ws08d")
 TabContainer/styles/tab_selected = ExtResource("15_u7ra6")
 TabContainer/styles/tab_unselected = ExtResource("14_ws08d")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ig2e"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.878431, 0.882353, 0.866667, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+anti_aliasing = false
+
+[sub_resource type="LabelSettings" id="LabelSettings_qds5o"]
+font = ExtResource("7_juncr")
+font_size = 24
+font_color = Color(0.262745, 0.262745, 0.262745, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_emdre"]
+font = ExtResource("7_juncr")
+font_color = Color(0.329412, 0.329412, 0.329412, 1)
 
 [node name="SimulationManagement" type="Control" node_paths=PackedStringArray("SelectedSimulation", "SimulationContainer", "BackButton")]
 layout_mode = 3
@@ -156,6 +182,7 @@ offset_left = 37.0
 offset_top = 28.0
 offset_right = 85.0
 offset_bottom = 76.0
+focus_mode = 0
 theme_override_constants/icon_max_width = 20
 icon = ExtResource("4_xjno6")
 
@@ -182,6 +209,7 @@ offset_left = 641.0
 offset_top = 668.0
 offset_right = 705.0
 offset_bottom = 732.0
+focus_mode = 0
 
 [node name="DeleteButton" parent="SelectedSimulation" instance=ExtResource("1_8mvoa")]
 custom_minimum_size = Vector2(64, 64)
@@ -190,6 +218,7 @@ offset_left = 553.0
 offset_top = 668.0
 offset_right = 617.0
 offset_bottom = 732.0
+focus_mode = 0
 icon = ExtResource("6_xxvsd")
 
 [node name="RunButton" type="Button" parent="SelectedSimulation"]
@@ -198,6 +227,7 @@ offset_left = 727.0
 offset_top = 668.0
 offset_right = 983.0
 offset_bottom = 732.0
+focus_mode = 0
 mouse_default_cursor_shape = 2
 theme = SubResource("Theme_hcart")
 theme_override_font_sizes/font_size = 24
@@ -210,6 +240,7 @@ offset_left = 112.0
 offset_top = 560.0
 offset_right = 332.0
 offset_bottom = 602.0
+mouse_filter = 1
 theme_override_fonts/font = ExtResource("7_juncr")
 theme_override_font_sizes/font_size = 28
 text = "Nazwa symulacji"
@@ -272,7 +303,7 @@ text = "01:12:30"
 
 [node name="FileDialog" type="FileDialog" parent="SelectedSimulation"]
 
-[node name="DialogConfirm" parent="SelectedSimulation" instance=ExtResource("22_seevh")]
+[node name="DialogConfirm" type="Control" parent="SelectedSimulation" node_paths=PackedStringArray("DarkenBackground", "TitleLabel", "DescriptionLabel", "CloseButton", "CancelButton", "ConfirmButton")]
 visible = false
 layout_mode = 1
 anchors_preset = 8
@@ -286,6 +317,77 @@ offset_right = 240.0
 offset_bottom = 80.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("21_djj11")
 Title = "Delete Simulation?"
 Description = "
 You are about to delete current simulation. "
+DarkenBackground = NodePath("DarkenBackground")
+TitleLabel = NodePath("TitleLabel")
+DescriptionLabel = NodePath("DescriptionLabel")
+CloseButton = NodePath("ButtonClose")
+CancelButton = NodePath("ButtonCancel")
+ConfirmButton = NodePath("ButtonConfirm")
+
+[node name="DarkenBackground" type="ColorRect" parent="SelectedSimulation/DialogConfirm"]
+layout_mode = 0
+offset_left = -720.0
+offset_top = -460.0
+offset_right = 1200.0
+offset_bottom = 620.0
+color = Color(0.12549, 0.12549, 0.12549, 0.501961)
+
+[node name="Background" type="Label" parent="SelectedSimulation/DialogConfirm"]
+layout_mode = 2
+offset_right = 480.0
+offset_bottom = 160.0
+theme = ExtResource("22_fju04")
+theme_override_styles/normal = SubResource("StyleBoxFlat_6ig2e")
+
+[node name="TitleLabel" type="Label" parent="SelectedSimulation/DialogConfirm"]
+layout_mode = 2
+offset_top = 16.0
+offset_right = 480.0
+offset_bottom = 46.0
+theme = ExtResource("23_466bq")
+text = "Are you sure?"
+label_settings = SubResource("LabelSettings_qds5o")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DescriptionLabel" type="Label" parent="SelectedSimulation/DialogConfirm"]
+layout_mode = 2
+offset_top = 48.0
+offset_right = 480.0
+offset_bottom = 68.0
+theme = ExtResource("23_466bq")
+text = "You cannot undo this action."
+label_settings = SubResource("LabelSettings_emdre")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonClose" parent="SelectedSimulation/DialogConfirm" instance=ExtResource("24_bpo63")]
+layout_mode = 2
+offset_left = 416.0
+offset_right = 480.0
+focus_mode = 0
+icon = ExtResource("5_ja36q")
+flat = true
+
+[node name="ButtonCancel" parent="SelectedSimulation/DialogConfirm" instance=ExtResource("25_ladiu")]
+layout_mode = 2
+offset_left = 32.0
+offset_top = 112.0
+offset_right = 160.0
+offset_bottom = 144.0
+focus_mode = 0
+text = "Cancel"
+
+[node name="ButtonConfirm" parent="SelectedSimulation/DialogConfirm" instance=ExtResource("26_7gopt")]
+layout_mode = 2
+offset_left = 320.0
+offset_top = 112.0
+offset_right = 448.0
+offset_bottom = 144.0
+focus_mode = 0
+text = "Confirm
+"
