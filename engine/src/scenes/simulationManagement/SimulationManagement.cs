@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 
@@ -10,9 +11,11 @@ public partial class SimulationManagement : Control
     public Panel SelectedSimulation;
 
     [Export] public VBoxContainer SimulationContainer;
+    [Export] public Button BackButton;
 
     public override void _Ready()
     {
+        this.BackButton.Pressed += this.OnBackButtonPressed;
         LoadSimulations();
     }
 
@@ -42,22 +45,38 @@ public partial class SimulationManagement : Control
                             string[] pathParts = Path.GetFileNameWithoutExtension(fileName).Split('-');
                             string simulationName = pathParts[0];
 
-                            var nameLabel = button.FindChild("NameLabel") as Label;
+                            var nameLabel = button.FindChild("Name") as Label;
                             if (nameLabel != null)
                                 nameLabel.Text = simulationName;
 
-                            string dateTime = string.Join("-", pathParts.Skip(1));
-                            var dateTimeLabel = button.FindChild("DateTimeLabel") as Label;
-                            if (dateTimeLabel != null)
-                                dateTimeLabel.Text = dateTime;
+                            if (pathParts.Length > 1)
+                            {
+                                string dateTimeString = string.Join("-", pathParts.Skip(1));
+                                if (DateTime.TryParseExact(dateTimeString, "yyyy-MM-ddTHH-mm-ss", 
+                                        System.Globalization.CultureInfo.InvariantCulture, 
+                                        System.Globalization.DateTimeStyles.None, 
+                                        out DateTime parsedDateTime))
+                                {
+                                    var dateTimeLabel = button.FindChild("DateTime") as Label;
+                                    if (dateTimeLabel != null)
+                                        dateTimeLabel.Text = parsedDateTime.ToString("yyyy-MM-dd HH:mm:ss");
+                                }
+                            }
 
                             if (Godot.FileAccess.FileExists(pngPath))
                             {
-                                var textureRect = button.FindChild("TextureRect") as TextureRect;
+                                var textureRect = button.FindChild("Screenshot") as TextureRect;
                                 if (textureRect != null)
                                 {
-                                    var texture = GD.Load<Texture2D>(pngPath);
-                                    textureRect.Texture = texture;
+                                    var image = new Image();
+                                    Error err = image.Load(pngPath);
+                                    if (err == Error.Ok)
+                                    {
+                                        Vector2 rectSize = textureRect.Size;
+                                        image.Resize((int)rectSize.X, (int)rectSize.Y);
+                                        var imageTexture = ImageTexture.CreateFromImage(image);
+                                        textureRect.Texture = imageTexture;
+                                    }
                                 }
                             }
 
@@ -81,5 +100,10 @@ public partial class SimulationManagement : Control
     {
         SelectedSimulation selectedSimulation = SelectedSimulation as SelectedSimulation;
         selectedSimulation.ShowSimulation(fullPath);
+    }
+    
+    private void OnBackButtonPressed()
+    {
+        this.GetTree().ChangeSceneToFile("res://src/scenes/mainMenu/mainMenu.tscn");
     }
 }

@@ -28,7 +28,7 @@ corner_radius_bottom_right = 35
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_45033"]
 
 [node name="Button" type="Button"]
-custom_minimum_size = Vector2(480, 128)
+custom_minimum_size = Vector2(481, 128)
 theme = SubResource("Theme_k33s5")
 theme_override_styles/focus = SubResource("StyleBoxFlat_gw72f")
 theme_override_styles/hover = SubResource("StyleBoxFlat_0a23p")
@@ -60,7 +60,7 @@ theme_override_font_sizes/font_size = 22
 text = "Simulation Name
 "
 
-[node name="Label" type="Label" parent="."]
+[node name="DateTime" type="Label" parent="."]
 layout_mode = 0
 offset_left = 190.0
 offset_top = 63.0

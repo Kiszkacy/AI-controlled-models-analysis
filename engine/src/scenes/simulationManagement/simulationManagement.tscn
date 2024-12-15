@@ -1,9 +1,8 @@
-[gd_scene load_steps=29 format=3 uid="uid://ce4g7f0qw8i1w"]
+[gd_scene load_steps=27 format=3 uid="uid://ce4g7f0qw8i1w"]
 
 [ext_resource type="PackedScene" uid="uid://byp6g5lwnjkly" path="res://src/scenes/ui/button/iconButtonSmall.tscn" id="1_8mvoa"]
 [ext_resource type="Script" path="res://src/scenes/simulationManagement/SimulationManagement.cs" id="1_jf0to"]
 [ext_resource type="Texture2D" uid="uid://ct4lnhjfna7ku" path="res://assets/icons/solid/rotate-left.svg" id="2_jtug3"]
-[ext_resource type="PackedScene" uid="uid://c65lb0kphj48s" path="res://src/scenes/simulationManagement/simulationButton.tscn" id="3_x628j"]
 [ext_resource type="Texture2D" uid="uid://dlbg5ulf2e626" path="res://assets/icons/solid/file.svg" id="4_xjno6"]
 [ext_resource type="Script" path="res://src/scenes/simulationManagement/SelectedSimulation.cs" id="5_hfi4p"]
 [ext_resource type="Texture2D" uid="uid://bnh58qujo7guv" path="res://assets/icons/solid/xmark.svg" id="5_ja36q"]
@@ -32,13 +31,8 @@ corner_radius_bottom_left = 40
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_y77u4"]
 shader = ExtResource("6_tsicd")
-shader_parameter/radius_scale = 0.05
-shader_parameter/rounded_corner_top_left = true
-shader_parameter/rounded_corner_top_right = true
-shader_parameter/rounded_corner_bottom_left = true
-shader_parameter/rounded_corner_bottom_right = true
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_deatu"]
+shader_parameter/corner_radius = 0.04
+shader_parameter/external_alpha = 1.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t6245"]
 
@@ -82,7 +76,7 @@ TabContainer/styles/tab_hovered = ExtResource("14_ws08d")
 TabContainer/styles/tab_selected = ExtResource("15_u7ra6")
 TabContainer/styles/tab_unselected = ExtResource("14_ws08d")
 
-[node name="SimulationManagement" type="Control"]
+[node name="SimulationManagement" type="Control" node_paths=PackedStringArray("SelectedSimulation", "SimulationContainer", "BackButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -90,6 +84,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_jf0to")
+SelectedSimulation = NodePath("SelectedSimulation")
+SimulationContainer = NodePath("SimulationList/ScrollContainer/VBoxContainer")
+BackButton = NodePath("BackButton")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
@@ -131,13 +128,8 @@ grow_vertical = 2
 layout_mode = 2
 theme_override_constants/separation = 40
 
-[node name="Button" parent="SimulationList/ScrollContainer/VBoxContainer" instance=ExtResource("3_x628j")]
-layout_mode = 2
-
-[node name="Button2" parent="SimulationList/ScrollContainer/VBoxContainer" instance=ExtResource("3_x628j")]
-layout_mode = 2
-
 [node name="SelectedSimulation" type="Panel" parent="." node_paths=PackedStringArray("FileManagerButton", "CloseButton", "SimulationScreenshot", "SettingsButton", "DeleteButton", "RunButton", "NameLabel", "DateTimeLabel", "AgentCountLabel", "TimeRunningLabel", "FileDialogWindow", "ConfirmDialog")]
+visible = false
 layout_mode = 0
 offset_left = 750.0
 offset_top = 160.0
@@ -183,7 +175,6 @@ offset_left = 112.0
 offset_top = 73.0
 offset_right = 912.0
 offset_bottom = 523.0
-texture = SubResource("PlaceholderTexture2D_deatu")
 
 [node name="SettingsButton" parent="SelectedSimulation" instance=ExtResource("1_8mvoa")]
 layout_mode = 0

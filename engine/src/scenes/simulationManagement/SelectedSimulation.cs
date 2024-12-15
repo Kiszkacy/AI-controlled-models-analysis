@@ -68,6 +68,12 @@ public partial class SelectedSimulation : Panel
 
         this.simulationPath = simulationPath;
         this.SetDisplayValues();
+        this.Visible = true;
+        this.Modulate = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+        if (this.SimulationScreenshot != null && this.SimulationScreenshot.Material is ShaderMaterial shaderMaterial)
+        {
+            shaderMaterial.SetShaderParameter("external_alpha", 0.0f);
+        }
         this.fadeinTimer.Activate(this.fadeDuration);
     }
 
@@ -78,8 +84,8 @@ public partial class SelectedSimulation : Panel
         this.NameLabel.Text = simulationName;
         string dateTime = string.Join("-", pathParts.Skip(1));
         DateTime parsedDateTime = DateTime.ParseExact(
-            dateTime.Replace('_', ' '),
-            "yyyy-MM-dd HH-mm-ss",
+            dateTime,
+            "yyyy-MM-ddTHH-mm-ss",
             CultureInfo.InvariantCulture
         );
         this.DateTimeLabel.Text = parsedDateTime.ToString("yyyy-MM-dd HH:mm:ss");
@@ -103,11 +109,18 @@ public partial class SelectedSimulation : Panel
     private void SetScreenshotTexture()
     {
         string screenshotPath = Path.ChangeExtension(this.simulationPath, ".png");
-
-        if (File.Exists(screenshotPath))
+        if (FileAccess.FileExists(screenshotPath))
         {
-            var texture = ResourceLoader.Load<Texture2D>(screenshotPath);
-            this.SimulationScreenshot.Texture = texture;
+            var image = new Image();
+            Error err = image.Load(screenshotPath);
+            if (err == Error.Ok)
+            {
+                Vector2 rectSize = this.SimulationScreenshot.Size;
+                image.Resize((int)rectSize.X, (int)rectSize.Y);
+                image.Convert(Image.Format.Rgba8);
+                var imageTexture = ImageTexture.CreateFromImage(image);
+                this.SimulationScreenshot.Texture = imageTexture;
+            }
         }
         else
         {
@@ -124,13 +137,19 @@ public partial class SelectedSimulation : Panel
         {
             this.fadeinTimer.Process(delta);
             this.Modulate =  new Color(1.0f, 1.0f, 1.0f, (float)(1.0f - this.fadeinTimer.Time/this.fadeDuration));
-            this.SimulationScreenshot.Modulate =  new Color(1.0f, 1.0f, 1.0f, (float)(1.0f - this.fadeinTimer.Time/this.fadeDuration));
+            if (this.SimulationScreenshot != null && this.SimulationScreenshot.Material is ShaderMaterial shaderMaterial)
+            {
+                shaderMaterial.SetShaderParameter("external_alpha", (float)(1.0f - this.fadeinTimer.Time/this.fadeDuration));
+            }
         }
         else if (this.fadeoutTimer.IsActive)
         {
             this.fadeoutTimer.Process(delta);
             this.Modulate =  new Color(1.0f, 1.0f, 1.0f, (float)(this.fadeoutTimer.Time/this.fadeDuration));
-            this.SimulationScreenshot.Modulate =  new Color(1.0f, 1.0f, 1.0f, (float)(this.fadeoutTimer.Time/this.fadeDuration));
+            if (this.SimulationScreenshot != null && this.SimulationScreenshot.Material is ShaderMaterial shaderMaterial)
+            {
+                shaderMaterial.SetShaderParameter("external_alpha", (float)(this.fadeoutTimer.Time/this.fadeDuration));
+            }
         }
     }
 
