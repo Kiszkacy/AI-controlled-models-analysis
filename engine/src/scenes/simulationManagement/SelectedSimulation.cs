@@ -29,7 +29,7 @@ public partial class SelectedSimulation : Panel
     private String simulationPath;
     private Timer fadeinTimer;
     private Timer fadeoutTimer;
-    private float fadeDuration = 1.0f; // in seconds
+    private float fadeDuration = 0.3f; // in seconds
     public Action SimulationDeleted;
     public Action SimulationClosed;
     public int nameCharacterLimit { get; private set; } = 13;
