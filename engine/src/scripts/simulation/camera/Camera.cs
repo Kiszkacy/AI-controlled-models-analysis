@@ -1,3 +1,6 @@
+using System;
+using System.Threading.Tasks;
+
 using Godot;
 
 public partial class Camera : Camera2D, Observable
@@ -53,9 +56,17 @@ public partial class Camera : Camera2D, Observable
     private const float minimalDragDistanceToChangeCursorShape = 4.0f; // in px
     private bool overrideDragCursorShape = false;
 
+    private string screenshotPath;
+
+    [Signal]
+    public delegate void ScreenshotSavedEventHandler();
+
     public override void _Ready()
     {
-        this.Zoom = new Vector2(0.5f, 0.5f);
+        if (!Reloader.Get().IsReloading)
+        {
+            this.Zoom = new Vector2(0.5f, 0.5f);
+        }
         this.dragMotionTimer = new Timer(this.DragMotionTimeout);
         this.SetProperties();
         EventManager.Instance.Subscribe(this, EventChannel.ObjectTracker);
@@ -81,6 +92,17 @@ public partial class Camera : Camera2D, Observable
         if (isFollowing && IsUserMovement(@event))
         {
             StopFollowing();
+        }
+    }
+
+    private void SetLayerChildrenVisibility(Node node, bool visible)
+    {
+        if (node is CanvasItem canvasItem)
+        {
+            if (!visible)
+            { canvasItem.Visible = false; }
+            else
+            { canvasItem.Visible = true; }
         }
     }
 
@@ -386,6 +408,30 @@ public partial class Camera : Camera2D, Observable
     private void DragMotionTimeout()
     {
         this.overrideDragCursorShape = true;
+    }
+
+    public async Task TakeScreenshot(string screenshotPath)
+    {
+        UILayer.Visible = false;
+        this.screenshotPath = screenshotPath;
+        RenderingServer.FramePostDraw += OnFramePostDrawScreenshot;
+        await ToSignal(this, "ScreenshotSaved");
+    }
+
+    private void OnFramePostDrawScreenshot()
+    {
+        RenderingServer.FramePostDraw -= OnFramePostDrawScreenshot;
+        var viewport = GetViewport();
+        var img = viewport.GetTexture().GetImage();
+        UILayer.Visible = true;
+        if (img.SavePng(this.screenshotPath) != Error.Ok)
+        {
+            NeatPrinter.Start()
+                .ColorPrint(ConsoleColor.Red, "[CAMERA]")
+                .Print("  | Failed to save screenshot to " + this.screenshotPath)
+                .End();
+        }
+        EmitSignal("ScreenshotSaved");
     }
 
     public void Notify(IEvent @event)

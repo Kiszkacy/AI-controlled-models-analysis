@@ -36,7 +36,7 @@ public partial class ActionHandler : Node2D
     private void OnTextSubmitted(string text)
     {
         _textInput.Visible = false;
-        Reloader.Get().SetSaveFilePath(text);
+        Reloader.Get().SetSaveFileName(text);
     }
 
 }
