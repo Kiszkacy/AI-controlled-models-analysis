@@ -89,6 +89,8 @@ public class Reloader : Singleton<Reloader>, Observable, Initializable
 
         SimulationStatusData simulationStatusData = SimulationManager.Instance.Save();
 
+        String saveFilePath = saveFileDir + saveFileName;
+
         var saveData = new EnvironmentSaveData(environmentTemplate, agentsData, cameraPosition, cameraZoom,
             foodSpawnersData, foodData, simulationStatusData);
 
@@ -103,6 +105,8 @@ public class Reloader : Singleton<Reloader>, Observable, Initializable
 
     public void LoadAllData(Node root)
     {
+        String saveFilePath = saveFileDir + saveFileName;
+
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[RELOADER]")
             .Print("  | LOADING ENVIRONMENT")
