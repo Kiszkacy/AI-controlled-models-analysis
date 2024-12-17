@@ -29,6 +29,7 @@ corner_radius_bottom_right = 35
 
 [node name="Button" type="Button"]
 custom_minimum_size = Vector2(481, 128)
+mouse_default_cursor_shape = 2
 theme = SubResource("Theme_k33s5")
 theme_override_styles/focus = SubResource("StyleBoxFlat_gw72f")
 theme_override_styles/hover = SubResource("StyleBoxFlat_0a23p")
