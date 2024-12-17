@@ -8,7 +8,7 @@ public partial class SimulationManagement : Control
 {
     [ExportGroup("DO NOT EDIT THESE")]
     [Export]
-    public Panel SelectedSimulation;
+    public SelectedSimulation SelectedSimulation;
 
     [Export] public VBoxContainer SimulationContainer;
     [Export] public Button BackButton;
@@ -19,7 +19,7 @@ public partial class SimulationManagement : Control
     {
         this.BackButton.Pressed += this.OnBackButtonPressed;
         LoadSimulations();
-        SelectedSimulation selectedSimulation = SelectedSimulation as SelectedSimulation;
+        SelectedSimulation selectedSimulation = SelectedSimulation;
         selectedSimulation.SimulationDeleted += OnSimulationDeleted;
     }
 
@@ -102,7 +102,7 @@ public partial class SimulationManagement : Control
 
     private void OnSimulationButtonPressed(string fullPath, string simulationName)
     {
-        SelectedSimulation selectedSimulation = SelectedSimulation as SelectedSimulation;
+        SelectedSimulation selectedSimulation = SelectedSimulation;
 
         if (nameToolTip != null)
         {
