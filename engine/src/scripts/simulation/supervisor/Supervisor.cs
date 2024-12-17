@@ -153,6 +153,12 @@ public partial class Supervisor : Node
         return agent;
     }
 
+    private bool SpawnAgentNear(Vector2 position)
+    {
+        //TODO
+        return false;
+    }
+
     private void AllAgentsSpawned()
     {
         this.areAgentsReady = true;

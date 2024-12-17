@@ -1,6 +1,6 @@
 
 
-using Godot.Collections;
+using Godot;
 
 public partial class TrainAgent : Agent
 {
@@ -32,12 +32,20 @@ public partial class TrainAgent : Agent
     {
         this.Act();
         base._PhysicsProcess(delta);
+        this.UpdateScores(delta);
     }
 
     private void Act()
     {
         this.Accelerate(this.Action.AccelerateStrength);
         this.Rotate(this.Action.RotateStrength);
+    }
+
+    private void UpdateScores(double delta)
+    {
+        float energyScore = Config.Get().Environment.Score.EnergyMax * (this.energy / this.MaximumEnergy);
+        float healthScore = Config.Get().Environment.Score.HealthMax * (this.health / this.MaximumHealth);
+        this.thisFrameScore += (energyScore + healthScore) * (float)delta;
     }
 
     public override AgentSaveData Save()

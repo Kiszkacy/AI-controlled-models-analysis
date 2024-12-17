@@ -31,6 +31,12 @@ public partial class Agent : CharacterBody2D, Trackable
 
     [Export]
     public float SightRadius { get; set; } = 256.0f; // in px
+    
+    [Export]
+    public float EnergySurplusForReproduction { get; set; } = 30.0f;
+    
+    [Export]
+    public float MinimumHealthToReproduce { get; set; } = 50.0f;
 
     public float energy { get; protected set; }
     protected float health;
@@ -156,6 +162,16 @@ public partial class Agent : CharacterBody2D, Trackable
         this.Velocity = this.Direction * Mathf.Clamp(this.Speed + this.currentAcceleration * (float)delta, 0.0f, this.MaximumSpeed);
 
         this.MoveAndCollide(this.Velocity * (float)delta);
+    }
+
+    public virtual void Reproduce()
+    {
+        if (this.health < this.MinimumHealthToReproduce || this.energy <
+            this.EnergySurplusForReproduction + Config.Get().Environment.EnergyUsedReproduction) return;
+        
+        this.energy -= Config.Get().Environment.EnergyUsedReproduction;
+        
+        
     }
 
     public override void _Ready()

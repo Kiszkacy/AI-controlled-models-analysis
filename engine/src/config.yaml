@@ -14,10 +14,15 @@ environment:
   energyBaseLossPerSecond: 2.0
   energyLossPerSecondPer100UnitsOfMovement: 0.2
   energyLossPerSecondTurn: 0.2
+  energyUsedReproduction: 50
   healthLossPerSecond: 5.0
   healthRegenPerSecond: 1.0
   score:
     foodEaten: 100
+    energyMax: 100
+    healthMax: 100
+    reproduction: 200
+    waterPenalty: 50
   bucketSize: 256
   agentSightProcessEveryNthFrame: 3
   supervisorAgentSpawnSafeDistance: 16
