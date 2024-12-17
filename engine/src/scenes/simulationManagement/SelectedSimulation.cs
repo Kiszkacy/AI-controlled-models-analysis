@@ -40,6 +40,7 @@ public partial class SelectedSimulation : Panel
         this.ConnectButtons();
 
         this.FileDialogWindow.FileMode = FileDialog.FileModeEnum.OpenFile;
+        this.FileDialogWindow.Access = FileDialog.AccessEnum.Filesystem;
         this.FileDialogWindow.Filters = new[] { "*.gsave" };
         this.FileDialogWindow.GetOkButton().Disabled = true;
         this.FileDialogWindow.GetCancelButton().Disabled = true;
@@ -70,7 +71,8 @@ public partial class SelectedSimulation : Panel
         }
 
         this.simulationPath = simulationPath;
-        this.FileDialogWindow.CurrentPath = simulationPath;
+        this.FileDialogWindow.CurrentPath = ProjectSettings.GlobalizePath(simulationPath);
+
         this.SetDisplayValues();
         this.Visible = true;
         this.Modulate = new Color(1.0f, 1.0f, 1.0f, 0.0f);
