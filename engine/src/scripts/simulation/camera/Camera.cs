@@ -269,20 +269,35 @@ public partial class Camera : Camera2D, Observable
             this.UpdatePosition(delta);
         }
 
-        this.UpdateZoom(delta);
-        this.UpdateCursorShape();
+        if (!IsMouseOverUI())
+        {
+            this.UpdateZoom(delta);
+            this.UpdateCursorShape();
+        }
     }
 
     private bool IsMouseOverUI()
     {
         Control hoveredNode = GetViewport().GuiGetHoveredControl();
-        return hoveredNode != null && UILayer.IsAncestorOf(hoveredNode);
+
+        if (hoveredNode != null && UILayer.IsAncestorOf(hoveredNode))
+        {
+
+            if (hoveredNode.GetParent() is Collapsible collapsible)
+            {
+                return collapsible.IsExpanded();
+            }
+
+            return true;
+        }
+        return false;
     }
 
     private void UpdateEdgeMoveDirection()
     {
         if (IsMouseOverUI())
         {
+            this.edgeMoveDirection = Vector2.Zero;
             return;
         }
         Vector2 mousePos = GetViewport().GetMousePosition();

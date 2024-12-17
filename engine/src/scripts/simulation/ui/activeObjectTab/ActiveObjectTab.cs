@@ -1,7 +1,7 @@
 
 using Godot;
 
-public partial class ActiveObjectTab : TabContainer, Observable
+public partial class ActiveObjectTab : TabContainer, Observable, Collapsible
 {
     [Export]
     public Button Icon;
@@ -33,6 +33,7 @@ public partial class ActiveObjectTab : TabContainer, Observable
         this.iconUnknown = (Texture2D)GD.Load("res://assets/icons/solid/circle-info.svg");
 
         this.TabClicked += (@event) => this.OnTabClicked();
+
     }
 
     private void OnTabClicked()
@@ -108,5 +109,22 @@ public partial class ActiveObjectTab : TabContainer, Observable
         {
             this.Description.Text = string.Join("\n", this.activeObject.GetInformation());
         }
+    }
+
+    public bool IsExpanded()
+    {
+        return this.stickingOut;
+    }
+
+    public override void _GuiInput(InputEvent @event)
+    {
+        if (@event is InputEventMouseButton mouseEvent)
+        {
+            if (mouseEvent.Pressed)
+            {
+                this.OnTabClicked();
+            }
+        }
+
     }
 }
