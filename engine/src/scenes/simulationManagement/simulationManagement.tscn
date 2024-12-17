@@ -135,8 +135,8 @@ icon = ExtResource("2_jtug3")
 layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_left = 150.0
-offset_right = 640.0
+offset_left = 144.0
+offset_right = 634.0
 grow_vertical = 2
 color = Color(0.262745, 0.262745, 0.262745, 1)
 
