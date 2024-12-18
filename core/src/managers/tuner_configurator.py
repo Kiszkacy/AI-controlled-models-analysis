@@ -32,24 +32,25 @@ class TunerConfigurator:
             return config
 
         hyperparam_mutations = {
-            "gamma": tune.uniform(0.9, 1.0),
-            "clip_param": tune.uniform(0.01, 0.5),
-            "lr": tune.choice([1e-3, 5e-4, 1e-4, 5e-5, 1e-5]),
-            "num_sgd_iter": tune.randint(1, 31),
-            "sgd_minibatch_size": tune.randint(32, 256),
-            "train_batch_size": tune.randint(400, 2400),
+            "gamma": tune.uniform(0.9, 0.95),
+            "lr": tune.choice([1e-4, 5e-5, 2e-5, 1e-5]),
+            "entropy_coeff": tune.uniform(0.01, 0.1),
+            # "num_sgd_iter": tune.randint(1, 31),
+            # "sgd_minibatch_size": tune.randint(32, 256),
+            # "train_batch_size": tune.randint(400, 2400),
         }
 
         pbt = PopulationBasedTraining(
-            time_attr="time_total_s",
-            perturbation_interval=120,
+            time_attr="training_iteration",
+            perturbation_interval=10,
             resample_probability=0.25,
             hyperparam_mutations=hyperparam_mutations,
             custom_explore_fn=explore,
         )
+
         stopping_criteria = {
-            "training_iteration": self.training_settings.training_iterations,
-            "episode_reward_mean": 30000,
+            "training_iteration": 1  # self.training_settings.training_iterations,
+            # "episode_reward_mean": 30000,
         }
 
         return tune.Tuner(
@@ -63,8 +64,7 @@ class TunerConfigurator:
             param_space={
                 "env": self.environment_cls,
                 "framework": "torch",
-                "kl_coeff": 1.0,
-                "num_workers": self.config_settings.number_of_workers,
+                "num_rollout_workers": self.config_settings.number_of_workers,
                 "num_envs_per_worker": self.config_settings.number_of_env_per_worker,
                 # "num_cpus": 1,
                 "num_gpus": torch.cuda.device_count() if self.config_settings.use_gpu else 0,
@@ -77,14 +77,16 @@ class TunerConfigurator:
                     "lstm_use_prev_reward": True,
                     "_disable_action_flattening": True,
                     # "vf_share_layers": False, (rozdzielenie polityki i funkcji straty)
+                    "custom_model_config": {"min_log_std": -10, "max_log_std": 2},
                 },
+                "weight_decay": 1e-5,  # normalizacja L2, ograniczenie wag dla modelu
                 "gamma": self.config_settings.gamma,
                 "clip_param": self.config_settings.clip_param,
-                "lr": self.config_settings.lr,
+                "lr": tune.choice([1e-4, 5e-5, 2e-5, 1e-5]),  # self.config_settings.lr,
                 "grad_clip": self.config_settings.grad_clip,
-                "num_sgd_iter": tune.choice([10, 20, 30]),
-                "sgd_minibatch_size": tune.choice([32, 64, 128]),
-                "train_batch_size": tune.choice([400, 800, 1200, 1600, 2000]),
+                # "num_sgd_iter": tune.choice([10, 20, 30]),
+                # "sgd_minibatch_size": tune.choice([32, 64, 128]),
+                "train_batch_size": self.config_settings.training_batch_size,
                 "entropy_coeff": self.config_settings.entropy_coeff,
             },
             run_config=train.RunConfig(
