@@ -25,6 +25,7 @@ environment:
     waterPenalty: 50
   bucketSize: 256
   agentSightProcessEveryNthFrame: 3
+  agentWaterPenaltyUpdateEveryNthFrame: 6
   supervisorAgentSpawnSafeDistance: 16
   supervisorAgentMaxSpawnTryCount: 50
   seed: 0

@@ -30,7 +30,7 @@ public readonly struct AgentData
     {
         return new AgentData(
             id: this.Id,
-            score: this.Score,
+            score: Mathf.Clamp(this.Score, 0, float.MaxValue),
             speed: Mathf.Remap(this.Speed, 0.0f, agent.MaximumSpeed, -1, 1),
             energy: Mathf.Remap(this.Energy, 0.0f, agent.MaximumEnergy, -1, 1),
             health: Mathf.Remap(this.Health, 0.0f, agent.MaximumHealth, -1, 1),

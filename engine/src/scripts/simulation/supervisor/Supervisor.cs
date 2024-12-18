@@ -19,7 +19,7 @@ public partial class Supervisor : Node
 
     [Export]
     public bool UseLogicAgents = false;
-    
+
     [Export]
     public float ReproductionSpawnRadius = 30.0f;
 
@@ -125,7 +125,7 @@ public partial class Supervisor : Node
 
             isValid = this.CanSpawnAt(position);
         }
-        
+
         if (isValid)
         {
             Agent agent = SpawnAgentAtPosition(position);
@@ -134,10 +134,10 @@ public partial class Supervisor : Node
                 agent.SetEnergy(Config.Get().Environment.EnergyUsedReproduction);
             }
         }
-        
+
         return isValid;
     }
-    
+
     private bool CanSpawnAt(Vector2 position)
     {
         BiomeType biomeType = EnvironmentGenerationUtil.GetBiomeAt(
@@ -151,7 +151,7 @@ public partial class Supervisor : Node
         {
             return false;
         }
-        
+
         foreach (var (_, agent_) in AgentManager.Get().Agents)
         {
             if (agent_.GlobalPosition.DistanceTo(position) <= Config.Get().Environment.SupervisorAgentSpawnSafeDistance)

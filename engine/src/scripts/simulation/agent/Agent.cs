@@ -31,10 +31,10 @@ public partial class Agent : CharacterBody2D, Trackable
 
     [Export]
     public float SightRadius { get; set; } = 256.0f; // in px
-    
+
     [Export]
     public float EnergySurplusForReproduction { get; set; } = 30.0f;
-    
+
     [Export]
     public float MinimumHealthToReproduce { get; set; } = 50.0f;
 
@@ -64,7 +64,7 @@ public partial class Agent : CharacterBody2D, Trackable
         }
         get => this.id;
     }
-    
+
     public void SetEnergy(float newEnergy)
     {
         if (newEnergy < 0)
@@ -178,7 +178,7 @@ public partial class Agent : CharacterBody2D, Trackable
     {
         if (this.health < this.MinimumHealthToReproduce || this.energy <
             this.EnergySurplusForReproduction + Config.Get().Environment.EnergyUsedReproduction) return false;
-        
+
         Node supervisor = GetTree().Root.GetNode("Supervisor");
         if (supervisor is not Supervisor supervisorNode) return false;
 
