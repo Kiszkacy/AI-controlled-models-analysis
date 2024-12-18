@@ -49,7 +49,7 @@ class TunerConfigurator:
         )
 
         stopping_criteria = {
-            "training_iteration": 1  # self.training_settings.training_iterations,
+            "training_iteration": self.training_settings.training_iterations,
             # "episode_reward_mean": 30000,
         }
 
@@ -87,6 +87,7 @@ class TunerConfigurator:
                 # "num_sgd_iter": tune.choice([10, 20, 30]),
                 # "sgd_minibatch_size": tune.choice([32, 64, 128]),
                 "train_batch_size": self.config_settings.training_batch_size,
+                # tune.choice([400, 800, 1200, 1600, 2000]),
                 "entropy_coeff": self.config_settings.entropy_coeff,
             },
             run_config=train.RunConfig(
