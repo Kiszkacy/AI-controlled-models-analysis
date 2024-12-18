@@ -64,6 +64,16 @@ public partial class Agent : CharacterBody2D, Trackable
         }
         get => this.id;
     }
+    
+    public void SetEnergy(float newEnergy)
+    {
+        if (newEnergy < 0)
+        {
+            return;
+        }
+
+        this.energy = newEnergy;
+    }
 
     protected void UpdateEnergy(double delta)
     {
@@ -164,14 +174,24 @@ public partial class Agent : CharacterBody2D, Trackable
         this.MoveAndCollide(this.Velocity * (float)delta);
     }
 
-    public virtual void Reproduce()
+    protected virtual bool Reproduce()
     {
         if (this.health < this.MinimumHealthToReproduce || this.energy <
-            this.EnergySurplusForReproduction + Config.Get().Environment.EnergyUsedReproduction) return;
+            this.EnergySurplusForReproduction + Config.Get().Environment.EnergyUsedReproduction) return false;
         
-        this.energy -= Config.Get().Environment.EnergyUsedReproduction;
-        
-        
+        Node supervisor = GetTree().Root.GetNode("Supervisor");
+        if (supervisor is not Supervisor supervisorNode) return false;
+
+        bool success = supervisorNode.SpawnAgentNear(this.GlobalPosition);
+        if (success)
+        {
+            NeatPrinter.Start()
+                .Print("Agent " + this.id + " successfully reproduced.")
+                .End();
+            this.energy -= Config.Get().Environment.EnergyUsedReproduction;
+        }
+
+        return success;
     }
 
     public override void _Ready()

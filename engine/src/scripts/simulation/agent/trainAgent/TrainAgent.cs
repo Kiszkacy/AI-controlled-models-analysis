@@ -48,6 +48,16 @@ public partial class TrainAgent : Agent
         this.thisFrameScore += (energyScore + healthScore) * (float)delta;
     }
 
+    protected override bool Reproduce()
+    {
+        if (base.Reproduce())
+        {
+            this.thisFrameScore += Config.Get().Environment.Score.Reproduction;
+            return true;
+        }
+        return false;
+    }
+
     public override AgentSaveData Save()
     {
         var data = base.Save();

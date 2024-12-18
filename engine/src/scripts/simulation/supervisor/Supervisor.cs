@@ -19,6 +19,9 @@ public partial class Supervisor : Node
 
     [Export]
     public bool UseLogicAgents = false;
+    
+    [Export]
+    public float ReproductionSpawnRadius = 30.0f;
 
     private PackedScene packedTrainAgent = ResourceLoader.Load<PackedScene>("res://src/scenes/simulation/agent/trainAgent.tscn");
     private PackedScene packedLogicAgent = ResourceLoader.Load<PackedScene>("res://src/scenes/simulation/agent/logicAgent.tscn");
@@ -95,68 +98,90 @@ public partial class Supervisor : Node
                 RandomGenerator.Float(this.Environment.Size.Y)
             );
 
-            BiomeType biomeType = EnvironmentGenerationUtil.GetBiomeAt(
-                position,
-                this.Environment.TemplateData.GenerationSettings.Size,
-                this.Environment.TemplateData.GenerationSettings.BiomeChunkSize,
-                this.Environment.TemplateData.BiomeData
-            );
-
-            if (biomeType == BiomeType.Ocean)
-            {
-                continue;
-            }
-
-            bool failedAgentDistanceCheck = false;
-            foreach (var (_, agent_) in AgentManager.Get().Agents)
-            {
-                if (agent_.GlobalPosition.DistanceTo(position) <= Config.Get().Environment.SupervisorAgentSpawnSafeDistance)
-                {
-                    failedAgentDistanceCheck = true;
-                    break;
-                }
-            }
-            if (failedAgentDistanceCheck)
-            {
-                continue;
-            }
-
-            Vector2I bucketId = EntityManager.Instance.ObjectBuckets.VectorToBucketId(position);
-            bool failedObjectDistanceCheck = false;
-            foreach (EnvironmentObject object_ in EntityManager.Get().ObjectBuckets.GetEntitiesFrom3x3(bucketId))
-            {
-                if (object_.GlobalPosition.DistanceTo(position) <= Config.Get().Environment.SupervisorAgentSpawnSafeDistance)
-                {
-                    failedObjectDistanceCheck = true;
-                    break;
-                }
-            }
-            if (failedObjectDistanceCheck)
-            {
-                continue;
-            }
-
-            isValid = true;
+            isValid = this.CanSpawnAt(position);
         }
 
         Agent agent = null;
         if (isValid)
         {
-            Node2D agentInstance = (Node2D)(this.UseLogicAgents ? this.packedLogicAgent : this.packedTrainAgent).Instantiate();
-            this.AgentsRootNode.CallDeferred("add_child", agentInstance);
-            agentInstance.GlobalPosition = position;
-            agent = (Agent)agentInstance;
-            agent.Direction = Vector2.FromAngle(RandomGenerator.Float(Mathf.Pi*2.0f));
-            AgentManager.Get().RegisterAgent(agent);
+            agent = SpawnAgentAtPosition(position);
         }
 
         return agent;
     }
 
-    private bool SpawnAgentNear(Vector2 position)
+    public bool SpawnAgentNear(Vector2 basePosition)
     {
-        //TODO
-        return false;
+        Vector2 position = basePosition;
+        bool isValid = false;
+        int tryCount = 0;
+        while (tryCount < Config.Get().Environment.SupervisorAgentMaxSpawnTryCount && !isValid)
+        {
+            tryCount += 1;
+            position = basePosition + new Vector2(
+                RandomGenerator.Float(-this.ReproductionSpawnRadius, this.ReproductionSpawnRadius),
+                RandomGenerator.Float(-this.ReproductionSpawnRadius, this.ReproductionSpawnRadius)
+            );
+
+            isValid = this.CanSpawnAt(position);
+        }
+        
+        if (isValid)
+        {
+            Agent agent = SpawnAgentAtPosition(position);
+            if (agent != null)
+            {
+                agent.SetEnergy(Config.Get().Environment.EnergyUsedReproduction);
+            }
+        }
+        
+        return isValid;
+    }
+    
+    private bool CanSpawnAt(Vector2 position)
+    {
+        BiomeType biomeType = EnvironmentGenerationUtil.GetBiomeAt(
+            position,
+            this.Environment.TemplateData.GenerationSettings.Size,
+            this.Environment.TemplateData.GenerationSettings.BiomeChunkSize,
+            this.Environment.TemplateData.BiomeData
+        );
+
+        if (biomeType == BiomeType.Ocean)
+        {
+            return false;
+        }
+        
+        foreach (var (_, agent_) in AgentManager.Get().Agents)
+        {
+            if (agent_.GlobalPosition.DistanceTo(position) <= Config.Get().Environment.SupervisorAgentSpawnSafeDistance)
+            {
+                return false;
+            }
+        }
+
+        Vector2I bucketId = EntityManager.Instance.ObjectBuckets.VectorToBucketId(position);
+        foreach (EnvironmentObject object_ in EntityManager.Get().ObjectBuckets.GetEntitiesFrom3x3(bucketId))
+        {
+            if (object_.GlobalPosition.DistanceTo(position) <= Config.Get().Environment.SupervisorAgentSpawnSafeDistance)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private Agent SpawnAgentAtPosition(Vector2 position)
+    {
+        Agent agent = null;
+        Node2D agentInstance = (Node2D)(this.UseLogicAgents ? this.packedLogicAgent : this.packedTrainAgent).Instantiate();
+        this.AgentsRootNode.CallDeferred("add_child", agentInstance);
+        agentInstance.GlobalPosition = position;
+        agent = (Agent)agentInstance;
+        agent.Direction = Vector2.FromAngle(RandomGenerator.Float(Mathf.Pi*2.0f));
+        AgentManager.Get().RegisterAgent(agent);
+        return agent;
     }
 
     private void AllAgentsSpawned()
