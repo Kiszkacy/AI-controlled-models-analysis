@@ -92,11 +92,13 @@ public class EnvironmentConfig
     public float EnergyBaseLossPerSecond { get; set; }
     public float EnergyLossPerSecondPer100UnitsOfMovement { get; set; }
     public float EnergyLossPerSecondTurn { get; set; }
+    public float EnergyUsedReproduction { get; set; }
     public float HealthLossPerSecond { get; set; }
     public float HealthRegenPerSecond { get; set; }
     public ScoreConfig Score { get; set; }
     public int BucketSize { get; set; }
     public int AgentSightProcessEveryNthFrame { get; set; }
+    public int AgentWaterPenaltyUpdateEveryNthFrame { get; set; }
     public int SupervisorAgentSpawnSafeDistance { get; set; }
     public int SupervisorAgentMaxSpawnTryCount { get; set; }
     public int Seed { get; set; }
@@ -105,6 +107,10 @@ public class EnvironmentConfig
 public class ScoreConfig
 {
     public float FoodEaten { get; set; }
+    public float EnergyMax { get; set; }
+    public float HealthMax { get; set; }
+    public float Reproduction { get; set; }
+    public float WaterPenalty { get; set; }
 }
 
 public class GlobalConfig
