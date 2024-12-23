@@ -89,7 +89,7 @@ public partial class MainMenu : Control
 
     private void OnSimulationsClick()
     {
-        // TODO
+        this.GetTree().ChangeSceneToFile("res://src/scenes/simulationManagement/simulationManagement.tscn");
     }
 
     private void OnModelsClick()
