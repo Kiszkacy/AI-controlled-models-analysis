@@ -1,0 +1,138 @@
+[gd_scene load_steps=12 format=3 uid="uid://cddgsc4d1t6k5"]
+
+[ext_resource type="Script" path="res://src/scripts/screens/configuration/Configuration.cs" id="1_jsqbb"]
+[ext_resource type="Theme" uid="uid://de0xa04ygj6gw" path="res://assets/ui/themes/grayTheme.tres" id="1_wn2fb"]
+[ext_resource type="PackedScene" uid="uid://byp6g5lwnjkly" path="res://src/scenes/ui/button/iconButtonSmall.tscn" id="2_8o7go"]
+[ext_resource type="PackedScene" uid="uid://cm7xbxgg7k28n" path="res://src/scenes/configuration/environment/environmentConfiguration.tscn" id="2_ange7"]
+[ext_resource type="Texture2D" uid="uid://b606iocwgssyu" path="res://assets/icons/solid/bars.svg" id="3_anwef"]
+[ext_resource type="PackedScene" uid="uid://b0cjqe3fox1hs" path="res://src/scenes/ui/dialog/dialogConfirm.tscn" id="4_ao6t0"]
+[ext_resource type="PackedScene" uid="uid://tai7ju750fc6" path="res://src/scenes/ui/button/buttonWhiteBig.tscn" id="5_po5l1"]
+[ext_resource type="PackedScene" uid="uid://iuf0eb4wytu" path="res://src/scenes/ui/button/buttonDarkBig.tscn" id="6_wkpv7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g2eye"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.262745, 0.262745, 0.262745, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_svkem"]
+bg_color = Color(0.454902, 0.490196, 0.541176, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g7xba"]
+bg_color = Color(0.878431, 0.882353, 0.866667, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+anti_aliasing = false
+
+[node name="Configuration" type="Control" node_paths=PackedStringArray("ContinueButton", "ReturnButton", "EnvironmentConfiguration")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jsqbb")
+ContinueButton = NodePath("BottomPanelBox/ContinueButton")
+ReturnButton = NodePath("BottomPanelBox/ReturnButton")
+EnvironmentConfiguration = NodePath("EnvironmentConfiguration")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.41, 0.41, 0.41, 1)
+
+[node name="EnvironmentConfiguration" parent="." instance=ExtResource("2_ange7")]
+layout_mode = 2
+anchors_preset = 0
+offset_bottom = -28.0
+
+[node name="BottomPanelBox" type="Label" parent="."]
+layout_mode = 0
+offset_top = 984.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+theme = ExtResource("1_wn2fb")
+theme_override_styles/normal = SubResource("StyleBoxFlat_g2eye")
+
+[node name="ReturnButton" parent="BottomPanelBox" instance=ExtResource("5_po5l1")]
+layout_mode = 0
+offset_left = 1360.0
+offset_top = 16.0
+offset_right = 1616.0
+offset_bottom = 80.0
+disabled = true
+text = "Return"
+
+[node name="ContinueButton" parent="BottomPanelBox" instance=ExtResource("6_wkpv7")]
+layout_mode = 0
+offset_left = 1648.0
+offset_top = 16.0
+offset_right = 1904.0
+offset_bottom = 80.0
+text = "Continue"
+
+[node name="StepLabel" type="Label" parent="BottomPanelBox"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 319.0
+offset_bottom = 46.0
+theme = ExtResource("1_wn2fb")
+theme_override_font_sizes/font_size = 24
+text = "Configuring environment"
+
+[node name="StepCountLabel" type="Label" parent="BottomPanelBox"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 56.0
+offset_right = 87.0
+offset_bottom = 80.0
+theme = ExtResource("1_wn2fb")
+text = "Step 1 / 3"
+vertical_alignment = 1
+
+[node name="ProgressBarBackground" type="Label" parent="BottomPanelBox"]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 56.0
+offset_right = 288.0
+offset_bottom = 80.0
+theme = ExtResource("1_wn2fb")
+theme_override_styles/normal = SubResource("StyleBoxFlat_svkem")
+
+[node name="ProgressBar" type="Label" parent="BottomPanelBox"]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 56.0
+offset_right = 160.0
+offset_bottom = 80.0
+theme = ExtResource("1_wn2fb")
+theme_override_styles/normal = SubResource("StyleBoxFlat_g7xba")
+
+[node name="MainMenuButton" parent="." instance=ExtResource("2_8o7go")]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 64.0
+offset_bottom = 64.0
+icon = ExtResource("3_anwef")
+
+[node name="MainMenuConfirmDialog" parent="." instance=ExtResource("4_ao6t0")]
+visible = false
+z_index = 10
+Title = "Are you sure you want to exit?"
+Description = "Your current settings will not be saved."

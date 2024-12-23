@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=3 uid="uid://dg0yqw36ykfvh"]
+
+[ext_resource type="Script" path="res://src/scripts/ui/input/InputHandler.cs" id="1_cwijn"]
+[ext_resource type="Theme" uid="uid://de0xa04ygj6gw" path="res://assets/ui/themes/grayTheme.tres" id="1_gwecp"]
+[ext_resource type="Theme" uid="uid://c81i2ymfrd5c3" path="res://assets/ui/themes/whiteTheme.tres" id="2_x2x0h"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e8krx"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(0.995, 1, 0.98, 0)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_color = Color(0, 0, 0, 0.705882)
+anti_aliasing = false
+
+[node name="Input" type="Control" node_paths=PackedStringArray("MiniLabel", "InputLine")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 192.0
+offset_bottom = 32.0
+script = ExtResource("1_cwijn")
+MiniLabel = NodePath("LabelWhenHasFocusOrText")
+InputLine = NodePath("InputLine")
+
+[node name="InputLine" type="LineEdit" parent="."]
+layout_mode = 0
+offset_right = 192.0
+offset_bottom = 32.0
+theme = ExtResource("1_gwecp")
+placeholder_text = "Input name"
+clear_button_enabled = true
+
+[node name="LabelWhenHasFocusOrText" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 2.0
+offset_top = -10.0
+offset_right = 112.0
+offset_bottom = 10.0
+theme = ExtResource("2_x2x0h")
+theme_override_colors/font_color = Color(0.878431, 0.882353, 0.866667, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.627451)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_e8krx")
+text = "Input name"
+vertical_alignment = 1

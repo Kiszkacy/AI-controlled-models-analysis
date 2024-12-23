@@ -1,0 +1,70 @@
+[gd_scene load_steps=5 format=3 uid="uid://bdvrrauthis8a"]
+
+[ext_resource type="Theme" uid="uid://de0xa04ygj6gw" path="res://assets/ui/themes/grayTheme.tres" id="1_f4rs2"]
+[ext_resource type="PackedScene" uid="uid://byp6g5lwnjkly" path="res://src/scenes/ui/button/iconButtonSmall.tscn" id="2_80212"]
+[ext_resource type="Texture2D" uid="uid://b4kirufkc7ch3" path="res://assets/icons/solid/caret-down.svg" id="3_kl0lr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_55xeh"]
+content_margin_right = 0.0
+content_margin_bottom = 4.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[node name="Row" type="VBoxContainer"]
+
+[node name="Seperator" type="Label" parent="."]
+layout_mode = 2
+theme = ExtResource("1_f4rs2")
+theme_override_font_sizes/font_size = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_55xeh")
+
+[node name="RowLabel" type="Label" parent="."]
+layout_mode = 2
+theme = ExtResource("1_f4rs2")
+text = "          ROW  #1 - range x.x to x.x from land points center"
+
+[node name="IconButtonSmall" parent="RowLabel" instance=ExtResource("2_80212")]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 0
+offset_left = 3.0
+offset_top = -2.0
+offset_right = 27.0
+offset_bottom = 22.0
+icon = ExtResource("3_kl0lr")
+
+[node name="RowContent" type="HBoxContainer" parent="."]
+z_index = 1
+layout_mode = 2
+
+[node name="Label" type="Label" parent="RowContent"]
+layout_mode = 2
+text = "            "
+
+[node name="VBox" type="VBoxContainer" parent="RowContent"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RowContent/VBox"]
+layout_mode = 2
+
+[node name="OptionButton" type="OptionButton" parent="RowContent/VBox/HBoxContainer"]
+layout_mode = 2
+
+[node name="XD2" type="Label" parent="RowContent/VBox"]
+layout_mode = 2
+text = "XDDDDDDDD
+"
+
+[node name="XD3" type="Label" parent="RowContent/VBox"]
+layout_mode = 2
+text = "XDDDDDDDD
+"
+
+[node name="BackgroundWrap" type="Control" parent="."]
+layout_mode = 2
+
+[node name="Background" type="ColorRect" parent="BackgroundWrap"]
+layout_mode = 0
+offset_left = 46.0
+offset_top = -81.0
+offset_right = 435.0
+offset_bottom = -4.0
+color = Color(0.203922, 0.203922, 0.203922, 1)

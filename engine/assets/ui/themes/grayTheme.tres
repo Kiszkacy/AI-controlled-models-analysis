@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=12 format=3 uid="uid://de0xa04ygj6gw"]
+[gd_resource type="Theme" load_steps=15 format=3 uid="uid://de0xa04ygj6gw"]
 
 [ext_resource type="FontFile" uid="uid://chjp63k0jm20m" path="res://assets/fonts/inter/Inter_18pt-Black.ttf" id="1_4f1wp"]
 [ext_resource type="StyleBox" uid="uid://dlbaa32luhlcp" path="res://assets/ui/themes/button/buttonDarkDisabled.tres" id="2_ab5ai"]
@@ -7,10 +7,29 @@
 [ext_resource type="StyleBox" uid="uid://depeknfn6m1rk" path="res://assets/ui/themes/button/buttonDarkPressed.tres" id="5_aqjrs"]
 [ext_resource type="StyleBox" uid="uid://exp7gp7r36e8" path="res://assets/ui/themes/tab/tabPanel.tres" id="6_6cui0"]
 [ext_resource type="StyleBox" uid="uid://rjqmoo5dyhu" path="res://assets/ui/themes/tab/tabSelected.tres" id="6_bajgw"]
+[ext_resource type="StyleBox" uid="uid://b4f4pakm0m5le" path="res://assets/ui/themes/input/inputStyle.tres" id="6_n83im"]
 [ext_resource type="StyleBox" uid="uid://dbeq7wnb3gso0" path="res://assets/ui/themes/tab/tabUnselected.tres" id="7_8tj10"]
 [ext_resource type="StyleBox" uid="uid://u0x1uvtrrpn4" path="res://assets/ui/themes/tab/tabDisabled.tres" id="7_s1w40"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t6245"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4dq1g"]
+content_margin_left = 16.0
+content_margin_top = 4.0
+content_margin_right = 16.0
+content_margin_bottom = 4.0
+bg_color = Color(0.254902, 0.352941, 0.466667, 1)
+corner_radius_top_left = 320
+corner_radius_top_right = 320
+corner_radius_bottom_right = 320
+corner_radius_bottom_left = 320
+shadow_color = Color(0, 0, 0, 0.12549)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2rar1"]
+bg_color = Color(0.203922, 0.203922, 0.203922, 1)
+shadow_color = Color(0, 0, 0, 0.12549)
+shadow_size = 6
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vgsvp"]
 
@@ -40,6 +59,11 @@ Button/styles/focus = SubResource("StyleBoxEmpty_t6245")
 Button/styles/hover = ExtResource("3_ggebr")
 Button/styles/normal = ExtResource("4_bfcdh")
 Button/styles/pressed = ExtResource("5_aqjrs")
+LineEdit/styles/focus = ExtResource("6_n83im")
+LineEdit/styles/normal = ExtResource("6_n83im")
+LineEdit/styles/read_only = ExtResource("6_n83im")
+MenuButton/styles/normal = SubResource("StyleBoxFlat_4dq1g")
+PopupMenu/styles/panel = SubResource("StyleBoxFlat_2rar1")
 TabContainer/colors/font_hovered_color = Color(0.372549, 0.458824, 0.568627, 1)
 TabContainer/colors/font_selected_color = Color(1, 1, 1, 1)
 TabContainer/colors/font_unselected_color = Color(0.466667, 0.552941, 0.662745, 1)

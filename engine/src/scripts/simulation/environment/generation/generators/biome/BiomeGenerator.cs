@@ -10,11 +10,10 @@ public class BiomeGenerator
     private readonly NoiseGenerator noise1;
     private readonly NoiseGenerator noise2;
     private readonly float distanceRandomness;
-    private readonly BiomeTableRow[] biomes;
 
     public BiomeType[] Generate(EnvironmentGenerationSettings settings)
     {
-        float maxDistance = Mathf.Min(settings.Size.X / 2.0f, settings.Size.Y / 2.0f) * settings.OceanSizeMultiplier;
+        float maxDistance = Mathf.Min(settings.Size.X / 2.0f, settings.Size.Y / 2.0f) * (1.0f/settings.OceanSizeMultiplier);
         Vector2 currentChunkPosition = Vector2.Zero;
         LinkedList<BiomeType> data = new();
 
@@ -28,20 +27,22 @@ public class BiomeGenerator
                 ? maxDistance
                 : settings.OceanPoints.Min(point => currentChunkCenter.DistanceTo(point * settings.Size));
 
-            float normalizedDistanceToClosestTerrainPoint = distanceToClosestTerrainPoint / maxDistance;
-            float normalizedDistanceToClosestOceanPoint = distanceToClosestOceanPoint / maxDistance;
-
-
-            float distanceValue = Mathf.Clamp(
-                normalizedDistanceToClosestTerrainPoint + (1.0f-normalizedDistanceToClosestOceanPoint) + RandomGenerator.Float(-this.distanceRandomness, this.distanceRandomness),
-                0.0f,
-                1.0f
-            );
+            float normalizedDistanceToClosestTerrainPoint = Mathf.Min(distanceToClosestTerrainPoint / maxDistance, 1.0f);
+            float normalizedDistanceToClosestOceanPoint = Mathf.Min(distanceToClosestOceanPoint / maxDistance, 1.0f);
+            float ratio = normalizedDistanceToClosestOceanPoint / Mathf.Min(1.0f, normalizedDistanceToClosestTerrainPoint + normalizedDistanceToClosestOceanPoint);
+            
+            float distanceValue = distanceToClosestTerrainPoint < distanceToClosestOceanPoint
+                ? Mathf.Clamp(
+                    ratio * normalizedDistanceToClosestTerrainPoint + (1.0f-ratio) * (1.0f-normalizedDistanceToClosestOceanPoint) + RandomGenerator.Float(-this.distanceRandomness, this.distanceRandomness),
+                    0.0f,
+                    1.0f
+                )
+                : 1.0f;
 
             float noise1 = Mathf.Remap(this.noise1.At(currentChunkCenter/1000.0f), -1, 1, 0, 1);
             float noise2 = Mathf.Remap(this.noise2.At(currentChunkCenter/1000.0f), -1, 1, 0, 1);
 
-            BiomeType biomeType = this.GetBiomeType(distanceValue, noise1, noise2);
+            BiomeType biomeType = this.GetBiomeType(settings.BiomeTable, distanceValue, noise1, noise2);
             data.AddLast(biomeType);
 
             currentChunkPosition.X += settings.BiomeChunkSize.X;
@@ -59,7 +60,7 @@ public class BiomeGenerator
         return data.ToArray();
     }
 
-    private BiomeType GetBiomeType(float distance, float noise1, float noise2)
+    private BiomeType GetBiomeType(BiomeTable biomeTable, float distance, float noise1, float noise2)
     {
         if (distance > 1.0f)
         {
@@ -67,7 +68,7 @@ public class BiomeGenerator
         }
 
         BiomeTableRow? possibleRow = null;
-        foreach (BiomeTableRow biomeRow in this.biomes)
+        foreach (BiomeTableRow biomeRow in biomeTable.Biomes)
         {
             if (distance >= biomeRow.DistanceFromCenterStart && distance <= biomeRow.DistanceFromCenterEnd)
             {
@@ -90,11 +91,10 @@ public class BiomeGenerator
         return targetBiomeRow[targetBiomeIndex];
     }
 
-    public BiomeGenerator(NoiseGenerator noise1, NoiseGenerator noise2, float distanceRandomness, BiomeTableRow[] biomes)
+    public BiomeGenerator(NoiseGenerator noise1, NoiseGenerator noise2, float distanceRandomness)
     {
         this.noise1 = noise1;
         this.noise2 = noise2;
         this.distanceRandomness = distanceRandomness;
-        this.biomes = biomes;
     }
 }

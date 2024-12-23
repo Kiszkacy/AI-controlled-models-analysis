@@ -24,8 +24,7 @@ public partial class DialogConfirm : Control
     private Button CancelButton;
     [Export]
     private Button ConfirmButton;
-
-
+    
     public event Action Confirmed;
     public event Action Cancelled;
 

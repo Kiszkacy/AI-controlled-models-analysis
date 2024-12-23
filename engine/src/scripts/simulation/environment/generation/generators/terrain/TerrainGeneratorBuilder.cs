@@ -1,7 +1,7 @@
 ﻿
 public class TerrainGeneratorBuilder
 {
-    private int passCount;
+    private int passCount; // TODO not implemented and prob wont be
     private int minimalRequiredOceanNeighborCountToCorrode;
     private float corrosionChance;
 

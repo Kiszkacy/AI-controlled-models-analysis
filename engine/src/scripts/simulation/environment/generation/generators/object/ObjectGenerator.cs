@@ -9,8 +9,9 @@ public class ObjectGenerator
 {
     private readonly int maxAmountOfSpawnTries;
     private readonly int safeSpaceDistance;
+    private readonly float objectDensityMultiplier;
 
-    public EnvironmentObjectData[] Generate(EnvironmentGenerationSettings settings, BiomeType[] biomeData, bool[] terrainData)
+    public virtual EnvironmentObjectData[] Generate(EnvironmentGenerationSettings settings, BiomeType[] biomeData, bool[] terrainData)
     {
         LinkedList<EnvironmentObjectData> data = new();
         Vector2 currentChunkPosition = Vector2.Zero;
@@ -30,7 +31,7 @@ public class ObjectGenerator
 
             Vector2 currentChunkCenter = currentChunkPosition + settings.TerrainChunkSize / 2.0f;
             BiomeType biomeAtCurrentPosition = EnvironmentGenerationUtil.GetBiomeAt(currentChunkCenter, settings.Size, settings.BiomeChunkSize, biomeData);
-            float targetAmountOfObjects = BiomeTable.BiomeObjectPool[biomeAtCurrentPosition].AmountOfObjectsPer1000x1000Pixels;
+            float targetAmountOfObjects = settings.BiomeTable.BiomeObjectPool[biomeAtCurrentPosition].AmountOfObjectsPer1000x1000Pixels * this.objectDensityMultiplier;
             float chanceAmount = (settings.TerrainChunkSize.X * settings.TerrainChunkSize.Y / (1000 * 1000)) * targetAmountOfObjects;
             LinkedList<EnvironmentObjectData> currentChunkData = new();
 
@@ -45,7 +46,7 @@ public class ObjectGenerator
                 if (possiblePosition.HasValue)
                 {
                     Vector2 position = possiblePosition.Value;
-                    EnvironmentObjectId objectId = this.PickObjectId(biomeAtCurrentPosition);
+                    EnvironmentObjectId objectId = this.PickObjectId(settings.BiomeTable, biomeAtCurrentPosition);
                     currentChunkData.AddLast(new EnvironmentObjectData(objectId, position));
                 }
                 chanceAmount -= 1.0f;
@@ -101,15 +102,16 @@ public class ObjectGenerator
         return null;
     }
 
-    private EnvironmentObjectId PickObjectId(BiomeType biomeType)
+    private EnvironmentObjectId PickObjectId(BiomeTable biomeTable, BiomeType biomeType)
     {
-        int pickedObjectIndex = RandomGenerator.Index(BiomeTable.BiomeObjectPool[biomeType].Weights);
-        return BiomeTable.BiomeObjectPool[biomeType].Objects[pickedObjectIndex];
+        int pickedObjectIndex = RandomGenerator.Index(biomeTable.BiomeObjectPool[biomeType].Weights);
+        return biomeTable.BiomeObjectPool[biomeType].Objects[pickedObjectIndex];
     }
 
-    public ObjectGenerator(int maxAmountOfSpawnTries, int safeSpaceDistance)
+    public ObjectGenerator(int maxAmountOfSpawnTries, int safeSpaceDistance, float objectDensityMultiplier)
     {
         this.maxAmountOfSpawnTries = maxAmountOfSpawnTries;
         this.safeSpaceDistance = safeSpaceDistance;
+        this.objectDensityMultiplier = objectDensityMultiplier;
     }
 }

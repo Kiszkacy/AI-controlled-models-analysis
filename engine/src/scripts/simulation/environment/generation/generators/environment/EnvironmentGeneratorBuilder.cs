@@ -8,6 +8,7 @@ public class EnvironmentGeneratorBuilder
     private ObjectGenerator objectGenerator;
     private Vector2 size;
     private Vector2 biomeChunkSize;
+    private BiomeTable biomeTable;
     private Vector2 terrainChunkSize;
     private Vector2[] terrainPoints;
     private Vector2[] oceanPoints;
@@ -44,6 +45,12 @@ public class EnvironmentGeneratorBuilder
         this.biomeChunkSize = sizeInPixels;
         return this;
     }
+    
+    public EnvironmentGeneratorBuilder SetBiomeTable(BiomeTable biomeTable)
+    {
+        this.biomeTable = biomeTable;
+        return this;
+    }
 
     public EnvironmentGeneratorBuilder SetTerrainChunkSize(Vector2 sizeInPixels)
     {
@@ -71,8 +78,8 @@ public class EnvironmentGeneratorBuilder
 
     public EnvironmentGenerator End()
     {
-        return new EnvironmentGenerator(this.biomeGenerator, this.terrainGenerator, this.objectGenerator, this.size,
-            this.biomeChunkSize, this.terrainChunkSize, this.terrainPoints, this.oceanPoints, this.oceanSizeMultiplier);
+        return new EnvironmentGenerator(this.biomeGenerator, this.terrainGenerator, this.objectGenerator, this.size, this.biomeChunkSize,
+            this.biomeTable, this.terrainChunkSize, this.terrainPoints, this.oceanPoints, this.oceanSizeMultiplier);
     }
 
     public EnvironmentGeneratorBuilder SetAllToDefault()
@@ -82,6 +89,7 @@ public class EnvironmentGeneratorBuilder
             .SetObjectGenerator(ObjectGeneratorBuilder.Start.SetAllToDefault().End())
             .SetSize(new Vector2(10000, 10000))
             .SetBiomeChunkSize(new Vector2(100, 100))
+            .SetBiomeTable(new BiomeTable())
             .SetTerrainChunkSize(new Vector2(50, 50))
             .SetTerrainPoints(new Vector2[]
             {

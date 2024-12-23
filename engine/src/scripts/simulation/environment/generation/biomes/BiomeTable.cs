@@ -18,9 +18,10 @@ public readonly struct BiomeTableRow
     }
 }
 
-public static class BiomeTable
+public class BiomeTable
 {
-    public static BiomeTableRow[] Biomes =
+    public BiomeTableRow[] Biomes;
+    public static BiomeTableRow[] DefaultBiomes =
     {
         new(0.9f, 1.0f, new[]
         {
@@ -29,7 +30,7 @@ public static class BiomeTable
         new(0.8f, 0.9f, new[]
         {
             new[] { BiomeType.Ocean },
-            new[] { BiomeType.Beach,               BiomeType.Ocean,               BiomeType.Ocean },
+            new[] { BiomeType.Beach,               BiomeType.Beach,               BiomeType.Beach,               BiomeType.Ocean,               BiomeType.Ocean,               BiomeType.Ocean,               BiomeType.Ocean,               BiomeType.Ocean,               BiomeType.Ocean,               BiomeType.Ocean },
             new[] { BiomeType.Beach,               BiomeType.Beach,               BiomeType.Ocean,               BiomeType.Ocean,               BiomeType.Ocean },
             new[] { BiomeType.Beach,               BiomeType.Beach,               BiomeType.Beach,               BiomeType.Ocean,               BiomeType.Ocean },
             new[] { BiomeType.Beach,               BiomeType.Beach,               BiomeType.Beach,               BiomeType.Beach,               BiomeType.Ocean }
@@ -67,8 +68,101 @@ public static class BiomeTable
             new[] { BiomeType.Rockyland,           BiomeType.Rockyland,           BiomeType.Rockyland,           BiomeType.RockylandOutskirts,  BiomeType.RockylandOutskirts }
         })
     };
+    
+    public static BiomeTableRow[] RandomInlandBiomes =
+    {
+        new(0.9f, 1.0f, new[]
+        {
+            new[] { BiomeType.Ocean }
+        }),
+        new(0.8f, 0.9f, new[]
+        {
+            new[] { BiomeType.Ocean },
+            new[] { BiomeType.Beach,               BiomeType.Beach,               BiomeType.Beach,               BiomeType.Ocean,               BiomeType.Ocean,               BiomeType.Ocean,               BiomeType.Ocean,               BiomeType.Ocean,               BiomeType.Ocean,               BiomeType.Ocean },
+            new[] { BiomeType.Beach,               BiomeType.Beach,               BiomeType.Ocean,               BiomeType.Ocean,               BiomeType.Ocean },
+            new[] { BiomeType.Beach,               BiomeType.Beach,               BiomeType.Beach,               BiomeType.Ocean,               BiomeType.Ocean },
+            new[] { BiomeType.Beach,               BiomeType.Beach,               BiomeType.Beach,               BiomeType.Beach,               BiomeType.Ocean }
+        }),
+        new(0.0f, 0.8f, new[]
+        {
+            new[] { BiomeType.RockyFlatland,       BiomeType.DenseBushFlatland,   BiomeType.BushFlatland,        BiomeType.Flatland,            BiomeType.Flatland },
+            new[] { BiomeType.OakForest,           BiomeType.OakForestOutskirts },
+            new[] { BiomeType.RockyFlatland,       BiomeType.DenseBushFlatland,   BiomeType.BushFlatland,        BiomeType.Flatland,            BiomeType.Flatland },
+            new[] { BiomeType.Rockyland,           BiomeType.RockylandOutskirts },
+            new[] { BiomeType.RockyFlatland,       BiomeType.DenseBushFlatland,   BiomeType.BushFlatland,        BiomeType.Flatland,            BiomeType.Flatland },
+            new[] { BiomeType.OakForest,           BiomeType.OakForestOutskirts },
+            new[] { BiomeType.DensePineForest,     BiomeType.PineForest,          BiomeType.PineForestOutskirts },
+            new[] { BiomeType.OakForest,           BiomeType.OakForestOutskirts },
+            new[] { BiomeType.DensePineForest,     BiomeType.PineForest,          BiomeType.PineForestOutskirts },
+            new[] { BiomeType.Rockyland,           BiomeType.RockylandOutskirts },
+            new[] { BiomeType.DensePineForest,     BiomeType.PineForest,          BiomeType.PineForestOutskirts },
+            new[] { BiomeType.Rockyland,           BiomeType.RockylandOutskirts }
+        })
+    };
+    
+    public static BiomeTableRow[] FoodRingsBiomes = // TODO
+    {
+        new(0.9f, 1.0f, new[]
+        {
+            new[] { BiomeType.Ocean }
+        }),
+        new(0.8f, 0.9f, new[]
+        {
+            new[] { BiomeType.Ocean },
+            new[] { BiomeType.Beach,               BiomeType.Beach,               BiomeType.Beach,               BiomeType.Ocean,               BiomeType.Ocean,               BiomeType.Ocean,               BiomeType.Ocean,               BiomeType.Ocean,               BiomeType.Ocean,               BiomeType.Ocean },
+            new[] { BiomeType.Beach,               BiomeType.Beach,               BiomeType.Ocean,               BiomeType.Ocean,               BiomeType.Ocean },
+            new[] { BiomeType.Beach,               BiomeType.Beach,               BiomeType.Beach,               BiomeType.Ocean,               BiomeType.Ocean },
+            new[] { BiomeType.Beach,               BiomeType.Beach,               BiomeType.Beach,               BiomeType.Beach,               BiomeType.Ocean }
+        }),
+        new(0.7f, 0.8f, new[]
+        {
+            new[] { BiomeType.OakForest,           BiomeType.OakForest,           BiomeType.OakForest,           BiomeType.OakForestOutskirts,  BiomeType.Flatland },
+            new[] { BiomeType.OakForest,           BiomeType.OakForest,           BiomeType.OakForest,           BiomeType.OakForestOutskirts,  BiomeType.Flatland },
+            new[] { BiomeType.OakForest,           BiomeType.OakForest,           BiomeType.OakForest,           BiomeType.OakForestOutskirts,  BiomeType.Flatland },
+            new[] { BiomeType.OakForestOutskirts,  BiomeType.Flatland,            BiomeType.Flatland,            BiomeType.Flatland,            BiomeType.Flatland },
+            new[] { BiomeType.OakForestOutskirts,  BiomeType.Flatland,            BiomeType.Flatland,            BiomeType.Flatland,            BiomeType.Flatland },
+            new[] { BiomeType.RockyFlatland,       BiomeType.RockyFlatland,       BiomeType.RockylandOutskirts,  BiomeType.RockylandOutskirts,  BiomeType.RockylandOutskirts }
+        }),
+        new(0.65f, 0.7f, new[]
+        {
+            new[] { BiomeType.DenseBushFlatland,   BiomeType.DenseBushFlatland,   BiomeType.DenseBushFlatland,   BiomeType.BushFlatland,        BiomeType.BushFlatland },
+        }),
+        new(0.5f, 0.7f, new[]
+        {
+            new[] { BiomeType.PineForestOutskirts, BiomeType.OakForest,           BiomeType.OakForest,           BiomeType.Flatland,            BiomeType.Flatland },
+            new[] { BiomeType.OakForest,           BiomeType.OakForest,           BiomeType.Flatland,            BiomeType.OakForestOutskirts,  BiomeType.Flatland },
+            new[] { BiomeType.OakForestOutskirts,  BiomeType.Flatland,            BiomeType.Flatland,            BiomeType.OakForest,           BiomeType.Flatland },
+            new[] { BiomeType.Flatland,            BiomeType.Flatland,            BiomeType.Flatland,            BiomeType.OakForest,           BiomeType.Flatland },
+            new[] { BiomeType.RockyFlatland,       BiomeType.RockyFlatland,       BiomeType.RockylandOutskirts,  BiomeType.RockylandOutskirts,  BiomeType.RockylandOutskirts }
+        }),
+        new(0.4f, 0.5f, new[]
+        {
+            new[] { BiomeType.DenseBushFlatland,   BiomeType.DenseBushFlatland,   BiomeType.DenseBushFlatland,   BiomeType.BushFlatland,        BiomeType.BushFlatland },
+        }),
+        new(0.3f, 0.4f, new[]
+        {
+            new[] { BiomeType.DensePineForest,     BiomeType.DensePineForest,     BiomeType.OakForest,           BiomeType.PineForest,          BiomeType.PineForestOutskirts },
+            new[] { BiomeType.DensePineForest,     BiomeType.DensePineForest,     BiomeType.OakForest,           BiomeType.PineForest,          BiomeType.PineForestOutskirts },
+            new[] { BiomeType.DensePineForest,     BiomeType.OakForest,           BiomeType.DensePineForest,     BiomeType.PineForestOutskirts, BiomeType.Flatland },
+            new[] { BiomeType.DensePineForest,     BiomeType.OakForest,           BiomeType.DensePineForest,     BiomeType.PineForestOutskirts, BiomeType.RockyFlatland },
+            new[] { BiomeType.Rockyland,           BiomeType.Rockyland,           BiomeType.Rockyland,           BiomeType.RockylandOutskirts,  BiomeType.RockylandOutskirts }
+        }),
+        new(0.2f, 0.3f, new[]
+        {
+            new[] { BiomeType.DenseBushFlatland,   BiomeType.DenseBushFlatland,   BiomeType.DenseBushFlatland,   BiomeType.BushFlatland,        BiomeType.BushFlatland },
+        }),
+        new(0.0f, 0.2f, new[]
+        {
+            new[] { BiomeType.DensePineForest,     BiomeType.DensePineForest,     BiomeType.OakForest,           BiomeType.PineForest,          BiomeType.PineForestOutskirts },
+            new[] { BiomeType.DensePineForest,     BiomeType.DensePineForest,     BiomeType.OakForest,           BiomeType.PineForest,          BiomeType.PineForestOutskirts },
+            new[] { BiomeType.DensePineForest,     BiomeType.OakForest,           BiomeType.DensePineForest,     BiomeType.PineForestOutskirts, BiomeType.Flatland },
+            new[] { BiomeType.DensePineForest,     BiomeType.OakForest,           BiomeType.DensePineForest,     BiomeType.PineForestOutskirts, BiomeType.RockyFlatland },
+            new[] { BiomeType.Rockyland,           BiomeType.Rockyland,           BiomeType.Rockyland,           BiomeType.RockylandOutskirts,  BiomeType.RockylandOutskirts }
+        })
+    };
 
-    public static Dictionary<BiomeType, BiomeObjectData> BiomeObjectPool = new()
+    public Dictionary<BiomeType, BiomeObjectData> BiomeObjectPool;
+    public static Dictionary<BiomeType, BiomeObjectData> DefaultBiomeObjectPool = new()
     {
         // FLATLANDS
         {
@@ -280,4 +374,16 @@ public static class BiomeTable
             new BiomeObjectData(0.0f, Array.Empty<EnvironmentObjectId>(), Array.Empty<int>())
         }
     };
+
+    public static BiomeTable Default => new(DefaultBiomes, DefaultBiomeObjectPool);
+    
+    public static BiomeTable RandomInland => new(RandomInlandBiomes, DefaultBiomeObjectPool);
+    
+    public static BiomeTable FoodRings => new(FoodRingsBiomes, DefaultBiomeObjectPool);
+
+    public BiomeTable(BiomeTableRow[] biomes = null, Dictionary<BiomeType, BiomeObjectData> biomeObjectPool = null)
+    {
+        this.Biomes = biomes ?? DefaultBiomes;
+        this.BiomeObjectPool = biomeObjectPool ?? DefaultBiomeObjectPool;
+    }
 }

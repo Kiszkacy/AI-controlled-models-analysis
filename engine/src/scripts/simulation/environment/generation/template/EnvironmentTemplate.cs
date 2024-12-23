@@ -1,4 +1,4 @@
-﻿
+
 using Godot;
 
 public struct EnvironmentTemplate

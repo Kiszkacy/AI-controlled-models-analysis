@@ -19,11 +19,6 @@ public class EnvironmentManager : Singleton<EnvironmentManager>, Initializable
         return BiomeType.Ocean != EnvironmentGenerationUtil.GetBiomeAt(where, this.Environment.Size, this.Environment.TemplateData.GenerationSettings.BiomeChunkSize, this.Environment.TemplateData.BiomeData);
     }
 
-    public BiomeType GetBiomeAt(Vector2 where)
-    {
-        return EnvironmentGenerationUtil.GetBiomeAt(where, this.Environment.Size, this.Environment.TemplateData.GenerationSettings.BiomeChunkSize, this.Environment.TemplateData.BiomeData);
-    }
-
     public void Reset()
     {
         this.Environment = null;

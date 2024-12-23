@@ -1,0 +1,730 @@
+[gd_scene load_steps=29 format=3 uid="uid://cm7xbxgg7k28n"]
+
+[ext_resource type="Theme" uid="uid://de0xa04ygj6gw" path="res://assets/ui/themes/grayTheme.tres" id="1_c8cgr"]
+[ext_resource type="Script" path="res://src/scripts/screens/configuration/environment/EnvironmentConfiguration.cs" id="1_lwfhd"]
+[ext_resource type="Theme" uid="uid://c81i2ymfrd5c3" path="res://assets/ui/themes/whiteTheme.tres" id="2_nbap8"]
+[ext_resource type="Texture2D" uid="uid://dioarrnkvg2r3" path="res://assets/tilesets/biome-tileset.png" id="3_5vml6"]
+[ext_resource type="Script" path="res://src/scripts/simulation/ui/minimap/Minimap.cs" id="4_5jabt"]
+[ext_resource type="Script" path="res://src/scripts/screens/configuration/environment/pointDrawer/PointDrawer.cs" id="4_bnyal"]
+[ext_resource type="PackedScene" uid="uid://dg0yqw36ykfvh" path="res://src/scenes/ui/input/input.tscn" id="5_pdrob"]
+[ext_resource type="PackedScene" uid="uid://b710f8lg2jnjo" path="res://src/scenes/ui/input/input-small.tscn" id="8_4au4h"]
+[ext_resource type="PackedScene" uid="uid://byp6g5lwnjkly" path="res://src/scenes/ui/button/iconButtonSmall.tscn" id="9_gbjsn"]
+[ext_resource type="Texture2D" uid="uid://bihdxps3qbu7w" path="res://assets/icons/solid/magnifying-glass.svg" id="10_3ypxv"]
+[ext_resource type="Texture2D" uid="uid://he54r43t40s8" path="res://assets/icons/solid/circle-info.svg" id="10_m3fat"]
+[ext_resource type="Texture2D" uid="uid://b4kirufkc7ch3" path="res://assets/icons/solid/caret-down.svg" id="11_6ov0t"]
+[ext_resource type="PackedScene" uid="uid://bdvrrauthis8a" path="res://src/scenes/configuration/environment/biomeRow.tscn" id="11_uekyp"]
+[ext_resource type="Texture2D" uid="uid://ct4lnhjfna7ku" path="res://assets/icons/solid/rotate-left.svg" id="11_xfruq"]
+[ext_resource type="PackedScene" uid="uid://cmi6acb2oc6qx" path="res://src/scenes/ui/tooltip/tooltip.tscn" id="14_2yfjk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h06he"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.878431, 0.882353, 0.866667, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+anti_aliasing = false
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_the3t"]
+texture = ExtResource("3_5vml6")
+texture_region_size = Vector2i(1, 1)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+9:0/0 = 0
+10:0/0 = 0
+11:0/0 = 0
+12:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_hhibr"]
+tile_size = Vector2i(1, 1)
+sources/0 = SubResource("TileSetAtlasSource_the3t")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qtx2s"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qp8j3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gsvao"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p3c4d"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u60tx"]
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fcajo"]
+content_margin_right = 2.0
+content_margin_bottom = 8.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_55xeh"]
+content_margin_right = 0.0
+content_margin_bottom = 4.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2qxpa"]
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="Shader" id="Shader_cq5gr"]
+code = "shader_type canvas_item;
+
+uniform vec4 tint_color = vec4(1.0,1.0,1.0,0.5);
+uniform float blur_amount = 2.0;
+uniform sampler2D SCREEN_TEXTURE: hint_screen_texture, filter_linear_mipmap;
+
+void fragment() {
+	vec4 orig_tex = texture(TEXTURE,UV);
+	vec4 blurred_texture = textureLod(SCREEN_TEXTURE, SCREEN_UV, blur_amount);
+	COLOR = mix(blurred_texture, tint_color, tint_color.a);
+	COLOR.a = orig_tex.a;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0eg5w"]
+shader = SubResource("Shader_cq5gr")
+shader_parameter/tint_color = Vector4(0.2, 0.2, 0.2, 0.3)
+shader_parameter/blur_amount = 1.0
+
+[node name="EnvironmentConfiguration" type="Control" node_paths=PackedStringArray("Minimap", "LandPointsDrawer", "OceanPointsDrawer", "SimulationName", "SimulationNameSaveLocation", "SimulationSeed", "SelectedMapSizeButton", "MapSizeButton", "ShowBiomesButton", "ShowLandPointsButton", "ShowOceanPointsButton", "BigMinimapParent", "BigMinimap", "BigMinimapArea", "BigLandPointsDrawer", "BigOceanPointsDrawer", "BigMinimapButton", "CloseBigMinimapButton", "OceanSizeSlider", "OceanSize", "SelectedBiomeChunkSizeButton", "BiomeChunkSizeButton", "SelectedBiomeTableButton", "BiomeTableButton")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lwfhd")
+Minimap = NodePath("Border/MinimapTileSet")
+LandPointsDrawer = NodePath("Border/LandPointsDrawer")
+OceanPointsDrawer = NodePath("Border/OceanPointsDrawer")
+SimulationName = NodePath("SimulationNameInput")
+SimulationNameSaveLocation = NodePath("SimulationNameSaveLocationLabel")
+SimulationSeed = NodePath("SimulationSeedInput")
+SelectedMapSizeButton = NodePath("SimulationSize")
+MapSizeButton = NodePath("SimulationSizeMenu")
+ShowBiomesButton = NodePath("ShowBiomesButton")
+ShowLandPointsButton = NodePath("ShowLandPointsButton")
+ShowOceanPointsButton = NodePath("ShowOceanPointsButton")
+BigMinimapParent = NodePath("MinimapBig")
+BigMinimap = NodePath("MinimapBig/Border/MinimapTileSet")
+BigMinimapArea = NodePath("MinimapBig/Border/MinimapSize")
+BigLandPointsDrawer = NodePath("MinimapBig/Border/LandPointsDrawer")
+BigOceanPointsDrawer = NodePath("MinimapBig/Border/OceanPointsDrawer")
+BigMinimapButton = NodePath("BigMinimapButton")
+CloseBigMinimapButton = NodePath("MinimapBig/CloseBigMinimapButton")
+OceanSizeSlider = NodePath("VBox/OceanSizeMultiplierInput/OcenSizeMultiplierSlider")
+OceanSize = NodePath("VBox/OceanSizeMultiplierInput")
+SelectedBiomeChunkSizeButton = NodePath("VBox/BiomeChunkSizeInput")
+BiomeChunkSizeButton = NodePath("VBox/BiomeChunkSizeInput/BiomeChunkSizeMenu")
+SelectedBiomeTableButton = NodePath("VBox/BiomeTablePresetInput")
+BiomeTableButton = NodePath("VBox/BiomeTablePresetInput/BiomeTablePresetMenu")
+
+[node name="Box" type="TabContainer" parent="."]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 96.0
+offset_right = 1824.0
+offset_bottom = 888.0
+theme = ExtResource("1_c8cgr")
+
+[node name="Border" type="Label" parent="."]
+layout_mode = 0
+offset_left = 144.0
+offset_top = 176.0
+offset_right = 624.0
+offset_bottom = 656.0
+theme = ExtResource("2_nbap8")
+theme_override_styles/normal = SubResource("StyleBoxFlat_h06he")
+
+[node name="LandPointsDrawer" type="Control" parent="Border"]
+visible = false
+z_index = 1
+layout_mode = 1
+anchor_left = 0.033
+anchor_top = 0.033
+anchor_right = 0.033
+anchor_bottom = 0.033
+offset_left = 0.16
+offset_top = 0.16
+offset_right = 448.16
+offset_bottom = 448.16
+script = ExtResource("4_bnyal")
+PointRadius = 4.0
+
+[node name="OceanPointsDrawer" type="Control" parent="Border"]
+visible = false
+z_index = 1
+layout_mode = 1
+anchor_left = 0.033
+anchor_top = 0.033
+anchor_right = 0.033
+anchor_bottom = 0.033
+offset_left = 0.16
+offset_top = 0.16
+offset_right = 448.16
+offset_bottom = 448.16
+script = ExtResource("4_bnyal")
+PointColor = Color(0.266667, 0, 1, 1)
+PointRadius = 4.0
+
+[node name="MinimapTileSet" type="TileMap" parent="Border"]
+position = Vector2(16, 16)
+scale = Vector2(8, 8)
+tile_set = SubResource("TileSet_hhibr")
+format = 2
+script = ExtResource("4_5jabt")
+SizeInTiles = 56
+
+[node name="MinimapSize" type="Label" parent="Border"]
+clip_contents = true
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 464.0
+offset_bottom = 464.0
+theme = ExtResource("2_nbap8")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_qtx2s")
+
+[node name="Line" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 673.0
+offset_top = 144.0
+offset_right = 675.0
+offset_bottom = 840.0
+mouse_filter = 1
+color = Color(0.203922, 0.203922, 0.203922, 1)
+
+[node name="Line2" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 1248.0
+offset_top = 144.0
+offset_right = 1250.0
+offset_bottom = 840.0
+mouse_filter = 1
+color = Color(0.203922, 0.203922, 0.203922, 1)
+
+[node name="PreviewLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 144.0
+offset_top = 144.0
+offset_right = 241.0
+offset_bottom = 174.0
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+text = "Preview"
+
+[node name="SimulationNameInput" parent="." instance=ExtResource("5_pdrob")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.075
+anchor_top = 0.622
+anchor_right = 0.075
+anchor_bottom = 0.622
+offset_top = 0.239929
+offset_right = 0.0
+offset_bottom = 0.239929
+Title = "Simulation name"
+
+[node name="SimulationNameSaveLocationLabel" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 344.0
+offset_top = 680.0
+offset_right = 591.0
+offset_bottom = 704.0
+theme = ExtResource("1_c8cgr")
+theme_override_colors/default_color = Color(0.75, 0.75, 0.75, 1)
+theme_override_font_sizes/normal_font_size = 12
+text = "ble ble ble simualtion file location
+"
+
+[node name="SimulationSeedInput" parent="." instance=ExtResource("5_pdrob")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.075
+anchor_top = 0.659
+anchor_right = 0.075
+anchor_bottom = 0.659
+offset_top = 0.279968
+offset_right = 0.0
+offset_bottom = 0.279968
+Title = "Simulation seed"
+
+[node name="SimulationSize" parent="." instance=ExtResource("8_4au4h")]
+offset_left = 344.0
+offset_top = 712.0
+offset_right = 440.0
+offset_bottom = 744.0
+Title = "Map size"
+DefaultText = "Small"
+Disabled = true
+
+[node name="SimulationSizeMenu" type="MenuButton" parent="."]
+layout_mode = 2
+offset_left = 448.0
+offset_top = 712.0
+offset_right = 566.0
+offset_bottom = 744.0
+theme = ExtResource("1_c8cgr")
+text = "Pick map size"
+flat = false
+item_count = 3
+popup/item_0/text = "Small"
+popup/item_0/checkable = 2
+popup/item_0/checked = true
+popup/item_1/text = "Medium"
+popup/item_1/checkable = 2
+popup/item_1/id = 1
+popup/item_2/text = "Large"
+popup/item_2/checkable = 2
+popup/item_2/id = 2
+
+[node name="ShowBiomesButton" type="CheckButton" parent="."]
+layout_mode = 0
+offset_left = 136.0
+offset_top = 749.0
+offset_right = 180.0
+offset_bottom = 781.0
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qp8j3")
+button_pressed = true
+
+[node name="ShowBiomesLabel" type="Label" parent="ShowBiomesButton"]
+layout_mode = 0
+offset_left = 44.0
+offset_right = 181.0
+offset_bottom = 32.0
+theme = ExtResource("1_c8cgr")
+text = "Show biomes"
+vertical_alignment = 1
+
+[node name="ShowLandPointsButton" type="CheckButton" parent="."]
+layout_mode = 0
+offset_left = 136.0
+offset_top = 781.0
+offset_right = 180.0
+offset_bottom = 813.0
+theme_override_styles/focus = SubResource("StyleBoxEmpty_gsvao")
+
+[node name="ShowLandPointsLabel" type="Label" parent="ShowLandPointsButton"]
+layout_mode = 0
+offset_left = 44.0
+offset_right = 181.0
+offset_bottom = 32.0
+theme = ExtResource("1_c8cgr")
+text = "Show land points"
+vertical_alignment = 1
+
+[node name="ShowOceanPointsButton" type="CheckButton" parent="."]
+layout_mode = 0
+offset_left = 136.0
+offset_top = 813.0
+offset_right = 180.0
+offset_bottom = 845.0
+theme_override_styles/focus = SubResource("StyleBoxEmpty_p3c4d")
+
+[node name="ShowOceanPointsLabel" type="Label" parent="ShowOceanPointsButton"]
+layout_mode = 0
+offset_left = 44.0
+offset_right = 181.0
+offset_bottom = 32.0
+theme = ExtResource("1_c8cgr")
+text = "Show ocean points"
+vertical_alignment = 1
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+offset_left = 723.0
+offset_top = 144.0
+offset_right = 868.0
+offset_bottom = 294.0
+
+[node name="BiomesLabel" type="Label" parent="VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+text = "Biomes"
+
+[node name="OceanSizeMultiplierInput" parent="VBox" instance=ExtResource("5_pdrob")]
+layout_mode = 2
+Title = "Ocean size multiplier"
+DefaultText = "1,0"
+
+[node name="OcenSizeMultiplierSlider" type="HSlider" parent="VBox/OceanSizeMultiplierInput"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 50.0
+max_value = 500.0
+value = 100.0
+tick_count = 10
+ticks_on_borders = true
+
+[node name="Seperator" type="Label" parent="VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_u60tx")
+
+[node name="BiomeChunkSizeInput" parent="VBox" instance=ExtResource("5_pdrob")]
+layout_mode = 2
+Title = "Biome chunk size"
+DefaultText = "25x25 pixels"
+Disabled = true
+
+[node name="BiomeChunkSizeMenu" type="MenuButton" parent="VBox/BiomeChunkSizeInput"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 318.0
+offset_bottom = 32.0
+theme = ExtResource("1_c8cgr")
+text = "Pick chunk size"
+flat = false
+item_count = 4
+popup/item_0/text = "20"
+popup/item_0/checkable = 2
+popup/item_0/id = 3
+popup/item_1/text = "25"
+popup/item_1/checkable = 2
+popup/item_1/checked = true
+popup/item_1/id = 1
+popup/item_2/text = "50"
+popup/item_2/checkable = 2
+popup/item_2/id = 1
+popup/item_3/text = "100"
+popup/item_3/checkable = 2
+popup/item_3/id = 2
+
+[node name="Seperator2" type="Label" parent="VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_fcajo")
+
+[node name="BiomeTableLabel" type="Label" parent="VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+text = "Biome Table"
+
+[node name="BiomeTableInfo" parent="VBox/BiomeTableLabel" instance=ExtResource("9_gbjsn")]
+layout_mode = 0
+offset_left = 147.0
+offset_top = -8.0
+offset_right = 195.0
+offset_bottom = 40.0
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
+disabled = true
+icon = ExtResource("10_m3fat")
+flat = true
+
+[node name="BiomeTablePresetInput" parent="VBox" instance=ExtResource("5_pdrob")]
+layout_mode = 2
+Title = "Biome table preset"
+DefaultText = "Default"
+Disabled = true
+
+[node name="BiomeTablePresetMenu" type="MenuButton" parent="VBox/BiomeTablePresetInput"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 318.0
+offset_bottom = 32.0
+theme = ExtResource("1_c8cgr")
+text = "Pick biome preset"
+flat = false
+item_count = 3
+popup/item_0/text = "Default"
+popup/item_0/checkable = 2
+popup/item_0/checked = true
+popup/item_0/id = 3
+popup/item_1/text = "Random Inland"
+popup/item_1/checkable = 2
+popup/item_1/id = 1
+popup/item_2/text = "Food rings"
+popup/item_2/checkable = 2
+popup/item_2/id = 1
+
+[node name="BiomeTableLine" type="ColorRect" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 1200.0
+offset_top = 258.0
+offset_right = 1202.0
+offset_bottom = 735.0
+rotation = 1.5708
+mouse_filter = 1
+color = Color(0.203922, 0.203922, 0.203922, 1)
+
+[node name="BiomeTableBox" type="ScrollContainer" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 723.0
+offset_top = 342.0
+offset_right = 1200.0
+offset_bottom = 840.0
+
+[node name="VBox" type="VBoxContainer" parent="BiomeTableBox"]
+layout_mode = 2
+
+[node name="Row" parent="BiomeTableBox/VBox" instance=ExtResource("11_uekyp")]
+layout_mode = 2
+
+[node name="Seperator2" type="Label" parent="BiomeTableBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_55xeh")
+
+[node name="RowLabel2" type="Label" parent="BiomeTableBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+text = "          ROW  #2 - range x.x to x.x from land points center"
+
+[node name="IconButtonSmall" parent="BiomeTableBox/VBox/RowLabel2" instance=ExtResource("9_gbjsn")]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 0
+offset_left = 3.0
+offset_top = -2.0
+offset_right = 27.0
+offset_bottom = 22.0
+icon = ExtResource("11_6ov0t")
+
+[node name="RightConfigurationBox" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_left = 1296.0
+offset_top = 144.0
+offset_right = 1773.0
+offset_bottom = 840.0
+
+[node name="VBox" type="VBoxContainer" parent="RightConfigurationBox"]
+layout_mode = 2
+
+[node name="TerrainLabel" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+text = "Terrain
+"
+
+[node name="TerrainChunkSizeInput" parent="RightConfigurationBox/VBox" instance=ExtResource("5_pdrob")]
+layout_mode = 2
+Title = "Terrain chunk size"
+DefaultText = "25x25 pixels"
+Disabled = true
+
+[node name="TerrainChunkSizeMenu" type="MenuButton" parent="RightConfigurationBox/VBox/TerrainChunkSizeInput"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 318.0
+offset_bottom = 32.0
+theme = ExtResource("1_c8cgr")
+text = "Pick chunk size"
+flat = false
+item_count = 3
+popup/item_0/text = "20"
+popup/item_0/checkable = 2
+popup/item_0/id = 3
+popup/item_1/text = "25"
+popup/item_1/checkable = 2
+popup/item_1/checked = true
+popup/item_1/id = 1
+popup/item_2/text = "50"
+popup/item_2/checkable = 2
+popup/item_2/id = 1
+
+[node name="Seperator" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_u60tx")
+
+[node name="CorrosionChanceInput" parent="RightConfigurationBox/VBox" instance=ExtResource("5_pdrob")]
+layout_mode = 2
+Title = "Corrosion chance"
+DefaultText = "0,5"
+
+[node name="CorrosionChance" type="HSlider" parent="RightConfigurationBox/VBox/CorrosionChanceInput"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+max_value = 1000.0
+value = 500.0
+tick_count = 5
+
+[node name="Seperator2" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_2qxpa")
+
+[node name="CorrosionNeighborCountInput" parent="RightConfigurationBox/VBox" instance=ExtResource("5_pdrob")]
+layout_mode = 2
+Title = "Corrosion neighbor count"
+DefaultText = "3"
+
+[node name="CorrosionNeighborCount" type="HSlider" parent="RightConfigurationBox/VBox/CorrosionNeighborCountInput"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 1.0
+max_value = 8.0
+value = 3.0
+tick_count = 8
+ticks_on_borders = true
+
+[node name="Seperator3" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_fcajo")
+
+[node name="ObjectsLabel" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+text = "Objects"
+
+[node name="ObjectDensityInput" parent="RightConfigurationBox/VBox" instance=ExtResource("5_pdrob")]
+layout_mode = 2
+Title = "Object density multiplier"
+DefaultText = "1,0"
+
+[node name="ObjectDensity" type="HSlider" parent="RightConfigurationBox/VBox/ObjectDensityInput"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 25.0
+max_value = 200.0
+value = 100.0
+tick_count = 8
+ticks_on_borders = true
+
+[node name="BigMinimapButton" parent="." instance=ExtResource("9_gbjsn")]
+layout_mode = 0
+offset_left = 588.0
+offset_top = 620.0
+offset_right = 636.0
+offset_bottom = 668.0
+icon = ExtResource("10_3ypxv")
+
+[node name="MinimapBig" type="Control" parent="."]
+visible = false
+z_index = 1
+anchors_preset = 0
+
+[node name="FadeoutBackground" type="ColorRect" parent="MinimapBig"]
+material = SubResource("ShaderMaterial_0eg5w")
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 0.25098)
+
+[node name="Box" type="TabContainer" parent="MinimapBig"]
+layout_mode = 0
+offset_left = 496.0
+offset_top = 28.0
+offset_right = 1424.0
+offset_bottom = 988.0
+theme = ExtResource("1_c8cgr")
+
+[node name="InfoMessage" type="Label" parent="MinimapBig"]
+layout_mode = 0
+offset_left = 560.0
+offset_top = 900.0
+offset_right = 657.0
+offset_bottom = 930.0
+theme = ExtResource("1_c8cgr")
+text = "Left click on the minimap to create new terrain points.
+Right click to create ocean points.
+Clicking again on already existing point will delete it."
+
+[node name="Border" type="Label" parent="MinimapBig"]
+layout_mode = 0
+offset_left = 560.0
+offset_top = 92.0
+offset_right = 1360.0
+offset_bottom = 892.0
+theme = ExtResource("2_nbap8")
+theme_override_styles/normal = SubResource("StyleBoxFlat_h06he")
+
+[node name="LandPointsDrawer" type="Control" parent="MinimapBig/Border"]
+z_index = 2
+layout_mode = 1
+anchor_left = 0.033
+anchor_top = 0.033
+anchor_right = 0.033
+anchor_bottom = 0.033
+offset_left = -10.4
+offset_top = -10.4
+offset_right = 757.6
+offset_bottom = 757.6
+script = ExtResource("4_bnyal")
+PointRadius = 5.0
+
+[node name="OceanPointsDrawer" type="Control" parent="MinimapBig/Border"]
+z_index = 2
+layout_mode = 1
+anchor_left = 0.033
+anchor_top = 0.033
+anchor_right = 0.033
+anchor_bottom = 0.033
+offset_left = -10.4
+offset_top = -10.4
+offset_right = 757.6
+offset_bottom = 757.6
+script = ExtResource("4_bnyal")
+PointColor = Color(0.266667, 0, 1, 1)
+PointRadius = 5.0
+
+[node name="MinimapTileSet" type="TileMap" parent="MinimapBig/Border"]
+position = Vector2(16, 16)
+scale = Vector2(8, 8)
+tile_set = SubResource("TileSet_hhibr")
+format = 2
+script = ExtResource("4_5jabt")
+SizeInTiles = 96
+
+[node name="MinimapSize" type="Label" parent="MinimapBig/Border"]
+clip_contents = true
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 784.0
+offset_bottom = 784.0
+theme = ExtResource("2_nbap8")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_qtx2s")
+
+[node name="CloseBigMinimapButton" parent="MinimapBig" instance=ExtResource("9_gbjsn")]
+layout_mode = 0
+offset_left = 512.0
+offset_top = 44.0
+offset_right = 560.0
+offset_bottom = 92.0
+icon = ExtResource("11_xfruq")
+
+[node name="Tooltips" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Tooltip" parent="Tooltips" instance=ExtResource("14_2yfjk")]
+visible = false
+Text = "BLE BLE BLE EXPLAIN THIS"
+TargetNodePath = NodePath("../../VBox/BiomeTableLabel/BiomeTableInfo")

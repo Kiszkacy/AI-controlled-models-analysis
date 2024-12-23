@@ -8,6 +8,7 @@ public class EnvironmentGenerator
     public ObjectGenerator ObjectGenerator { get; }
     public Vector2 Size { get; }
     public Vector2 BiomeChunkSize { get; }
+    public BiomeTable BiomeTable { get; }
     public Vector2 TerrainChunkSize { get; }
     public Vector2[] TerrainPoints { get; }
     public Vector2[] OceanPoints { get; }
@@ -15,7 +16,7 @@ public class EnvironmentGenerator
 
     public EnvironmentTemplate Generate()
     {
-        EnvironmentGenerationSettings settings = new(this.Size, this.BiomeChunkSize, this.TerrainChunkSize, this.TerrainPoints, this.OceanPoints, this.OceanSizeMultiplier);
+        EnvironmentGenerationSettings settings = new(this.Size, this.BiomeChunkSize, this.BiomeTable, this.TerrainChunkSize, this.TerrainPoints, this.OceanPoints, this.OceanSizeMultiplier);
         BiomeType[] biomeData = this.BiomeGenerator.Generate(settings);
         bool[] terrainData = this.TerrainGenerator.Generate(settings, biomeData);
         EnvironmentObjectData[] objectData = this.ObjectGenerator.Generate(settings, biomeData, terrainData);
@@ -23,14 +24,15 @@ public class EnvironmentGenerator
     }
 
     public EnvironmentGenerator(
-        BiomeGenerator biomeGenerator, TerrainGenerator terrainGenerator, ObjectGenerator objectGenerator, Vector2 size, Vector2 biomeChunkSize, Vector2 terrainChunkSize,
-        Vector2[] terrainPoints, Vector2[] oceanPoints, float oceanSizeMultiplier)
+        BiomeGenerator biomeGenerator, TerrainGenerator terrainGenerator, ObjectGenerator objectGenerator, Vector2 size, Vector2 biomeChunkSize, BiomeTable biomeTable,
+        Vector2 terrainChunkSize, Vector2[] terrainPoints, Vector2[] oceanPoints, float oceanSizeMultiplier)
     {
         this.BiomeGenerator = biomeGenerator;
         this.TerrainGenerator = terrainGenerator;
         this.ObjectGenerator = objectGenerator;
         this.Size = size;
         this.BiomeChunkSize = biomeChunkSize;
+        this.BiomeTable = biomeTable;
         this.TerrainChunkSize = terrainChunkSize;
         this.TerrainPoints = terrainPoints;
         this.OceanPoints = oceanPoints;

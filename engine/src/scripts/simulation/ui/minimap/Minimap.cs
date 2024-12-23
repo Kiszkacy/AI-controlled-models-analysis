@@ -3,27 +3,42 @@ using Godot;
 [System.Obsolete]
 public partial class Minimap : TileMap
 {
-    // sizeOfTileInPixels = 8 (change inside godot editor)
-    // sizeOfTileInPixels * sizeInTiles = 256 !!
-    public const int sizeInTiles = 32;
+    [Export]
+    public int SizeInTiles { get; set; } = 32;
+    
+    [Export]
+    public Environment Environment { get; set; } = null;
+
+    public bool DrawLandOnlyMode { get; set; } = false;
 
     public override void _Ready()
     {
-        this.ReloadMinimap();
+        this.Refresh();
     }
 
-    private void ReloadMinimap()
+    public void Refresh()
     {
-        Vector2 environmentSize = EnvironmentManager.Instance.Environment.Size;
-        Vector2 tileSize = environmentSize / sizeInTiles;
+        this.Clear();
+        
+        Environment environment = this.Environment ?? EnvironmentManager.Instance.Environment;
+        Vector2 environmentSize = environment.Size;
+        Vector2 tileSize = environmentSize / this.SizeInTiles;
 
-        for (int y = 0; y < sizeInTiles; y++)
+        for (int y = 0; y < this.SizeInTiles; y++)
         {
             Vector2 currentPosition = new(tileSize.X / 2.0f, tileSize.Y / 2.0f + tileSize.Y * y);
-            for (int x = 0; x < sizeInTiles; x++)
+            for (int x = 0; x < this.SizeInTiles; x++)
             {
-                BiomeType biomeType = EnvironmentManager.Instance.GetBiomeAt(currentPosition);
-                this.SetCell(0, new Vector2I(x, y), 0, new Vector2I((int)biomeType, 0));
+                if (this.DrawLandOnlyMode)
+                {
+                    bool isLandCell = environment.GetBiomeAt(currentPosition) != BiomeType.Ocean;
+                    this.SetCell(0, new Vector2I(x, y), 0, new Vector2I((int)(isLandCell ? (BiomeType.Rockyland) : BiomeType.Ocean), 0));
+                }
+                else
+                {
+                    BiomeType biomeType = environment.GetBiomeAt(currentPosition);
+                    this.SetCell(0, new Vector2I(x, y), 0, new Vector2I((int)biomeType, 0));
+                }
                 currentPosition.X += tileSize.X;
             }
         }
