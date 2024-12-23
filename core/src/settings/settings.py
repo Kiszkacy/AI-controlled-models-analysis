@@ -27,12 +27,36 @@ class GodotSettings:
 
 
 @dataclass(frozen=True)
-class TrainingSettings:
+class ConfigSettings:
     number_of_workers: int
-    number_of_environments_per_worker: int
-    training_iterations: int
+    number_of_env_per_worker: int
+    use_gpu: bool
+    algorithm: str
     training_batch_size: int
+    lr: float
+    grad_clip: float
+    gamma: float
+    entropy_coeff: float
+    clip_param: float
+    lstm_cell_size: int
+    max_seq_len: int
+    fcnet_hiddens: list[int]
+
+
+@dataclass(frozen=True)
+class StorageSettings:
+    name: str
+    save_path: str
+    max_checkpoints: int
+    restore_iteration: int | None
+
+
+@dataclass(frozen=True)
+class TrainingSettings:
+    training_iterations: int
     training_checkpoint_frequency: int
+    is_resume: bool
+    config_settings: ConfigSettings
 
 
 @dataclass(frozen=True)
@@ -66,6 +90,7 @@ class Settings:
     environment: AgentEnvironmentSettings
     communication_codes: CommunicationCodes
     work_environment: WorkEnvironmentSettings
+    storage: StorageSettings
 
     @classmethod
     def from_schema(cls, core_settings: CoreSettingsSchema, app_settings: AppSettingsSchema) -> Self:
@@ -75,6 +100,7 @@ class Settings:
             environment=model_to_dataclass(core_settings.environment, AgentEnvironmentSettings),
             communication_codes=model_to_dataclass(app_settings.communication, CommunicationCodes),
             work_environment=model_to_dataclass(app_settings.work_environment, WorkEnvironmentSettings),
+            storage=model_to_dataclass(core_settings.storage, StorageSettings),
         )
 
 

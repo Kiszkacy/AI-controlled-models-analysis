@@ -77,14 +77,14 @@ class CliSettingsSource(PydanticBaseSettingsSource):
 
 
 class Environment(StrEnum):
-    DEVELOPMENT = auto()
+    CLI = auto()
     GODOT = auto()
 
 
 class WorkEnvironmentSettingsSchema(BaseSettings):
     model_config = SettingsConfigDict(frozen=True)
 
-    env: Environment = Field(default=Environment.GODOT, description="Work environment")
+    env: Environment = Field(default=Environment.CLI, description="Work environment")
     pipe_name: Annotated[str, MinLen(1)] = ""  # TODO: do something with this, default should be None
 
     @classmethod
@@ -104,7 +104,7 @@ class WorkEnvironmentSettingsSchema(BaseSettings):
 
 class AppSettingsSchema(BaseSettings):
     model_config = SettingsConfigDict(
-        yaml_file=["global/config.yaml"],
+        yaml_file=["../../global/config.yaml"],
         frozen=True,
     )
 

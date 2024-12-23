@@ -262,6 +262,7 @@ color = Color(0, 0, 0, 0.25098)
 [node name="SimulationViewUI" type="Control" parent="UI"]
 layout_mode = 3
 anchors_preset = 0
+mouse_filter = 1
 
 [node name="Pause" type="Control" parent="UI/SimulationViewUI"]
 visible = false
@@ -296,6 +297,7 @@ offset_left = 16.0
 offset_top = 1016.0
 offset_right = 416.0
 offset_bottom = 1080.0
+mouse_filter = 1
 theme = ExtResource("4_e5ekc")
 theme_override_styles/normal = ExtResource("11_2joy1")
 
@@ -424,6 +426,7 @@ offset_left = 1384.0
 offset_top = 1016.0
 offset_right = 1600.0
 offset_bottom = 1080.0
+mouse_filter = 0
 theme = ExtResource("4_e5ekc")
 theme_override_styles/normal = ExtResource("14_jxxc8")
 
@@ -614,6 +617,7 @@ Description = NodePath("Active object/ActiveObjectDescription")
 
 [node name="Active object" type="Control" parent="UI/SimulationViewUI/ActiveObjectTab"]
 layout_mode = 2
+mouse_filter = 1
 metadata/_tab_index = 0
 
 [node name="Icon" parent="UI/SimulationViewUI/ActiveObjectTab/Active object" instance=ExtResource("1_4ndtu")]
@@ -658,6 +662,7 @@ offset_left = 432.0
 offset_top = 8.0
 offset_right = 434.0
 offset_bottom = 236.0
+mouse_filter = 2
 theme = ExtResource("10_7d1gs")
 theme_override_styles/normal = SubResource("StyleBoxFlat_200ap")
 
@@ -672,6 +677,14 @@ theme = ExtResource("10_7d1gs")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = SubResource("StyleBoxEmpty_gdw0h")
+
+[node name="TransparentControl" type="Control" parent="UI/SimulationViewUI/ActiveObjectTab/Active object"]
+anchors_preset = 0
+offset_left = 336.0
+offset_top = -27.0
+offset_right = 462.0
+offset_bottom = 2.0
+mouse_filter = 1
 
 [node name="AnalysisViewUI" type="Control" parent="UI" node_paths=PackedStringArray("EnvironmentTracker", "AgentCountChart", "AgentsMeanEnergyChart", "AgentsEnergySumChart", "EnvironmentTotalEnergyChart", "FoodToAgentsRatioChart", "FoodCountChart", "SaveDataButton", "ClearDataButton", "CacheSizeInput", "CacheIntervalInput", "ClearDataConfirmDialog")]
 visible = false
@@ -979,6 +992,7 @@ layout_mode = 0
 offset_left = 832.0
 offset_right = 1088.0
 offset_bottom = 64.0
+mouse_filter = 1
 theme = ExtResource("4_e5ekc")
 theme_override_styles/normal = ExtResource("5_pug4t")
 

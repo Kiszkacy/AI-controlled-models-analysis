@@ -1,6 +1,7 @@
 
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 using Godot;
 
@@ -9,15 +10,26 @@ using YamlDotNet.Serialization.NamingConventions;
 
 using FileAccess = Godot.FileAccess;
 
-public class Reloader : Singleton<Reloader>
+public class Reloader : Singleton<Reloader>, Observable, Initializable
 {
     public bool IsReloading { get; set; } = false;
-    private String saveFilePath = "user://savegame.yaml";
+    private String saveDir = Config.Instance.Save.SavePath;
+    private String saveFileName = "savegame";
+    private String loadPath;
+    public bool IsInitialized { get; private set; } = false;
 
-    public void Reload(Node root)
+    public void Initialize()
+    {
+        if (IsInitialized) return;
+
+        EventManager.Get().Subscribe(this, EventChannel.Settings);
+        IsInitialized = true;
+    }
+
+    public async void Reload(Node root)
     {
         IsReloading = true;
-        SaveAllData(root);
+        await SaveAllData(root);
         NeatPrinter.Start()
             .ColorPrint(ConsoleColor.Blue, "[RELOADER]")
             .Print("  | SAVE COMPLETE")
@@ -30,8 +42,40 @@ public class Reloader : Singleton<Reloader>
         TestRunner.Get().Reset();
     }
 
-    private void SaveAllData(Node root)
+    public void LoadSimulation(Node root, String loadFilePath)
     {
+        if (SetLoadPath(loadFilePath))
+        {
+            IsReloading = true;
+            root.GetTree().ReloadCurrentScene();
+            AgentManager.Get().Reset();
+            EntityManager.Get().Reset();
+            EnvironmentManager.Get().Reset();
+            AgentSightRayCastManager.Get().Reset();
+            TestRunner.Get().Reset();
+        }
+        else
+        {
+            NeatPrinter.Start()
+                .ColorPrint(ConsoleColor.Red, "[RELOADER]")
+                .Print("  | LOAD FAILED")
+                .End();
+        }
+    }
+
+    private async Task SaveAllData(Node root)
+    {
+        string saveFilePath = GetSaveFilePath();
+        string simulationFilePath = saveFilePath + ".gsave";
+        string screenshotFilePath = saveFilePath + ".png";
+        if (this.IsReloading)
+        {
+            this.loadPath = simulationFilePath;
+        }
+
+        Camera camera = ((Camera)root.GetNode("Camera"));
+        await camera.TakeScreenshot(screenshotFilePath);
+
         Environment environment = (Environment)root.GetNode("Environment");
         EnvironmentTemplate environmentTemplate = environment.SaveEnvironment();
 
@@ -52,7 +96,7 @@ public class Reloader : Singleton<Reloader>
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .Build();
         String yamlText = serializer.Serialize(saveData);
-        FileAccess file = FileAccess.Open(saveFilePath, FileAccess.ModeFlags.Write);
+        FileAccess file = FileAccess.Open(simulationFilePath, FileAccess.ModeFlags.Write);
         file.StoreString(yamlText);
         file.Close();
     }
@@ -63,12 +107,12 @@ public class Reloader : Singleton<Reloader>
             .ColorPrint(ConsoleColor.Blue, "[RELOADER]")
             .Print("  | LOADING ENVIRONMENT")
             .End();
-        if (!FileAccess.FileExists(saveFilePath))
+        if (!FileAccess.FileExists(loadPath))
         {
-            throw new FileNotFoundException($"File '{saveFilePath}' does not exist.");
+            throw new FileNotFoundException($"File '{loadPath}' does not exist.");
         }
 
-        FileAccess file = FileAccess.Open(saveFilePath, FileAccess.ModeFlags.Read);
+        FileAccess file = FileAccess.Open(loadPath, FileAccess.ModeFlags.Read);
         string yaml = file.GetAsText();
         file.Close();
 
@@ -105,12 +149,81 @@ public class Reloader : Singleton<Reloader>
         supervisor.LoadAgents(agentsData);
     }
 
-    public void SetSaveFilePath(String saveFileName)
+    public void SetSaveFileName(String saveFileName)
     {
-        String filePath = "user://" + saveFileName + ".yaml";
-        if (FileAccess.FileExists(saveFilePath))
+        this.saveFileName = saveFileName;
+    }
+
+    private bool SetLoadPath(String loadFilePath)
+    {
+        if (FileAccess.FileExists(loadFilePath))
         {
-            this.saveFilePath = filePath;
+            if (loadFilePath.EndsWith(".gsave", StringComparison.OrdinalIgnoreCase))
+            {
+                this.loadPath = loadFilePath;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private string GetSaveFilePath()
+    {
+        string timestamp = Time.GetDatetimeStringFromSystem().Replace(":", "-").Replace(" ", "_");
+        return Path.Combine(this.saveDir, this.saveFileName + "-" + timestamp);
+    }
+
+    public void Notify(IEvent @event)
+    {
+        if (@event is NotifyEvent settingsEvent)
+        {
+            string oldSaveDir = this.saveDir;
+            string newSaveDir = Config.Instance.Save.SavePath;
+
+            if (oldSaveDir == newSaveDir) return;
+
+            if (!DirAccess.DirExistsAbsolute(newSaveDir))
+            {
+                DirAccess.MakeDirAbsolute(newSaveDir);
+            }
+
+            if (DirAccess.DirExistsAbsolute(oldSaveDir))
+            {
+                using var dir = DirAccess.Open(oldSaveDir);
+                if (dir != null)
+                {
+                    dir.ListDirBegin();
+                    string fileName = dir.GetNext();
+
+                    while (fileName != "")
+                    {
+                        if (!dir.CurrentIsDir() && fileName.EndsWith(".gsave"))
+                        {
+                            string baseName = Path.GetFileNameWithoutExtension(fileName);
+                            string oldGsavePath = Path.Combine(oldSaveDir, fileName);
+                            string newGsavePath = Path.Combine(newSaveDir, fileName);
+                            DirAccess.CopyAbsolute(oldGsavePath, newGsavePath);
+                            DirAccess.RemoveAbsolute(oldGsavePath);
+
+                            string pngFileName = baseName + ".png";
+                            string oldPngPath = Path.Combine(oldSaveDir, pngFileName);
+                            string newPngPath = Path.Combine(newSaveDir, pngFileName);
+
+                            if (FileAccess.FileExists(oldPngPath))
+                            {
+                                DirAccess.CopyAbsolute(oldPngPath, newPngPath);
+                                DirAccess.RemoveAbsolute(oldPngPath);
+                            }
+                        }
+
+                        fileName = dir.GetNext();
+                    }
+
+                    dir.ListDirEnd();
+                }
+            }
+            this.saveDir = newSaveDir;
         }
     }
 }

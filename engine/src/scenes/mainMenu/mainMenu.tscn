@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://cxx7u0tsmqu7l"]
+[gd_scene load_steps=5 format=3 uid="uid://cxx7u0tsmqu7l"]
 
 [ext_resource type="Script" path="res://src/scenes/mainMenu/MainMenu.cs" id="1_2ct11"]
 [ext_resource type="PackedScene" uid="uid://tai7ju750fc6" path="res://src/scenes/ui/button/buttonWhiteBig.tscn" id="1_bk0sv"]
-[ext_resource type="FontFile" uid="uid://chjp63k0jm20m" path="res://assets/fonts/inter/Inter_18pt-Black.ttf" id="2_5j1m0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sil7k"]
 content_margin_left = 4.0
@@ -135,7 +134,6 @@ alignment = 1
 [node name="HelpBoxText" type="RichTextLabel" parent="HelpBoxParent/CenterHelpBoxVertically"]
 clip_contents = false
 layout_mode = 2
-theme_override_fonts/normal_font = ExtResource("2_5j1m0")
 theme_override_font_sizes/normal_font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxEmpty_hvvjs")
 bbcode_enabled = true

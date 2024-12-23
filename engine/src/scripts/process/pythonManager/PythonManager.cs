@@ -13,10 +13,10 @@ public class PythonManager : Singleton<PythonManager>
     public void Start()
     {
         // TODO move this to a config or load via OS
-        string pythonPath = @"C:\Users\Karol\AppData\Local\Programs\Python\Python311\python.exe";
-        string scriptPath = @"./core/src/main.py --pipe_name godot-pipe-name";
-        string workingDirectory = @"C:\Users\Karol\Documents\Projects-Github\inzynierka";
-        string pythonPathEnv  = @"C:\Users\Karol\Documents\Projects-Github\inzynierka";
+        string pythonPath = @"C:\Dane\AI-controlled-models-analysis\.venv\Scripts\python.exe";
+        string scriptPath = @"./core/src/main.py --pipe_name godot-python-pipe33";
+        string workingDirectory = @"C:\Dane\AI-controlled-models-analysis";
+        string pythonPathEnv  = @"C:\Dane\AI-controlled-models-analysis";
         
         ProcessStartInfo processStartInfo = new ProcessStartInfo
         {

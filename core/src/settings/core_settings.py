@@ -8,11 +8,11 @@ from pydantic_settings import BaseSettings, PydanticBaseSettingsSource, Settings
 
 from core.src.settings.app_settings import APP_REGISTRY
 from core.src.utils.registry.shared_registry import SharedRegistry
-from core.src.utils.types import FiniteFloat, PositiveInteger
+from core.src.utils.types import FiniteFloat, PositiveFloat, PositiveInteger
 
 
 class GodotSettingsSchema(BaseSettings):
-    model_config = SettingsConfigDict(frozen=True, alias_generator=to_pascal)
+    model_config = SettingsConfigDict(frozen=True, alias_generator=to_pascal, populate_by_name=True)
 
     # Path leading to godot executable
     godot_executable: FilePath
@@ -29,18 +29,42 @@ class GodotSettingsSchema(BaseSettings):
         raise ValueError(f"Path should point to an .exe file but instead pointed to {value.suffix}")
 
 
-class TrainingSettingsSchema(BaseSettings):
-    model_config = SettingsConfigDict(frozen=True, alias_generator=to_pascal)
-
+class ConfigSettingsSchema(BaseSettings):
+    model_config = SettingsConfigDict(frozen=True, alias_generator=to_pascal, populate_by_name=True)
     number_of_workers: PositiveInteger
-    number_of_environments_per_worker: PositiveInteger
-    training_iterations: PositiveInteger
+    number_of_env_per_worker: PositiveInteger
+    use_gpu: bool
+    algorithm: str
     training_batch_size: PositiveInteger
+    lr: PositiveFloat
+    grad_clip: PositiveFloat
+    gamma: PositiveFloat
+    entropy_coeff: float
+    clip_param: float
+    lstm_cell_size: PositiveInteger
+    max_seq_len: PositiveInteger
+    fcnet_hiddens: list[int]
+
+
+class StorageSettingsSchema(BaseSettings):
+    model_config = SettingsConfigDict(frozen=True, alias_generator=to_pascal, populate_by_name=True)
+    name: str
+    save_path: str
+    max_checkpoints: PositiveInteger
+    restore_iteration: int | None
+
+
+class TrainingSettingsSchema(BaseSettings):
+    model_config = SettingsConfigDict(frozen=True, alias_generator=to_pascal, populate_by_name=True)
+
+    training_iterations: PositiveInteger
     training_checkpoint_frequency: PositiveInteger
+    is_resume: bool
+    config_settings: ConfigSettingsSchema = Field(description="Algorithm configuration settings")
 
 
 class AgentEnvironmentSettingsSchema(BaseSettings):
-    model_config = SettingsConfigDict(frozen=True, alias_generator=to_pascal)
+    model_config = SettingsConfigDict(frozen=True, alias_generator=to_pascal, populate_by_name=True)
 
     observation_space_size: PositiveInteger = 5
     observation_space_low: FiniteFloat
@@ -66,15 +90,16 @@ class CoreSettingsSchema(BaseSettings):
     model_config = SettingsConfigDict(
         yaml_file="../settings.yaml",
         env_file="../.env",
-        env_prefix="CORE_",
         env_nested_delimiter="__",
         env_file_encoding="utf-8",
         alias_generator=to_pascal,
         frozen=True,
+        populate_by_name=True,
     )
     godot: GodotSettingsSchema = Field(description="The godot settings")
     training: TrainingSettingsSchema = Field(description="Training settings")
     environment: AgentEnvironmentSettingsSchema = Field(description="Training environment settings")
+    storage: StorageSettingsSchema = Field(description="Storage settings")
 
     @classmethod
     def settings_customise_sources(  # noqa: PLR0913
