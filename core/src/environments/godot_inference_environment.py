@@ -5,14 +5,13 @@ from gymnasium.spaces import Box, Dict
 from ray.rllib.env.multi_agent_env import MultiAgentEnv
 from ray.rllib.utils.typing import MultiAgentDict
 
-from core.src.communication.environment.godot_environment_handler import create_godot_environment
 from core.src.settings.settings import AgentEnvironmentSettings, get_settings
 
-__all__ = ["GodotServerEnvironment"]
+__all__ = ["GodotServerInferenceEnvironment"]
 
 
-class GodotServerEnvironment(MultiAgentEnv):
-    def __init__(self, config: dict | None = None):  # noqa: ARG002
+class GodotServerInferenceEnvironment(MultiAgentEnv):
+    def __init__(self, config: dict | None = None, connection_handler=None):  # noqa: ARG002
         super().__init__()
 
         environment_settings = get_settings().environment
@@ -23,9 +22,7 @@ class GodotServerEnvironment(MultiAgentEnv):
         self._states: MultiAgentDict | None = None
         self.communication_settings = get_settings().communication_codes
 
-        godot_settings = get_settings().godot
-        self.connection_handler = create_godot_environment(godot_settings)
-        self.connection_handler.acquire_resources()
+        self.connection_handler = connection_handler
 
     @staticmethod
     def get_action_space(environment_settings: AgentEnvironmentSettings) -> Dict:
@@ -70,8 +67,11 @@ class GodotServerEnvironment(MultiAgentEnv):
             4) Truncated values for each ready agent.
             5) Info values for each agent id (maybe empty dicts).
         """
+        actions["accelerate"] = actions["accelerate"].astype(float)
+        actions["rotate"] = actions["rotate"].astype(float)
         actions_serializable = [
-            {"id": key, "accelerate": value["accelerate"], "rotate": value["rotate"]} for key, value in actions.items()
+            {"id": key, "accelerate": acc, "rotate": rot}
+            for key, (acc, rot) in enumerate(zip(*actions.values(), strict=False))
         ]
 
         actions_json = json.dumps(actions_serializable)
@@ -79,41 +79,34 @@ class GodotServerEnvironment(MultiAgentEnv):
         return self.get_data()
 
     def get_data(self):
-        try:
-            received_data = self.connection_handler.receive()
-        except json.JSONDecodeError:
-            raise
+        received_data = self.connection_handler.receive()
 
-        if not isinstance(received_data, list):
-            observations, rewards, _, truncateds, infos = self.get_data()
-            terminateds = {"__all__": True}
-            return observations, rewards, terminateds, truncateds, infos
+        if isinstance(received_data, int):
+            raise OSError
+
+        received_data = json.loads(received_data)
 
         # GODOT Schema: [id, reward, terminated, observations...]
         id_idx, reward_idx, terminated_idx, observations_idx = range(4)
 
-        observations = {}
-        rewards = {}
+        observations = []
+        rewards = []
         terminateds = {"__all__": False}
         truncateds = {"__all__": False}
         infos = {}
 
         for data in received_data:
             agent_id = data[id_idx]
-            rewards[agent_id] = data[reward_idx]
+            rewards.append(data[reward_idx])
             terminateds[agent_id] = data[terminated_idx]
 
             if not data[terminated_idx]:
-                observations[agent_id] = np.array(data[observations_idx:])
+                observations.append(np.array(data[observations_idx:]))
                 infos[agent_id] = {}
 
-        return observations, rewards, terminateds, truncateds, infos
+        return np.array(observations), np.array(rewards), terminateds, truncateds, infos
 
     def reset(self, *, seed=None, options=None) -> tuple[MultiAgentDict, MultiAgentDict]:  # noqa: ARG002
-        reset_signal = self.communication_settings.reset
-        byte_message = str(reset_signal).encode()
-        self.connection_handler.send(byte_message)
-
         self._states = None
         observations = self.states[0]
         infos = self.states[-1]

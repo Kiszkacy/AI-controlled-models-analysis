@@ -8,7 +8,7 @@ from ray.tune import Tuner
 from ray.tune.schedulers import PopulationBasedTraining
 
 from core.src.environments.godot_environment import GodotServerEnvironment
-from core.src.settings import ConfigSettings, StorageSettings, TrainingSettings
+from core.src.settings.settings import ConfigSettings, StorageSettings, TrainingSettings
 
 
 class TunerConfigurator:

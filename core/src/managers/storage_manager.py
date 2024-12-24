@@ -5,7 +5,7 @@ import shutil
 from loguru import logger
 from ray.rllib.algorithms import Algorithm
 
-from core.src.settings import StorageSettings
+from core.src.settings.settings import StorageSettings
 
 
 class StorageManager:
