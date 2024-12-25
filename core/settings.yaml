@@ -24,10 +24,10 @@ training:
     clip_param: 0.1  # The clipping parameter used in PPO to limit changes to the policy within a specified range
     lstm_cell_size: 256  # Number of units (neurons) in lstm
     max_seq_len: 32  # The maximum sequence length that the LSTM can process at a time. It determines how many previous steps are considered when making a decision.
-    fcnet_hiddens: [ 256, 256 ]  # A list specifying the number of units in the hidden layers of the fully connected neural network.
+    fcnet_hiddens: [ 512, 256 ]  # A list specifying the number of units in the hidden layers of the fully connected neural network.
 
 storage:
-  name: "experiment_less_workers"  # Experiment name
+  name: "why_no_restore"  # Experiment name
   save_path: "C:\\Users\\sokol\\PycharmProjects\\AI-controlled-models-analysis\\core\\src\\models\\tuner"  # Dir where the model will be saved/restored from
   max_checkpoints: 5  # Num of checkpoints saved
   restore_iteration:  # If we want to restore model from "special" iteration we need to provide it here (needs to be in the saved iterations!),

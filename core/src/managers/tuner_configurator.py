@@ -24,13 +24,6 @@ class TunerConfigurator:
         self.storage_settings = storage_settings
 
     def create_new_tuner(self) -> Tuner:
-        def explore(config):
-            if config["train_batch_size"] < config["sgd_minibatch_size"] * 2:
-                config["train_batch_size"] = config["sgd_minibatch_size"] * 2
-            if config["num_sgd_iter"] < 1:
-                config["num_sgd_iter"] = 1
-            return config
-
         hyperparam_mutations = {
             "gamma": tune.uniform(0.9, 0.95),
             "lr": tune.choice([1e-4, 5e-5, 2e-5, 1e-5]),
@@ -45,7 +38,7 @@ class TunerConfigurator:
             perturbation_interval=10,
             resample_probability=0.25,
             hyperparam_mutations=hyperparam_mutations,
-            custom_explore_fn=explore,
+            custom_explore_fn=lambda config: config,
         )
 
         stopping_criteria = {
@@ -79,10 +72,10 @@ class TunerConfigurator:
                     # "vf_share_layers": False, (rozdzielenie polityki i funkcji straty)
                     "custom_model_config": {"min_log_std": -10, "max_log_std": 2},
                 },
-                "weight_decay": 1e-5,  # normalizacja L2, ograniczenie wag dla modelu
+                # "weight_decay": 1e-5,  # normalizacja L2, ograniczenie wag dla modelu
                 "gamma": self.config_settings.gamma,
                 "clip_param": self.config_settings.clip_param,
-                "lr": tune.choice([1e-4, 5e-5, 2e-5, 1e-5]),  # self.config_settings.lr,
+                "lr": self.config_settings.lr,  # tune.choice([1e-4, 5e-5, 2e-5, 1e-5]),
                 "grad_clip": self.config_settings.grad_clip,
                 # "num_sgd_iter": tune.choice([10, 20, 30]),
                 # "sgd_minibatch_size": tune.choice([32, 64, 128]),
@@ -97,6 +90,7 @@ class TunerConfigurator:
                 checkpoint_config=CheckpointConfig(
                     checkpoint_frequency=self.training_settings.training_checkpoint_frequency,
                     num_to_keep=self.storage_settings.max_checkpoints,
+                    checkpoint_at_end=True,
                 ),
             ),
         )
