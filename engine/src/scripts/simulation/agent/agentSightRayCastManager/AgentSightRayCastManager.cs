@@ -36,7 +36,7 @@ public class AgentSightRayCastManager : Singleton<AgentSightRayCastManager>, Ini
 
     public void Reset()
     {
-        this.rayCast.QueueFree();
+        this.rayCast?.QueueFree();
         this.initialized.Reset();
     }
 }

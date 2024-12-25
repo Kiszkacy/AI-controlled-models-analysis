@@ -99,26 +99,7 @@ public partial class Initializer : Node
 
     private void GenerateEnvironment()
     {
-        EnvironmentGenerator environmentGenerator = EnvironmentGeneratorBuilder.Start
-            .SetAllToDefault()
-            .SetTerrainPoints(new[]
-            {
-                new Vector2(0.4f, 0.4f),
-                new Vector2(0.6f, 0.4f),
-                new Vector2(0.4f, 0.6f),
-                new Vector2(0.6f, 0.6f),
-            })
-            .SetOceanPoints(new[]
-            {
-                new Vector2(0.5f, 0.5f),
-
-                new Vector2(0.0f, 0.5f),
-                new Vector2(1.0f, 0.5f),
-                new Vector2(0.5f, 0.0f),
-                new Vector2(0.5f, 1.0f),
-            })
-            .SetOceanSizeMultiplier(0.5f)
-            .End();
+        EnvironmentGenerator environmentGenerator = Reloader.Get().EnvironmentGeneratorToUseWhenEnteringSimulation;
         EnvironmentTemplate environmentTemplate = environmentGenerator.Generate();
         EntityManager.Instance.Initialize(environmentTemplate.GenerationSettings.Size); // IMPORTANT: EntityManager must initialize before environment instantiate
         Node parent = this.GetParent<Node>();

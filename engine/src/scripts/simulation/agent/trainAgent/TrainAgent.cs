@@ -75,7 +75,7 @@ public partial class TrainAgent : Agent
 
         foreach (Vector2 checkPosition in checkPositions)
         {
-            BiomeType biomeType = EnvironmentManager.Get().GetBiomeAt(checkPosition);
+            BiomeType biomeType = EnvironmentManager.Get().Environment.GetBiomeAt(checkPosition);
             if (biomeType == BiomeType.Ocean)
             {
                 this.currentWaterPenalty = Config.Get().Environment.Score.WaterPenalty;

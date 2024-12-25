@@ -1,4 +1,4 @@
-﻿
+
 using System;
 using System.Collections.Generic;
 
@@ -26,9 +26,9 @@ public class EntityManager : Singleton<EntityManager>, Initializable
 
     public void Reset()
     {
-        this.FoodBuckets.Reset();
+        this.FoodBuckets?.Reset();
         this.FoodBuckets = null;
-        this.ObjectBuckets.Reset();
+        this.ObjectBuckets?.Reset();
         this.ObjectBuckets = null;
         this.initialized.Reset();
     }

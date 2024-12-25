@@ -1,4 +1,4 @@
-﻿
+
 using System;
 
 public class InitializableWrapper
@@ -18,10 +18,6 @@ public class InitializableWrapper
 
     public void Reset()
     {
-        if (!this.isInitialized)
-        {
-            throw new InvalidOperationException("This object is not initialized!");
-        }
         this.isInitialized = false;
     }
 }

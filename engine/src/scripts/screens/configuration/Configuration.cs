@@ -73,7 +73,12 @@ public partial class Configuration : Control
 
         if (this.stage == ConfigurationStage.Training) // last stage
         {
-            this.GetTree().ChangeSceneToFile("res://src/scenes/simulation/simulation.tscn");
+            Node root = GetTree().Root;
+            NeatPrinter.Start()
+                .Print("  | LOADING SELECTED SIMULATION")
+                .End();
+            Reloader.Get().EnvironmentGeneratorToUseWhenEnteringSimulation = this.environmentGenerator;
+            root.GetTree().ChangeSceneToFile("res://src/scenes/simulation/simulation.tscn");
         }
         
         this.stage += 1;

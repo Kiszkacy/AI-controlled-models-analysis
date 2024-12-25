@@ -56,9 +56,7 @@ offset_bottom = 1080.0
 color = Color(0.41, 0.41, 0.41, 1)
 
 [node name="EnvironmentConfiguration" parent="." instance=ExtResource("2_ange7")]
-layout_mode = 2
-anchors_preset = 0
-offset_bottom = -28.0
+layout_mode = 1
 
 [node name="BottomPanelBox" type="Label" parent="."]
 layout_mode = 0

@@ -18,6 +18,8 @@ public class Reloader : Singleton<Reloader>, Observable, Initializable
     private String loadPath;
     public bool IsInitialized { get; private set; } = false;
 
+    public EnvironmentGenerator EnvironmentGeneratorToUseWhenEnteringSimulation = EnvironmentGeneratorBuilder.Start.SetAllToDefault().End();
+
     public void Initialize()
     {
         if (IsInitialized) return;
@@ -34,25 +36,32 @@ public class Reloader : Singleton<Reloader>, Observable, Initializable
             .ColorPrint(ConsoleColor.Blue, "[RELOADER]")
             .Print("  | SAVE COMPLETE")
             .End();
-        root.GetTree().ReloadCurrentScene();
         AgentManager.Get().Reset();
         EntityManager.Get().Reset();
         EnvironmentManager.Get().Reset();
         AgentSightRayCastManager.Get().Reset();
         TestRunner.Get().Reset();
+        root.GetTree().ReloadCurrentScene();
     }
 
-    public void LoadSimulation(Node root, String loadFilePath)
+    public void LoadSimulation(Node root, string loadFilePath, bool changeToSimulationScene = false)
     {
         if (SetLoadPath(loadFilePath))
         {
             IsReloading = true;
-            root.GetTree().ReloadCurrentScene();
             AgentManager.Get().Reset();
             EntityManager.Get().Reset();
             EnvironmentManager.Get().Reset();
             AgentSightRayCastManager.Get().Reset();
             TestRunner.Get().Reset();
+            if (changeToSimulationScene)
+            {
+                root.GetTree().ChangeSceneToFile("res://src/scenes/simulation/simulation.tscn");
+            }
+            else
+            {
+                root.GetTree().ReloadCurrentScene();
+            }
         }
         else
         {

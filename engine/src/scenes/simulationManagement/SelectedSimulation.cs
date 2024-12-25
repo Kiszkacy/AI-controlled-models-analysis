@@ -190,11 +190,11 @@ public partial class SelectedSimulation : Panel
 
     private void OnRunButtonPressed()
     {
-        Node root = GetTree().Root.GetNode("Root");
+        Node root = GetTree().Root;
         NeatPrinter.Start()
             .Print("  | LOADING SELECTED SIMULATION")
             .End();
-        Reloader.Get().LoadSimulation(root, simulationPath);
+        Reloader.Get().LoadSimulation(root, simulationPath, true);
     }
 
     private void OnConfirmDialogClick()
