@@ -25,6 +25,9 @@ training:
     lstm_cell_size: 256  # Number of units (neurons) in lstm
     max_seq_len: 32  # The maximum sequence length that the LSTM can process at a time. It determines how many previous steps are considered when making a decision.
     fcnet_hiddens: [ 512, 256 ]  # A list specifying the number of units in the hidden layers of the fully connected neural network.
+    policies:
+      - prefix: "policyA"
+      - prefix: "policyB"
 
 storage:
   name: "experiment_name"  # Experiment name

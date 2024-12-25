@@ -17,7 +17,7 @@ from core.src.settings.core_settings import (
     get_core_settings,
     reload_core_settings,
 )
-from core.src.utils.types import model_to_dataclass
+from core.src.utils.types import dict_to_dataclass
 
 
 @dataclass(frozen=True)
@@ -27,7 +27,17 @@ class GodotSettings:
 
 
 @dataclass(frozen=True)
+class PolicySettings:
+    prefix: str
+
+    def get_config(self) -> dict:
+        return {}
+
+
+@dataclass(frozen=True)
 class ConfigSettings:
+    policies: list[PolicySettings]
+    agent_name_separator: str
     number_of_workers: int
     number_of_env_per_worker: int
     use_gpu: bool
@@ -41,6 +51,13 @@ class ConfigSettings:
     lstm_cell_size: int
     max_seq_len: int
     fcnet_hiddens: list[int]
+
+    def get_policy_mapping(self):
+        def policy_mapping(agent_id: str, _) -> str:
+            (policy_name,) = agent_id.split(self.agent_name_separator, 1)
+            return policy_name
+
+        return policy_mapping
 
 
 @dataclass(frozen=True)
@@ -95,12 +112,12 @@ class Settings:
     @classmethod
     def from_schema(cls, core_settings: CoreSettingsSchema, app_settings: AppSettingsSchema) -> Self:
         return cls(
-            godot=model_to_dataclass(core_settings.godot, GodotSettings),
-            training=model_to_dataclass(core_settings.training, TrainingSettings),
-            environment=model_to_dataclass(core_settings.environment, AgentEnvironmentSettings),
-            communication_codes=model_to_dataclass(app_settings.communication, CommunicationCodes),
-            work_environment=model_to_dataclass(app_settings.work_environment, WorkEnvironmentSettings),
-            storage=model_to_dataclass(core_settings.storage, StorageSettings),
+            godot=dict_to_dataclass(core_settings.godot.dict(), GodotSettings),
+            training=dict_to_dataclass(core_settings.training.dict(), TrainingSettings),
+            environment=dict_to_dataclass(core_settings.environment.dict(), AgentEnvironmentSettings),
+            communication_codes=dict_to_dataclass(app_settings.communication.dict(), CommunicationCodes),
+            work_environment=dict_to_dataclass(app_settings.work_environment.dict(), WorkEnvironmentSettings),
+            storage=dict_to_dataclass(core_settings.storage.dict(), StorageSettings),
         )
 
 

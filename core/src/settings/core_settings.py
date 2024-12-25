@@ -29,6 +29,10 @@ class GodotSettingsSchema(BaseSettings):
         raise ValueError(f"Path should point to an .exe file but instead pointed to {value.suffix}")
 
 
+class PolicySettingsSchema(BaseSettings):
+    prefix: str
+
+
 class ConfigSettingsSchema(BaseSettings):
     model_config = SettingsConfigDict(frozen=True, alias_generator=to_pascal, populate_by_name=True)
     number_of_workers: PositiveInteger
@@ -44,6 +48,8 @@ class ConfigSettingsSchema(BaseSettings):
     lstm_cell_size: PositiveInteger
     max_seq_len: PositiveInteger
     fcnet_hiddens: list[int]
+    policies: list[PolicySettingsSchema]
+    agent_name_separator: str = "_"
 
 
 class StorageSettingsSchema(BaseSettings):

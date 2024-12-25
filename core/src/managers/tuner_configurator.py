@@ -4,6 +4,7 @@ import torch
 from ray import train, tune
 from ray.air import CheckpointConfig
 from ray.rllib import MultiAgentEnv
+from ray.rllib.policy.policy import PolicySpec
 from ray.tune import Tuner
 from ray.tune.schedulers import PopulationBasedTraining
 
@@ -86,6 +87,11 @@ class TunerConfigurator:
                 "sgd_minibatch_size": tune.choice([32, 64, 128]),
                 "train_batch_size": tune.choice([400, 800, 1200, 1600, 2000]),
                 "entropy_coeff": self.config_settings.entropy_coeff,
+                "policies": {
+                    policy_settings.prefix: PolicySpec(config=policy_settings.get_config())
+                    for policy_settings in self.config_settings.policies
+                },
+                "policy_mapping_fn": self.config_settings.get_policy_mapping(),
             },
             run_config=train.RunConfig(
                 name=self.storage_settings.name,
