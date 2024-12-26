@@ -11,7 +11,7 @@ public partial class AgentsConfiguration : Control
     public AgentBar SecondAgentBar { get; set; }
     [Export]
     public AgentBar ThirdAgentBar { get; set; }
-    
+
     [Export]
     public InputHandler MaximumEnergyInput { get; set; }
     [Export]
@@ -50,7 +50,7 @@ public partial class AgentsConfiguration : Control
     public InputHandler SightAngleInput { get; set; }
     [Export]
     public InputHandler SightRadiusInput { get; set; }
-    
+
     [Export]
     public Slider MaximumEnergySlider { get; set; }
     [Export]
@@ -96,7 +96,7 @@ public partial class AgentsConfiguration : Control
     [Export]
     public Slider SizeSlider { get; set; }
 
-    private AgentBar GetBarByIndex(int index) =>  index == 0 ? this.FirstAgentBar : index == 1 ? this.SecondAgentBar : this.ThirdAgentBar;
+    private AgentBar GetBarByIndex(int index) => index == 0 ? this.FirstAgentBar : index == 1 ? this.SecondAgentBar : this.ThirdAgentBar;
 
     private int currentlyActiveBarIndex => this.FirstAgentBar.Status == Status.Active ? 0 : this.SecondAgentBar.Status == Status.Active ? 1 : 2;
 
@@ -108,22 +108,22 @@ public partial class AgentsConfiguration : Control
         this.FirstAgentBar.EnergyLabel.Text = 200.ToString();
         this.SecondAgentBar.EnergyLabel.Text = 200.ToString();
         this.ThirdAgentBar.EnergyLabel.Text = 200.ToString();
-        
+
         this.FirstAgentBar.Status = Status.Active;
         this.FirstAgentBar.TrashButton.Disabled = true;
         this.FirstAgentBar.TrashButton.UpdateAfterDisabledChange();
         this.SecondAgentBar.Status = Status.Empty;
         this.ThirdAgentBar.Status = Status.Hidden;
-        
+
         this.LoadBarDataIntoInputs();
-        
+
         this.FirstAgentBar.DeleteButtonPressed += () => this.OnAgentBarDeleteClick(0);
         this.SecondAgentBar.DeleteButtonPressed += () => this.OnAgentBarDeleteClick(1);
         this.ThirdAgentBar.DeleteButtonPressed += () => this.OnAgentBarDeleteClick(2);
         this.FirstAgentBar.Pressed += () => this.OnAgentBarClick(0);
         this.SecondAgentBar.Pressed += () => this.OnAgentBarClick(1);
         this.ThirdAgentBar.Pressed += () => this.OnAgentBarClick(2);
-        
+
         this.MaximumEnergyInput.TextSubmitted += this.OnMaximumEnergyChange;
         this.InitialEnergyInput.TextSubmitted += this.OnInitialEnergyChange;
         this.EnergySurplusForReproductionInput.TextSubmitted += this.OnEnergySurplusForReproductionChange;
@@ -196,7 +196,7 @@ public partial class AgentsConfiguration : Control
             this.ThirdAgentBar.Status = Status.Hidden;
             this.FirstAgentBar.TrashButton.Disabled = true;
             this.FirstAgentBar.TrashButton.UpdateAfterDisabledChange();
-        } 
+        }
         else if (barIndex == 1 && (this.ThirdAgentBar.Status == Status.Inactive || this.ThirdAgentBar.Status == Status.Active))
         {
             this.CopyBarInto(2, 1);
@@ -207,7 +207,7 @@ public partial class AgentsConfiguration : Control
         {
             this.ThirdAgentBar.Status = Status.Empty;
         }
-        
+
         if (currentlyActiveBarIndex == barIndex)
         {
             this.FirstAgentBar.Status = Status.Active;
@@ -216,7 +216,7 @@ public partial class AgentsConfiguration : Control
         {
             this.GetBarByIndex(currentlyActiveBarIndex-1).Status = Status.Active;
         }
-        
+
         this.LoadBarDataIntoInputs();
     }
 
@@ -229,7 +229,7 @@ public partial class AgentsConfiguration : Control
         {
             this.GetBarByIndex(barIndex).Status = Status.Active;
             this.LoadBarDataIntoInputs();
-        } 
+        }
         else if (clickedBar.Status == Status.Empty)
         {
             this.FirstAgentBar.TrashButton.Disabled = false;
@@ -251,117 +251,137 @@ public partial class AgentsConfiguration : Control
         this.GetBarByIndex(barToIndex).agentData = this.GetBarByIndex(barFromIndex).agentData;
     }
 
-    private void OnMaximumEnergyChange(object _, BaseEventArgs<string> args) {
+    private void OnMaximumEnergyChange(object _, BaseEventArgs<string> args)
+    {
         AgentBar activeBar = this.GetBarByIndex(this.currentlyActiveBarIndex);
         activeBar.agentData.MaximumEnergy = args.Value.ToFloat();
         this.MaximumEnergySlider.Value = activeBar.agentData.MaximumEnergy;
         activeBar.EnergyLabel.Text = args.Value;
     }
 
-    private void OnInitialEnergyChange(object _, BaseEventArgs<string> args) {
+    private void OnInitialEnergyChange(object _, BaseEventArgs<string> args)
+    {
         AgentBar activeBar = this.GetBarByIndex(this.currentlyActiveBarIndex);
         activeBar.agentData.InitialEnergy = args.Value.ToFloat();
         this.InitialEnergySlider.Value = activeBar.agentData.InitialEnergy;
     }
 
-    private void OnEnergySurplusForReproductionChange(object _, BaseEventArgs<string> args) {
+    private void OnEnergySurplusForReproductionChange(object _, BaseEventArgs<string> args)
+    {
         AgentBar activeBar = this.GetBarByIndex(this.currentlyActiveBarIndex);
         activeBar.agentData.EnergySurplusForReproduction = args.Value.ToFloat() - activeBar.agentData.ReproductionEnergyCost;
         this.EnergySurplusForReproductionSlider.Value = activeBar.agentData.EnergySurplusForReproduction;
     }
 
-    private void OnReproductionEnergyCostChange(object _, BaseEventArgs<string> args) {
+    private void OnReproductionEnergyCostChange(object _, BaseEventArgs<string> args)
+    {
         AgentBar activeBar = this.GetBarByIndex(this.currentlyActiveBarIndex);
         activeBar.agentData.ReproductionEnergyCost = args.Value.ToFloat();
         this.ReproductionEnergyCostSlider.Value = activeBar.agentData.ReproductionEnergyCost;
     }
 
-    private void OnEnergyLossPerSecondChange(object _, BaseEventArgs<string> args) {
+    private void OnEnergyLossPerSecondChange(object _, BaseEventArgs<string> args)
+    {
         AgentBar activeBar = this.GetBarByIndex(this.currentlyActiveBarIndex);
         activeBar.agentData.EnergyLossPerSecond = args.Value.ToFloat();
         this.EnergyLossPerSecondSlider.Value = activeBar.agentData.EnergyLossPerSecond;
     }
 
-    private void OnEnergyLossPerSecondPer100UnitsOfMovementChange(object _, BaseEventArgs<string> args) {
+    private void OnEnergyLossPerSecondPer100UnitsOfMovementChange(object _, BaseEventArgs<string> args)
+    {
         AgentBar activeBar = this.GetBarByIndex(this.currentlyActiveBarIndex);
         activeBar.agentData.EnergyLossPerSecondPer100UnitsOfMovement = args.Value.ToFloat();
         this.EnergyLossPerSecondPer100UnitsOfMovementSlider.Value = activeBar.agentData.EnergyLossPerSecondPer100UnitsOfMovement;
     }
 
-    private void OnEnergyLossPerSecondRotationChange(object _, BaseEventArgs<string> args) {
+    private void OnEnergyLossPerSecondRotationChange(object _, BaseEventArgs<string> args)
+    {
         AgentBar activeBar = this.GetBarByIndex(this.currentlyActiveBarIndex);
         activeBar.agentData.EnergyLossPerSecondRotation = args.Value.ToFloat();
         this.EnergyLossPerSecondRotationSlider.Value = activeBar.agentData.EnergyLossPerSecondRotation;
     }
 
-    private void OnMaximumHealthChange(object _, BaseEventArgs<string> args) {
+    private void OnMaximumHealthChange(object _, BaseEventArgs<string> args)
+    {
         AgentBar activeBar = this.GetBarByIndex(this.currentlyActiveBarIndex);
         activeBar.agentData.MaximumHealth = args.Value.ToFloat();
         this.MaximumHealthSlider.Value = activeBar.agentData.MaximumHealth;
     }
 
-    private void OnInitialHealthChange(object _, BaseEventArgs<string> args) {
+    private void OnInitialHealthChange(object _, BaseEventArgs<string> args)
+    {
         AgentBar activeBar = this.GetBarByIndex(this.currentlyActiveBarIndex);
         activeBar.agentData.InitialHealth = args.Value.ToFloat();
         this.InitialHealthSlider.Value = activeBar.agentData.InitialHealth;
     }
 
-    private void OnHealthLossPerSecondChange(object _, BaseEventArgs<string> args) {
+    private void OnHealthLossPerSecondChange(object _, BaseEventArgs<string> args)
+    {
         AgentBar activeBar = this.GetBarByIndex(this.currentlyActiveBarIndex);
         activeBar.agentData.HealthLossPerSecond = args.Value.ToFloat();
         this.HealthLossPerSecondSlider.Value = activeBar.agentData.HealthLossPerSecond;
     }
 
-    private void OnHealthRegenPerSecondChange(object _, BaseEventArgs<string> args) {
+    private void OnHealthRegenPerSecondChange(object _, BaseEventArgs<string> args)
+    {
         AgentBar activeBar = this.GetBarByIndex(this.currentlyActiveBarIndex);
         activeBar.agentData.HealthRegenPerSecond = args.Value.ToFloat();
         this.HealthRegenPerSecondSlider.Value = activeBar.agentData.HealthRegenPerSecond;
     }
 
-    private void OnMinimumHealthToReproduceChange(object _, BaseEventArgs<string> args) {
+    private void OnMinimumHealthToReproduceChange(object _, BaseEventArgs<string> args)
+    {
         AgentBar activeBar = this.GetBarByIndex(this.currentlyActiveBarIndex);
         activeBar.agentData.MinimumHealthToReproduce = args.Value.ToFloat();
         this.MinimumHealthToReproduceSlider.Value = activeBar.agentData.MinimumHealthToReproduce;
     }
 
-    private void OnMaximumSpeedChange(object _, BaseEventArgs<string> args) {
+    private void OnMaximumSpeedChange(object _, BaseEventArgs<string> args)
+    {
         AgentBar activeBar = this.GetBarByIndex(this.currentlyActiveBarIndex);
         activeBar.agentData.MaximumSpeed = args.Value.ToFloat();
         this.MaximumSpeedSlider.Value = activeBar.agentData.MaximumSpeed;
     }
 
-    private void OnMaximumAccelerationChange(object _, BaseEventArgs<string> args) {
+    private void OnMaximumAccelerationChange(object _, BaseEventArgs<string> args)
+    {
         AgentBar activeBar = this.GetBarByIndex(this.currentlyActiveBarIndex);
         activeBar.agentData.MaximumAcceleration = args.Value.ToFloat();
         this.MaximumAccelerationSlider.Value = activeBar.agentData.MaximumAcceleration;
     }
 
-    private void OnMaximumDecelerationChange(object _, BaseEventArgs<string> args) {
+    private void OnMaximumDecelerationChange(object _, BaseEventArgs<string> args)
+    {
         AgentBar activeBar = this.GetBarByIndex(this.currentlyActiveBarIndex);
         activeBar.agentData.MaximumDeceleration = args.Value.ToFloat();
         this.MaximumDecelerationSlider.Value = activeBar.agentData.MaximumDeceleration;
     }
 
-    private void OnMaximumTurnSpeedChange(object _, BaseEventArgs<string> args) {
+    private void OnMaximumTurnSpeedChange(object _, BaseEventArgs<string> args)
+    {
         AgentBar activeBar = this.GetBarByIndex(this.currentlyActiveBarIndex);
         activeBar.agentData.MaximumTurnSpeed = Mathf.DegToRad(args.Value.ToFloat());
         this.MaximumTurnSpeedSlider.Value = Mathf.RadToDeg(activeBar.agentData.MaximumTurnSpeed);
     }
 
-    private void OnSightAngleChange(object _, BaseEventArgs<string> args) {
+    private void OnSightAngleChange(object _, BaseEventArgs<string> args)
+    {
         AgentBar activeBar = this.GetBarByIndex(this.currentlyActiveBarIndex);
         activeBar.agentData.SightAngle = Mathf.DegToRad(args.Value.ToFloat());
         this.SightAngleSlider.Value = Mathf.RadToDeg(activeBar.agentData.SightAngle);
     }
 
-    private void OnSightRadiusChange(object _, BaseEventArgs<string> args) {
+    private void OnSightRadiusChange(object _, BaseEventArgs<string> args)
+    {
         AgentBar activeBar = this.GetBarByIndex(this.currentlyActiveBarIndex);
         activeBar.agentData.SightRadius = args.Value.ToFloat();
         this.SightRadiusSlider.Value = activeBar.agentData.SightRadius;
     }
-    
-    private void OnMaximumEnergyDrag(bool wasChanged) {
-        if (!wasChanged) {
+
+    private void OnMaximumEnergyDrag(bool wasChanged)
+    {
+        if (!wasChanged)
+        {
             return;
         }
         this.MaximumEnergyInput.SetTextTo(this.MaximumEnergySlider.Value.ToString());
@@ -371,8 +391,10 @@ public partial class AgentsConfiguration : Control
         activeBar.EnergyLabel.Text = this.MaximumEnergySlider.Value.ToString();
     }
 
-    private void OnInitialEnergyDrag(bool wasChanged) {
-        if (!wasChanged) {
+    private void OnInitialEnergyDrag(bool wasChanged)
+    {
+        if (!wasChanged)
+        {
             return;
         }
         this.InitialEnergyInput.SetTextTo(this.InitialEnergySlider.Value.ToString());
@@ -381,8 +403,10 @@ public partial class AgentsConfiguration : Control
         activeBar.agentData.InitialEnergy = (float)this.InitialEnergySlider.Value;
     }
 
-    private void OnEnergySurplusForReproductionDrag(bool wasChanged) {
-        if (!wasChanged) {
+    private void OnEnergySurplusForReproductionDrag(bool wasChanged)
+    {
+        if (!wasChanged)
+        {
             return;
         }
         this.EnergySurplusForReproductionInput.SetTextTo(this.EnergySurplusForReproductionSlider.Value.ToString());
@@ -391,8 +415,10 @@ public partial class AgentsConfiguration : Control
         activeBar.agentData.EnergySurplusForReproduction = (float)this.EnergySurplusForReproductionSlider.Value;
     }
 
-    private void OnReproductionEnergyCostDrag(bool wasChanged) {
-        if (!wasChanged) {
+    private void OnReproductionEnergyCostDrag(bool wasChanged)
+    {
+        if (!wasChanged)
+        {
             return;
         }
         this.ReproductionEnergyCostInput.SetTextTo(this.ReproductionEnergyCostSlider.Value.ToString());
@@ -401,8 +427,10 @@ public partial class AgentsConfiguration : Control
         activeBar.agentData.ReproductionEnergyCost = (float)this.ReproductionEnergyCostSlider.Value;
     }
 
-    private void OnEnergyLossPerSecondDrag(bool wasChanged) {
-        if (!wasChanged) {
+    private void OnEnergyLossPerSecondDrag(bool wasChanged)
+    {
+        if (!wasChanged)
+        {
             return;
         }
         this.EnergyLossPerSecondInput.SetTextTo(this.EnergyLossPerSecondSlider.Value.ToString());
@@ -411,8 +439,10 @@ public partial class AgentsConfiguration : Control
         activeBar.agentData.EnergyLossPerSecond = (float)this.EnergyLossPerSecondSlider.Value;
     }
 
-    private void OnEnergyLossPerSecondPer100UnitsOfMovementDrag(bool wasChanged) {
-        if (!wasChanged) {
+    private void OnEnergyLossPerSecondPer100UnitsOfMovementDrag(bool wasChanged)
+    {
+        if (!wasChanged)
+        {
             return;
         }
         this.EnergyLossPerSecondPer100UnitsOfMovementInput.SetTextTo(this.EnergyLossPerSecondPer100UnitsOfMovementSlider.Value.ToString());
@@ -421,8 +451,10 @@ public partial class AgentsConfiguration : Control
         activeBar.agentData.EnergyLossPerSecondPer100UnitsOfMovement = (float)this.EnergyLossPerSecondPer100UnitsOfMovementSlider.Value;
     }
 
-    private void OnEnergyLossPerSecondRotationDrag(bool wasChanged) {
-        if (!wasChanged) {
+    private void OnEnergyLossPerSecondRotationDrag(bool wasChanged)
+    {
+        if (!wasChanged)
+        {
             return;
         }
         this.EnergyLossPerSecondRotationInput.SetTextTo(this.EnergyLossPerSecondRotationSlider.Value.ToString());
@@ -431,8 +463,10 @@ public partial class AgentsConfiguration : Control
         activeBar.agentData.EnergyLossPerSecondRotation = (float)this.EnergyLossPerSecondRotationSlider.Value;
     }
 
-    private void OnMaximumHealthDrag(bool wasChanged) {
-        if (!wasChanged) {
+    private void OnMaximumHealthDrag(bool wasChanged)
+    {
+        if (!wasChanged)
+        {
             return;
         }
         this.MaximumHealthInput.SetTextTo(this.MaximumHealthSlider.Value.ToString());
@@ -441,8 +475,10 @@ public partial class AgentsConfiguration : Control
         activeBar.agentData.MaximumHealth = (float)this.MaximumHealthSlider.Value;
     }
 
-    private void OnInitialHealthDrag(bool wasChanged) {
-        if (!wasChanged) {
+    private void OnInitialHealthDrag(bool wasChanged)
+    {
+        if (!wasChanged)
+        {
             return;
         }
         this.InitialHealthInput.SetTextTo(this.InitialHealthSlider.Value.ToString());
@@ -451,8 +487,10 @@ public partial class AgentsConfiguration : Control
         activeBar.agentData.InitialHealth = (float)this.InitialHealthSlider.Value;
     }
 
-    private void OnHealthLossPerSecondDrag(bool wasChanged) {
-        if (!wasChanged) {
+    private void OnHealthLossPerSecondDrag(bool wasChanged)
+    {
+        if (!wasChanged)
+        {
             return;
         }
         this.HealthLossPerSecondInput.SetTextTo(this.HealthLossPerSecondSlider.Value.ToString());
@@ -461,8 +499,10 @@ public partial class AgentsConfiguration : Control
         activeBar.agentData.HealthLossPerSecond = (float)this.HealthLossPerSecondSlider.Value;
     }
 
-    private void OnHealthRegenPerSecondDrag(bool wasChanged) {
-        if (!wasChanged) {
+    private void OnHealthRegenPerSecondDrag(bool wasChanged)
+    {
+        if (!wasChanged)
+        {
             return;
         }
         this.HealthRegenPerSecondInput.SetTextTo(this.HealthRegenPerSecondSlider.Value.ToString());
@@ -471,8 +511,10 @@ public partial class AgentsConfiguration : Control
         activeBar.agentData.HealthRegenPerSecond = (float)this.HealthRegenPerSecondSlider.Value;
     }
 
-    private void OnMinimumHealthToReproduceDrag(bool wasChanged) {
-        if (!wasChanged) {
+    private void OnMinimumHealthToReproduceDrag(bool wasChanged)
+    {
+        if (!wasChanged)
+        {
             return;
         }
         this.MinimumHealthToReproduceInput.SetTextTo(this.MinimumHealthToReproduceSlider.Value.ToString());
@@ -481,8 +523,10 @@ public partial class AgentsConfiguration : Control
         activeBar.agentData.MinimumHealthToReproduce = (float)this.MinimumHealthToReproduceSlider.Value;
     }
 
-    private void OnMaximumSpeedDrag(bool wasChanged) {
-        if (!wasChanged) {
+    private void OnMaximumSpeedDrag(bool wasChanged)
+    {
+        if (!wasChanged)
+        {
             return;
         }
         this.MaximumSpeedInput.SetTextTo(this.MaximumSpeedSlider.Value.ToString());
@@ -491,8 +535,10 @@ public partial class AgentsConfiguration : Control
         activeBar.agentData.MaximumSpeed = (float)this.MaximumSpeedSlider.Value;
     }
 
-    private void OnMaximumAccelerationDrag(bool wasChanged) {
-        if (!wasChanged) {
+    private void OnMaximumAccelerationDrag(bool wasChanged)
+    {
+        if (!wasChanged)
+        {
             return;
         }
         this.MaximumAccelerationInput.SetTextTo(this.MaximumAccelerationSlider.Value.ToString());
@@ -501,8 +547,10 @@ public partial class AgentsConfiguration : Control
         activeBar.agentData.MaximumAcceleration = (float)this.MaximumAccelerationSlider.Value;
     }
 
-    private void OnMaximumDecelerationDrag(bool wasChanged) {
-        if (!wasChanged) {
+    private void OnMaximumDecelerationDrag(bool wasChanged)
+    {
+        if (!wasChanged)
+        {
             return;
         }
         this.MaximumDecelerationInput.SetTextTo(this.MaximumDecelerationSlider.Value.ToString());
@@ -511,8 +559,10 @@ public partial class AgentsConfiguration : Control
         activeBar.agentData.MaximumDeceleration = (float)this.MaximumDecelerationSlider.Value;
     }
 
-    private void OnMaximumTurnSpeedDrag(bool wasChanged) {
-        if (!wasChanged) {
+    private void OnMaximumTurnSpeedDrag(bool wasChanged)
+    {
+        if (!wasChanged)
+        {
             return;
         }
         this.MaximumTurnSpeedInput.SetTextTo(this.MaximumTurnSpeedSlider.Value.ToString());
@@ -521,8 +571,10 @@ public partial class AgentsConfiguration : Control
         activeBar.agentData.MaximumTurnSpeed = Mathf.DegToRad((float)this.MaximumTurnSpeedSlider.Value);
     }
 
-    private void OnSightAngleDrag(bool wasChanged) {
-        if (!wasChanged) {
+    private void OnSightAngleDrag(bool wasChanged)
+    {
+        if (!wasChanged)
+        {
             return;
         }
         this.SightAngleInput.SetTextTo(this.SightAngleSlider.Value.ToString());
@@ -531,8 +583,10 @@ public partial class AgentsConfiguration : Control
         activeBar.agentData.SightAngle = Mathf.DegToRad((float)this.SightAngleSlider.Value);
     }
 
-    private void OnSightRadiusDrag(bool wasChanged) {
-        if (!wasChanged) {
+    private void OnSightRadiusDrag(bool wasChanged)
+    {
+        if (!wasChanged)
+        {
             return;
         }
         this.SightRadiusInput.SetTextTo(this.SightRadiusSlider.Value.ToString());
@@ -547,21 +601,25 @@ public partial class AgentsConfiguration : Control
         activeBar.agentData.Color = color;
         activeBar.Sprite.SelfModulate = color;
     }
-    
-    private void OnNameChange(object _, BaseEventArgs<string> args) {
+
+    private void OnNameChange(object _, BaseEventArgs<string> args)
+    {
         AgentBar activeBar = this.GetBarByIndex(this.currentlyActiveBarIndex);
         activeBar.NameLabel.Text = args.Value;
     }
-    
-    private void OnSizeChange(object _, BaseEventArgs<string> args) {
+
+    private void OnSizeChange(object _, BaseEventArgs<string> args)
+    {
         AgentBar activeBar = this.GetBarByIndex(this.currentlyActiveBarIndex);
         activeBar.agentData.SizeMultiplier = args.Value.ToFloat();
         this.SizeSlider.Value = activeBar.agentData.SizeMultiplier;
         activeBar.Sprite.Scale = new Vector2(args.Value.ToFloat(), args.Value.ToFloat());
     }
-    
-    private void OnSizeDrag(bool wasChanged) {
-        if (!wasChanged) {
+
+    private void OnSizeDrag(bool wasChanged)
+    {
+        if (!wasChanged)
+        {
             return;
         }
         this.SizeInput.SetTextTo(this.SizeSlider.Value.ToString());
@@ -570,7 +628,7 @@ public partial class AgentsConfiguration : Control
         activeBar.agentData.SizeMultiplier = (float)this.SizeSlider.Value;
         activeBar.Sprite.Scale = new Vector2((float)this.SizeSlider.Value, (float)this.SizeSlider.Value);
     }
-    
+
     public List<AgentTemplate> GetAgentTemplates()
     {
         List<AgentTemplate> result = new();
@@ -648,13 +706,13 @@ public partial class AgentsConfiguration : Control
 
         this.SightRadiusInput.SetTextTo(data.SightRadius.ToString());
         this.SightRadiusSlider.Value = data.SightRadius;
-        
+
         this.ColorPicker.Color = data.Color;
         this.NameInput.SetTextTo(activeBar.NameLabel.Text);
-        
+
         this.SizeInput.SetTextTo(data.SizeMultiplier.ToString());
         this.SizeSlider.Value = data.SizeMultiplier;
     }
-    
+
     // this.MaximumHealthInput.SetTextTo(data.MaximumHealth.ToString());
 }

@@ -20,13 +20,13 @@ public class ObjectGeneratorBuilder
         this.safeSpaceDistance = safeSpaceDistance;
         return this;
     }
-    
+
     public ObjectGeneratorBuilder SetObjectDensityMultiplier(float objectDensityMultiplier)
     {
         this.objectDensityMultiplier = objectDensityMultiplier;
         return this;
     }
-    
+
     public ObjectGeneratorBuilder SetGeneratorType(ObjectGeneratorType type)
     {
         this.generatorType = type;

@@ -13,8 +13,8 @@ public partial class Environment : Node2D, Initializable
     {
         return EnvironmentGenerationUtil.GetBiomeAt(where, this.Size, this.TemplateData.GenerationSettings.BiomeChunkSize, this.TemplateData.BiomeData);
     }
-    
-    
+
+
     public void Initialize(EnvironmentTemplate template, bool initializedViaTemplate = false)
     {
         this.TemplateData = template;

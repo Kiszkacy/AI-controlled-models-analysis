@@ -1,5 +1,6 @@
 
 using System;
+
 using Godot;
 
 public enum Status
@@ -26,7 +27,7 @@ public partial class AgentBar : Control
             this.UpdateBackgroundVisibility();
         }
     }
-    
+
     [Export]
     public Control InactiveBackground { get; set; }
     [Export]
@@ -57,7 +58,8 @@ public partial class AgentBar : Control
         this.TrashButton.Pressed += this.OnDeleteButtonClick;
         this.ClickButton.Pressed += () =>
         {
-            if (this.status == Status.Empty || this.Status == Status.Inactive) {
+            if (this.status == Status.Empty || this.Status == Status.Inactive)
+            {
                 this.Pressed?.Invoke();
             }
         };
@@ -66,7 +68,7 @@ public partial class AgentBar : Control
     public void UpdateBackgroundVisibility()
     {
         this.InactiveBackground.Visible = this.Status == Status.Inactive;
-        this.ActiveBackground.Visible = this.Status == Status.Active; 
+        this.ActiveBackground.Visible = this.Status == Status.Active;
         this.EmptyBackground.Visible = this.Status == Status.Empty;
         this.NotEmptyParentNode.Visible = this.Status != Status.Empty && this.Status != Status.Hidden;
     }

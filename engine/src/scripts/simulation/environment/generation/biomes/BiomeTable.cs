@@ -68,7 +68,7 @@ public class BiomeTable
             new[] { BiomeType.Rockyland,           BiomeType.Rockyland,           BiomeType.Rockyland,           BiomeType.RockylandOutskirts,  BiomeType.RockylandOutskirts }
         })
     };
-    
+
     public static BiomeTableRow[] RandomInlandBiomes =
     {
         new(0.9f, 1.0f, new[]
@@ -99,7 +99,7 @@ public class BiomeTable
             new[] { BiomeType.Rockyland,           BiomeType.RockylandOutskirts }
         })
     };
-    
+
     public static BiomeTableRow[] FoodRingsBiomes = // TODO
     {
         new(0.9f, 1.0f, new[]
@@ -376,9 +376,9 @@ public class BiomeTable
     };
 
     public static BiomeTable Default => new(DefaultBiomes, DefaultBiomeObjectPool);
-    
+
     public static BiomeTable RandomInland => new(RandomInlandBiomes, DefaultBiomeObjectPool);
-    
+
     public static BiomeTable FoodRings => new(FoodRingsBiomes, DefaultBiomeObjectPool);
 
     public BiomeTable(BiomeTableRow[] biomes = null, Dictionary<BiomeType, BiomeObjectData> biomeObjectPool = null)

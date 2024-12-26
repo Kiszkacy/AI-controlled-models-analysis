@@ -26,7 +26,7 @@ public struct AgentSaveData
     public float EnergyLossPerSecond { get; set; }
     public float EnergyLossPerSecondPer100UnitsOfMovement { get; set; }
     public float EnergyLossPerSecondRotation { get; set; }
-    
+
     public float HealthLossPerSecond { get; set; }
     public float HealthRegenPerSecond { get; set; }
     public Color Color { get; set; }

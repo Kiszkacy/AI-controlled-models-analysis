@@ -7,11 +7,11 @@ using Godot;
 public partial class BiomeRow : VBoxContainer
 {
     // [Export] 
-    private List<List<int>> DefaultBiomes;
-    
+    private readonly List<List<int>> DefaultBiomes;
+
     public event Action Pressed;
     // this.Pressed?.Invoke();
-        
+
     public event EventHandler<BaseEventArgs<BiomeType[][]>> Edited;
 
     private List<List<BiomeType>> biomes = new();
@@ -29,5 +29,5 @@ public partial class BiomeRow : VBoxContainer
             ).ToList()
         ).ToList();
     }
-        
+
 }

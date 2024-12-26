@@ -22,14 +22,14 @@ public partial class InputHandler : Control
 
     private string CurrentText => this.InputLine.Text;
     private string lastSubmittedText = "";
-    
+
     public event EventHandler<BaseEventArgs<string>> TextSubmitted;
 
     public override void _Ready()
     {
         this.Setup();
     }
-    
+
     private void Setup()
     {
         this.InputLine.PlaceholderText = this.Title;
@@ -37,12 +37,12 @@ public partial class InputHandler : Control
         this.MiniLabel.Text = this.Title;
         this.InputLine.Editable = !this.Disabled;
         this.InputLine.SelectingEnabled = !this.Disabled;
-        
+
         this.InputLine.FocusEntered += this.OnFocusGained;
         this.InputLine.FocusExited += this.OnFocusLost;
         this.InputLine.TextSubmitted += this.OnTextSubmitted;
         this.InputLine.TextChanged += this.OnTextChanged;
-        
+
         this.UpdateMiniLabelVisibility();
     }
 
@@ -50,20 +50,20 @@ public partial class InputHandler : Control
     {
         this.UpdateMiniLabelVisibility();
     }
-    
+
     private void OnFocusLost()
     {
         this.InputLine.Text = this.lastSubmittedText;
         this.UpdateMiniLabelVisibility();
     }
-    
+
     private void OnTextSubmitted(string _)
     {
         this.lastSubmittedText = this.CurrentText;
         this.UpdateMiniLabelVisibility();
         this.TextSubmitted?.Invoke(this, new BaseEventArgs<string>(this.CurrentText));
     }
-    
+
     private void OnTextChanged(string _)
     {
         this.UpdateMiniLabelVisibility();

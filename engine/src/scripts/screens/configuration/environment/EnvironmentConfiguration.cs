@@ -8,15 +8,16 @@ using Godot.Collections;
 public partial class EnvironmentConfiguration : Control
 {
     [Export]
+    [System.Obsolete]
     private Minimap Minimap;
     [Export]
     private PointDrawer LandPointsDrawer;
     [Export]
     private PointDrawer OceanPointsDrawer;
-    
+
     [Export]
     private InputHandler SimulationName;
-    [Export] 
+    [Export]
     private RichTextLabel SimulationNameSaveLocation;
     [Export]
     private InputHandler SimulationSeed;
@@ -34,6 +35,7 @@ public partial class EnvironmentConfiguration : Control
     [Export]
     private Control BigMinimapParent;
     [Export]
+    [System.Obsolete]
     private Minimap BigMinimap;
     [Export]
     private Control BigMinimapArea;
@@ -45,16 +47,16 @@ public partial class EnvironmentConfiguration : Control
     private ButtonHandler BigMinimapButton;
     [Export]
     private ButtonHandler CloseBigMinimapButton;
-    
+
     [Export]
     private Slider OceanSizeSlider;
-    [Export] 
+    [Export]
     private InputHandler OceanSize;
     [Export]
     private InputHandler SelectedBiomeChunkSizeButton;
     [Export]
     private MenuButton BiomeChunkSizeButton;
-    [Export] 
+    [Export]
     private InputHandler SelectedBiomeTableButton;
     [Export]
     private MenuButton BiomeTableButton;
@@ -70,7 +72,7 @@ public partial class EnvironmentConfiguration : Control
         }
     }
     private bool isOceanSizeDragging = false;
-    
+
     private const int SmallSimulationSize = 10000;
     private const int MediumSimulationSize = 20000;
     private const int LargeSimulationSize = 40000;
@@ -88,7 +90,7 @@ public partial class EnvironmentConfiguration : Control
     private const float SmallBiomeChunkSize = 25.0f;
     private const float MediumBiomeChunkSize = 50.0f;
     private const float LargeBiomeChunkSize = 100.0f;
-    
+
     private const float SmallTerrainChunkSize = 20.0f;
     private const float MediumTerrainChunkSize = 25.0f;
     private const float LargeTerrainChunkSize = 50.0f;
@@ -101,19 +103,19 @@ public partial class EnvironmentConfiguration : Control
     private string simulationName = null;
     private int simulationSeed = 42;
     private Vector2 simulationSize = new(SmallSimulationSize, SmallSimulationSize);
-    
-    private LinkedList<Vector2> terrainPoints = new(new[] { new Vector2(0.5f, 0.5f) });
-    private LinkedList<Vector2> oceanPoints = new();
-    
+
+    private readonly LinkedList<Vector2> terrainPoints = new(new[] { new Vector2(0.5f, 0.5f) });
+    private readonly LinkedList<Vector2> oceanPoints = new();
+
     private float oceanSizeMultiplier = 1.0f;
     private Vector2 biomeChunkSize = new(SmallBiomeChunkSize, SmallBiomeChunkSize);
     private BiomeTable biomeTable = BiomeTable.Default;
-    
-    
+
+
     private Vector2 terrainChunkSize = new(MediumTerrainChunkSize, MediumTerrainChunkSize);
     private float corrosionChance = 0.5f;
     private float corrosionNeighborCount = 3; // CorrosionNeighborCountInput
-    
+
     public override void _Ready()
     {
         this.ConnectEvents();
@@ -121,7 +123,7 @@ public partial class EnvironmentConfiguration : Control
         this.SimulationNameSaveLocation.Text = $"{ProjectSettings.GlobalizePath(Config.Instance.Save.SavePath)}default.gsave";
         this.SimulationSeed.SetTextTo(this.simulationSeed.ToString());
         RandomGenerator.SetSeed(this.simulationSeed);
-        
+
         this.RebuildGeneratorAndEnvironment();
     }
 
@@ -147,7 +149,7 @@ public partial class EnvironmentConfiguration : Control
     {
         this.SimulationNameSaveLocation.Text = $"{ProjectSettings.GlobalizePath(Config.Instance.Save.SavePath)}{args.Value ?? "default"}.gsave";
     }
-    
+
     private void OnSimulationSeedChange(object _, BaseEventArgs<string> args)
     {
         int seed = int.Parse(args.Value);
@@ -184,7 +186,7 @@ public partial class EnvironmentConfiguration : Control
                 this.BigMinimap.Scale = new Vector2(BigMinimapSize/LargeSimulationBigMinimapTileCount, BigMinimapSize/LargeSimulationBigMinimapTileCount);
                 break;
         }
-        
+
         for (int index = 0; index < this.MapSizeButton.GetPopup().ItemCount; index++)
         {
             this.MapSizeButton.GetPopup().SetItemChecked(index, false);
@@ -204,7 +206,7 @@ public partial class EnvironmentConfiguration : Control
         this.showLandPoints = !this.showLandPoints;
         this.LandPointsDrawer.Visible = this.showLandPoints;
     }
-    
+
     private void OnShowOceanPointsChange()
     {
         this.showOceanPoints = !this.showOceanPoints;
@@ -216,7 +218,7 @@ public partial class EnvironmentConfiguration : Control
         this.InBigMapMode = true;
         this.UpdateMinimap();
     }
-    
+
     private void OnCloseBigMinimapClick()
     {
         this.InBigMapMode = false;
@@ -229,10 +231,10 @@ public partial class EnvironmentConfiguration : Control
         this.oceanSizeMultiplier = Mathf.Clamp(oceanSize, MinOceanSize, MaxOceanSize);
         this.OceanSize.SetTextTo(oceanSize.ToString());
         this.OceanSizeSlider.SetValueNoSignal(Mathf.Remap(oceanSize, MinOceanSize, MaxOceanSize, 50, 500));
-        
+
         this.RebuildGeneratorAndEnvironment();
     }
-    
+
     private void OnOceanSizeDragChange(bool wasChanged)
     {
         if (!wasChanged)
@@ -242,7 +244,7 @@ public partial class EnvironmentConfiguration : Control
 
         this.oceanSizeMultiplier = (float)Mathf.Remap(this.OceanSizeSlider.Value, 50, 500, MinOceanSize, MaxOceanSize);
         this.OceanSize.SetTextTo(this.oceanSizeMultiplier.ToString());
-        
+
         this.RebuildGeneratorAndEnvironment();
     }
 
@@ -250,7 +252,7 @@ public partial class EnvironmentConfiguration : Control
     {
         this.isOceanSizeDragging = true;
     }
-    
+
     private void OnBiomeChunkSizeClick(long selectedItemId)
     {
         switch (selectedItemId)
@@ -280,7 +282,7 @@ public partial class EnvironmentConfiguration : Control
         this.BiomeChunkSizeButton.GetPopup().SetItemChecked((int)selectedItemId, true);
         this.RebuildGeneratorAndEnvironment();
     }
-    
+
     private void OnBiomeTablePresetClick(long selectedItemId)
     {
         switch (selectedItemId)
@@ -298,7 +300,7 @@ public partial class EnvironmentConfiguration : Control
                 this.SelectedBiomeTableButton.SetTextTo("Food circles");
                 break;
         }
-        
+
         for (int index = 0; index < this.BiomeTableButton.GetPopup().ItemCount; index++)
         {
             this.BiomeTableButton.GetPopup().SetItemChecked(index, false);
@@ -321,7 +323,7 @@ public partial class EnvironmentConfiguration : Control
             this.LandPointsDrawer.AddPoint(point * this.LandPointsDrawer.Size);
         }
         this.LandPointsDrawer.QueueRedraw();
-        
+
         this.OceanPointsDrawer.ClearPoints();
         foreach (Vector2 point in this.environmentGenerator.OceanPoints)
         {
@@ -337,7 +339,7 @@ public partial class EnvironmentConfiguration : Control
                 this.BigLandPointsDrawer.AddPoint(point * this.BigLandPointsDrawer.Size);
             }
             this.BigLandPointsDrawer.QueueRedraw();
-        
+
             this.BigOceanPointsDrawer.ClearPoints();
             foreach (Vector2 point in this.environmentGenerator.OceanPoints)
             {
@@ -346,7 +348,7 @@ public partial class EnvironmentConfiguration : Control
             this.BigOceanPointsDrawer.QueueRedraw();
         }
     }
-    
+
     private void RebuildGenerator()
     {
         RandomGenerator.SetSeed(this.simulationSeed);
@@ -366,7 +368,7 @@ public partial class EnvironmentConfiguration : Control
 
         this.RedrawMinimapPoints();
     }
-    
+
     private void RebuildEnvironment()
     {
         this.environment = this.environmentGenerator.Generate().Instantiate();
@@ -396,7 +398,7 @@ public partial class EnvironmentConfiguration : Control
         {
             return;
         }
-        
+
         if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed)
         {
             bool terrainPointRelatedClick = mouseEvent.ButtonIndex == MouseButton.Left;
@@ -411,7 +413,7 @@ public partial class EnvironmentConfiguration : Control
             {
                 return;
             }
-            
+
             Vector2? foundPoint = null;
             LinkedList<Vector2> points = terrainPointRelatedClick ? this.terrainPoints : this.oceanPoints;
             foreach (Vector2 point in points)

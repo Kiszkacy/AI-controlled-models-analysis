@@ -197,7 +197,7 @@ public partial class Agent : CharacterBody2D, Trackable, AgentSpecification
     public override void _Ready()
     {
         this.Scale = new Vector2(this.SizeMultiplier, this.SizeMultiplier);
-        
+
         this.sprite = this.GetNode<Sprite2D>("Sprite");
 
         if (!Reloader.Get().IsReloading)

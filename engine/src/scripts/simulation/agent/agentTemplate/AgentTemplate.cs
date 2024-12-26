@@ -4,7 +4,7 @@ using Godot;
 public class AgentTemplate : AgentSpecification
 {
     private readonly PackedScene packedTrainAgent = ResourceLoader.Load<PackedScene>("res://src/scenes/simulation/agent/trainAgent.tscn");
-    
+
     public float MaximumSpeed { get; set; } = 200.0f; // in px per sec
     public float MaximumAcceleration { get; set; } = 100.0f; // in px per sec
     public float MaximumDeceleration { get; set; } = 100.0f; // in px per sec
@@ -25,10 +25,10 @@ public class AgentTemplate : AgentSpecification
 
     public float HealthLossPerSecond { get; set; } = 5.0f;
     public float HealthRegenPerSecond { get; set; } = 1.0f;
-    
+
     public Color Color { get; set; } = Color.FromHsv(1.0f, 0.0f, 1.0f);
     public float SizeMultiplier { get; set; } = 1.0f;
-    
+
     public void Instantiate(Node node)
     {
         TrainAgent agent = packedTrainAgent.Instantiate<TrainAgent>();

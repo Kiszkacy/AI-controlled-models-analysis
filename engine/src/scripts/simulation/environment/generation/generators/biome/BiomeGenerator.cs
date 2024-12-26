@@ -30,7 +30,7 @@ public class BiomeGenerator
             float normalizedDistanceToClosestTerrainPoint = Mathf.Min(distanceToClosestTerrainPoint / maxDistance, 1.0f);
             float normalizedDistanceToClosestOceanPoint = Mathf.Min(distanceToClosestOceanPoint / maxDistance, 1.0f);
             float ratio = normalizedDistanceToClosestOceanPoint / Mathf.Min(1.0f, normalizedDistanceToClosestTerrainPoint + normalizedDistanceToClosestOceanPoint);
-            
+
             float distanceValue = distanceToClosestTerrainPoint < distanceToClosestOceanPoint
                 ? Mathf.Clamp(
                     ratio * normalizedDistanceToClosestTerrainPoint + (1.0f-ratio) * (1.0f-normalizedDistanceToClosestOceanPoint) + RandomGenerator.Float(-this.distanceRandomness, this.distanceRandomness),

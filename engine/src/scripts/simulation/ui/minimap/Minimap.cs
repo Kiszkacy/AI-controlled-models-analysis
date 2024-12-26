@@ -5,7 +5,7 @@ public partial class Minimap : TileMap
 {
     [Export]
     public int SizeInTiles { get; set; } = 32;
-    
+
     [Export]
     public Environment Environment { get; set; } = null;
 
@@ -19,7 +19,7 @@ public partial class Minimap : TileMap
     public void Refresh()
     {
         this.Clear();
-        
+
         Environment environment = this.Environment ?? EnvironmentManager.Instance.Environment;
         Vector2 environmentSize = environment.Size;
         Vector2 tileSize = environmentSize / this.SizeInTiles;

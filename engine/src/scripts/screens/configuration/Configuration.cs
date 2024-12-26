@@ -13,14 +13,14 @@ public partial class Configuration : Control
     private ButtonHandler ContinueButton;
     [Export]
     private ButtonHandler ReturnButton;
-    
+
     [Export]
     private EnvironmentConfiguration EnvironmentConfiguration;
     [Export]
     private AgentsConfiguration AgentsConfiguration;
     [Export]
     private TrainingConfiguration TrainingConfiguration;
-    
+
     [Export]
     private Label ProgressBar;
     [Export]
@@ -31,10 +31,10 @@ public partial class Configuration : Control
     private const string EnvironmentStepLabel = "Configuring environment";
     private const string AgentsStepLabel = "Configuring agents";
     private const string TrainingStepLabel = "Configuring training parameters";
-    
+
     private ConfigurationStage stage = ConfigurationStage.Environment;
     private EnvironmentGenerator environmentGenerator = null;
-    
+
     public override void _Ready()
     {
         this.ConnectEvents();
@@ -70,11 +70,11 @@ public partial class Configuration : Control
             case ConfigurationStage.Training:
                 break;
         }
-        
+
         this.ReturnButton.Disabled = this.stage == 0;
         this.ReturnButton.UpdateAfterDisabledChange();
     }
-    
+
     private void OnContinueClick()
     {
         switch (this.stage)
@@ -109,7 +109,7 @@ public partial class Configuration : Control
             Reloader.Get().EnvironmentGeneratorToUseWhenEnteringSimulation = this.environmentGenerator;
             root.GetTree().ChangeSceneToFile("res://src/scenes/simulation/simulation.tscn");
         }
-        
+
         this.stage += 1;
         switch (this.stage)
         {

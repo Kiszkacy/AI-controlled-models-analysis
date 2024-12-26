@@ -45,7 +45,7 @@ public class EnvironmentGeneratorBuilder
         this.biomeChunkSize = sizeInPixels;
         return this;
     }
-    
+
     public EnvironmentGeneratorBuilder SetBiomeTable(BiomeTable biomeTable)
     {
         this.biomeTable = biomeTable;
