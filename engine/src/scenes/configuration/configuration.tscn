@@ -1,11 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://cddgsc4d1t6k5"]
+[gd_scene load_steps=14 format=3 uid="uid://cddgsc4d1t6k5"]
 
 [ext_resource type="Script" path="res://src/scripts/screens/configuration/Configuration.cs" id="1_jsqbb"]
 [ext_resource type="Theme" uid="uid://de0xa04ygj6gw" path="res://assets/ui/themes/grayTheme.tres" id="1_wn2fb"]
 [ext_resource type="PackedScene" uid="uid://byp6g5lwnjkly" path="res://src/scenes/ui/button/iconButtonSmall.tscn" id="2_8o7go"]
 [ext_resource type="PackedScene" uid="uid://cm7xbxgg7k28n" path="res://src/scenes/configuration/environment/environmentConfiguration.tscn" id="2_ange7"]
 [ext_resource type="Texture2D" uid="uid://b606iocwgssyu" path="res://assets/icons/solid/bars.svg" id="3_anwef"]
+[ext_resource type="PackedScene" uid="uid://bgcyfgvavw1g4" path="res://src/scenes/configuration/agents/agentsConfiguration.tscn" id="3_vn0gn"]
 [ext_resource type="PackedScene" uid="uid://b0cjqe3fox1hs" path="res://src/scenes/ui/dialog/dialogConfirm.tscn" id="4_ao6t0"]
+[ext_resource type="PackedScene" uid="uid://dlcaopo3m4e20" path="res://src/scenes/configuration/training/trainingConfiguration.tscn" id="4_lbofn"]
 [ext_resource type="PackedScene" uid="uid://tai7ju750fc6" path="res://src/scenes/ui/button/buttonWhiteBig.tscn" id="5_po5l1"]
 [ext_resource type="PackedScene" uid="uid://iuf0eb4wytu" path="res://src/scenes/ui/button/buttonDarkBig.tscn" id="6_wkpv7"]
 
@@ -37,7 +39,7 @@ corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 anti_aliasing = false
 
-[node name="Configuration" type="Control" node_paths=PackedStringArray("ContinueButton", "ReturnButton", "EnvironmentConfiguration")]
+[node name="Configuration" type="Control" node_paths=PackedStringArray("ContinueButton", "ReturnButton", "EnvironmentConfiguration", "AgentsConfiguration", "TrainingConfiguration", "ProgressBar", "StepLabel", "StepCountLabel")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -48,6 +50,11 @@ script = ExtResource("1_jsqbb")
 ContinueButton = NodePath("BottomPanelBox/ContinueButton")
 ReturnButton = NodePath("BottomPanelBox/ReturnButton")
 EnvironmentConfiguration = NodePath("EnvironmentConfiguration")
+AgentsConfiguration = NodePath("AgentsConfiguration")
+TrainingConfiguration = NodePath("TrainingConfiguration")
+ProgressBar = NodePath("BottomPanelBox/ProgressBar")
+StepLabel = NodePath("BottomPanelBox/StepLabel")
+StepCountLabel = NodePath("BottomPanelBox/StepCountLabel")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 0
@@ -56,6 +63,14 @@ offset_bottom = 1080.0
 color = Color(0.41, 0.41, 0.41, 1)
 
 [node name="EnvironmentConfiguration" parent="." instance=ExtResource("2_ange7")]
+layout_mode = 1
+
+[node name="AgentsConfiguration" parent="." instance=ExtResource("3_vn0gn")]
+visible = false
+layout_mode = 1
+
+[node name="TrainingConfiguration" parent="." instance=ExtResource("4_lbofn")]
+visible = false
 layout_mode = 1
 
 [node name="BottomPanelBox" type="Label" parent="."]

@@ -19,7 +19,6 @@ SightAngle = 0.524
 SightRadius = 320.0
 
 [node name="Sprite" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 0.0313726, 1)
 position = Vector2(7, 0)
 rotation = 1.5708
 texture = ExtResource("2_pno7q")

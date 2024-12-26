@@ -164,11 +164,6 @@ public partial class Agent : CharacterBody2D, Trackable, AgentSpecification
         this.energy = Mathf.Clamp(this.energy + nutrition, 0.0f, this.MaximumEnergy);
     }
 
-    protected void UpdateColor()
-    {
-        this.sprite.Modulate = new Color(this.energy/this.MaximumEnergy, 1.0f, 1.0f - this.energy/this.MaximumEnergy);
-    }
-
     protected void MovementProcess(double delta)
     {
         this.Direction = this.Direction.Rotated(this.currentRotation * (float)delta);
@@ -230,8 +225,6 @@ public partial class Agent : CharacterBody2D, Trackable, AgentSpecification
         {
             this.SightProcess();
         }
-
-        this.UpdateColor();
     }
 
     public virtual AgentSaveData Save()

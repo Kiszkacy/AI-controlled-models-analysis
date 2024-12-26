@@ -157,17 +157,23 @@ offset_top = 504.0
 offset_right = -1296.0
 offset_bottom = -448.0
 
-[node name="ParametersLabel" type="Label" parent="."]
-layout_mode = 2
+[node name="LeftConfigurationBox" type="ScrollContainer" parent="."]
+layout_mode = 0
 offset_left = 723.0
 offset_top = 144.0
-offset_right = 862.0
-offset_bottom = 174.0
+offset_right = 1200.0
+offset_bottom = 808.0
+
+[node name="VBox" type="VBoxContainer" parent="LeftConfigurationBox"]
+layout_mode = 2
+
+[node name="ParametersLabel" type="Label" parent="LeftConfigurationBox/VBox"]
+layout_mode = 2
 theme = ExtResource("1_eppm1")
 theme_override_font_sizes/font_size = 24
 text = "Parameters"
 
-[node name="BiomeTableInfo" parent="ParametersLabel" instance=ExtResource("4_irluv")]
+[node name="BiomeTableInfo" parent="LeftConfigurationBox/VBox/ParametersLabel" instance=ExtResource("4_irluv")]
 layout_mode = 0
 offset_left = 139.0
 offset_top = -8.0
@@ -183,17 +189,7 @@ disabled = true
 icon = ExtResource("5_f00gr")
 flat = true
 
-[node name="LeftConfigurationBox" type="ScrollContainer" parent="."]
-layout_mode = 0
-offset_left = 723.0
-offset_top = 176.0
-offset_right = 1200.0
-offset_bottom = 840.0
-
-[node name="VBox" type="VBoxContainer" parent="LeftConfigurationBox"]
-layout_mode = 2
-
-[node name="GroupSeperator" type="Label" parent="LeftConfigurationBox/VBox"]
+[node name="GroupSeperator7" type="Label" parent="LeftConfigurationBox/VBox"]
 layout_mode = 2
 theme = ExtResource("1_eppm1")
 theme_override_font_sizes/font_size = 5
@@ -739,6 +735,118 @@ disabled = true
 icon = ExtResource("5_f00gr")
 flat = true
 
+[node name="BiomeTableInfo3" parent="TerrainLabel" instance=ExtResource("4_irluv")]
+layout_mode = 2
+offset_left = -43.0
+offset_top = 275.0
+offset_right = 5.0
+offset_bottom = 323.0
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
+disabled = true
+icon = ExtResource("5_f00gr")
+flat = true
+
+[node name="BiomeTableInfo6" parent="TerrainLabel" instance=ExtResource("4_irluv")]
+layout_mode = 2
+offset_left = -619.0
+offset_top = 550.0
+offset_right = -571.0
+offset_bottom = 598.0
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
+disabled = true
+icon = ExtResource("5_f00gr")
+flat = true
+
+[node name="BiomeTableInfo7" parent="TerrainLabel" instance=ExtResource("4_irluv")]
+layout_mode = 2
+offset_left = -619.0
+offset_top = 274.0
+offset_right = -571.0
+offset_bottom = 322.0
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
+disabled = true
+icon = ExtResource("5_f00gr")
+flat = true
+
+[node name="BiomeTableInfo8" parent="TerrainLabel" instance=ExtResource("4_irluv")]
+layout_mode = 2
+offset_left = -619.0
+offset_top = 235.0
+offset_right = -571.0
+offset_bottom = 283.0
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
+disabled = true
+icon = ExtResource("5_f00gr")
+flat = true
+
+[node name="BiomeTableInfo9" parent="TerrainLabel" instance=ExtResource("4_irluv")]
+layout_mode = 2
+offset_left = -618.0
+offset_top = 115.0
+offset_right = -570.0
+offset_bottom = 163.0
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
+disabled = true
+icon = ExtResource("5_f00gr")
+flat = true
+
+[node name="BiomeTableInfo4" parent="TerrainLabel" instance=ExtResource("4_irluv")]
+layout_mode = 2
+offset_left = -43.0
+offset_top = 315.0
+offset_right = 5.0
+offset_bottom = 363.0
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
+disabled = true
+icon = ExtResource("5_f00gr")
+flat = true
+
+[node name="BiomeTableInfo5" parent="TerrainLabel" instance=ExtResource("4_irluv")]
+layout_mode = 2
+offset_left = -43.0
+offset_top = 354.0
+offset_right = 5.0
+offset_bottom = 402.0
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
+disabled = true
+icon = ExtResource("5_f00gr")
+flat = true
+
 [node name="RightConfigurationBox" type="ScrollContainer" parent="."]
 layout_mode = 0
 offset_left = 1298.0
@@ -796,7 +904,7 @@ offset_right = 456.0
 offset_bottom = 32.0
 min_value = 0.5
 max_value = 2.0
-step = 0.1
+step = 0.01
 value = 1.0
 tick_count = 7
 ticks_on_borders = true
@@ -828,11 +936,10 @@ layout_mode = 2
 offset_left = 200.0
 offset_right = 456.0
 offset_bottom = 32.0
-min_value = 0.5
-max_value = 2.0
-step = 0.1
-value = 1.0
-tick_count = 7
+min_value = 1.0
+max_value = 100000.0
+value = 1000.0
+tick_count = 10
 ticks_on_borders = true
 
 [node name="Seperator3" type="Label" parent="RightConfigurationBox/VBox"]
@@ -851,11 +958,10 @@ layout_mode = 2
 offset_left = 200.0
 offset_right = 456.0
 offset_bottom = 32.0
-min_value = 0.5
-max_value = 2.0
-step = 0.1
-value = 1.0
-tick_count = 7
+max_value = 1.0
+step = 0.001
+value = 0.95
+tick_count = 11
 ticks_on_borders = true
 
 [node name="Seperator4" type="Label" parent="RightConfigurationBox/VBox"]
@@ -874,11 +980,10 @@ layout_mode = 2
 offset_left = 200.0
 offset_right = 456.0
 offset_bottom = 32.0
-min_value = 0.5
-max_value = 2.0
-step = 0.1
-value = 1.0
-tick_count = 7
+max_value = 0.1
+step = 0.001
+value = 0.01
+tick_count = 11
 ticks_on_borders = true
 
 [node name="Seperator5" type="Label" parent="RightConfigurationBox/VBox"]
@@ -897,11 +1002,10 @@ layout_mode = 2
 offset_left = 200.0
 offset_right = 456.0
 offset_bottom = 32.0
-min_value = 0.5
-max_value = 2.0
-step = 0.1
-value = 1.0
-tick_count = 7
+min_value = 10.0
+max_value = 1000.0
+value = 256.0
+tick_count = 11
 ticks_on_borders = true
 
 [node name="Seperator6" type="Label" parent="RightConfigurationBox/VBox"]
@@ -920,11 +1024,9 @@ layout_mode = 2
 offset_left = 200.0
 offset_right = 456.0
 offset_bottom = 32.0
-min_value = 0.5
-max_value = 2.0
-step = 0.1
-value = 1.0
-tick_count = 7
+min_value = 1.0
+value = 32.0
+tick_count = 11
 ticks_on_borders = true
 
 [node name="Seperator7" type="Label" parent="RightConfigurationBox/VBox"]
@@ -957,5 +1059,5 @@ offset_bottom = 32.0
 min_value = 1.0
 max_value = 50.0
 value = 10.0
-tick_count = 7
+tick_count = 6
 ticks_on_borders = true

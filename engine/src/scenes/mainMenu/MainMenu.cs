@@ -84,7 +84,7 @@ public partial class MainMenu : Control
 
     private void OnNewSimulationClick()
     {
-        // TODO
+        this.GetTree().ChangeSceneToFile("res://src/scenes/configuration/configuration.tscn");
     }
 
     private void OnSimulationsClick()
