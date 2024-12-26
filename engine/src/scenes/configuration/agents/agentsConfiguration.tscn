@@ -1,21 +1,21 @@
-[gd_scene load_steps=9 format=3 uid="uid://bgcyfgvavw1g4"]
+[gd_scene load_steps=13 format=3 uid="uid://bgcyfgvavw1g4"]
 
 [ext_resource type="Theme" uid="uid://de0xa04ygj6gw" path="res://assets/ui/themes/grayTheme.tres" id="1_eppm1"]
+[ext_resource type="Script" path="res://src/scripts/screens/configuration/agents/AgentsConfiguration.cs" id="1_j4rrp"]
 [ext_resource type="Theme" uid="uid://c81i2ymfrd5c3" path="res://assets/ui/themes/whiteTheme.tres" id="2_2iggg"]
 [ext_resource type="PackedScene" uid="uid://dg0yqw36ykfvh" path="res://src/scenes/ui/input/input.tscn" id="3_ehpgx"]
+[ext_resource type="PackedScene" uid="uid://bpdss8eomtasu" path="res://src/scenes/configuration/agents/agentBar.tscn" id="3_jn6tb"]
 [ext_resource type="PackedScene" uid="uid://byp6g5lwnjkly" path="res://src/scenes/ui/button/iconButtonSmall.tscn" id="4_irluv"]
 [ext_resource type="Texture2D" uid="uid://he54r43t40s8" path="res://assets/icons/solid/circle-info.svg" id="5_f00gr"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5c3di"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hl6o3"]
 content_margin_left = 8.0
 content_margin_top = 4.0
 content_margin_right = 8.0
 content_margin_bottom = 4.0
-bg_color = Color(0.878431, 0.882353, 0.866667, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+bg_color = Color(0.203922, 0.203922, 0.203922, 1)
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
 anti_aliasing = false
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ilji4"]
@@ -28,15 +28,70 @@ content_margin_right = 2.0
 content_margin_bottom = 8.0
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
-[node name="AgentsConfiguration" type="Control"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fqv85"]
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5h7rv"]
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[node name="AgentsConfiguration" type="Control" node_paths=PackedStringArray("FirstAgentBar", "SecondAgentBar", "ThirdAgentBar", "MaximumEnergyInput", "InitialEnergyInput", "EnergySurplusForReproductionInput", "ReproductionEnergyCostInput", "EnergyLossPerSecondInput", "EnergyLossPerSecondPer100UnitsOfMovementInput", "EnergyLossPerSecondRotationInput", "MaximumHealthInput", "InitialHealthInput", "HealthLossPerSecondInput", "HealthRegenPerSecondInput", "MinimumHealthToReproduceInput", "MaximumSpeedInput", "MaximumAccelerationInput", "MaximumDecelerationInput", "MaximumTurnSpeedInput", "SightAngleInput", "SightRadiusInput", "MaximumEnergySlider", "InitialEnergySlider", "EnergySurplusForReproductionSlider", "ReproductionEnergyCostSlider", "EnergyLossPerSecondSlider", "EnergyLossPerSecondPer100UnitsOfMovementSlider", "EnergyLossPerSecondRotationSlider", "MaximumHealthSlider", "InitialHealthSlider", "HealthLossPerSecondSlider", "HealthRegenPerSecondSlider", "MinimumHealthToReproduceSlider", "MaximumSpeedSlider", "MaximumAccelerationSlider", "MaximumDecelerationSlider", "MaximumTurnSpeedSlider", "SightAngleSlider", "SightRadiusSlider", "ColorPicker", "NameInput", "SizeInput", "SizeSlider")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_j4rrp")
+FirstAgentBar = NodePath("AgentBar")
+SecondAgentBar = NodePath("AgentBar2")
+ThirdAgentBar = NodePath("AgentBar3")
+MaximumEnergyInput = NodePath("LeftConfigurationBox/VBox/Input")
+InitialEnergyInput = NodePath("LeftConfigurationBox/VBox/Input2")
+EnergySurplusForReproductionInput = NodePath("LeftConfigurationBox/VBox/Input3")
+ReproductionEnergyCostInput = NodePath("LeftConfigurationBox/VBox/Input4")
+EnergyLossPerSecondInput = NodePath("LeftConfigurationBox/VBox/Input5")
+EnergyLossPerSecondPer100UnitsOfMovementInput = NodePath("LeftConfigurationBox/VBox/Input6")
+EnergyLossPerSecondRotationInput = NodePath("LeftConfigurationBox/VBox/Input7")
+MaximumHealthInput = NodePath("LeftConfigurationBox/VBox/Input9")
+InitialHealthInput = NodePath("LeftConfigurationBox/VBox/Input10")
+HealthLossPerSecondInput = NodePath("LeftConfigurationBox/VBox/Input12")
+HealthRegenPerSecondInput = NodePath("LeftConfigurationBox/VBox/Input14")
+MinimumHealthToReproduceInput = NodePath("LeftConfigurationBox/VBox/Input11")
+MaximumSpeedInput = NodePath("LeftConfigurationBox/VBox/Input13")
+MaximumAccelerationInput = NodePath("LeftConfigurationBox/VBox/Input15")
+MaximumDecelerationInput = NodePath("LeftConfigurationBox/VBox/Input16")
+MaximumTurnSpeedInput = NodePath("LeftConfigurationBox/VBox/Input17")
+SightAngleInput = NodePath("LeftConfigurationBox/VBox/Input18")
+SightRadiusInput = NodePath("LeftConfigurationBox/VBox/Input19")
+MaximumEnergySlider = NodePath("LeftConfigurationBox/VBox/Input/Slider")
+InitialEnergySlider = NodePath("LeftConfigurationBox/VBox/Input2/Slider")
+EnergySurplusForReproductionSlider = NodePath("LeftConfigurationBox/VBox/Input3/Slider")
+ReproductionEnergyCostSlider = NodePath("LeftConfigurationBox/VBox/Input4/Slider")
+EnergyLossPerSecondSlider = NodePath("LeftConfigurationBox/VBox/Input5/Slider")
+EnergyLossPerSecondPer100UnitsOfMovementSlider = NodePath("LeftConfigurationBox/VBox/Input6/Slider")
+EnergyLossPerSecondRotationSlider = NodePath("LeftConfigurationBox/VBox/Input7/Slider")
+MaximumHealthSlider = NodePath("LeftConfigurationBox/VBox/Input9/Slider")
+InitialHealthSlider = NodePath("LeftConfigurationBox/VBox/Input10/Slider")
+HealthLossPerSecondSlider = NodePath("LeftConfigurationBox/VBox/Input12/Slider")
+HealthRegenPerSecondSlider = NodePath("LeftConfigurationBox/VBox/Input14/Slider")
+MinimumHealthToReproduceSlider = NodePath("LeftConfigurationBox/VBox/Input11/Slider")
+MaximumSpeedSlider = NodePath("LeftConfigurationBox/VBox/Input13/Slider")
+MaximumAccelerationSlider = NodePath("LeftConfigurationBox/VBox/Input15/Slider")
+MaximumDecelerationSlider = NodePath("LeftConfigurationBox/VBox/Input16/Slider")
+MaximumTurnSpeedSlider = NodePath("LeftConfigurationBox/VBox/Input17/Slider")
+SightAngleSlider = NodePath("LeftConfigurationBox/VBox/Input18/Slider")
+SightRadiusSlider = NodePath("LeftConfigurationBox/VBox/Input19/Slider")
+ColorPicker = NodePath("RightConfigurationBox/VBox/TerrainLabel2/ColorPickerButton")
+NameInput = NodePath("RightConfigurationBox/VBox/TerrainChunkSizeInput")
+SizeInput = NodePath("RightConfigurationBox/VBox/CorrosionChanceInput")
+SizeSlider = NodePath("RightConfigurationBox/VBox/CorrosionChanceInput/CorrosionChance")
 
 [node name="Box" type="TabContainer" parent="."]
+layout_mode = 0
 offset_left = 96.0
 offset_top = 96.0
 offset_right = 1824.0
@@ -44,6 +99,7 @@ offset_bottom = 888.0
 theme = ExtResource("1_eppm1")
 
 [node name="Line" type="ColorRect" parent="."]
+layout_mode = 0
 offset_left = 673.0
 offset_top = 144.0
 offset_right = 675.0
@@ -52,6 +108,7 @@ mouse_filter = 1
 color = Color(0.203922, 0.203922, 0.203922, 1)
 
 [node name="Line2" type="ColorRect" parent="."]
+layout_mode = 0
 offset_left = 1248.0
 offset_top = 144.0
 offset_right = 1250.0
@@ -60,6 +117,7 @@ mouse_filter = 1
 color = Color(0.203922, 0.203922, 0.203922, 1)
 
 [node name="AgentsLabel" type="Label" parent="."]
+layout_mode = 0
 offset_left = 144.0
 offset_top = 144.0
 offset_right = 241.0
@@ -68,32 +126,494 @@ theme = ExtResource("1_eppm1")
 theme_override_font_sizes/font_size = 24
 text = "Agents"
 
-[node name="Border" type="Label" parent="."]
+[node name="Border2" type="Label" parent="."]
+visible = false
+layout_mode = 0
 offset_left = 144.0
-offset_top = 176.0
+offset_top = 184.0
 offset_right = 624.0
-offset_bottom = 840.0
+offset_bottom = 312.0
 theme = ExtResource("2_2iggg")
-theme_override_styles/normal = SubResource("StyleBoxFlat_5c3di")
+theme_override_styles/normal = SubResource("StyleBoxFlat_hl6o3")
 
-[node name="VBox" type="VBoxContainer" parent="."]
+[node name="AgentBar" parent="." instance=ExtResource("3_jn6tb")]
+layout_mode = 1
+offset_left = 144.0
+offset_top = 184.0
+offset_right = -1296.0
+offset_bottom = -768.0
+
+[node name="AgentBar2" parent="." instance=ExtResource("3_jn6tb")]
+layout_mode = 1
+offset_left = 144.0
+offset_top = 344.0
+offset_right = -1296.0
+offset_bottom = -608.0
+
+[node name="AgentBar3" parent="." instance=ExtResource("3_jn6tb")]
+layout_mode = 1
+offset_left = 144.0
+offset_top = 504.0
+offset_right = -1296.0
+offset_bottom = -448.0
+
+[node name="ParametersLabel" type="Label" parent="."]
+layout_mode = 2
 offset_left = 723.0
 offset_top = 144.0
-offset_right = 868.0
-offset_bottom = 294.0
+offset_right = 862.0
+offset_bottom = 174.0
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+text = "Parameters"
 
-[node name="BiomesLabel" type="Label" parent="VBox"]
+[node name="BiomeTableInfo" parent="ParametersLabel" instance=ExtResource("4_irluv")]
+layout_mode = 0
+offset_left = 139.0
+offset_top = -8.0
+offset_right = 187.0
+offset_bottom = 40.0
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
+disabled = true
+icon = ExtResource("5_f00gr")
+flat = true
+
+[node name="LeftConfigurationBox" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_left = 723.0
+offset_top = 176.0
+offset_right = 1200.0
+offset_bottom = 840.0
+
+[node name="VBox" type="VBoxContainer" parent="LeftConfigurationBox"]
+layout_mode = 2
+
+[node name="GroupSeperator" type="Label" parent="LeftConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 5
+
+[node name="Input" parent="LeftConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Maximum energy"
+DefaultText = "200,0"
+
+[node name="Slider" type="HSlider" parent="LeftConfigurationBox/VBox/Input"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 50.0
+max_value = 1000.0
+value = 200.0
+tick_count = 20
+ticks_on_borders = true
+
+[node name="Seperator" type="Label" parent="LeftConfigurationBox/VBox"]
 layout_mode = 2
 theme = ExtResource("1_eppm1")
 theme_override_font_sizes/font_size = 24
-text = "Biomes"
+theme_override_styles/normal = SubResource("StyleBoxFlat_ilji4")
 
-[node name="OceanSizeMultiplierInput" parent="VBox" instance=ExtResource("3_ehpgx")]
+[node name="Input2" parent="LeftConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Initial energy"
+DefaultText = "100,0"
+
+[node name="Slider" type="HSlider" parent="LeftConfigurationBox/VBox/Input2"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 50.0
+max_value = 1000.0
+value = 100.0
+tick_count = 20
+ticks_on_borders = true
+
+[node name="Seperator3" type="Label" parent="LeftConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ilji4")
+
+[node name="Input3" parent="LeftConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Energy required to reproduce"
+DefaultText = "100,0"
+
+[node name="Slider" type="HSlider" parent="LeftConfigurationBox/VBox/Input3"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 10.0
+max_value = 1000.0
+value = 80.0
+tick_count = 5
+ticks_on_borders = true
+
+[node name="Seperator4" type="Label" parent="LeftConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ilji4")
+
+[node name="Input4" parent="LeftConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Reproduction energy cost"
+DefaultText = "100,0"
+
+[node name="Slider" type="HSlider" parent="LeftConfigurationBox/VBox/Input4"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 10.0
+max_value = 1000.0
+value = 50.0
+tick_count = 5
+ticks_on_borders = true
+
+[node name="Seperator5" type="Label" parent="LeftConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ilji4")
+
+[node name="Input5" parent="LeftConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Base energy loss per second"
+DefaultText = "100,0"
+
+[node name="Slider" type="HSlider" parent="LeftConfigurationBox/VBox/Input5"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+max_value = 50.0
+value = 2.0
+tick_count = 10
+ticks_on_borders = true
+
+[node name="Seperator6" type="Label" parent="LeftConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ilji4")
+
+[node name="Input6" parent="LeftConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Energy movement loss"
+DefaultText = "100,0"
+
+[node name="Slider" type="HSlider" parent="LeftConfigurationBox/VBox/Input6"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+max_value = 50.0
+tick_count = 10
+ticks_on_borders = true
+
+[node name="Seperator7" type="Label" parent="LeftConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ilji4")
+
+[node name="Input7" parent="LeftConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Energy rotation loss"
+DefaultText = "100,0"
+
+[node name="Slider" type="HSlider" parent="LeftConfigurationBox/VBox/Input7"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+max_value = 50.0
+tick_count = 10
+ticks_on_borders = true
+
+[node name="SeperatorLast" type="Label" parent="LeftConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_cqv7i")
+
+[node name="GroupSeperator2" type="Label" parent="LeftConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 5
+
+[node name="Input9" parent="LeftConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Maximum health"
+DefaultText = "100,0"
+
+[node name="Slider" type="HSlider" parent="LeftConfigurationBox/VBox/Input9"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 50.0
+max_value = 1000.0
+value = 100.0
+tick_count = 20
+ticks_on_borders = true
+
+[node name="Seperator9" type="Label" parent="LeftConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ilji4")
+
+[node name="Input10" parent="LeftConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Initial health"
+DefaultText = "100,0"
+
+[node name="Slider" type="HSlider" parent="LeftConfigurationBox/VBox/Input10"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 50.0
+max_value = 1000.0
+value = 100.0
+tick_count = 20
+ticks_on_borders = true
+
+[node name="Seperator10" type="Label" parent="LeftConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ilji4")
+
+[node name="Input12" parent="LeftConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Base health loss per second"
+DefaultText = "100,0"
+
+[node name="Slider" type="HSlider" parent="LeftConfigurationBox/VBox/Input12"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 1.0
+max_value = 50.0
+value = 5.0
+tick_count = 5
+ticks_on_borders = true
+
+[node name="Seperator12" type="Label" parent="LeftConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ilji4")
+
+[node name="Input14" parent="LeftConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Health regeneration per second"
+DefaultText = "100,0"
+
+[node name="Slider" type="HSlider" parent="LeftConfigurationBox/VBox/Input14"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+max_value = 50.0
+value = 1.0
+tick_count = 5
+ticks_on_borders = true
+
+[node name="Seperator14" type="Label" parent="LeftConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ilji4")
+
+[node name="Input11" parent="LeftConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Health required to reproduce"
+DefaultText = "100,0"
+
+[node name="Slider" type="HSlider" parent="LeftConfigurationBox/VBox/Input11"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+max_value = 1000.0
+value = 50.0
+tick_count = 20
+ticks_on_borders = true
+
+[node name="SeperatorLast2" type="Label" parent="LeftConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_cqv7i")
+
+[node name="GroupSeperator3" type="Label" parent="LeftConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 5
+
+[node name="Input13" parent="LeftConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Maximum speed"
+DefaultText = "100,0"
+
+[node name="Slider" type="HSlider" parent="LeftConfigurationBox/VBox/Input13"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 1.0
+max_value = 2000.0
+value = 200.0
+tick_count = 5
+ticks_on_borders = true
+
+[node name="Seperator13" type="Label" parent="LeftConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ilji4")
+
+[node name="Input15" parent="LeftConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Maximum acceleration"
+DefaultText = "100,0"
+
+[node name="Slider" type="HSlider" parent="LeftConfigurationBox/VBox/Input15"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 1.0
+max_value = 2000.0
+value = 100.0
+tick_count = 5
+ticks_on_borders = true
+
+[node name="Seperator15" type="Label" parent="LeftConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ilji4")
+
+[node name="Input16" parent="LeftConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Maximum deceleration"
+DefaultText = "100,0"
+
+[node name="Slider" type="HSlider" parent="LeftConfigurationBox/VBox/Input16"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 1.0
+max_value = 2000.0
+value = 100.0
+tick_count = 5
+ticks_on_borders = true
+
+[node name="Seperator16" type="Label" parent="LeftConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ilji4")
+
+[node name="Input17" parent="LeftConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Maximum rotation speed in degrees"
+DefaultText = "100,0"
+
+[node name="Slider" type="HSlider" parent="LeftConfigurationBox/VBox/Input17"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+max_value = 720.0
+value = 90.0
+tick_count = 9
+ticks_on_borders = true
+
+[node name="Seperator17" type="Label" parent="LeftConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ilji4")
+
+[node name="Input18" parent="LeftConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Sight angle in degrees"
+DefaultText = "100,0"
+
+[node name="Slider" type="HSlider" parent="LeftConfigurationBox/VBox/Input18"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+max_value = 360.0
+value = 45.0
+tick_count = 9
+ticks_on_borders = true
+
+[node name="Seperator18" type="Label" parent="LeftConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ilji4")
+
+[node name="Input19" parent="LeftConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Sight radius"
+DefaultText = "100,0"
+
+[node name="Slider" type="HSlider" parent="LeftConfigurationBox/VBox/Input19"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+max_value = 512.0
+value = 256.0
+tick_count = 16
+ticks_on_borders = true
+
+[node name="Seperator19" type="Label" parent="LeftConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ilji4")
+
+[node name="VBox2" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 1298.0
+offset_top = 144.0
+offset_right = 1503.0
+offset_bottom = 298.0
+
+[node name="BiomesLabel" type="Label" parent="VBox2"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+text = "Appearance"
+
+[node name="OceanSizeMultiplierInput" parent="VBox2" instance=ExtResource("3_ehpgx")]
 layout_mode = 2
 Title = "Ocean size multiplier"
 DefaultText = "1,0"
 
-[node name="OcenSizeMultiplierSlider" type="HSlider" parent="VBox/OceanSizeMultiplierInput"]
+[node name="OcenSizeMultiplierSlider" type="HSlider" parent="VBox2/OceanSizeMultiplierInput"]
 layout_mode = 2
 offset_left = 200.0
 offset_right = 456.0
@@ -104,19 +624,19 @@ value = 100.0
 tick_count = 10
 ticks_on_borders = true
 
-[node name="Seperator" type="Label" parent="VBox"]
+[node name="Seperator" type="Label" parent="VBox2"]
 layout_mode = 2
 theme = ExtResource("1_eppm1")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_ilji4")
 
-[node name="BiomeChunkSizeInput" parent="VBox" instance=ExtResource("3_ehpgx")]
+[node name="BiomeChunkSizeInput" parent="VBox2" instance=ExtResource("3_ehpgx")]
 layout_mode = 2
 Title = "Biome chunk size"
 DefaultText = "25x25 pixels"
 Disabled = true
 
-[node name="BiomeChunkSizeMenu" type="MenuButton" parent="VBox/BiomeChunkSizeInput"]
+[node name="BiomeChunkSizeMenu" type="MenuButton" parent="VBox2/BiomeChunkSizeInput"]
 layout_mode = 2
 offset_left = 200.0
 offset_right = 318.0
@@ -139,19 +659,19 @@ popup/item_3/text = "100"
 popup/item_3/checkable = 2
 popup/item_3/id = 2
 
-[node name="Seperator2" type="Label" parent="VBox"]
+[node name="Seperator2" type="Label" parent="VBox2"]
 layout_mode = 2
 theme = ExtResource("1_eppm1")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_cqv7i")
 
-[node name="BiomeTableLabel" type="Label" parent="VBox"]
+[node name="BiomeTableLabel" type="Label" parent="VBox2"]
 layout_mode = 2
 theme = ExtResource("1_eppm1")
 theme_override_font_sizes/font_size = 24
 text = "Biome Table"
 
-[node name="BiomeTableInfo" parent="VBox/BiomeTableLabel" instance=ExtResource("4_irluv")]
+[node name="BiomeTableInfo" parent="VBox2/BiomeTableLabel" instance=ExtResource("4_irluv")]
 layout_mode = 0
 offset_left = 147.0
 offset_top = -8.0
@@ -167,13 +687,13 @@ disabled = true
 icon = ExtResource("5_f00gr")
 flat = true
 
-[node name="BiomeTablePresetInput" parent="VBox" instance=ExtResource("3_ehpgx")]
+[node name="BiomeTablePresetInput" parent="VBox2" instance=ExtResource("3_ehpgx")]
 layout_mode = 2
 Title = "Biome table preset"
 DefaultText = "Default"
 Disabled = true
 
-[node name="BiomeTablePresetMenu" type="MenuButton" parent="VBox/BiomeTablePresetInput"]
+[node name="BiomeTablePresetMenu" type="MenuButton" parent="VBox2/BiomeTablePresetInput"]
 layout_mode = 2
 offset_left = 200.0
 offset_right = 318.0
@@ -192,3 +712,250 @@ popup/item_1/id = 1
 popup/item_2/text = "Food rings"
 popup/item_2/checkable = 2
 popup/item_2/id = 1
+
+[node name="TerrainLabel" type="Label" parent="."]
+layout_mode = 2
+offset_left = 1298.0
+offset_top = 144.0
+offset_right = 1519.0
+offset_bottom = 174.0
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+text = "Appearance"
+
+[node name="BiomeTableInfo2" parent="TerrainLabel" instance=ExtResource("4_irluv")]
+layout_mode = 2
+offset_left = 149.0
+offset_top = -8.0
+offset_right = 197.0
+offset_bottom = 40.0
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
+disabled = true
+icon = ExtResource("5_f00gr")
+flat = true
+
+[node name="RightConfigurationBox" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_left = 1298.0
+offset_top = 176.0
+offset_right = 1775.0
+offset_bottom = 840.0
+
+[node name="VBox" type="VBoxContainer" parent="RightConfigurationBox"]
+layout_mode = 2
+
+[node name="GroupSeperator" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 5
+
+[node name="TerrainLabel2" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+text = "Color"
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="RightConfigurationBox/VBox/TerrainLabel2"]
+layout_mode = 2
+offset_left = 54.0
+offset_top = -6.0
+offset_right = 134.0
+offset_bottom = 26.0
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_eppm1")
+color = Color(1, 1, 1, 1)
+
+[node name="GroupSeperator2" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 5
+
+[node name="TerrainChunkSizeInput" parent="RightConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Name"
+
+[node name="Seperator" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_fqv85")
+
+[node name="CorrosionChanceInput" parent="RightConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Size multiplier"
+DefaultText = "1,0"
+
+[node name="CorrosionChance" type="HSlider" parent="RightConfigurationBox/VBox/CorrosionChanceInput"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 0.5
+max_value = 2.0
+step = 0.1
+value = 1.0
+tick_count = 7
+ticks_on_borders = true
+
+[node name="Seperator2" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_5h7rv")
+
+[node name="ObjectsLabel" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+text = "Training parameters"
+
+[node name="GroupSeperator4" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 5
+
+[node name="CorrosionChanceInput3" parent="RightConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Learning rate"
+DefaultText = "0,0001"
+
+[node name="CorrosionChance" type="HSlider" parent="RightConfigurationBox/VBox/CorrosionChanceInput3"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 0.5
+max_value = 2.0
+step = 0.1
+value = 1.0
+tick_count = 7
+ticks_on_borders = true
+
+[node name="Seperator3" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_5h7rv")
+
+[node name="CorrosionChanceInput4" parent="RightConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Gamma"
+DefaultText = "0,95"
+
+[node name="CorrosionChance" type="HSlider" parent="RightConfigurationBox/VBox/CorrosionChanceInput4"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 0.5
+max_value = 2.0
+step = 0.1
+value = 1.0
+tick_count = 7
+ticks_on_borders = true
+
+[node name="Seperator4" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_5h7rv")
+
+[node name="CorrosionChanceInput5" parent="RightConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Entropy coefficient"
+DefaultText = "0,01"
+
+[node name="CorrosionChance" type="HSlider" parent="RightConfigurationBox/VBox/CorrosionChanceInput5"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 0.5
+max_value = 2.0
+step = 0.1
+value = 1.0
+tick_count = 7
+ticks_on_borders = true
+
+[node name="Seperator5" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_5h7rv")
+
+[node name="CorrosionChanceInput6" parent="RightConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Amount of neurons in LSTM "
+DefaultText = "256"
+
+[node name="CorrosionChance" type="HSlider" parent="RightConfigurationBox/VBox/CorrosionChanceInput6"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 0.5
+max_value = 2.0
+step = 0.1
+value = 1.0
+tick_count = 7
+ticks_on_borders = true
+
+[node name="Seperator6" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_5h7rv")
+
+[node name="CorrosionChanceInput7" parent="RightConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Max sequence length"
+DefaultText = "32"
+
+[node name="CorrosionChance" type="HSlider" parent="RightConfigurationBox/VBox/CorrosionChanceInput7"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 0.5
+max_value = 2.0
+step = 0.1
+value = 1.0
+tick_count = 7
+ticks_on_borders = true
+
+[node name="Seperator7" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_5h7rv")
+
+[node name="ObjectsLabel2" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 24
+text = "Environment parameters"
+
+[node name="GroupSeperator5" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_eppm1")
+theme_override_font_sizes/font_size = 5
+
+[node name="CorrosionChanceInput2" parent="RightConfigurationBox/VBox" instance=ExtResource("3_ehpgx")]
+layout_mode = 2
+Title = "Initial amount of agents"
+DefaultText = "10"
+
+[node name="CorrosionChance" type="HSlider" parent="RightConfigurationBox/VBox/CorrosionChanceInput2"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 1.0
+max_value = 50.0
+value = 10.0
+tick_count = 7
+ticks_on_borders = true

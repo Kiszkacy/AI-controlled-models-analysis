@@ -1,0 +1,34 @@
+[gd_scene load_steps=2 format=3 uid="uid://dlcaopo3m4e20"]
+
+[ext_resource type="Theme" uid="uid://de0xa04ygj6gw" path="res://assets/ui/themes/grayTheme.tres" id="1_88me4"]
+
+[node name="TrainingConfiguration" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Box" type="TabContainer" parent="."]
+offset_left = 96.0
+offset_top = 96.0
+offset_right = 1824.0
+offset_bottom = 888.0
+theme = ExtResource("1_88me4")
+
+[node name="Line" type="ColorRect" parent="."]
+offset_left = 673.0
+offset_top = 144.0
+offset_right = 675.0
+offset_bottom = 840.0
+mouse_filter = 1
+color = Color(0.203922, 0.203922, 0.203922, 1)
+
+[node name="Line2" type="ColorRect" parent="."]
+offset_left = 1248.0
+offset_top = 144.0
+offset_right = 1250.0
+offset_bottom = 840.0
+mouse_filter = 1
+color = Color(0.203922, 0.203922, 0.203922, 1)

@@ -1,0 +1,238 @@
+[gd_scene load_steps=27 format=3 uid="uid://bpdss8eomtasu"]
+
+[ext_resource type="Script" path="res://src/scripts/screens/configuration/agents/agentBar/AgentBar.cs" id="1_at5ba"]
+[ext_resource type="Theme" uid="uid://c81i2ymfrd5c3" path="res://assets/ui/themes/whiteTheme.tres" id="1_lr41e"]
+[ext_resource type="PackedScene" uid="uid://bgl1wbpqole17" path="res://src/scenes/ui/button/iconButton.tscn" id="2_r2lvx"]
+[ext_resource type="Texture2D" uid="uid://ci0tylhnr06bv" path="res://assets/icons/solid/plus.svg" id="3_x11om"]
+[ext_resource type="Texture2D" uid="uid://dphuhtuv5x2xf" path="res://assets/icons/solid/bug.svg" id="4_iouu8"]
+[ext_resource type="Theme" uid="uid://de0xa04ygj6gw" path="res://assets/ui/themes/grayTheme.tres" id="4_s0s3g"]
+[ext_resource type="Texture2D" uid="uid://cy26nbj6vy5pm" path="res://assets/sprites/simple/pointed-circle-36x50.png" id="5_4300i"]
+[ext_resource type="PackedScene" uid="uid://byp6g5lwnjkly" path="res://src/scenes/ui/button/iconButtonSmall.tscn" id="6_7g78p"]
+[ext_resource type="Texture2D" uid="uid://bi7bt5jkg4lsv" path="res://assets/icons/solid/bolt.svg" id="8_dxtex"]
+[ext_resource type="Texture2D" uid="uid://curjuqu36cq5x" path="res://assets/icons/regular/trash-can.svg" id="10_13ysv"]
+[ext_resource type="Texture2D" uid="uid://dgd1nf7d340ea" path="res://assets/icons/solid/upload.svg" id="12_jemso"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yo3nh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_utk8s"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g8jx1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lrfah"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e6atc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fxtq8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bxdu8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a4oij"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4drlw"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7d4ts"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h8kf4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_prdn7"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.203922, 0.203922, 0.203922, 1)
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uktfh"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.16, 0.16, 0.16, 1)
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_47g63"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.2, 0.2, 0.2, 0.25098)
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.203922, 0.203922, 0.203922, 1)
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u08xj"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.8756, 0.88, 0.8624, 0)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+anti_aliasing = false
+
+[node name="AgentBar" type="Control" node_paths=PackedStringArray("InactiveBackground", "ActiveBackground", "EmptyBackground", "NotEmptyParentNode", "NameLabel", "EnergyLabel", "TrashButton", "ClickButton", "Sprite")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1440.0
+offset_bottom = -952.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+script = ExtResource("1_at5ba")
+InactiveBackground = NodePath("InactiveBackground")
+ActiveBackground = NodePath("ActiveBackground")
+EmptyBackground = NodePath("EmptyBackground")
+NotEmptyParentNode = NodePath("NotEmpty")
+NameLabel = NodePath("NotEmpty/LabelName")
+EnergyLabel = NodePath("NotEmpty/LabelEnergy2")
+TrashButton = NodePath("NotEmpty/TrashButton")
+ClickButton = NodePath("RetardedButton")
+Sprite = NodePath("NotEmpty/Sprite2D")
+
+[node name="RetardedButton" type="Button" parent="."]
+z_index = 16
+layout_mode = 0
+offset_right = 480.0
+offset_bottom = 128.0
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_lr41e")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_yo3nh")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_utk8s")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_g8jx1")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_lrfah")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_e6atc")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_fxtq8")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_bxdu8")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_a4oij")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_4drlw")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_7d4ts")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_h8kf4")
+
+[node name="InactiveBackground" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 480.0
+offset_bottom = 128.0
+theme = ExtResource("1_lr41e")
+theme_override_styles/normal = SubResource("StyleBoxFlat_prdn7")
+
+[node name="ActiveBackground" type="Label" parent="."]
+layout_mode = 0
+offset_right = 480.0
+offset_bottom = 128.0
+theme = ExtResource("1_lr41e")
+theme_override_styles/normal = SubResource("StyleBoxFlat_uktfh")
+
+[node name="EmptyBackground" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 480.0
+offset_bottom = 128.0
+theme = ExtResource("1_lr41e")
+theme_override_styles/normal = SubResource("StyleBoxFlat_47g63")
+
+[node name="IconButton" parent="EmptyBackground" instance=ExtResource("2_r2lvx")]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 32.0
+offset_right = 100.0
+offset_bottom = 96.0
+theme_override_colors/icon_normal_color = Color(0.203922, 0.203922, 0.203922, 1)
+theme_override_colors/icon_disabled_color = Color(0.203922, 0.203922, 0.203922, 1)
+disabled = true
+icon = ExtResource("3_x11om")
+flat = true
+
+[node name="Label" type="Label" parent="EmptyBackground"]
+layout_mode = 0
+offset_left = 91.0
+offset_top = 29.0
+offset_right = 478.0
+offset_bottom = 100.0
+theme = ExtResource("4_s0s3g")
+theme_override_colors/font_color = Color(0.203922, 0.203922, 0.203922, 1)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_u08xj")
+text = "Click here to add another
+agent type"
+
+[node name="NotEmpty" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LabelName" type="Label" parent="NotEmpty"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 15.0
+offset_right = 136.0
+offset_bottom = 53.0
+theme = ExtResource("4_s0s3g")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_u08xj")
+text = "Name"
+
+[node name="IconButton" parent="NotEmpty" instance=ExtResource("2_r2lvx")]
+layout_mode = 0
+theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
+disabled = true
+icon = ExtResource("4_iouu8")
+flat = true
+
+[node name="Sprite2D" type="Sprite2D" parent="NotEmpty"]
+position = Vector2(422, 64)
+rotation = 0.523599
+texture = ExtResource("5_4300i")
+
+[node name="LabelEnergy2" type="Label" parent="NotEmpty"]
+layout_mode = 0
+offset_left = 86.0
+offset_top = 65.0
+offset_right = 223.0
+offset_bottom = 93.0
+theme = ExtResource("4_s0s3g")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_u08xj")
+text = "energy amount"
+
+[node name="IconButtonSmall2" parent="NotEmpty" instance=ExtResource("6_7g78p")]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 55.0
+offset_right = 98.0
+offset_bottom = 103.0
+theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
+disabled = true
+icon = ExtResource("8_dxtex")
+flat = true
+
+[node name="TrashButton" parent="NotEmpty" instance=ExtResource("2_r2lvx")]
+z_index = 2
+layout_mode = 0
+offset_left = 440.0
+offset_top = 88.0
+offset_right = 504.0
+offset_bottom = 152.0
+icon = ExtResource("10_13ysv")
+
+[node name="LoadFromDiskButton" parent="NotEmpty" instance=ExtResource("6_7g78p")]
+layout_mode = 0
+offset_left = 376.0
+offset_top = 96.0
+offset_right = 424.0
+offset_bottom = 144.0
+icon = ExtResource("12_jemso")

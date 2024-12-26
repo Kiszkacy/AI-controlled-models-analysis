@@ -1,42 +1,47 @@
 using Godot;
 
-public partial class Agent : CharacterBody2D, Trackable
+public partial class Agent : CharacterBody2D, Trackable, AgentSpecification
 {
     [Export]
     public float MaximumSpeed { get; set; } = 200.0f; // in px per sec
-
     [Export]
     public float MaximumAcceleration { get; set; } = 100.0f; // in px per sec
-
     [Export]
     public float MaximumDeceleration { get; set; } = 100.0f; // in px per sec
-
     [Export]
     public float MaximumEnergy { get; set; } = 200.0f;
-
     [Export]
     public float InitialEnergy { get; set; } = 100.0f;
-
     [Export]
     public float MaximumHealth { get; set; } = 100.0f;
-
     [Export]
     public float InitialHealth { get; set; } = 100.0f;
-
     [Export]
     public float MaximumTurnSpeed { get; set; } = Mathf.Pi / 2.0f; // in radians per sec
-
     [Export]
     public float SightAngle { get; set; } = Mathf.Pi / 4.0f; // in radians
-
     [Export]
     public float SightRadius { get; set; } = 256.0f; // in px
-
     [Export]
     public float EnergySurplusForReproduction { get; set; } = 30.0f;
-
     [Export]
     public float MinimumHealthToReproduce { get; set; } = 50.0f;
+    [Export]
+    public float ReproductionEnergyCost { get; set; } = 50.0f;
+    [Export]
+    public float EnergyLossPerSecond { get; set; } = 2.0f;
+    [Export]
+    public float EnergyLossPerSecondPer100UnitsOfMovement { get; set; } = 0.2f;
+    [Export]
+    public float EnergyLossPerSecondRotation { get; set; } = 0.2f;
+    [Export]
+    public float HealthLossPerSecond { get; set; } = 5.0f;
+    [Export]
+    public float HealthRegenPerSecond { get; set; } = 1.0f;
+    [Export]
+    public Color Color { get; set; } = Color.FromHsv(1.0f, 1.0f, 1.0f);
+    [Export]
+    public float SizeMultiplier { get; set; } = 1.0f;
 
     public float energy { get; protected set; }
     protected float health;
@@ -77,9 +82,9 @@ public partial class Agent : CharacterBody2D, Trackable
 
     protected void UpdateEnergy(double delta)
     {
-        float energyLoss = Config.Instance.Environment.EnergyBaseLossPerSecond
-                           + Config.Instance.Environment.EnergyLossPerSecondPer100UnitsOfMovement * (this.Velocity.Length()/100.0f)
-                           + Config.Instance.Environment.EnergyLossPerSecondTurn * Mathf.Abs(this.currentRotation);
+        float energyLoss = this.EnergyLossPerSecond
+                           + this.EnergyLossPerSecondPer100UnitsOfMovement * (this.Velocity.Length()/100.0f)
+                           + this.EnergyLossPerSecondRotation * Mathf.Abs(this.currentRotation);
         this.energy = Mathf.Max(this.energy - energyLoss * (float)delta, 0.0f);
     }
 
@@ -87,11 +92,11 @@ public partial class Agent : CharacterBody2D, Trackable
     {
         if (Math.IsZero(this.energy))
         {
-            this.health -= Config.Instance.Environment.HealthLossPerSecond * (float)delta;
+            this.health -= this.HealthLossPerSecond * (float)delta;
         }
         else
         {
-            this.health += Config.Instance.Environment.HealthRegenPerSecond * (float)delta;
+            this.health += this.HealthRegenPerSecond * (float)delta;
         }
 
         this.health = Mathf.Clamp(this.health, 0.0f, this.MaximumHealth);
@@ -177,7 +182,7 @@ public partial class Agent : CharacterBody2D, Trackable
     protected virtual bool Reproduce()
     {
         if (this.health < this.MinimumHealthToReproduce || this.energy <
-            this.EnergySurplusForReproduction + Config.Get().Environment.EnergyUsedReproduction) return false;
+            this.EnergySurplusForReproduction + this.ReproductionEnergyCost) return false;
 
         Node supervisor = GetTree().Root.GetNode("Supervisor");
         if (supervisor is not Supervisor supervisorNode) return false;
@@ -188,7 +193,7 @@ public partial class Agent : CharacterBody2D, Trackable
             NeatPrinter.Start()
                 .Print("Agent " + this.id + " successfully reproduced.")
                 .End();
-            this.energy -= Config.Get().Environment.EnergyUsedReproduction;
+            this.energy -= this.ReproductionEnergyCost;
         }
 
         return success;
@@ -196,6 +201,8 @@ public partial class Agent : CharacterBody2D, Trackable
 
     public override void _Ready()
     {
+        this.Scale = new Vector2(this.SizeMultiplier, this.SizeMultiplier);
+        
         this.sprite = this.GetNode<Sprite2D>("Sprite");
 
         if (!Reloader.Get().IsReloading)
@@ -232,7 +239,9 @@ public partial class Agent : CharacterBody2D, Trackable
         return new AgentSaveData(this.GlobalPosition, this.MaximumSpeed, this.MaximumAcceleration, this.MaximumDeceleration,
             this.MaximumEnergy, this.InitialEnergy, this.MaximumHealth, this.InitialHealth, this.MaximumTurnSpeed,
             this.SightAngle, this.SightRadius, this.energy, this.health, this.currentRotation, this.currentAcceleration,
-            this.Direction, this.Velocity, this.id);
+            this.Direction, this.Velocity, this.id, this.EnergySurplusForReproduction, this.MinimumHealthToReproduce,
+            this.ReproductionEnergyCost, this.EnergyLossPerSecond, this.EnergyLossPerSecondPer100UnitsOfMovement,
+            this.EnergyLossPerSecondRotation, this.HealthLossPerSecond, this.HealthRegenPerSecond, this.Color, this.SizeMultiplier);
     }
 
     public virtual void Load(AgentSaveData data)
@@ -254,6 +263,16 @@ public partial class Agent : CharacterBody2D, Trackable
         this.currentAcceleration = data.CurrentAcceleration;
         this.Direction = data.Direction;
         this.Velocity = data.Velocity;
+        this.EnergySurplusForReproduction = data.EnergySurplusForReproduction;
+        this.MinimumHealthToReproduce = data.MinimumHealthToReproduce;
+        this.ReproductionEnergyCost = data.ReproductionEnergyCost;
+        this.EnergyLossPerSecond = data.MinimumHealthToReproduce;
+        this.EnergyLossPerSecondPer100UnitsOfMovement = data.EnergyLossPerSecondPer100UnitsOfMovement;
+        this.EnergyLossPerSecondRotation = data.EnergyLossPerSecondRotation;
+        this.HealthLossPerSecond = data.HealthLossPerSecond;
+        this.HealthRegenPerSecond = data.HealthRegenPerSecond;
+        this.Color = data.Color;
+        this.SizeMultiplier = data.SizeMultiplier;
         this.id = data.Id;
     }
 
@@ -276,5 +295,21 @@ public partial class Agent : CharacterBody2D, Trackable
             $"Distance to closest food: {(float.IsNaN(this.DistanceToClosestFood) ? "N/A" : $"{this.DistanceToClosestFood:F2} px")}",
             $"Angle to closest food: {(float.IsNaN(this.AngleToClosestFood) ? "N/A" : $"{Mathf.RadToDeg(this.AngleToClosestFood):F2} deg")}"
         };
+    }
+
+    public void ApplySpecification(AgentSpecification specification)
+    {
+        this.MaximumSpeed = specification.MaximumSpeed;
+        this.MaximumAcceleration = specification.MaximumAcceleration;
+        this.MaximumDeceleration = specification.MaximumDeceleration;
+        this.MaximumEnergy = specification.MaximumEnergy;
+        this.InitialEnergy = specification.InitialEnergy;
+        this.MaximumHealth = specification.MaximumHealth;
+        this.InitialHealth = specification.InitialHealth;
+        this.MaximumTurnSpeed = specification.MaximumTurnSpeed;
+        this.SightAngle = specification.SightAngle;
+        this.SightRadius = specification.SightRadius;
+        this.EnergySurplusForReproduction = specification.EnergySurplusForReproduction;
+        this.MinimumHealthToReproduce = specification.MinimumHealthToReproduce;
     }
 }

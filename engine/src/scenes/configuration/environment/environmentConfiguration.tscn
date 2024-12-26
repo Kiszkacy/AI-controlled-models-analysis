@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://cm7xbxgg7k28n"]
+[gd_scene load_steps=30 format=3 uid="uid://cm7xbxgg7k28n"]
 
 [ext_resource type="Theme" uid="uid://de0xa04ygj6gw" path="res://assets/ui/themes/grayTheme.tres" id="1_c8cgr"]
 [ext_resource type="Script" path="res://src/scripts/screens/configuration/environment/EnvironmentConfiguration.cs" id="1_lwfhd"]
@@ -67,14 +67,19 @@ content_margin_right = 2.0
 content_margin_bottom = 8.0
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2qxpa"]
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_55xeh"]
 content_margin_right = 0.0
 content_margin_bottom = 4.0
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2qxpa"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nn1eu"]
 content_margin_right = 2.0
-content_margin_bottom = 2.0
+content_margin_bottom = 8.0
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="Shader" id="Shader_cq5gr"]
@@ -345,13 +350,18 @@ layout_mode = 2
 offset_left = 723.0
 offset_top = 144.0
 offset_right = 868.0
-offset_bottom = 294.0
+offset_bottom = 298.0
 
 [node name="BiomesLabel" type="Label" parent="VBox"]
 layout_mode = 2
 theme = ExtResource("1_c8cgr")
 theme_override_font_sizes/font_size = 24
 text = "Biomes"
+
+[node name="GroupSeperator7" type="Label" parent="VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 5
 
 [node name="OceanSizeMultiplierInput" parent="VBox" instance=ExtResource("5_pdrob")]
 layout_mode = 2
@@ -432,6 +442,11 @@ disabled = true
 icon = ExtResource("10_m3fat")
 flat = true
 
+[node name="GroupSeperator6" type="Label" parent="VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 5
+
 [node name="BiomeTablePresetInput" parent="VBox" instance=ExtResource("5_pdrob")]
 layout_mode = 2
 Title = "Biome table preset"
@@ -457,6 +472,146 @@ popup/item_1/id = 1
 popup/item_2/text = "Food rings"
 popup/item_2/checkable = 2
 popup/item_2/id = 1
+
+[node name="Seperator7" type="Label" parent="VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_fcajo")
+
+[node name="TerrainLabel" type="Label" parent="VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+text = "Terrain
+"
+
+[node name="GroupSeperator5" type="Label" parent="VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 5
+
+[node name="TerrainChunkSizeInput" parent="VBox" instance=ExtResource("5_pdrob")]
+layout_mode = 2
+Title = "Terrain chunk size"
+DefaultText = "25x25 pixels"
+Disabled = true
+
+[node name="TerrainChunkSizeMenu" type="MenuButton" parent="VBox/TerrainChunkSizeInput"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 318.0
+offset_bottom = 32.0
+theme = ExtResource("1_c8cgr")
+text = "Pick chunk size"
+flat = false
+item_count = 3
+popup/item_0/text = "20"
+popup/item_0/checkable = 2
+popup/item_0/id = 3
+popup/item_1/text = "25"
+popup/item_1/checkable = 2
+popup/item_1/checked = true
+popup/item_1/id = 1
+popup/item_2/text = "50"
+popup/item_2/checkable = 2
+popup/item_2/id = 1
+
+[node name="Seperator3" type="Label" parent="VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_u60tx")
+
+[node name="CorrosionChanceInput" parent="VBox" instance=ExtResource("5_pdrob")]
+layout_mode = 2
+Title = "Corrosion chance"
+DefaultText = "0,5"
+
+[node name="BiomeTableInfo2" parent="VBox/CorrosionChanceInput" instance=ExtResource("9_gbjsn")]
+layout_mode = 2
+offset_left = -46.0
+offset_top = -8.0
+offset_right = 2.0
+offset_bottom = 40.0
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
+disabled = true
+icon = ExtResource("10_m3fat")
+flat = true
+
+[node name="CorrosionChance" type="HSlider" parent="VBox/CorrosionChanceInput"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+max_value = 1000.0
+value = 500.0
+tick_count = 5
+
+[node name="Seperator4" type="Label" parent="VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_2qxpa")
+
+[node name="CorrosionNeighborCountInput" parent="VBox" instance=ExtResource("5_pdrob")]
+layout_mode = 2
+Title = "Corrosion neighbor count"
+DefaultText = "3"
+
+[node name="CorrosionNeighborCount" type="HSlider" parent="VBox/CorrosionNeighborCountInput"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 1.0
+max_value = 8.0
+value = 3.0
+tick_count = 8
+ticks_on_borders = true
+
+[node name="BiomeTableInfo" parent="VBox/CorrosionNeighborCountInput" instance=ExtResource("9_gbjsn")]
+layout_mode = 2
+offset_left = -46.0
+offset_top = -8.0
+offset_right = 2.0
+offset_bottom = 40.0
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
+disabled = true
+icon = ExtResource("10_m3fat")
+flat = true
+
+[node name="BiomeTableInfo2" parent="VBox/CorrosionNeighborCountInput" instance=ExtResource("9_gbjsn")]
+layout_mode = 2
+offset_left = 532.0
+offset_top = -311.0
+offset_right = 580.0
+offset_bottom = -263.0
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
+disabled = true
+icon = ExtResource("10_m3fat")
+flat = true
+
+[node name="Seperator5" type="Label" parent="VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_fcajo")
 
 [node name="BiomeTableLine" type="ColorRect" parent="."]
 visible = false
@@ -505,100 +660,24 @@ icon = ExtResource("11_6ov0t")
 
 [node name="RightConfigurationBox" type="ScrollContainer" parent="."]
 layout_mode = 0
-offset_left = 1296.0
+offset_left = 1298.0
 offset_top = 144.0
-offset_right = 1773.0
+offset_right = 1775.0
 offset_bottom = 840.0
 
 [node name="VBox" type="VBoxContainer" parent="RightConfigurationBox"]
 layout_mode = 2
-
-[node name="TerrainLabel" type="Label" parent="RightConfigurationBox/VBox"]
-layout_mode = 2
-theme = ExtResource("1_c8cgr")
-theme_override_font_sizes/font_size = 24
-text = "Terrain
-"
-
-[node name="TerrainChunkSizeInput" parent="RightConfigurationBox/VBox" instance=ExtResource("5_pdrob")]
-layout_mode = 2
-Title = "Terrain chunk size"
-DefaultText = "25x25 pixels"
-Disabled = true
-
-[node name="TerrainChunkSizeMenu" type="MenuButton" parent="RightConfigurationBox/VBox/TerrainChunkSizeInput"]
-layout_mode = 2
-offset_left = 200.0
-offset_right = 318.0
-offset_bottom = 32.0
-theme = ExtResource("1_c8cgr")
-text = "Pick chunk size"
-flat = false
-item_count = 3
-popup/item_0/text = "20"
-popup/item_0/checkable = 2
-popup/item_0/id = 3
-popup/item_1/text = "25"
-popup/item_1/checkable = 2
-popup/item_1/checked = true
-popup/item_1/id = 1
-popup/item_2/text = "50"
-popup/item_2/checkable = 2
-popup/item_2/id = 1
-
-[node name="Seperator" type="Label" parent="RightConfigurationBox/VBox"]
-layout_mode = 2
-theme = ExtResource("1_c8cgr")
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("StyleBoxFlat_u60tx")
-
-[node name="CorrosionChanceInput" parent="RightConfigurationBox/VBox" instance=ExtResource("5_pdrob")]
-layout_mode = 2
-Title = "Corrosion chance"
-DefaultText = "0,5"
-
-[node name="CorrosionChance" type="HSlider" parent="RightConfigurationBox/VBox/CorrosionChanceInput"]
-layout_mode = 2
-offset_left = 200.0
-offset_right = 456.0
-offset_bottom = 32.0
-max_value = 1000.0
-value = 500.0
-tick_count = 5
-
-[node name="Seperator2" type="Label" parent="RightConfigurationBox/VBox"]
-layout_mode = 2
-theme = ExtResource("1_c8cgr")
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("StyleBoxFlat_2qxpa")
-
-[node name="CorrosionNeighborCountInput" parent="RightConfigurationBox/VBox" instance=ExtResource("5_pdrob")]
-layout_mode = 2
-Title = "Corrosion neighbor count"
-DefaultText = "3"
-
-[node name="CorrosionNeighborCount" type="HSlider" parent="RightConfigurationBox/VBox/CorrosionNeighborCountInput"]
-layout_mode = 2
-offset_left = 200.0
-offset_right = 456.0
-offset_bottom = 32.0
-min_value = 1.0
-max_value = 8.0
-value = 3.0
-tick_count = 8
-ticks_on_borders = true
-
-[node name="Seperator3" type="Label" parent="RightConfigurationBox/VBox"]
-layout_mode = 2
-theme = ExtResource("1_c8cgr")
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("StyleBoxFlat_fcajo")
 
 [node name="ObjectsLabel" type="Label" parent="RightConfigurationBox/VBox"]
 layout_mode = 2
 theme = ExtResource("1_c8cgr")
 theme_override_font_sizes/font_size = 24
 text = "Objects"
+
+[node name="GroupSeperator4" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 5
 
 [node name="ObjectDensityInput" parent="RightConfigurationBox/VBox" instance=ExtResource("5_pdrob")]
 layout_mode = 2
@@ -615,6 +694,240 @@ max_value = 200.0
 value = 100.0
 tick_count = 8
 ticks_on_borders = true
+
+[node name="SeperatorLast2" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_nn1eu")
+
+[node name="GroupSeperator3" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 5
+
+[node name="BerryBushNutritionInput" parent="RightConfigurationBox/VBox" instance=ExtResource("5_pdrob")]
+layout_mode = 2
+Title = "Berry bush food nutrition value"
+DefaultText = "15"
+
+[node name="BerryBushNutrition" type="HSlider" parent="RightConfigurationBox/VBox/BerryBushNutritionInput"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 5.0
+max_value = 200.0
+value = 15.0
+tick_count = 5
+ticks_on_borders = true
+
+[node name="Seperator7" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_2qxpa")
+
+[node name="BerryBushFoodPerMinute" parent="RightConfigurationBox/VBox" instance=ExtResource("5_pdrob")]
+layout_mode = 2
+Title = "Berry bush food per minute"
+DefaultText = "12"
+
+[node name="BerryBushNutrition" type="HSlider" parent="RightConfigurationBox/VBox/BerryBushFoodPerMinute"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+max_value = 20.0
+step = 0.1
+value = 12.0
+tick_count = 20
+ticks_on_borders = true
+
+[node name="Seperator9" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_2qxpa")
+
+[node name="BerryBushInitialFoodCount" parent="RightConfigurationBox/VBox" instance=ExtResource("5_pdrob")]
+layout_mode = 2
+Title = "Burry bush initial food count"
+DefaultText = "1"
+
+[node name="BerryBushNutrition" type="HSlider" parent="RightConfigurationBox/VBox/BerryBushInitialFoodCount"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+max_value = 20.0
+value = 1.0
+tick_count = 20
+ticks_on_borders = true
+
+[node name="Seperator10" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_2qxpa")
+
+[node name="BerryBushMaxFoodCount" parent="RightConfigurationBox/VBox" instance=ExtResource("5_pdrob")]
+layout_mode = 2
+Title = "Berry bush max food count"
+DefaultText = "4"
+
+[node name="BerryBushNutrition" type="HSlider" parent="RightConfigurationBox/VBox/BerryBushMaxFoodCount"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 1.0
+max_value = 15.0
+value = 4.0
+tick_count = 15
+ticks_on_borders = true
+
+[node name="Seperator12" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_2qxpa")
+
+[node name="BerryBushFoodLifetime" parent="RightConfigurationBox/VBox" instance=ExtResource("5_pdrob")]
+layout_mode = 2
+Title = "Berry bush food lifetime"
+DefaultText = "40"
+
+[node name="BerryBushNutrition" type="HSlider" parent="RightConfigurationBox/VBox/BerryBushFoodLifetime"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 10.0
+max_value = 120.0
+value = 40.0
+tick_count = 12
+ticks_on_borders = true
+
+[node name="SeperatorLast" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_nn1eu")
+
+[node name="GroupSeperator2" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 5
+
+[node name="AppleTreeNutritionInput" parent="RightConfigurationBox/VBox" instance=ExtResource("5_pdrob")]
+layout_mode = 2
+Title = "Apple tree food nutrition value"
+DefaultText = "30"
+
+[node name="AppleTreeNutrition" type="HSlider" parent="RightConfigurationBox/VBox/AppleTreeNutritionInput"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 5.0
+max_value = 200.0
+value = 30.0
+tick_count = 5
+ticks_on_borders = true
+
+[node name="Seperator8" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_2qxpa")
+
+[node name="AppleTreeFoodPerMinute" parent="RightConfigurationBox/VBox" instance=ExtResource("5_pdrob")]
+layout_mode = 2
+Title = "Apple tree food per minute"
+DefaultText = "4"
+
+[node name="AppleTreeNutrition" type="HSlider" parent="RightConfigurationBox/VBox/AppleTreeFoodPerMinute"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+max_value = 20.0
+step = 0.1
+value = 4.0
+tick_count = 20
+ticks_on_borders = true
+
+[node name="Seperator13" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_2qxpa")
+
+[node name="AppleTreeNutritionInput3" parent="RightConfigurationBox/VBox" instance=ExtResource("5_pdrob")]
+layout_mode = 2
+Title = "Apple tree initial food count"
+DefaultText = "2"
+
+[node name="AppleTreeNutrition" type="HSlider" parent="RightConfigurationBox/VBox/AppleTreeNutritionInput3"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+max_value = 20.0
+value = 2.0
+tick_count = 20
+ticks_on_borders = true
+
+[node name="Seperator14" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_2qxpa")
+
+[node name="AppleTreeNutritionInput4" parent="RightConfigurationBox/VBox" instance=ExtResource("5_pdrob")]
+layout_mode = 2
+Title = "Apple tree max food count"
+DefaultText = "8"
+
+[node name="AppleTreeNutrition" type="HSlider" parent="RightConfigurationBox/VBox/AppleTreeNutritionInput4"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 1.0
+max_value = 15.0
+value = 8.0
+tick_count = 15
+ticks_on_borders = true
+
+[node name="Seperator15" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_2qxpa")
+
+[node name="AppleTreeNutritionInput5" parent="RightConfigurationBox/VBox" instance=ExtResource("5_pdrob")]
+layout_mode = 2
+Title = "Apple tree food lifetime"
+DefaultText = "40"
+
+[node name="AppleTreeNutrition" type="HSlider" parent="RightConfigurationBox/VBox/AppleTreeNutritionInput5"]
+layout_mode = 2
+offset_left = 200.0
+offset_right = 456.0
+offset_bottom = 32.0
+min_value = 10.0
+max_value = 120.0
+value = 40.0
+tick_count = 12
+ticks_on_borders = true
+
+[node name="Seperator16" type="Label" parent="RightConfigurationBox/VBox"]
+layout_mode = 2
+theme = ExtResource("1_c8cgr")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_2qxpa")
 
 [node name="BigMinimapButton" parent="." instance=ExtResource("9_gbjsn")]
 layout_mode = 0
