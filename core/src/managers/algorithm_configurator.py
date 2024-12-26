@@ -1,6 +1,7 @@
 import torch
 from ray.rllib import MultiAgentEnv
 from ray.rllib.algorithms import Algorithm, DQNConfig, PPOConfig, SACConfig
+from ray.rllib.policy.policy import PolicySpec
 
 from core.src.environments.godot_environment import GodotServerEnvironment
 from core.src.managers.storage_manager import StorageManager
@@ -44,21 +45,8 @@ class AlgorithmConfigurator:
             },
             "framework": "torch",
             "training": {
-                "model": {
-                    "use_lstm": True,
-                    "lstm_cell_size": config_settings.lstm_cell_size,
-                    "max_seq_len": config_settings.max_seq_len,
-                    "fcnet_hiddens": config_settings.fcnet_hiddens,
-                    "lstm_use_prev_action": True,
-                    "lstm_use_prev_reward": True,
-                    "_disable_action_flattening": True,
-                    # "vf_share_layers": False, (rozdzielenie polityki i funkcji straty)
-                },
                 "train_batch_size": config_settings.training_batch_size,
-                "lr": config_settings.lr,
                 "grad_clip": config_settings.grad_clip,
-                "gamma": config_settings.gamma,
-                "entropy_coeff": config_settings.entropy_coeff,
                 "clip_param": config_settings.clip_param,
                 # "num_sgd_iter": 10,
                 # "sgd_minibatch_size": 128,
@@ -66,6 +54,27 @@ class AlgorithmConfigurator:
                 # "vf_clip_param": 15,
                 # "use_gae": True,
             },
+            "policies": {
+                policy_settings.prefix: PolicySpec(
+                    config={
+                        "gamma": policy_settings.gamma,
+                        "lr": policy_settings.lr,
+                        "entropy_coeff": policy_settings.entropy_coeff,
+                        "model": {
+                            "use_lstm": True,
+                            "max_seq_len": policy_settings.max_seq_len,
+                            "lstm_cell_size": policy_settings.lstm_cell_size,
+                            "fcnet_hiddens": policy_settings.fcnet_hiddens,
+                            "lstm_use_prev_action": True,
+                            "lstm_use_prev_reward": True,
+                            "_disable_action_flattening": True,
+                            # "vf_share_layers": False, (rozdzielenie polityki i funkcji straty)
+                        },
+                    }
+                )
+                for policy_settings in config_settings.policies
+            },
+            "policy_mapping_fn": config_settings.get_policy_mapping(),
         }
         algorithm_cls = config_settings.algorithm
         self.storage_manager.save_config(config_dict=algorithm_config_dict, algorithm_cls=algorithm_cls)

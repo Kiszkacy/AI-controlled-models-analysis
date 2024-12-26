@@ -60,6 +60,7 @@ class TunerConfigurator:
                 mode="max",
                 scheduler=pbt,
                 num_samples=1,
+                trial_dirname_creator=lambda trial: str(trial),
             ),
             param_space={
                 "env": self.environment_cls,
@@ -69,26 +70,29 @@ class TunerConfigurator:
                 "num_envs_per_worker": self.config_settings.number_of_env_per_worker,
                 # "num_cpus": 1,
                 "num_gpus": torch.cuda.device_count() if self.config_settings.use_gpu else 0,
-                "model": {
-                    "use_lstm": True,
-                    "lstm_cell_size": self.config_settings.lstm_cell_size,
-                    "max_seq_len": self.config_settings.max_seq_len,
-                    "fcnet_hiddens": self.config_settings.fcnet_hiddens,
-                    "lstm_use_prev_action": True,
-                    "lstm_use_prev_reward": True,
-                    "_disable_action_flattening": True,
-                    # "vf_share_layers": False, (rozdzielenie polityki i funkcji straty)
-                },
-                "gamma": self.config_settings.gamma,
                 "clip_param": self.config_settings.clip_param,
-                "lr": self.config_settings.lr,
                 "grad_clip": self.config_settings.grad_clip,
                 "num_sgd_iter": tune.choice([10, 20, 30]),
                 "sgd_minibatch_size": tune.choice([32, 64, 128]),
                 "train_batch_size": tune.choice([400, 800, 1200, 1600, 2000]),
-                "entropy_coeff": self.config_settings.entropy_coeff,
                 "policies": {
-                    policy_settings.prefix: PolicySpec(config=policy_settings.get_config())
+                    policy_settings.prefix: PolicySpec(
+                        config={
+                            "gamma": policy_settings.gamma,
+                            "lr": policy_settings.lr,
+                            "entropy_coeff": policy_settings.entropy_coeff,
+                            "model": {
+                                "use_lstm": True,
+                                "lstm_cell_size": policy_settings.lstm_cell_size,
+                                "max_seq_len": policy_settings.max_seq_len,
+                                "fcnet_hiddens": policy_settings.fcnet_hiddens,
+                                "lstm_use_prev_action": True,
+                                "lstm_use_prev_reward": True,
+                                "_disable_action_flattening": True,
+                                # "vf_share_layers": False, (rozdzielenie polityki i funkcji straty)
+                            },
+                        }
+                    )
                     for policy_settings in self.config_settings.policies
                 },
                 "policy_mapping_fn": self.config_settings.get_policy_mapping(),

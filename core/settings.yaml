@@ -17,21 +17,27 @@ training:
     training_batch_size: 100 # 2048 # Total amount of environment steps taken during each training iteration
     use_gpu: False # Defines if gpu should be used
     algorithm: "PPO" # Algorithm used for training, works with PPO, DQN, SAC
-    lr: 1e-4  # The learning rate, which determines how fast the model adjusts its weights during training.
     grad_clip: 0.1  # Gradient clipping to prevent exploding gradients, which can lead to instability during training
-    gamma: 0.95  # The discount factor that controls how much future rewards are considered in the agent’s decisions
-    entropy_coeff: 0.01  # The entropy coefficient that balances exploration and exploitation
     clip_param: 0.1  # The clipping parameter used in PPO to limit changes to the policy within a specified range
-    lstm_cell_size: 256  # Number of units (neurons) in lstm
-    max_seq_len: 32  # The maximum sequence length that the LSTM can process at a time. It determines how many previous steps are considered when making a decision.
-    fcnet_hiddens: [ 512, 256 ]  # A list specifying the number of units in the hidden layers of the fully connected neural network.
     policies:
       - prefix: "policyA"
+        lr: 1e-4  # The learning rate, which determines how fast the model adjusts its weights during training.
+        gamma: 0.95  # The discount factor that controls how much future rewards are considered in the agent’s decisions
+        entropy_coeff: 0.01  # The entropy coefficient that balances exploration and exploitation
+        lstm_cell_size: 256  # Number of units (neurons) in lstm
+        max_seq_len: 32  # The maximum sequence length that the LSTM can process at a time. It determines how many previous steps are considered when making a decision.
+        fcnet_hiddens: [ 512, 256 ]  # A list specifying the number of units in the hidden layers of the fully connected neural network.
       - prefix: "policyB"
+        lr: 1e-4
+        gamma: 0.95
+        entropy_coeff: 0.01
+        lstm_cell_size: 256
+        max_seq_len: 32
+        fcnet_hiddens: [ 512, 256 ]
 
 storage:
-  name: "experiment_name"  # Experiment name
-  save_path: "C:\\Users\\sokol\\PycharmProjects\\AI-controlled-models-analysis\\core\\src\\models\\tuner"  # Dir where the model will be saved/restored from
+  name: "experiment_name4"  # Experiment name
+  save_path: "C:\\Dane\\AI-controlled-models-analysis\\core\\src\\model"  # Dir where the model will be saved/restored from
   max_checkpoints: 5  # Num of checkpoints saved
   restore_iteration:  # If we want to restore model from "special" iteration we need to provide it here (needs to be in the saved iterations!),
   # by default empty/None restarts training from the latest checkpoint

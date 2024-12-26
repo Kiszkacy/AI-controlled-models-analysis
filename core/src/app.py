@@ -36,8 +36,7 @@ class App:
             core_settings = CoreSettingsSchema()
             self.registry.put(CoreSettingsSchema, core_settings)
             settings = get_settings()
-            storage_settings = settings.storage
-            storage_manager = StorageManager(storage_settings)
+            storage_manager = StorageManager(settings.storage)
             self.train(settings.training, storage_manager)
             return
 

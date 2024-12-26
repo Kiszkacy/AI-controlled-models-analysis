@@ -5,7 +5,7 @@ from gymnasium.spaces import Box, Dict
 from ray.rllib.env.multi_agent_env import MultiAgentEnv
 from ray.rllib.utils.typing import MultiAgentDict
 
-from core.src.settings.settings import AgentEnvironmentSettings, get_settings
+from core.src.settings.settings import AgentEnvironmentSettings, TrainingSettings, get_settings
 
 __all__ = ["GodotServerInferenceEnvironment"]
 
@@ -18,11 +18,20 @@ class GodotServerInferenceEnvironment(MultiAgentEnv):
         self.action_space = self.get_action_space(environment_settings)
         self.observation_space = self.get_observation_space(environment_settings)
 
-        self._agent_ids = set(range(environment_settings.number_of_agents))
+        self._agent_ids = self.calculate_agent_ids(environment_settings, get_settings().training)
         self._states: MultiAgentDict | None = None
         self.communication_settings = get_settings().communication_codes
 
         self.connection_handler = connection_handler
+
+    @staticmethod
+    def calculate_agent_ids(environment_settings: AgentEnvironmentSettings, training_settings: TrainingSettings) -> set:
+        sep = training_settings.config_settings.agent_name_separator
+        return {
+            f"{policy.prefix}{sep}{i}"
+            for i in range(environment_settings.number_of_agents)
+            for policy in training_settings.config_settings.policies
+        }
 
     @staticmethod
     def get_action_space(environment_settings: AgentEnvironmentSettings) -> Dict:

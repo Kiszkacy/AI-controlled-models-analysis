@@ -31,6 +31,12 @@ class GodotSettingsSchema(BaseSettings):
 
 class PolicySettingsSchema(BaseSettings):
     prefix: str
+    lr: PositiveFloat
+    gamma: PositiveFloat
+    entropy_coeff: float
+    lstm_cell_size: PositiveInteger
+    max_seq_len: PositiveInteger
+    fcnet_hiddens: list[PositiveInteger]
 
 
 class ConfigSettingsSchema(BaseSettings):
@@ -40,14 +46,8 @@ class ConfigSettingsSchema(BaseSettings):
     use_gpu: bool
     algorithm: str
     training_batch_size: PositiveInteger
-    lr: PositiveFloat
     grad_clip: PositiveFloat
-    gamma: PositiveFloat
-    entropy_coeff: float
     clip_param: float
-    lstm_cell_size: PositiveInteger
-    max_seq_len: PositiveInteger
-    fcnet_hiddens: list[int]
     policies: list[PolicySettingsSchema]
     agent_name_separator: str = "_"
 

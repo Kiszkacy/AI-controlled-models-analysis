@@ -29,9 +29,12 @@ class GodotSettings:
 @dataclass(frozen=True)
 class PolicySettings:
     prefix: str
-
-    def get_config(self) -> dict:
-        return {}
+    lr: float
+    gamma: float
+    entropy_coeff: float
+    lstm_cell_size: int
+    max_seq_len: int
+    fcnet_hiddens: list[int]
 
 
 @dataclass(frozen=True)
@@ -43,21 +46,16 @@ class ConfigSettings:
     use_gpu: bool
     algorithm: str
     training_batch_size: int
-    lr: float
     grad_clip: float
-    gamma: float
-    entropy_coeff: float
     clip_param: float
-    lstm_cell_size: int
-    max_seq_len: int
-    fcnet_hiddens: list[int]
 
     def get_policy_mapping(self):
-        def policy_mapping(agent_id: str, _) -> str:
-            (policy_name,) = agent_id.split(self.agent_name_separator, 1)
-            return policy_name
+        return lambda agent_id, *_args, **_kwargs: self.policy_mapping(agent_id, self.agent_name_separator)
 
-        return policy_mapping
+    @staticmethod
+    def policy_mapping(agent_id: str, agent_name_separator: str) -> str:
+        (policy_name,) = agent_id.split(agent_name_separator, 1)
+        return policy_name
 
 
 @dataclass(frozen=True)
