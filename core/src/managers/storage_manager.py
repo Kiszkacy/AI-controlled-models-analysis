@@ -8,6 +8,16 @@ from ray.rllib.algorithms import Algorithm
 from core.src.settings import StorageSettings
 
 
+def serialize_data(data):
+    if isinstance(data, dict):
+        return {key: serialize_data(value) for key, value in data.items()}
+    if isinstance(data, list):
+        return [serialize_data(item) for item in data]
+    if isinstance(data, int | float | str | bool | type(None)):
+        return data
+    return str(data)
+
+
 class StorageManager:
     def __init__(self, storage_settings: StorageSettings) -> None:
         base_path = os.path.join(storage_settings.save_path, storage_settings.name)
@@ -15,6 +25,7 @@ class StorageManager:
         self.config_path = os.path.join(config_base_path, "config.json")
         self.algorithm_cls_path = os.path.join(config_base_path, "algorithm.txt")
         self.checkpoints_path = os.path.join(base_path, "checkpoints")
+        self.results_path = os.path.join(base_path, "results.json")
         self.storage_settings = storage_settings
         os.makedirs(config_base_path, exist_ok=True)
         os.makedirs(self.checkpoints_path, exist_ok=True)
@@ -25,6 +36,8 @@ class StorageManager:
                 json.dump(config_dict, config_file, indent=4)
             with open(self.algorithm_cls_path, "w") as algorithm_file:
                 algorithm_file.write(algorithm_cls)
+            with open(self.results_path, "w", encoding="utf-8"):
+                pass
             logger.info(f"Saved config to {self.config_path}")
         except Exception as e:
             logger.error(f"Error saving config: {e}")
@@ -99,3 +112,12 @@ class StorageManager:
             except Exception as e:
                 logger.error(f"Error deleting file: {e}")
                 raise
+
+    def save_results(self, results: dict) -> None:
+        try:
+            with open(self.results_path, "a") as file:
+                serialized_results = serialize_data(results)
+                file.write(json.dumps(serialized_results) + "\n")
+        except Exception as e:
+            logger.error(f"Error deleting file: {e}")
+            raise

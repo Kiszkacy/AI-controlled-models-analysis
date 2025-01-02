@@ -35,8 +35,8 @@ class TunerConfigurator:
 
         pbt = PopulationBasedTraining(
             time_attr="training_iteration",
-            perturbation_interval=10,
-            resample_probability=0.25,
+            perturbation_interval=10000000,
+            resample_probability=0.0,
             hyperparam_mutations=hyperparam_mutations,
             custom_explore_fn=lambda config: config,
         )
@@ -49,7 +49,7 @@ class TunerConfigurator:
         return tune.Tuner(
             self.config_settings.algorithm,
             tune_config=tune.TuneConfig(
-                metric="episode_reward_mean",
+                metric="episode_reward_max",
                 mode="max",
                 scheduler=pbt,
                 num_samples=1,
@@ -62,9 +62,9 @@ class TunerConfigurator:
                 # "num_cpus": 1,
                 "num_gpus": torch.cuda.device_count() if self.config_settings.use_gpu else 0,
                 "model": {
-                    "use_lstm": True,
-                    "lstm_cell_size": self.config_settings.lstm_cell_size,
-                    "max_seq_len": self.config_settings.max_seq_len,
+                    "use_lstm": False,
+                    # "lstm_cell_size": self.config_settings.lstm_cell_size,
+                    # "max_seq_len": self.config_settings.max_seq_len,
                     "fcnet_hiddens": self.config_settings.fcnet_hiddens,
                     "lstm_use_prev_action": True,
                     "lstm_use_prev_reward": True,
@@ -76,12 +76,12 @@ class TunerConfigurator:
                 "gamma": self.config_settings.gamma,
                 "clip_param": self.config_settings.clip_param,
                 "lr": self.config_settings.lr,  # tune.choice([1e-4, 5e-5, 2e-5, 1e-5]),
-                "grad_clip": self.config_settings.grad_clip,
+                # "grad_clip": self.config_settings.grad_clip,
                 # "num_sgd_iter": tune.choice([10, 20, 30]),
                 # "sgd_minibatch_size": tune.choice([32, 64, 128]),
                 "train_batch_size": self.config_settings.training_batch_size,
                 # tune.choice([400, 800, 1200, 1600, 2000]),
-                "entropy_coeff": self.config_settings.entropy_coeff,
+                # "entropy_coeff": self.config_settings.entropy_coeff,
             },
             run_config=train.RunConfig(
                 name=self.storage_settings.name,
