@@ -72,6 +72,9 @@ public partial class SimulationUI : CanvasLayer
     public Button SubmenuExitButton;
     [Export]
     public Button SubmenuCloseButton;
+    
+    [Export]
+    public Button StartSimulationButton;
 
     private ViewMode ViewMode = ViewMode.Simulation;
 
@@ -126,6 +129,12 @@ public partial class SimulationUI : CanvasLayer
         this.SubmenuMenuButton.Pressed += this.OnSubmenuMenuButtonClick;
         this.SubmenuExitButton.Pressed += this.OnSubmenuExitButtonClick;
         this.SubmenuCloseButton.Pressed += this.OnSubmenuCloseButtonClick;
+
+        this.StartSimulationButton.Pressed += () =>
+        {
+            byte[] codeInBytes = BitConverter.GetBytes(Config.Get().Global.Communication.Start);
+            PipeHandler.Get().Send(codeInBytes);
+        };
     }
 
     private void OnExitClick()

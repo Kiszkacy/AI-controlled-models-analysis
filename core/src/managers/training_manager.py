@@ -5,7 +5,7 @@ from ray.tune import Tuner
 from core.src.managers.algorithm_configurator import AlgorithmConfigurator
 from core.src.managers.storage_manager import StorageManager
 from core.src.managers.tuner_configurator import TunerConfigurator
-from core.src.settings import TrainingSettings, get_settings
+from core.src.settings.settings import TrainingSettings, get_settings
 
 
 class TrainingManager:

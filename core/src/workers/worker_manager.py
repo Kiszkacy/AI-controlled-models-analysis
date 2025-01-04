@@ -1,11 +1,11 @@
 from loguru import logger
 
-from core.src.utils.shared_registry import SharedRegistry
+from core.src.utils.registry.shared_registry import SharedRegistry
 from core.src.workers.value_objects import WorkerData, WorkerId
 
 
 class WorkerManager:
-    def __init__(self):
+    def __init__(self: "WorkerManager"):
         self.worker_registry = SharedRegistry[WorkerId, WorkerData]("WorkerRegistry")
         self.worker_id: WorkerId = -1
 

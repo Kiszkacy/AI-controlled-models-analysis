@@ -32,6 +32,12 @@ public partial class Agent : CharacterBody2D, Trackable
     [Export]
     public float SightRadius { get; set; } = 256.0f; // in px
 
+    [Export]
+    public float EnergySurplusForReproduction { get; set; } = 30.0f;
+
+    [Export]
+    public float MinimumHealthToReproduce { get; set; } = 50.0f;
+
     public float energy { get; protected set; }
     protected float health;
     protected float currentRotation = 0.0f;
@@ -57,6 +63,16 @@ public partial class Agent : CharacterBody2D, Trackable
             this.id = value;
         }
         get => this.id;
+    }
+
+    public void SetEnergy(float newEnergy)
+    {
+        if (newEnergy < 0)
+        {
+            return;
+        }
+
+        this.energy = newEnergy;
     }
 
     protected void UpdateEnergy(double delta)
@@ -156,6 +172,26 @@ public partial class Agent : CharacterBody2D, Trackable
         this.Velocity = this.Direction * Mathf.Clamp(this.Speed + this.currentAcceleration * (float)delta, 0.0f, this.MaximumSpeed);
 
         this.MoveAndCollide(this.Velocity * (float)delta);
+    }
+
+    protected virtual bool Reproduce()
+    {
+        if (this.health < this.MinimumHealthToReproduce || this.energy <
+            this.EnergySurplusForReproduction + Config.Get().Environment.EnergyUsedReproduction) return false;
+
+        Node supervisor = GetTree().Root.GetNode("Supervisor");
+        if (supervisor is not Supervisor supervisorNode) return false;
+
+        bool success = supervisorNode.SpawnAgentNear(this.GlobalPosition);
+        if (success)
+        {
+            NeatPrinter.Start()
+                .Print("Agent " + this.id + " successfully reproduced.")
+                .End();
+            this.energy -= Config.Get().Environment.EnergyUsedReproduction;
+        }
+
+        return success;
     }
 
     public override void _Ready()

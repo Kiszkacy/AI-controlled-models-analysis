@@ -5,7 +5,7 @@ environment:
   action_space_range: 2  # Number of possible actions the agent can take in the environment
   action_space_low: -1 # Lower bound for each dimension in the action space.
   action_space_high: 1 # Upper bound for each dimension in the action space.
-  number_of_agents: 25 # Number af agents in environment starting
+  number_of_agents: 50 # Number af agents in environment starting
 
 training:
   is_resume: False  # Defines if it's a resume of training or not

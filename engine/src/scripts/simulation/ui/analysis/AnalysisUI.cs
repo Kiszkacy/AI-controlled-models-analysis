@@ -95,6 +95,11 @@ public partial class AnalysisUI : Control, Observable
 
     private void UpdateCharts()
     {
+        if (!this.EnvironmentTracker.TimeData.Any())
+        {
+            return;
+        }
+
         this.AgentCountChart.UpdateChartData(
             this.EnvironmentTracker.AgentsCountData.Zip(this.EnvironmentTracker.TimeData, (agentCount, time) => new Vector2((float)time, agentCount)).ToArray(),
             new Vector2((float)this.EnvironmentTracker.TimeData.Min(), 0),

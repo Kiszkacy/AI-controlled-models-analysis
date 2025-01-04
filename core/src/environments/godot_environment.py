@@ -5,46 +5,55 @@ from gymnasium.spaces import Box, Dict
 from ray.rllib.env.multi_agent_env import MultiAgentEnv
 from ray.rllib.utils.typing import MultiAgentDict
 
-from core.src.settings import get_settings
-from core.src.utils.godot_handler import GodotHandler
+from core.src.communication.environment.godot_environment_handler import create_godot_environment
+from core.src.settings.settings import AgentEnvironmentSettings, get_settings
 
 __all__ = ["GodotServerEnvironment"]
 
-environment_settings = get_settings().environment
-communication_settings = get_settings().communication
-
 
 class GodotServerEnvironment(MultiAgentEnv):
-    action_space = Dict(
-        {
-            "accelerate": Box(
-                low=environment_settings.action_space_low,
-                high=environment_settings.action_space_high,
-                shape=(),
-                dtype=np.float32,
-            ),
-            "rotate": Box(
-                low=environment_settings.action_space_low,
-                high=environment_settings.action_space_high,
-                shape=(),
-                dtype=np.float32,
-            ),
-        }
-    )
-
-    observation_space = Box(
-        low=environment_settings.observation_space_low,
-        high=environment_settings.observation_space_high,
-        shape=(environment_settings.observation_space_size,),
-        dtype=np.float32,
-    )
-
     def __init__(self, config: dict | None = None):  # noqa: ARG002
         super().__init__()
+
+        environment_settings = get_settings().environment
+        self.action_space = self.get_action_space(environment_settings)
+        self.observation_space = self.get_observation_space(environment_settings)
+
         self._agent_ids = set(range(environment_settings.number_of_agents))
         self._states: MultiAgentDict | None = None
-        self.godot_handler = GodotHandler()
-        self.godot_handler.launch_godot()
+        self.communication_settings = get_settings().communication_codes
+
+        godot_settings = get_settings().godot
+        self.connection_handler = create_godot_environment(godot_settings)
+        self.connection_handler.acquire_resources()
+
+    @staticmethod
+    def get_action_space(environment_settings: AgentEnvironmentSettings) -> Dict:
+        return Dict(
+            {
+                "accelerate": Box(
+                    low=environment_settings.action_space_low,
+                    high=environment_settings.action_space_high,
+                    shape=(),
+                    dtype=np.float32,
+                ),
+                "rotate": Box(
+                    low=environment_settings.action_space_low,
+                    high=environment_settings.action_space_high,
+                    shape=(),
+                    dtype=np.float32,
+                ),
+            }
+        )
+
+    @staticmethod
+    def get_observation_space(environment_settings: AgentEnvironmentSettings) -> Box:
+        return Box(
+            low=environment_settings.observation_space_low,
+            high=environment_settings.observation_space_high,
+            shape=(environment_settings.observation_space_size,),
+            dtype=np.float32,
+        )
 
     def step(self, actions: MultiAgentDict):
         """Returns observations from ready agents.
@@ -66,12 +75,12 @@ class GodotServerEnvironment(MultiAgentEnv):
         ]
 
         actions_json = json.dumps(actions_serializable)
-        self.godot_handler.send(actions_json.encode("utf-8"))
+        self.connection_handler.send(actions_json.encode("utf-8"))
         return self.get_data()
 
     def get_data(self):
         try:
-            received_data = self.godot_handler.request_data()
+            received_data = self.connection_handler.receive()
         except json.JSONDecodeError:
             raise
 
@@ -101,9 +110,9 @@ class GodotServerEnvironment(MultiAgentEnv):
         return observations, rewards, terminateds, truncateds, infos
 
     def reset(self, *, seed=None, options=None) -> tuple[MultiAgentDict, MultiAgentDict]:  # noqa: ARG002
-        reset_signal = communication_settings.reset
+        reset_signal = self.communication_settings.reset
         byte_message = str(reset_signal).encode()
-        self.godot_handler.send(byte_message)
+        self.connection_handler.send(byte_message)
 
         self._states = None
         observations = self.states[0]
@@ -116,3 +125,6 @@ class GodotServerEnvironment(MultiAgentEnv):
         if self._states is None:
             self._states = self.get_data()
         return self._states
+
+    def close(self) -> None:
+        self.connection_handler.release_resources()

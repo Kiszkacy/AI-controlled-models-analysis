@@ -1,7 +1,9 @@
-﻿using System;
+using System;
 using System.IO.Pipes;
 
 using Godot;
+
+using Newtonsoft.Json;
 
 public class PipeHandler : Singleton<PipeHandler>
 {
@@ -26,6 +28,13 @@ public class PipeHandler : Singleton<PipeHandler>
         this.pipe.Connect();
         this.IsConnected = true;
         NeatPrinter.Start().Print($"[PIPE]  | Connected to '{this.pipeName}' pipe.").End();
+        if (PythonManager.Instance.IsRunning)
+        {
+            PythonConfigurationData pythonConfigurationData = PythonManager.Instance.GetDefaultConfigurationData();
+            byte[] rawData = JsonConvert.SerializeObject(pythonConfigurationData).ToUtf8Buffer();
+            this.Send(rawData);
+            this.Receive();
+        }
     }
 
     public void Disconnect()

@@ -4,7 +4,7 @@ from ray.rllib.algorithms import Algorithm, DQNConfig, PPOConfig, SACConfig
 
 from core.src.environments.godot_environment import GodotServerEnvironment
 from core.src.managers.storage_manager import StorageManager
-from core.src.settings import ConfigSettings
+from core.src.settings.settings import ConfigSettings
 
 
 class AlgorithmConfigurator:

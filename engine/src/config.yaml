@@ -1,5 +1,5 @@
 pipe:
-  name: 'godot-python-pipe'
+  name: godot-python-pipe
   bufferSize: 8192
 engine:
   timeScale: 1.0
@@ -14,12 +14,18 @@ environment:
   energyBaseLossPerSecond: 2.0
   energyLossPerSecondPer100UnitsOfMovement: 0.2
   energyLossPerSecondTurn: 0.2
+  energyUsedReproduction: 50
   healthLossPerSecond: 5.0
   healthRegenPerSecond: 1.0
   score:
     foodEaten: 100
+    energyMax: 100
+    healthMax: 100
+    reproduction: 200
+    waterPenalty: 50
   bucketSize: 256
   agentSightProcessEveryNthFrame: 3
+  agentWaterPenaltyUpdateEveryNthFrame: 6
   supervisorAgentSpawnSafeDistance: 16
   supervisorAgentMaxSpawnTryCount: 50
   seed: 0
@@ -30,11 +36,11 @@ display:
   isFullscreen: true
   isMouseLocked: true
 controls:
-  zoomSensitivity: 1
-  maxZoom: 3
+  zoomSensitivity: 0.5
+  maxZoom: 2
   minZoom: 0.3
-  edgeMoveEnabled: true
-  edgeMoveMargin: 50
-  edgeMoveSpeed: 3
+  edgeMoveEnabled: false
+  edgeMoveMargin: 20
+  edgeMoveSpeed: 0.5
 save:
   savePath: user://

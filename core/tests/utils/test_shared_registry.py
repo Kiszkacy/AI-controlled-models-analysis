@@ -5,7 +5,7 @@ from typing import Any
 import pytest
 import ray
 
-from core.src.utils.shared_registry import SharedRegistry
+from core.src.utils.registry.shared_registry import SharedRegistry
 
 pytestmark = [pytest.mark.usefixtures("ray_cluster")]
 
