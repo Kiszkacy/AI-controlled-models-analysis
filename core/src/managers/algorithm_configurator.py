@@ -34,38 +34,33 @@ class AlgorithmConfigurator:
 
     def create_config_dict(self, config_settings: ConfigSettings) -> tuple[dict, str]:
         algorithm_config_dict = {
-            "rollouts": {
-                "num_rollout_workers": config_settings.number_of_workers,
-                "create_env_on_local_worker": False,
-                "num_envs_per_worker": config_settings.number_of_env_per_worker,
-            },
-            "resources": {
-                "num_gpus": torch.cuda.device_count() if config_settings.use_gpu else 0,
-            },
+            "num_rollout_workers": config_settings.number_of_workers,
+            "create_env_on_local_worker": False,
+            "num_envs_per_worker": config_settings.number_of_env_per_worker,
+            "num_gpus": torch.cuda.device_count() if config_settings.use_gpu else 0,
             "framework": "torch",
-            "training": {
-                "model": {
-                    "use_lstm": True,
-                    "lstm_cell_size": config_settings.lstm_cell_size,
-                    "max_seq_len": config_settings.max_seq_len,
-                    "fcnet_hiddens": config_settings.fcnet_hiddens,
-                    "lstm_use_prev_action": True,
-                    "lstm_use_prev_reward": True,
-                    "_disable_action_flattening": True,
-                    # "vf_share_layers": False, (rozdzielenie polityki i funkcji straty)
-                },
-                "train_batch_size": config_settings.training_batch_size,
-                "lr": config_settings.lr,
-                "grad_clip": config_settings.grad_clip,
-                "gamma": config_settings.gamma,
-                "entropy_coeff": config_settings.entropy_coeff,
-                "clip_param": config_settings.clip_param,
-                # "num_sgd_iter": 10,
-                # "sgd_minibatch_size": 128,
-                # "vf_loss_coeff": 1.0,
-                # "vf_clip_param": 15,
-                # "use_gae": True,
+            "model": {
+                "use_lstm": True,
+                "lstm_cell_size": config_settings.lstm_cell_size,
+                "max_seq_len": config_settings.max_seq_len,
+                "fcnet_hiddens": config_settings.fcnet_hiddens,
+                "lstm_use_prev_action": True,
+                "lstm_use_prev_reward": True,
+                "_disable_action_flattening": True,
+                # "vf_share_layers": False, (rozdzielenie polityki i funkcji straty)
             },
+            "train_batch_size": config_settings.training_batch_size,
+            "lr": config_settings.lr,
+            "grad_clip": config_settings.grad_clip,
+            "gamma": config_settings.gamma,
+            "entropy_coeff": config_settings.entropy_coeff,
+            "clip_param": config_settings.clip_param,
+            "sample_asynch": True,
+            # "num_sgd_iter": 10,
+            # "sgd_minibatch_size": 128,
+            # "vf_loss_coeff": 1.0,
+            # "vf_clip_param": 15,
+            # "use_gae": True,
         }
         algorithm_cls = config_settings.algorithm
         self.storage_manager.save_config(config_dict=algorithm_config_dict, algorithm_cls=algorithm_cls)

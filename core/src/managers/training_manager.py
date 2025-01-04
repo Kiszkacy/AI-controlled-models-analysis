@@ -36,14 +36,16 @@ class TrainingManager:
         else:
             for iteration in range(self.training_settings.training_iterations):
                 all_info = self.algorithm.train()
+                self.storage_manager.save_results(all_info)
                 sampler_info = all_info["sampler_results"]
                 logger.info(
-                    "iteration: {}, episode_reward_mean: {}, episode_reward_max: {}, episode_reward_min: {}, episodes_this_iter: {}".format(  # noqa: E501
+                    "iteration: {}, episode_reward_mean: {}, episode_reward_max: {}, episode_reward_min: {}, episodes_this_iter: {}, timers: {}".format(  # noqa: E501
                         iteration,
                         sampler_info["episode_reward_mean"],
                         sampler_info["episode_reward_max"],
                         sampler_info["episode_reward_min"],
                         sampler_info["episodes_this_iter"],
+                        all_info["timers"],
                     )
                 )
 
